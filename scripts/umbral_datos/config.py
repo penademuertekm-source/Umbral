@@ -86,6 +86,10 @@ ESPECIES = {
              "caducifolio": False, "meses_sin_hojas": ""},
 }
 
+# Medidas plausibles de un árbol de OSM; fuera de este rango se usa el valor típico de la especie.
+RANGO_ALTURA_ARBOL_M = (2.0, 40.0)
+RANGO_COPA_ARBOL_M = (1.0, 25.0)
+
 # --- Exportación ---
 DECIMALES_COORD = 6  # ~0,1 m
 TOLERANCIA_SIMPLIFICAR_M = 0.5

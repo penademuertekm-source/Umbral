@@ -23,6 +23,15 @@ def sin_edificios():
     return gpd.GeoDataFrame({"altura_m": []}, geometry=[], crs=CRS)
 
 
+class MedidasDeArbolesOSM(unittest.TestCase):
+    def test_descarta_medidas_imposibles(self):
+        from umbral_datos.arboles import _en_rango
+
+        self.assertEqual(_en_rango(9.0, config.RANGO_COPA_ARBOL_M), 9.0)
+        self.assertIsNone(_en_rango(300.0, config.RANGO_COPA_ARBOL_M))
+        self.assertIsNone(_en_rango(None, config.RANGO_ALTURA_ARBOL_M))
+
+
 class Aceras(unittest.TestCase):
     def test_orientacion(self):
         self.assertEqual(orientacion_cardinal(0, 1), "norte")

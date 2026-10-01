@@ -28,8 +28,12 @@ from umbral_datos.horizonte import calcular_perfiles, preparar_obstaculos
 from umbral_datos.red_externa import ErrorRed, Geocodificador
 
 
+_INICIO = time.monotonic()
+
+
 def paso(texto: str) -> None:
-    print(f"· {texto}…", flush=True)
+    """Muestra el paso con el tiempo transcurrido, para ver en el registro dónde se va el tiempo."""
+    print(f"· [{time.monotonic() - _INICIO:6.0f} s] {texto}…", flush=True)
 
 
 def a_metrico(capa: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
@@ -73,7 +77,12 @@ def construir(validar_sol: bool = True) -> None:
     red = construir_red(a_metrico(aristas_osm), edificios)
 
     paso("Árboles")
+    # osmnx devuelve los polígonos completos aunque salgan del área: se recortan para no sembrar
+    # árboles provisionales en parques lejanos.
     plazas = a_metrico(plazas_osm)
+    if len(plazas):
+        plazas = plazas.assign(geometry=plazas.geometry.intersection(area_m))
+        plazas = plazas[~plazas.geometry.is_empty]
     resultado_arboles = preparar_arboles(a_metrico(arboles_osm), red.aristas, plazas, edificios)
     arboles = resultado_arboles.arboles
     if resultado_arboles.escrito_csv:
@@ -82,7 +91,9 @@ def construir(validar_sol: bool = True) -> None:
             "bórralo para volver a generar los árboles."
         )
 
-    paso(f"Perfiles de horizonte de {len(red.muestras)} puntos")
+    paso(
+        f"Perfiles de horizonte: {len(red.muestras)} puntos, {len(edificios)} edificios, {len(arboles)} árboles"
+    )
     t0 = time.monotonic()
     obstaculos = preparar_obstaculos(edificios, aleros, arboles)
     perfiles, svf = calcular_perfiles(

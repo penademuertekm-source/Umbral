@@ -22,6 +22,9 @@ Simplificaciones (documentadas también en docs/reporte-datos.md):
 
 from __future__ import annotations
 
+import multiprocessing as mp
+import os
+from concurrent.futures import ProcessPoolExecutor
 from dataclasses import dataclass
 
 import geopandas as gpd
@@ -220,18 +223,56 @@ def sky_view_factor(radianes: np.ndarray) -> float:
     return float(1.0 - np.mean(np.sin(horizonte) ** 2))
 
 
-def calcular_perfiles(obs: Obstaculos, puntos: np.ndarray, progreso=None) -> tuple[np.ndarray, np.ndarray]:
-    """
-    Devuelve (perfiles Uint8 de forma (n, 3, 72), svf de forma (n,)).
-    El SVF se calcula con los ángulos sin redondear.
-    """
-    n = len(puntos)
-    perfiles = np.zeros((n, len(config.CANALES), config.SECTORES), dtype=np.uint8)
-    svf = np.zeros(n)
+_OBSTACULOS_PROCESO: Obstaculos | None = None  # copia heredada por los procesos hijos (fork)
+TAMANO_BLOQUE = 500
+
+
+def _calcular_bloque(puntos: np.ndarray, obs: Obstaculos | None = None) -> tuple[np.ndarray, np.ndarray]:
+    obs = obs if obs is not None else _OBSTACULOS_PROCESO
+    perfiles = np.zeros((len(puntos), len(config.CANALES), config.SECTORES), dtype=np.uint8)
+    svf = np.zeros(len(puntos))
     for i, p in enumerate(puntos):
         radianes = perfil(obs, p)
         perfiles[i] = codificar(radianes)
         svf[i] = sky_view_factor(radianes)
-        if progreso and (i % 1000 == 0 or i == n - 1):
-            progreso(i + 1, n)
     return perfiles, svf
+
+
+def calcular_perfiles(
+    obs: Obstaculos, puntos: np.ndarray, progreso=None, procesos: int | None = None
+) -> tuple[np.ndarray, np.ndarray]:
+    """
+    Devuelve (perfiles Uint8 de forma (n, 3, 72), svf de forma (n,)).
+    El SVF se calcula con los ángulos sin redondear.
+    Reparte los puntos entre los núcleos del computador cuando el sistema permite `fork`
+    (Linux y macOS); en Windows calcula en un solo proceso. El resultado es el mismo.
+    """
+    global _OBSTACULOS_PROCESO
+    n = len(puntos)
+    bloques = [puntos[i : i + TAMANO_BLOQUE] for i in range(0, n, TAMANO_BLOQUE)]
+    procesos = procesos or os.cpu_count() or 1
+    usar_procesos = procesos > 1 and len(bloques) > 1 and "fork" in mp.get_all_start_methods()
+
+    resultados: list[tuple[np.ndarray, np.ndarray]] = []
+    hechos = 0
+    if usar_procesos:
+        _OBSTACULOS_PROCESO = obs
+        try:
+            with ProcessPoolExecutor(procesos, mp_context=mp.get_context("fork")) as ejecutor:
+                for bloque, resultado in zip(bloques, ejecutor.map(_calcular_bloque, bloques)):
+                    resultados.append(resultado)
+                    hechos += len(bloque)
+                    if progreso:
+                        progreso(hechos, n)
+        finally:
+            _OBSTACULOS_PROCESO = None
+    else:
+        for bloque in bloques:
+            resultados.append(_calcular_bloque(bloque, obs))
+            hechos += len(bloque)
+            if progreso:
+                progreso(hechos, n)
+
+    if not resultados:
+        return np.zeros((0, len(config.CANALES), config.SECTORES), dtype=np.uint8), np.zeros(0)
+    return np.concatenate([r[0] for r in resultados]), np.concatenate([r[1] for r in resultados])

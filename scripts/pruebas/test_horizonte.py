@@ -8,7 +8,7 @@ import numpy as np
 from shapely.geometry import Point, box
 
 from umbral_datos import config
-from umbral_datos.horizonte import codificar, perfil, preparar_obstaculos, sky_view_factor
+from umbral_datos.horizonte import calcular_perfiles, codificar, perfil, preparar_obstaculos, sky_view_factor
 
 CRS = config.CRS_METRICO
 
@@ -88,6 +88,17 @@ class PerfilDeHorizonte(unittest.TestCase):
         alero = gpd.GeoDataFrame({"altura_m": [3.0]}, geometry=[box(-1, -1, 1, 1)], crs=CRS)
         obs = preparar_obstaculos(sin_capa(), alero, sin_arboles())
         self.assertTrue(np.allclose(perfil(obs, np.array([0.0, 0.0]))[0], math.pi / 2))
+
+    def test_calculo_en_paralelo_da_lo_mismo(self):
+        edificio = box(0, 0, 30, 20)
+        arbol = {"centro": (-15, 10), "altura": 10, "copa": 8}
+        obs = preparar_obstaculos(capa_edificios((edificio, 12)), sin_capa(), capa_arboles(arbol))
+        puntos = np.random.default_rng(1).uniform(-60, 90, size=(1200, 2))
+        serie_p, serie_svf = calcular_perfiles(obs, puntos, procesos=1)
+        paralelo_p, paralelo_svf = calcular_perfiles(obs, puntos, procesos=3)
+        self.assertEqual(serie_p.shape, (1200, 3, 72))
+        self.assertTrue(np.array_equal(serie_p, paralelo_p))
+        self.assertTrue(np.allclose(serie_svf, paralelo_svf))
 
     def test_codificacion(self):
         valores = codificar(np.radians(np.array([0.0, 0.24, 0.26, 45.0, 90.0, 95.0])))

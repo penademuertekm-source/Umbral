@@ -55,6 +55,11 @@ def _medio(rango: tuple[float, float]) -> float:
     return (rango[0] + rango[1]) / 2
 
 
+def _en_rango(valor: float | None, rango: tuple[float, float]) -> float | None:
+    """Descarta medidas imposibles de OSM (p. ej. una copa de 300 m por un error de unidades)."""
+    return valor if valor is not None and rango[0] <= valor <= rango[1] else None
+
+
 def _fila_arbol(id_: str, especie: str, punto: Point, altura: float, copa: float, fuente: str) -> dict:
     datos = config.ESPECIES[especie]
     return {
@@ -103,8 +108,8 @@ def _desde_osm(arboles_osm: gpd.GeoDataFrame) -> list[dict]:
     for _, fila in arboles_osm.iterrows():
         especie = especie_desde_osm(fila)
         base = config.ESPECIES[especie]
-        altura = numero(fila.get("height")) or _medio(base["altura"])
-        copa = numero(fila.get("diameter_crown")) or _medio(base["copa"])
+        altura = _en_rango(numero(fila.get("height")), config.RANGO_ALTURA_ARBOL_M) or _medio(base["altura"])
+        copa = _en_rango(numero(fila.get("diameter_crown")), config.RANGO_COPA_ARBOL_M) or _medio(base["copa"])
         filas.append(_fila_arbol(f"osm-{fila.get('id', '')}", especie, fila.geometry, altura, copa, "osm"))
     return filas
 
