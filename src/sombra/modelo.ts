@@ -57,6 +57,8 @@ export interface ShadeModel {
   sides: Side[]
   /** "arista:lado" → posición en `sides` y en los arreglos del resultado. */
   sideIndex: Map<string, number>
+  /** Sky View Factor de cada muestra (0 = cielo tapado, 1 = cielo abierto). */
+  svf: Float32Array
   /** Centro de las muestras: el sol se calcula aquí (en 1,5 km la diferencia no importa). */
   lat: number
   lon: number
@@ -114,6 +116,7 @@ export function buildModel(index: SampleIndex, profiles: Uint8Array): ShadeModel
     stepDeg: index.paso_grados,
     sides,
     sideIndex: new Map(sides.map((s, i) => [sideKey(s.edge, s.side), i])),
+    svf: Float32Array.from(index.svf),
     lat: mean(index.lat),
     lon: mean(index.lon),
   }
@@ -224,4 +227,12 @@ export function dayProfile(model: ShadeModel, sideIdx: number, date: Date, optio
     points.push({ time: t, fraction, state })
   }
   return points
+}
+
+/** SVF promedio de un lado de acera. */
+export function meanSkyViewFactor(model: ShadeModel, sideIdx: number): number {
+  const { start, count } = model.sides[sideIdx]
+  let sum = 0
+  for (let i = start; i < start + count; i++) sum += model.svf[i]
+  return sum / count
 }

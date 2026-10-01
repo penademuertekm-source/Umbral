@@ -6,6 +6,7 @@ export type WorkerRequest =
   | { id: number; type: 'calcular'; time: number; options: ShadeOptions }
   | { id: number; type: 'sombraHasta'; edge: number; side: SideLetter; time: number; options: ShadeOptions }
   | { id: number; type: 'perfilDelDia'; edge: number; side: SideLetter; time: number; options: ShadeOptions }
+  | { id: number; type: 'svf'; edge: number; side: SideLetter }
 
 export interface TimedShadeResult extends ShadeResult {
   /** Tiempo del cálculo dentro del worker (ms). */
@@ -14,6 +15,6 @@ export interface TimedShadeResult extends ShadeResult {
   cached: boolean
 }
 
-export type WorkerResult = Side[] | TimedShadeResult | ShadeUntil | ProfilePoint[] | null
+export type WorkerResult = Side[] | TimedShadeResult | ShadeUntil | ProfilePoint[] | number | null
 
 export type WorkerResponse = { id: number; ok: true; result: WorkerResult } | { id: number; ok: false; error: string }

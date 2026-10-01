@@ -9,7 +9,12 @@
     "cerrar": "Close",
     "estimado": "estimated",
     "sinDato": "—",
-    "grados": "{valor}°"
+    "grados": "{valor}°",
+    "reintentar": "Try again",
+    "laHora": {
+      "una": "{hora}",
+      "otra": "{hora}"
+    }
   },
   "idioma": {
     "titulo": "Language",
@@ -84,6 +89,73 @@
   },
   "barra": {
     "utci": "Estimated UTCI · in the sun {sol} · in the shade {sombra}"
+  },
+  "mapa": {
+    "etiqueta": "Shade map of the Historic Center of Valledupar",
+    "atribucion": "© OpenStreetMap contributors",
+    "cargando": "Loading the solar model of the center…",
+    "error": "Could not load the map: {error}",
+    "otraHora": "See the shade at another time",
+    "buscarRuta": "Find a shaded route",
+    "miUbicacion": "Show my location",
+    "ubicacionDenegada": "No location permission",
+    "provisional": "Provisional data",
+    "provisionalDetalle": "Some trees, heights and places are provisional until the field survey arrives.",
+    "leyenda": "Legend",
+    "sinSol": "No sun at this time",
+    "ubicacionBuscando": "Finding your location…",
+    "ubicacionNoDisponible": "Could not get your location",
+    "horaElegida": "Estimated shade for {laHora}"
+  },
+  "ficha": {
+    "entre": "{calle} between {a} and {b}",
+    "esquina": "{calle} at {a}",
+    "sinNombre": "Unnamed segment",
+    "estimadoA": "Estimated values for {laHora}",
+    "hasta": "Full shade until {laHora}",
+    "hastaAtardecer": "Full shade until sunset",
+    "parcialAhora": "Partial shade at this time",
+    "expuestoAhora": "No shade at this time",
+    "sinSolAhora": "No sun at this time",
+    "aceraProtegida": "Protected sidewalk",
+    "costado": "{orientacion} side",
+    "ambas": "Both alike",
+    "ninguna": "None at this time",
+    "svf": "Technical details · Sky View Factor",
+    "svfExplicacion": "Share of the sky visible from the {orientacion} side: 0 means covered and 1 means open sky. It is the estimated average of the points on that sidewalk, with buildings and trees.",
+    "utci": "Estimated UTCI",
+    "utciPendiente": "—",
+    "arbolado": "Trees on this segment",
+    "sinArboles": "No trees recorded",
+    "especies": {
+      "mango": {
+        "uno": "1 mango tree",
+        "varios": "{n} mango trees"
+      },
+      "canaguate": {
+        "uno": "1 cañaguate",
+        "varios": "{n} cañaguates"
+      },
+      "otro": {
+        "uno": "1 tree of another species",
+        "varios": "{n} trees of other species"
+      }
+    },
+    "fenologiaCambia": "The cañaguates on this segment drop their leaves from January to March: in that season this segment goes down to {estado}.",
+    "fenologiaIgual": "The cañaguates on this segment drop their leaves from January to March; at this time the shade barely changes.",
+    "fenologiaSinHojas": "The cañaguates on this segment are leafless this season; they give shade again with the rains.",
+    "estadoMinuscula": {
+      "sombra": "full shade",
+      "parcial": "partial shade",
+      "expuesto": "no shade",
+      "sin_sol": "no sun"
+    },
+    "orientaciones": {
+      "norte": "North",
+      "sur": "South",
+      "oriental": "East",
+      "occidental": "West"
+    }
   },
   "pantallas": {
     "p01": "Splash",

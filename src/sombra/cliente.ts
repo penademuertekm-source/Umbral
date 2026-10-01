@@ -91,6 +91,11 @@ export const motorSombra = {
     return request({ type: 'sombraHasta', edge: arista, side: lado, time: desde.getTime(), options: opciones })
   },
 
+  /** Sky View Factor promedio de un lado de acera (0 = cielo tapado, 1 = abierto). */
+  svf(arista: number, lado: SideLetter): Promise<number> {
+    return request({ type: 'svf', edge: arista, side: lado })
+  },
+
   /** % de sombra cada 15 min de 6:00 a 18:00 del día de `fecha`. */
   perfilDelDia(arista: number, lado: SideLetter, fecha: Date, opciones: ShadeOptions = {}): Promise<ProfilePoint[]> {
     return request({ type: 'perfilDelDia', edge: arista, side: lado, time: fecha.getTime(), options: opciones })

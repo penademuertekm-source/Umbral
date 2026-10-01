@@ -1,0 +1,5 @@
+.mapa {
+  position: absolute;
+  inset: 0;
+  background: var(--um-mapa-fondo);
+}

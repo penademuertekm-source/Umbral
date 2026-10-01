@@ -1,7 +1,15 @@
 // Web Worker del motor de sombra: carga los datos una sola vez y calcula fuera del hilo de la pantalla.
 import { loadModel } from './cargar'
 import type { WorkerRequest, WorkerResponse, TimedShadeResult } from './mensajes'
-import { computeShade, dayProfile, shadeUntil, sideKey, type ShadeModel, type ShadeOptions } from './modelo'
+import {
+  computeShade,
+  dayProfile,
+  meanSkyViewFactor,
+  shadeUntil,
+  sideKey,
+  type ShadeModel,
+  type ShadeOptions,
+} from './modelo'
 import { floorToQuarter } from './tiempo'
 
 let model: Promise<ShadeModel> | null = null
@@ -54,6 +62,9 @@ self.onmessage = async (event: MessageEvent<WorkerRequest>) => {
           ok: true,
           result: shadeUntil(m, sideIndex(m, request.edge, request.side), new Date(request.time), request.options),
         }
+        break
+      case 'svf':
+        response = { id: request.id, ok: true, result: meanSkyViewFactor(m, sideIndex(m, request.edge, request.side)) }
         break
       case 'perfilDelDia':
         response = {

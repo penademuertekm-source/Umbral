@@ -1,0 +1,86 @@
+/* Ficha de tramo (Figma, nodo 5:2) */
+
+.estimado {
+  margin-top: calc(-1 * var(--um-esp-sm));
+  color: var(--um-base-texto-secundario);
+}
+
+.pildora {
+  align-self: flex-start;
+  padding: var(--um-esp-sm) var(--um-esp-md);
+  border-radius: var(--um-radio-control);
+  background: var(--nivel-fondo);
+  color: var(--nivel-texto);
+  font-weight: 600;
+}
+
+.filas {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+.fila {
+  display: grid;
+  /* La etiqueta usa hasta el 60 % y se parte si no cabe; el valor queda a la derecha. */
+  grid-template-columns: fit-content(60%) 1fr;
+  align-items: center;
+  column-gap: var(--um-esp-md);
+  min-height: var(--um-tactil-minimo);
+  border-bottom: 1px solid var(--um-base-borde);
+}
+
+.fila dt {
+  padding-block: var(--um-esp-sm);
+  color: var(--um-base-texto-secundario);
+}
+
+.fila dd {
+  margin: 0;
+  text-align: right;
+}
+
+.valor {
+  color: var(--um-base-texto);
+  font-weight: 600;
+  text-align: right;
+}
+
+.desplegar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--um-esp-xs);
+  min-width: var(--um-tactil-minimo);
+  min-height: var(--um-tactil-minimo);
+  margin-right: calc(-1 * var(--um-esp-xs));
+  padding: 0 var(--um-esp-xs);
+  border: 0;
+  border-radius: var(--um-radio-control);
+  background: none;
+  color: var(--um-base-texto);
+  cursor: pointer;
+}
+
+.flecha {
+  display: inline-flex;
+  transition: transform 150ms ease-out;
+}
+
+.flecha[data-abierto='true'] {
+  transform: rotate(90deg);
+}
+
+.fila .explicacion {
+  grid-column: 1 / -1;
+  text-align: left;
+  padding-bottom: var(--um-esp-md);
+  color: var(--um-base-texto-secundario);
+}
+
+.nota {
+  padding: var(--um-esp-md);
+  border-radius: var(--um-radio-tarjeta);
+  background: var(--nivel-fondo);
+  color: var(--nivel-texto);
+}

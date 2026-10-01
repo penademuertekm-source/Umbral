@@ -44,7 +44,7 @@ export function HojaInferior({ open, onClose, title, children }: HojaInferiorPro
     <section ref={sheetRef} className={s.hoja} role="dialog" aria-labelledby={titleId} tabIndex={-1}>
       <span className={s.asa} aria-hidden="true" />
       <div className={s.cabecera}>
-        <h2 id={titleId} className="um-subtitulo">
+        <h2 id={titleId} className="um-titulo">
           {title}
         </h2>
         <button type="button" className={s.cerrar} onClick={onClose} aria-label={t('comun.cerrar')}>

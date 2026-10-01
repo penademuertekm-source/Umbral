@@ -13,7 +13,7 @@ export interface ScreenDef {
   phase: number
 }
 
-// Las 23 pantallas de la especificación. Por ahora todas usan PantallaPendiente.
+// Las 23 pantallas de la especificación. Las que aún no se construyen usan PantallaPendiente.
 // La 08 se abrirá también con ?placa=<id> (Fase 8); la 17 es solo una referencia del semáforo.
 export const SCREENS: readonly ScreenDef[] = [
   { number: '01', nameKey: 'pantallas.p01', path: '/', figmaNode: '2:2', phase: 8 },
@@ -22,7 +22,7 @@ export const SCREENS: readonly ScreenDef[] = [
   { number: '04', nameKey: 'pantallas.p04', path: '/mapa', figmaNode: '3:2', phase: 4 },
   { number: '05', nameKey: 'pantallas.p05', path: '/buscar', figmaNode: '4:2', phase: 6 },
   { number: '06', nameKey: 'pantallas.p06', path: '/rutas', figmaNode: '4:42', phase: 6 },
-  { number: '07', nameKey: 'pantallas.p07', path: '/tramo/:id', examplePath: '/tramo/ejemplo', figmaNode: '5:2', phase: 4 },
+  { number: '07', nameKey: 'pantallas.p07', path: '/tramo/:id', examplePath: '/tramo/89', figmaNode: '5:2', phase: 4 },
   { number: '08', nameKey: 'pantallas.p08', path: '/qr/:id', examplePath: '/qr/calle-grande-cra7', figmaNode: '5:46', phase: 8 },
   { number: '09', nameKey: 'pantallas.p09', path: '/el-nino', figmaNode: '6:2', phase: 5 },
   { number: '10', nameKey: 'pantallas.p10', path: '/refugios', figmaNode: '6:21', phase: 7 },

@@ -4,6 +4,79 @@ Registro de lo hecho en cada fase, lo pendiente y las decisiones tomadas. La ent
 
 ---
 
+## Fase 4 · Mapa principal y ficha de tramo (2026-10-01)
+
+Plan aprobado por la autora el 2026-10-01 (semáforo fijo en "Precaución" y UTCI "—" hasta la Fase 5).
+
+### Hecho
+
+- **Mapa** (`src/mapa/`): MapLibre GL 6 con estilo propio y solo fuentes GeoJSON locales de
+  `public/datos/` (manzanas, edificios, plazas, calles, aceras y árboles). No pide teselas, fuentes ni
+  sprites a internet: funciona sin conexión. Los colores salen de `design/tokens.css` en tiempo de
+  ejecución (`tokens.ts`).
+- **Tramos por lado de acera** (`capas.ts`): sombra continua `--um-termico-sombra-plena`; parcial
+  discontinua `--um-termico-sombra-parcial` [18, 8]; expuesto `--um-termico-exposicion` con línea central
+  punteada `--um-mapa-marca-expuesto` [6, 6]; sin sol en gris. El grosor crece con el zoom. Al mover la
+  hora no se recrean capas: solo cambia el `feature-state` de los lados cuyo estado cambió.
+- **Árboles**: marcador árbol (mango o cañaguate, dibujado en canvas con los íconos del kit) y grupo con
+  número según el zoom (agrupados hasta el zoom 17).
+- **Pantalla 04** (`src/app/mapa/MapaPrincipal.tsx`, `/mapa`): barra superior con la hora elegida, chip
+  fijo "Precaución" y UTCI "—"; leyenda con `MuestraTramo` (nueva variante compacta de 28 px) y la línea
+  "Sombra estimada para las {hora}"; aviso discreto "Datos provisionales" (se despliega con la
+  explicación); botón "Mi ubicación"; atribución "© colaboradores de OpenStreetMap"; deslizador de 6:00 a. m.
+  a 6:00 p. m. cada 15 min que arranca en la hora actual (al cuarto de hora) y la sigue mientras el
+  usuario no lo mueva; botón "Buscar una ruta con sombra" (lleva a `/buscar`, Fase 6).
+- **Ubicación** (`src/mapa/useUbicacion.ts`): si el permiso ya estaba concedido arranca sola; si no, el
+  botón la pide. Solo se usa para el marcador; no se guarda ni se envía.
+- **Pantalla 07** (`src/app/mapa/FichaTramo.tsx`): al tocar un tramo se abre la `HojaInferior` con el
+  nombre ("Calle 16 entre Cra. 7 y Cra. 6"), "Valores estimados para las {hora}", píldora "Sombra plena
+  hasta la…" (o parcial / sin sombra / sin sol), acera protegida, Sky View Factor en "Detalles técnicos"
+  (se despliega con la explicación), UTCI "—", arbolado con conteo por especie y la nota de fenología si
+  hay cañaguates (compara con la temporada seca para decir si el tramo baja de nivel).
+- **Rutas**: el tramo elegido va en la URL (`/mapa?tramo=89`). `/tramo/:id` redirige ahí. El mapa se
+  descarga aparte (carga diferida), así que las demás pantallas no pagan su peso.
+- Textos nuevos en es/en (grupos `mapa` y `ficha`), con "la 1:20" / "las 4:00" según la hora.
+- Pruebas: 34 en total (5 nuevas): nombre del tramo con sus esquinas, abreviaturas, árboles a menos de
+  12 m del eje (cada uno en la calle más cercana), acera protegida y artículo de la hora.
+
+### Verificación en Chromium (390 × 844, build de producción)
+
+- 12:00 vs. 4:00 p. m. del 1 de octubre: a mediodía predominan parcial (árboles provisionales) y
+  expuesto; a las 4 p. m. aparecen las sombras de las fachadas.
+- Tocar un tramo abre la ficha; Escape o ✕ la cierra y limpia la URL. Si la ficha tapa el tramo, el mapa
+  lo lleva a la parte visible.
+- Sin peticiones fuera de `localhost`, sin errores ni avisos en la consola y sin desbordamiento horizontal.
+- Deslizador: 49 pasos sin trabas; con la CPU frenada 4× y WebGL por software hubo 4 tareas largas
+  (60–270 ms) en todo el barrido.
+
+### Decisiones
+
+- **Worker de MapLibre**: MapLibre 6 busca su worker junto a su propio archivo, y Vite no lo copia. Se
+  empaqueta con `?worker&url` y se pasa con `setWorkerUrl` (`worker.format: 'es'` en `vite.config.ts`).
+  El trozo del mapa pesa ~1 MB (285 kB comprimido); se subió el aviso de tamaño a 1.100 kB.
+- **Imágenes al vuelo**: los números de los grupos de árboles se dibujan con
+  `setMissingStyleImageResolver` (API de MapLibre 6).
+- **Atribución**: texto propio sobre el mapa en lugar del control de MapLibre, para que se lea a 15 px y
+  no choque con la leyenda.
+- **Hora mostrada**: la barra superior muestra la hora que dibuja el mapa (la del deslizador), no el reloj.
+- **Acera protegida**: el lado con más sombra; "las dos por igual" si difieren menos de 10 puntos y
+  "ninguna" si ninguno llega a parcial (30 %). La píldora y el SVF describen ese lado.
+- **Arbolado del tramo**: árboles a menos de 12 m del eje, cada uno contado una sola vez en la calle más
+  cercana. "Ancho del andén" no se muestra porque no hay dato (la especificación lo pide solo si existe).
+- **Píldora**: verde (`comodo`) con sombra plena, ámbar (`precaucion`) sin sombra y neutra en parcial o
+  sin sol. El texto dice el estado, así que no depende solo del color.
+- `HojaInferior` usa ahora `um-titulo` (24 px), como el nodo 5:2.
+
+### Pendiente
+
+- Fase 5: semáforo y UTCI reales (hoy el chip es fijo y el UTCI dice "—").
+- El ejemplo de `/guia` para la pantalla 07 usa la arista 89 (Calle 16); si los datos se regeneran con
+  otra numeración, hay que cambiarlo en `src/app/pantallas.ts`.
+- Con 1.550 árboles provisionales, muchas calles salen "parcial" al mediodía: revisar con el
+  levantamiento de campo.
+
+---
+
 ## Fase 3 · Motor de sombra en el navegador (2026-10-01)
 
 Plan aprobado por la autora el 2026-10-01.
@@ -63,7 +136,7 @@ Con datos reales, el 15 de agosto: a las 12:00 hay 67 lados en sombra, 381 parci
 
 ### Pendiente
 
-- La Fase 4 dibuja estos resultados en el mapa (`aceras.geojson` + `useSombra`).
+- ~~La Fase 4 dibuja estos resultados en el mapa~~ (hecho en la Fase 4).
 - Los umbrales y los meses sin hojas siguen siendo provisionales.
 
 ---

@@ -1,8 +1,10 @@
 import { describe, expect, it } from 'vitest'
 import en from './en.json'
 import es from './es.json'
+import { laHora } from './hora'
 import { detectLanguage } from './idioma'
 import { flattenKeys, interpolate, lookup, type TranslationKey } from './traducir'
+import { localDate } from '../sombra/tiempo'
 
 describe('textos de la interfaz', () => {
   it('es.json y en.json tienen exactamente las mismas claves', () => {
@@ -40,5 +42,18 @@ describe('detección del idioma', () => {
   it('con un idioma no soportado usa inglés; sin datos, español', () => {
     expect(detectLanguage(['de-DE'])).toBe('en')
     expect(detectLanguage([])).toBe('es')
+  })
+})
+
+describe('hora con artículo', () => {
+  const t = (dict: typeof es) => (key: TranslationKey, vars?: Record<string, string | number>) =>
+    interpolate(lookup(dict, key) ?? key, vars)
+
+  it('dice "la 1" y "las 4" en español, y solo la hora en inglés', () => {
+    const una = localDate(2026, 8, 15, 13, 20)
+    const cuatro = localDate(2026, 8, 15, 16, 0)
+    expect(laHora({ t: t(es), language: 'es' }, una)).toMatch(/^la 1:20/)
+    expect(laHora({ t: t(es), language: 'es' }, cuatro)).toMatch(/^las 4:00/)
+    expect(laHora({ t: t(en), language: 'en' }, cuatro)).toMatch(/^4:00/)
   })
 })

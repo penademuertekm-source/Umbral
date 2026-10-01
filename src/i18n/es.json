@@ -9,7 +9,12 @@
     "cerrar": "Cerrar",
     "estimado": "estimado",
     "sinDato": "—",
-    "grados": "{valor}°"
+    "grados": "{valor}°",
+    "reintentar": "Reintentar",
+    "laHora": {
+      "una": "la {hora}",
+      "otra": "las {hora}"
+    }
   },
   "idioma": {
     "titulo": "Idioma",
@@ -84,6 +89,73 @@
   },
   "barra": {
     "utci": "UTCI estimado · al sol {sol} · a la sombra {sombra}"
+  },
+  "mapa": {
+    "etiqueta": "Mapa de sombra del Centro Histórico de Valledupar",
+    "atribucion": "© colaboradores de OpenStreetMap",
+    "cargando": "Cargando modelo solar del centro…",
+    "error": "No se pudo cargar el mapa: {error}",
+    "otraHora": "Ver la sombra a otra hora",
+    "buscarRuta": "Buscar una ruta con sombra",
+    "miUbicacion": "Mostrar mi ubicación",
+    "ubicacionDenegada": "Sin permiso de ubicación",
+    "provisional": "Datos provisionales",
+    "provisionalDetalle": "Parte de los árboles, alturas y lugares son provisionales mientras llega el levantamiento de campo.",
+    "leyenda": "Leyenda",
+    "sinSol": "Sin sol a esta hora",
+    "ubicacionBuscando": "Buscando tu ubicación…",
+    "ubicacionNoDisponible": "No se pudo obtener tu ubicación",
+    "horaElegida": "Sombra estimada para {laHora}"
+  },
+  "ficha": {
+    "entre": "{calle} entre {a} y {b}",
+    "esquina": "{calle} con {a}",
+    "sinNombre": "Tramo sin nombre",
+    "estimadoA": "Valores estimados para {laHora}",
+    "hasta": "Sombra plena hasta {laHora}",
+    "hastaAtardecer": "Sombra plena hasta que se oculta el sol",
+    "parcialAhora": "Sombra parcial a esta hora",
+    "expuestoAhora": "Sin sombra a esta hora",
+    "sinSolAhora": "Sin sol a esta hora",
+    "aceraProtegida": "Acera protegida",
+    "costado": "Costado {orientacion}",
+    "ambas": "Las dos por igual",
+    "ninguna": "Ninguna a esta hora",
+    "svf": "Detalles técnicos · Sky View Factor",
+    "svfExplicacion": "Parte del cielo que se ve desde el costado {orientacion}: 0 es cielo tapado y 1 es cielo abierto. Es el promedio estimado de los puntos de esa acera, con edificios y árboles.",
+    "utci": "UTCI estimado",
+    "utciPendiente": "—",
+    "arbolado": "Arbolado del tramo",
+    "sinArboles": "Sin árboles registrados",
+    "especies": {
+      "mango": {
+        "uno": "1 mango",
+        "varios": "{n} mangos"
+      },
+      "canaguate": {
+        "uno": "1 cañaguate",
+        "varios": "{n} cañaguates"
+      },
+      "otro": {
+        "uno": "1 árbol de otra especie",
+        "varios": "{n} árboles de otras especies"
+      }
+    },
+    "fenologiaCambia": "Los cañaguates de este tramo pierden el follaje entre enero y marzo: en esa temporada este tramo baja a {estado}.",
+    "fenologiaIgual": "Los cañaguates de este tramo pierden el follaje entre enero y marzo; a esta hora la sombra del tramo casi no cambia.",
+    "fenologiaSinHojas": "Los cañaguates de este tramo están sin hojas en esta temporada; vuelven a dar sombra con las lluvias.",
+    "estadoMinuscula": {
+      "sombra": "sombra plena",
+      "parcial": "sombra parcial",
+      "expuesto": "sin sombra",
+      "sin_sol": "sin sol"
+    },
+    "orientaciones": {
+      "norte": "norte",
+      "sur": "sur",
+      "oriental": "oriental",
+      "occidental": "occidental"
+    }
   },
   "pantallas": {
     "p01": "Splash",
