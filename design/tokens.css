@@ -1,0 +1,100 @@
+/* ==========================================================================
+   Umbral · Tokens de diseño
+   Exportados del archivo de Figma "Mapa Isocrónico de Sombras — Valledupar"
+   (colecciones "Mapa Isocrónico · Tokens" y "Mapa Isocrónico · Espaciado").
+   Los nombres --um-* coinciden 1:1 con el "code syntax" de cada variable en Figma.
+   NO cambiar valores aquí sin cambiarlos también en Figma.
+   ========================================================================== */
+
+:root {
+  /* ---- Base ---- */
+  --um-base-fondo: #f7f6f2;
+  --um-base-superficie: #ffffff;
+  --um-base-borde: #d9d8d3;
+  --um-base-texto: #14181a;
+  --um-base-texto-secundario: #6b6f72;
+  --um-base-texto-inverso: #ffffff;
+  --um-base-velo: rgba(20, 23, 26, 0.45);
+  --um-marca-canaguate: #f2b705;
+
+  /* ---- Térmico (semántica del mapa) ---- */
+  --um-termico-sombra-plena: #0b6b5b;
+  --um-termico-sombra-parcial: #5dcaa5;
+  --um-termico-exposicion: #ef9f27;
+  --um-termico-riesgo-alto: #a32d2d;
+
+  /* ---- Semáforo térmico (4 niveles + nublado) ---- */
+  --um-semaforo-comodo-fondo: #dcf0e9;
+  --um-semaforo-comodo-texto: #0b6b5b;
+  --um-semaforo-comodo-forma: #0b6b5b;
+
+  --um-semaforo-precaucion-fondo: #fdf3cd;
+  --um-semaforo-precaucion-texto: #6e5200;
+  --um-semaforo-precaucion-forma: #d69e00;
+
+  --um-semaforo-evitar-fondo: #faeeda;
+  --um-semaforo-evitar-texto: #854f0b;
+  --um-semaforo-evitar-forma: #ef9f27;
+
+  --um-semaforo-no-recomendado-fondo: #f7dedc;
+  --um-semaforo-no-recomendado-texto: #a32d2d;
+  --um-semaforo-no-recomendado-forma: #a32d2d;
+
+  --um-semaforo-nublado-fondo: #e8ebee;
+  --um-semaforo-nublado-texto: #464c52;
+  --um-semaforo-nublado-forma: #6b6f72;
+
+  /* ---- Mapa ---- */
+  --um-mapa-fondo: #eae6dc;
+  --um-mapa-manzana: #ded8c9;
+  --um-mapa-via-neutra: #bec2c6;
+  --um-mapa-marca-expuesto: #854f0b;
+  --um-mapa-usuario: #1a66bf;
+
+  /* ---- Espaciado (múltiplos de 4) ---- */
+  --um-esp-xs: 4px;
+  --um-esp-sm: 8px;
+  --um-esp-md: 16px;
+  --um-esp-lg: 24px;
+  --um-esp-xl: 32px;
+
+  /* ---- Forma ---- */
+  --um-radio-control: 12px;   /* botones, campos */
+  --um-radio-tarjeta: 16px;   /* tarjetas */
+  --um-radio-chip: 20px;      /* chips del semáforo */
+  --um-radio-hoja: 24px;      /* hojas inferiores y modales */
+  --um-tactil-minimo: 56px;   /* área táctil mínima; los botones usan 60px */
+  --um-boton-alto: 60px;
+
+  /* ---- Elevación (estilos de efecto en Figma) ---- */
+  --um-elevacion-flotante: 0 2px 6px rgba(0, 0, 0, 0.12);
+  --um-elevacion-hoja: 0 -4px 16px rgba(0, 0, 0, 0.10);
+  --um-elevacion-modal: 0 8px 24px rgba(0, 0, 0, 0.16);
+
+  /* ---- Tipografía ---- */
+  --um-fuente: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --um-fuente-logo: "Archivo Black", var(--um-fuente);
+}
+
+/* Estilos de texto (equivalentes 1:1 a los estilos de texto de Figma) */
+.um-display      { font: 600 34px/40px var(--um-fuente); }
+.um-titulo       { font: 600 24px/30px var(--um-fuente); }
+.um-dato         { font: 600 28px/32px var(--um-fuente); font-variant-numeric: tabular-nums; }
+.um-subtitulo    { font: 500 20px/26px var(--um-fuente); }
+.um-cuerpo       { font: 400 17px/25px var(--um-fuente); }
+.um-cuerpo-fuerte{ font: 500 17px/25px var(--um-fuente); }
+.um-etiqueta     { font: 500 15px/20px var(--um-fuente); }
+.um-micro        { font: 500 13px/18px var(--um-fuente); }
+
+/* Modo "Texto grande" (Ajustes): ningún texto por debajo de 20px */
+:root[data-texto-grande="true"] .um-etiqueta,
+:root[data-texto-grande="true"] .um-micro { font-size: 20px; line-height: 26px; }
+:root[data-texto-grande="true"] .um-cuerpo,
+:root[data-texto-grande="true"] .um-cuerpo-fuerte { font-size: 20px; line-height: 28px; }
+
+/* Modo "Alto contraste" (Ajustes): bordes más fuertes, sin grises intermedios */
+:root[data-alto-contraste="true"] {
+  --um-base-borde: #14181a;
+  --um-base-texto-secundario: #14181a;
+  --um-mapa-via-neutra: #6b6f72;
+}
