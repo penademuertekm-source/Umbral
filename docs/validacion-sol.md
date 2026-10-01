@@ -1,6 +1,6 @@
 # Validación de la posición del sol · SunCalc vs SPA del NREL
 
-Generado por `npm run datos` el 2026-10-01 08:49.
+Generado por `npm run datos` el 2026-10-01 08:59.
 
 - **Lugar**: Valledupar, centro del área de estudio (10.47775, -73.24463).
 - **Fechas**: día 15 de cada mes de 2026, cada hora de 6:00 a 18:00 (hora de Bogotá, UTC−5).

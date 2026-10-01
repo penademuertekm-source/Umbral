@@ -1,6 +1,6 @@
 # Reporte de datos · Umbral
 
-Generado por `npm run datos` el 2026-10-01 08:49 en 123 s.
+Generado por `npm run datos` el 2026-10-01 08:59 en 423 s.
 
 ## Área de estudio
 
@@ -41,11 +41,13 @@ Tramos por tipo de vía:
 | osm_pisos | 18 |
 | **Total** | **1986** |
 
+Alturas más frecuentes: 3 m (1457), 6 m (242), 3.5 m (165).
+
 Aleros cargados: 0.
 
 ## Árboles
 
-Origen del inventario: **osm+provisional**.
+Origen del inventario: **csv**.
 
 | Fuente | Árboles |
 |---|---|
@@ -62,8 +64,8 @@ Origen del inventario: **osm+provisional**.
 
 | Capa | Total | Con coordenadas | Geocodificados ahora | No encontrados |
 |---|---|---|---|---|
-| Destinos | 5 | 1 | 1 | 4 |
-| Refugios | 4 | 1 | 1 | 3 |
+| Destinos | 5 | 2 | 1 | 3 |
+| Refugios | 4 | 3 | 2 | 1 |
 | Placas QR | 2 | 0 | 0 | 0 |
 
 ## Perfil de horizonte
@@ -71,7 +73,7 @@ Origen del inventario: **osm+provisional**.
 - 72 sectores de 5°, radio de 60 m, ojo a 1.5 m.
 - Canales: edificios, arboles_perennes, arboles_caducifolios. Codificación Uint8 en pasos de 0.5°.
 - SVF medio: 0.53 (mín. 0.00, máx. 1.00).
-- Tiempo de cálculo: 16 s.
+- Tiempo de cálculo: 14 s.
 
 ## Archivos en `public/datos/`
 
@@ -84,22 +86,22 @@ Origen del inventario: **osm+provisional**.
 | `edificios.geojson` | 494 KB |
 | `manzanas.geojson` | 35 KB |
 | `meta.json` | 1 KB |
-| `muestras.bin` | 3.138 KB |
+| `muestras.bin.gz` | 946 KB |
 | `muestras.json` | 494 KB |
 | `placas.json` | 0 KB |
 | `plazas.geojson` | 1 KB |
 | `red.geojson` | 198 KB |
 | `refugios.json` | 1 KB |
 
-Meta: `muestras.bin` de menos de 2 MB → 3.138 KB, **no cumple**.
+Meta: perfiles de horizonte (`muestras.bin.gz`, comprimido con gzip) de menos de 2 MB → 946 KB, cumple.
+Sin comprimir ocupan 3.138 KB.
 
 ## Avisos
 
-- Se escribió `datos/provisional/arboles.csv`. Las próximas ejecuciones lo usan tal cual; bórralo para volver a generar los árboles.
-- Nominatim no encontró estos destinos: iglesia-concepcion, casa-beto-murgas, mercado-publico, callejon-purrututu.
-- Destinos sin coordenadas (no aparecen en el mapa): iglesia-concepcion, casa-beto-murgas, mercado-publico, callejon-purrututu.
-- Nominatim no encontró estos refugios: ref-atrio-concepcion, ref-purrututu, ref-parque-leyenda.
-- Refugios sin coordenadas (no aparecen en el mapa): ref-atrio-concepcion, ref-purrututu, ref-parque-leyenda.
+- Nominatim no encontró estos destinos: casa-beto-murgas, mercado-publico, callejon-purrututu.
+- Destinos sin coordenadas (no aparecen en el mapa): casa-beto-murgas, mercado-publico, callejon-purrututu.
+- Nominatim no encontró estos refugios: ref-purrututu.
+- Refugios sin coordenadas (no aparecen en el mapa): ref-purrututu.
 - Placas sin coordenadas (no aparecen en el mapa): calle-grande-cra7, plaza-alfonso-lopez.
 
 ## Simplificaciones del modelo
