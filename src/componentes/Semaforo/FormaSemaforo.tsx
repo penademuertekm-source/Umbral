@@ -29,10 +29,11 @@ export function FormaSemaforo({ level, size = 12 }: FormaSemaforoProps) {
       focusable="false"
       data-forma={shape}
     >
-      {shape === 'circulo' && <circle cx="6" cy="6" r="5.5" />}
-      {shape === 'triangulo' && <path d="M6 0.8 11.6 11H0.4Z" />}
+      {shape === 'circulo' && <circle cx="6" cy="6" r="6" />}
+      {/* Triángulo regular inscrito en el círculo de la caja, como el polígono de Figma */}
+      {shape === 'triangulo' && <path d="M6 0 11.196 9H0.804Z" />}
       {shape === 'rombo' && <path d="M6 0 12 6 6 12 0 6Z" />}
-      {shape === 'cuadrado' && <rect x="1" y="1" width="10" height="10" />}
+      {shape === 'cuadrado' && <rect width="12" height="12" rx="1" />}
     </svg>
   )
 }

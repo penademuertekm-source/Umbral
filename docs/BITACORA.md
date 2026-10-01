@@ -4,6 +4,32 @@ Registro de lo hecho en cada fase, lo pendiente y las decisiones tomadas. La ent
 
 ---
 
+## Fase 1 · Revisión contra Figma (2026-10-01)
+
+Se corroboró la página 03 de Figma (nodo 42:26) con `get_variable_defs` (44:41), `get_design_context`
+(43:42, 43:55, 43:86, 43:93, 44:225, 45:54 y 45:225), `get_metadata` (42:26) y una captura (42:31).
+
+- **Tokens**: los 32 colores, las 3 elevaciones y los 8 estilos de texto coinciden con `design/tokens.css`.
+- **Botón y chip del semáforo**: coinciden (60 px, radio 12, Semi Bold 17/25; chip 40 px, padding 10/14).
+- **Corregido**:
+  - `MuestraTramo`: caja de 56 × 12 px con barra de 8 px. Parcial = tres guiones de 14 px separados 6 px;
+    expuesto = cuatro marcas de 6 × 2 px. (El patrón 18/8 de la especificación queda para las líneas del
+    mapa, Fase 4.)
+  - `FormaSemaforo`: formas de 12 px exactas (triángulo regular inscrito, cuadrado con radio 1).
+  - `Marcador`: borde de 1 px `--um-base-borde` en refugio, agua, placa y árbol; borde blanco de 3 px en
+    destino y grupo. El ícono de los marcadores blancos queda en `base/texto`, el color por defecto de los
+    íconos según Figma.
+  - Display y Dato llevan un espaciado de letras de -1,5 % en Figma (Dato: -0,42 px). `tokens.css` no lo
+    trae; se agregó en `src/estilos/global.css` para no editar `design/`.
+  - `/guia`: mismos nombres de muestra que Figma (cómodo/fondo, vía-neutra…), hex en mayúsculas,
+    catálogo "Componentes · Íconos" con celdas de 108 × 84 y nombres legibles (nuevas claves `iconos.*`),
+    panel de tintes del nodo 45:54 y los íconos PWA con fondo verde, radio del 22 %, isotipo al 56 % y
+    zona segura del 80 %.
+- **Sin resolver**: el marcador de usuario en Figma es una imagen (punto azul con halo); se mantiene la
+  versión en CSS con `--um-mapa-usuario`.
+
+---
+
 ## Fase 1 · Esqueleto y sistema visual en código (2026-10-01)
 
 ### Hecho
@@ -100,8 +126,7 @@ Registro de lo hecho en cada fase, lo pendiente y las decisiones tomadas. La ent
 - **Texto Micro de 13 px**: `tokens.css` (y la barra superior de Figma) usan 13 px, pero `CLAUDE.md` pide un
   texto mínimo de 15 px. Por ahora se respetan los tokens; revisarlo en la Fase 9 (accesibilidad).
   Propuesta: subir Micro a 15 px en Figma y en `tokens.css` a la vez.
-- **Color del ícono en los marcadores blancos** (refugio, agua, placa): la captura no deja ver si es
-  `--um-base-texto` o `--um-termico-sombra-plena`. Se usó `--um-base-texto`. Confirmarlo en Figma (nodo 43:86).
+- ~~Color del ícono en los marcadores blancos~~: resuelto en la revisión contra Figma (`base/texto`).
 - **Íconos de la PWA**: `/guia` muestra el isotipo en negativo a cada tamaño; los archivos finales y la
   versión adaptable se generan en la Fase 9.
 - **Versiones**: react-router 8 pide Node 22.22 o superior. Con Node LTS 24 no hay problema.

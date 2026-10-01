@@ -1,33 +1,62 @@
-/* Página /guia. Ancha como la página 03 de Figma, pero usable en el celular. */
+/* Página /guia. Medidas tomadas de la página 03 de Figma (nodo 44:41), adaptadas a cualquier ancho. */
 
 .guia {
   display: flex;
   flex-direction: column;
-  gap: var(--um-esp-xl);
+  gap: 56px;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1440px;
   margin: 0 auto;
   padding: var(--um-esp-lg) var(--um-esp-md) 64px;
 }
 
 @media (min-width: 768px) {
   .guia {
-    padding-inline: var(--um-esp-xl);
+    padding: 64px;
   }
 }
 
+.secundario {
+  color: var(--um-base-texto-secundario);
+}
+
+.fuerte {
+  font-weight: 600;
+}
+
+.regular {
+  font-weight: 400;
+}
+
+/* Cabecera: isotipo de 72 px, título Display y subtítulo Cuerpo */
 .cabecera {
   display: flex;
   flex-direction: column;
-  gap: var(--um-esp-sm);
+  gap: var(--um-esp-md);
 }
 
 .marca {
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: var(--um-esp-sm);
-  color: var(--um-base-texto);
+  gap: 20px;
+}
+
+.marca img {
+  flex-shrink: 0;
+}
+
+.marcaTextos {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+@media (max-width: 560px) {
+  .marca {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 
 .nota {
@@ -53,41 +82,20 @@
 .seccion {
   display: flex;
   flex-direction: column;
-  gap: var(--um-esp-md);
-}
-
-.secundario {
-  color: var(--um-base-texto-secundario);
+  gap: 20px;
 }
 
 .grupo {
   display: flex;
   flex-direction: column;
-  gap: var(--um-esp-sm);
-}
-
-.rejilla {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: var(--um-esp-md);
-}
-
-.tarjeta {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--um-esp-sm);
-  padding: var(--um-esp-md);
-  background: var(--um-base-superficie);
-  border: 1px solid var(--um-base-borde);
-  border-radius: var(--um-radio-tarjeta);
 }
 
 .panel {
   display: flex;
   flex-direction: column;
   gap: var(--um-esp-md);
-  padding: var(--um-esp-md);
+  padding: 20px;
   background: var(--um-base-superficie);
   border: 1px solid var(--um-base-borde);
   border-radius: var(--um-radio-tarjeta);
@@ -95,76 +103,126 @@
 
 .dosColumnas {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
   gap: var(--um-esp-md);
 }
 
-/* Color */
+/* Principios: tarjetas de 316 px */
+.rejilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+  gap: var(--um-esp-md);
+}
+
+.tarjeta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-sm);
+  padding: 20px;
+  background: var(--um-base-superficie);
+  border: 1px solid var(--um-base-borde);
+  border-radius: var(--um-radio-tarjeta);
+}
+
+/* Color: muestras de 144 × 64 px */
 .colores {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(128px, 144px));
   gap: var(--um-esp-md);
 }
 
 .muestraColor {
   display: flex;
   flex-direction: column;
-  gap: var(--um-esp-sm);
+  gap: var(--um-esp-xs);
   min-width: 0;
 }
 
 .muestraColor figcaption {
   display: flex;
   flex-direction: column;
+  gap: var(--um-esp-xs);
   overflow-wrap: anywhere;
 }
 
+.muestraColor strong {
+  font-weight: 600;
+}
+
+.muestraColor code {
+  font-family: var(--um-fuente);
+}
+
 .color {
-  height: 56px;
+  height: 64px;
   border: 1px solid var(--um-base-borde);
   border-radius: var(--um-radio-control);
 }
 
-/* Tipografía */
-.filaTexto {
-  display: grid;
-  grid-template-columns: minmax(150px, 220px) 1fr;
-  align-items: center;
-  gap: var(--um-esp-md);
-  padding-bottom: var(--um-esp-md);
-  border-bottom: 1px solid var(--um-base-borde);
+/* Tipografía: filas de 72 px, columna de nombre de 220 px */
+.tipografia {
+  gap: 0;
+  padding: 0;
 }
 
-.filaTexto:last-child {
-  padding-bottom: 0;
-  border-bottom: 0;
+.filaTexto {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  align-items: center;
+  gap: var(--um-esp-lg);
+  min-height: 72px;
+  padding: var(--um-esp-md) var(--um-esp-lg);
+}
+
+.nombreEstilo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 @media (max-width: 560px) {
   .filaTexto {
     grid-template-columns: 1fr;
-    gap: var(--um-esp-xs);
+    gap: var(--um-esp-sm);
   }
 }
 
 /* Iconografía */
+.iconografia {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--um-esp-md);
+}
+
+@media (max-width: 900px) {
+  .iconografia {
+    grid-template-columns: 1fr;
+  }
+}
+
 .reglas {
-  padding-left: var(--um-esp-xl);
-  gap: var(--um-esp-xs);
+  gap: 10px;
+  padding: 20px;
+  list-style: none;
+}
+
+.reglas li::before {
+  content: '· ';
 }
 
 .tamanos {
   flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
+  gap: 20px;
+  padding: 20px var(--um-esp-lg);
+  color: var(--um-base-texto);
 }
 
-.tamanoIcono {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--um-esp-xs);
-  color: var(--um-base-texto);
+.divisor {
+  width: 1px;
+  height: 40px;
+  background: var(--um-base-borde);
 }
 
 .iconoTinte {
@@ -177,10 +235,16 @@
   color: var(--nivel-texto);
 }
 
+.catalogo {
+  gap: 20px;
+  padding: var(--um-esp-lg);
+}
+
+/* Celdas de 108 × 84 px como en "Componentes · Íconos" (nodo 42:27) */
 .iconos {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
-  gap: var(--um-esp-sm);
+  grid-template-columns: repeat(auto-fill, 108px);
+  gap: 12px;
   padding: 0;
   list-style: none;
 }
@@ -189,21 +253,37 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--um-esp-sm);
-  padding: var(--um-esp-md) var(--um-esp-sm);
-  background: var(--um-base-superficie);
-  border: 1px solid var(--um-base-borde);
+  gap: 10px;
+  min-height: 84px;
+  padding: var(--um-esp-md) var(--um-esp-sm) var(--um-esp-sm);
+  background: var(--um-base-fondo);
   border-radius: var(--um-radio-control);
   color: var(--um-base-texto);
   text-align: center;
-  overflow-wrap: anywhere;
 }
 
-/* Semáforo */
+@media (max-width: 400px) {
+  .iconos {
+    grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  }
+}
+
+/* Semáforo: tarjetas de 236 px */
 .rejillaSemaforo {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-  gap: var(--um-esp-md);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
+  gap: 12px;
+}
+
+.tarjetaSemaforo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--um-esp-sm);
+  padding: var(--um-esp-md);
+  background: var(--um-base-superficie);
+  border: 1px solid var(--um-base-borde);
+  border-radius: var(--um-radio-tarjeta);
 }
 
 .barras {
@@ -226,20 +306,10 @@
 .panelMapa {
   display: flex;
   flex-direction: column;
-  gap: var(--um-esp-md);
-  padding: var(--um-esp-md);
+  gap: 14px;
+  padding: 20px;
   background: var(--um-mapa-fondo);
   border-radius: var(--um-radio-tarjeta);
-}
-
-.leyendaCompacta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--um-esp-md);
-  padding: var(--um-esp-sm) var(--um-esp-md);
-  background: var(--um-base-superficie);
-  border-radius: var(--um-radio-control);
-  box-shadow: var(--um-elevacion-flotante);
 }
 
 .marcadores {
@@ -252,8 +322,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--um-esp-xs);
-  width: 88px;
+  gap: 6px;
+  width: 84px;
   text-align: center;
 }
 
@@ -273,11 +343,11 @@
   align-items: start;
 }
 
-/* Espaciado y elevación */
+/* Espaciado: barras de 4 × el valor, 12 px de alto */
 .espacios {
   display: flex;
   flex-direction: column;
-  gap: var(--um-esp-sm);
+  gap: 10px;
   padding: 0;
   list-style: none;
 }
@@ -285,7 +355,7 @@
 .espacio {
   display: flex;
   align-items: center;
-  gap: var(--um-esp-sm);
+  gap: 12px;
 }
 
 .barraEspacio {
@@ -298,22 +368,24 @@
   flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
-  background: var(--um-base-fondo);
+  justify-content: flex-start;
+  gap: 20px;
+  padding: var(--um-esp-lg);
 }
 
 .elevacion {
-  flex: 1 1 120px;
-  padding: var(--um-esp-md);
+  width: 150px;
+  padding: var(--um-esp-md) 14px;
   background: var(--um-base-superficie);
   border-radius: var(--um-radio-control);
 }
 
-/* PWA */
+/* PWA: fondo verde, radio del 22 % e isotipo al 56 % */
 .pwa {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
-  gap: var(--um-esp-lg);
+  gap: var(--um-esp-xl);
 }
 
 .iconoPwa {
@@ -323,14 +395,31 @@
   gap: var(--um-esp-sm);
 }
 
-.iconoPwa img {
+.fondoPwa {
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  max-width: 100%;
   border-radius: 22%;
+  background: var(--um-termico-sombra-plena);
+}
+
+.fondoPwa img {
+  position: relative;
+}
+
+.zonaSegura {
+  position: absolute;
+  inset: 10%;
+  border: 1.5px dashed color-mix(in srgb, var(--um-base-texto-inverso) 45%, transparent);
+  border-radius: 50%;
 }
 
 /* Pantallas */
 .pantallas {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
   gap: var(--um-esp-sm);
   padding: 0;
   list-style: none;

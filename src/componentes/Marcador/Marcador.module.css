@@ -5,7 +5,9 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
+  /* Refugio, agua y placa: superficie con borde; el ícono queda en base/texto */
   background: var(--um-base-superficie);
+  border: 1px solid var(--um-base-borde);
   color: var(--um-base-texto);
   box-shadow: var(--um-elevacion-flotante);
 }
@@ -13,6 +15,7 @@
 /* Punto azul con borde blanco y halo */
 .usuario {
   background: color-mix(in srgb, var(--um-mapa-usuario) 22%, transparent);
+  border: 0;
   box-shadow: none;
 }
 
@@ -25,9 +28,11 @@
   box-shadow: var(--um-elevacion-flotante);
 }
 
+/* Destino y grupo: verde con borde blanco de 3 px */
 .destino,
 .grupo {
   background: var(--um-termico-sombra-plena);
+  border: 3px solid var(--um-base-superficie);
   color: var(--um-base-texto-inverso);
 }
 

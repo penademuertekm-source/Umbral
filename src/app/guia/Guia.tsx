@@ -1,6 +1,7 @@
 import { useState, type ReactNode } from 'react'
 import { Link } from 'react-router'
 import isotipoNegativo from '../../../design/marca/isotipo-negativo.svg'
+import isotipoPositivo from '../../../design/marca/isotipo-positivo.svg'
 import indiceIconos from '../../../design/iconos/indice.json'
 import {
   BarraSuperior,
@@ -8,7 +9,6 @@ import {
   Encabezado,
   HojaInferior,
   Icono,
-  Logotipo,
   Marcador,
   Modal,
   MuestraTramo,
@@ -25,45 +25,57 @@ import { useT } from '../../i18n/useT'
 import { SCREENS } from '../pantallas'
 import s from './Guia.module.css'
 
-// Página /guia: todos los componentes y estados, ordenados como la guía de estilo de Figma (nodo 44:41).
+// Página /guia: réplica de la guía de estilo de Figma (página 03, nodo 44:41) hecha con los
+// componentes reales, más las secciones que solo existen en código (botones, componentes de
+// pantalla e índice de rutas). Los nombres de las muestras siguen los de Figma.
 
-const COLOR_GROUPS: { titleKey: TranslationKey; tokens: string[] }[] = [
+const COLOR_GROUPS: { titleKey: TranslationKey; swatches: [token: string, name: string][] }[] = [
   {
     titleKey: 'guia.color.base',
-    tokens: [
-      '--um-base-fondo',
-      '--um-base-superficie',
-      '--um-base-borde',
-      '--um-base-texto',
-      '--um-base-texto-secundario',
-      '--um-base-texto-inverso',
-      '--um-base-velo',
-      '--um-marca-canaguate',
+    swatches: [
+      ['--um-base-fondo', 'fondo'],
+      ['--um-base-superficie', 'superficie'],
+      ['--um-base-borde', 'borde'],
+      ['--um-base-texto', 'texto'],
+      ['--um-base-texto-secundario', 'texto-secundario'],
+      ['--um-base-texto-inverso', 'texto-inverso'],
+      ['--um-base-velo', 'velo'],
+      ['--um-marca-canaguate', 'cañaguate'],
     ],
   },
   {
     titleKey: 'guia.color.termico',
-    tokens: [
-      '--um-termico-sombra-plena',
-      '--um-termico-sombra-parcial',
-      '--um-termico-exposicion',
-      '--um-termico-riesgo-alto',
+    swatches: [
+      ['--um-termico-sombra-plena', 'sombra-plena'],
+      ['--um-termico-sombra-parcial', 'sombra-parcial'],
+      ['--um-termico-exposicion', 'exposición'],
+      ['--um-termico-riesgo-alto', 'riesgo-alto'],
     ],
   },
   {
+    // Figma muestra solo los 10 valores que no repiten un color térmico.
     titleKey: 'guia.color.semaforo',
-    tokens: ['comodo', 'precaucion', 'evitar', 'no-recomendado', 'nublado'].flatMap((level) =>
-      ['fondo', 'texto', 'forma'].map((part) => `--um-semaforo-${level}-${part}`),
-    ),
+    swatches: [
+      ['--um-semaforo-comodo-fondo', 'cómodo/fondo'],
+      ['--um-semaforo-comodo-forma', 'cómodo/forma'],
+      ['--um-semaforo-precaucion-fondo', 'precaución/fondo'],
+      ['--um-semaforo-precaucion-forma', 'precaución/forma'],
+      ['--um-semaforo-precaucion-texto', 'precaución/texto'],
+      ['--um-semaforo-evitar-fondo', 'evitar/fondo'],
+      ['--um-semaforo-evitar-texto', 'evitar/texto'],
+      ['--um-semaforo-no-recomendado-fondo', 'no-recomendado/fondo'],
+      ['--um-semaforo-nublado-fondo', 'nublado/fondo'],
+      ['--um-semaforo-nublado-texto', 'nublado/texto'],
+    ],
   },
   {
     titleKey: 'guia.color.mapa',
-    tokens: [
-      '--um-mapa-fondo',
-      '--um-mapa-manzana',
-      '--um-mapa-via-neutra',
-      '--um-mapa-marca-expuesto',
-      '--um-mapa-usuario',
+    swatches: [
+      ['--um-mapa-fondo', 'fondo'],
+      ['--um-mapa-manzana', 'manzana'],
+      ['--um-mapa-via-neutra', 'vía-neutra'],
+      ['--um-mapa-marca-expuesto', 'marca-expuesto'],
+      ['--um-mapa-usuario', 'usuario'],
     ],
   },
 ]
@@ -81,6 +93,15 @@ const TEXT_STYLES: { className: string; nameKey: TranslationKey; spec: string; s
 
 const ICON_CATEGORIES = indiceIconos as Record<string, IconName[]>
 
+// Panel de Figma (nodo 45:54): sobre fondo de color, el ícono toma el color de texto del nivel.
+const TINTED_ICONS: [IconName, ThermalLevel][] = [
+  ['sombra-plena', 'comodo'],
+  ['sombra-parcial', 'comodo'],
+  ['expuesto', 'evitar'],
+  ['canaguate-en-flor', 'precaucion'],
+  ['sin-conexion', 'nublado'],
+]
+
 // Valores de muestra para ver la barra superior en cada estado (no son cálculos).
 const SAMPLE_UTCI: Record<ThermalLevel, [number, number]> = {
   comodo: [29, 26],
@@ -92,11 +113,30 @@ const SAMPLE_UTCI: Record<ThermalLevel, [number, number]> = {
 
 const MARKERS: MarkerKind[] = ['usuario', 'destino', 'refugio', 'agua', 'placa', 'arbol', 'grupo']
 
-const SPACING = ['--um-esp-xs', '--um-esp-sm', '--um-esp-md', '--um-esp-lg', '--um-esp-xl']
+const SPACING = ['xs', 'sm', 'md', 'lg', 'xl'] as const
+
+// Íconos de la PWA (nodo 45:225): radio del 22 % e isotipo al 56 %; los dos grandes muestran
+// la zona segura del 80 % que respeta Android.
+const PWA_ICONS = [
+  { size: 192, label: '512 / 192', safeZone: true },
+  { size: 96, label: '96', safeZone: true },
+  { size: 48, label: '48', safeZone: false },
+  { size: 32, label: '32', safeZone: false },
+]
 
 /** Lee el valor real de un token desde tokens.css (así la guía nunca repite valores a mano). */
 function tokenValue(token: string): string {
   return getComputedStyle(document.documentElement).getPropertyValue(token).trim()
+}
+
+/** Muestra el color como lo rotula Figma: #F7F6F2, o #14171A · 45 % si tiene transparencia. */
+function formatColor(value: string): string {
+  const rgba = value.match(/^rgba?\(\s*(\d+)[\s,]+(\d+)[\s,]+(\d+)(?:[\s,/]+([\d.]+))?\s*\)$/)
+  if (!rgba) return value.toUpperCase()
+  const [r, g, b] = rgba.slice(1, 4).map((n) => Number(n).toString(16).padStart(2, '0'))
+  const hex = `#${r}${g}${b}`.toUpperCase()
+  const alpha = rgba[4] === undefined ? 1 : Number(rgba[4])
+  return alpha < 1 ? `${hex} · ${Math.round(alpha * 100)} %` : hex
 }
 
 function Seccion({ title, text, children }: { title: string; text?: string; children: ReactNode }) {
@@ -109,28 +149,16 @@ function Seccion({ title, text, children }: { title: string; text?: string; chil
   )
 }
 
-function Muestra({ token }: { token: string }) {
-  const value = tokenValue(token)
-  const name = token.replace(/^--um-(base|termico|semaforo|mapa|marca)-/, '')
+function Muestra({ token, name }: { token: string; name: string }) {
   return (
     <figure className={s.muestraColor}>
       <span className={s.color} style={{ background: `var(${token})` }} />
       <figcaption className="um-micro">
         <strong>{name}</strong>
-        <span className={s.secundario}>{value}</span>
+        <span className={s.secundario}>{formatColor(tokenValue(token))}</span>
         <code className={s.secundario}>{token}</code>
       </figcaption>
     </figure>
-  )
-}
-
-function Espacio({ token }: { token: string }) {
-  const value = tokenValue(token)
-  return (
-    <li className={`${s.espacio} um-micro`}>
-      <span className={s.barraEspacio} style={{ width: `calc(var(${token}) * 3)` }} />
-      <code>{token}</code> · {value}
-    </li>
   )
 }
 
@@ -143,10 +171,12 @@ export function Guia() {
     <div className={s.guia}>
       <header className={s.cabecera}>
         <div className={s.marca}>
-          <Logotipo size={48} />
-          <h1 className="um-titulo">· {t('guia.titulo')}</h1>
+          <img src={isotipoPositivo} width={72} height={72} alt="" />
+          <div className={s.marcaTextos}>
+            <h1 className="um-display">{t('guia.titulo')}</h1>
+            <p className={`${s.secundario} um-cuerpo`}>{t('guia.subtitulo')}</p>
+          </div>
         </div>
-        <p className={`${s.secundario} um-etiqueta`}>{t('guia.subtitulo')}</p>
         <p className={`${s.nota} um-etiqueta`}>
           <Icono name="informacion" size={20} />
           {t('guia.nota')}
@@ -172,7 +202,7 @@ export function Guia() {
         <div className={s.rejilla}>
           {(['legible', 'izquierda', 'color', 'honesto'] as const).map((key) => (
             <article key={key} className={s.tarjeta}>
-              <h3 className="um-cuerpo-fuerte">{t(`guia.principios.${key}Titulo`)}</h3>
+              <h3 className={`${s.fuerte} um-cuerpo-fuerte`}>{t(`guia.principios.${key}Titulo`)}</h3>
               <p className={`${s.secundario} um-etiqueta`}>{t(`guia.principios.${key}Texto`)}</p>
             </article>
           ))}
@@ -184,8 +214,8 @@ export function Guia() {
           <div key={group.titleKey} className={s.grupo}>
             <h3 className="um-cuerpo-fuerte">{t(group.titleKey)}</h3>
             <div className={s.colores}>
-              {group.tokens.map((token) => (
-                <Muestra key={token} token={token} />
+              {group.swatches.map(([token, name]) => (
+                <Muestra key={token} token={token} name={name} />
               ))}
             </div>
           </div>
@@ -193,14 +223,12 @@ export function Guia() {
       </Seccion>
 
       <Seccion title={t('guia.tipografia.titulo')} text={t('guia.tipografia.texto')}>
-        <div className={s.panel}>
+        <div className={`${s.panel} ${s.tipografia}`}>
           {TEXT_STYLES.map((style) => (
             <div key={style.className} className={s.filaTexto}>
-              <div>
-                <p className="um-etiqueta">{t(style.nameKey)}</p>
-                <p className={`${s.secundario} um-micro`}>
-                  {style.spec} · <code>.{style.className}</code>
-                </p>
+              <div className={s.nombreEstilo}>
+                <p className={`${s.fuerte} um-etiqueta`}>{t(style.nameKey)}</p>
+                <p className={`${s.secundario} ${s.regular} um-micro`}>{style.spec}</p>
               </div>
               <p className={style.className}>{t(style.sampleKey)}</p>
             </div>
@@ -209,7 +237,7 @@ export function Guia() {
       </Seccion>
 
       <Seccion title={t('guia.iconografia.titulo')} text={t('guia.iconografia.texto')}>
-        <div className={s.dosColumnas}>
+        <div className={s.iconografia}>
           <ul className={`${s.panel} ${s.reglas} um-etiqueta`}>
             {([1, 2, 3, 4, 5] as const).map((n) => (
               <li key={n}>{t(`guia.iconografia.regla${n}`)}</li>
@@ -217,37 +245,39 @@ export function Guia() {
           </ul>
           <div className={`${s.panel} ${s.tamanos}`}>
             {[20, 24, 28].map((size) => (
-              <span key={size} className={s.tamanoIcono}>
-                <Icono name="mango" size={size} />
-                <span className="um-micro">{t('guia.pwa.tamano', { n: size })}</span>
-              </span>
+              <Icono key={size} name="mango" size={size} />
             ))}
-            {THERMAL_LEVELS.map((level) => (
-              <span key={level} className={`${s.iconoTinte} ${niveles[level]}`}>
-                <Icono name={level === 'nublado' ? 'nublado' : 'sombra-plena'} />
+            <span className={s.divisor} />
+            {TINTED_ICONS.map(([name, level]) => (
+              <span key={name} className={`${s.iconoTinte} ${niveles[level]}`}>
+                <Icono name={name} />
               </span>
             ))}
           </div>
         </div>
-        {Object.entries(ICON_CATEGORIES).map(([category, names]) => (
-          <div key={category} className={s.grupo}>
-            <h3 className="um-cuerpo-fuerte">{t(`guia.iconografia.${category}` as TranslationKey)}</h3>
-            <ul className={s.iconos}>
-              {names.map((name) => (
-                <li key={name} className={s.icono}>
-                  <Icono name={name} />
-                  <code className="um-micro">{name}</code>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+        <div className={`${s.panel} ${s.catalogo}`}>
+          <h3 className="um-titulo">{t('guia.iconografia.componentes')}</h3>
+          <p className={`${s.secundario} um-etiqueta`}>{t('guia.iconografia.componentesTexto')}</p>
+          {Object.entries(ICON_CATEGORIES).map(([category, names]) => (
+            <div key={category} className={s.grupo}>
+              <h4 className="um-subtitulo">{t(`guia.iconografia.${category}` as TranslationKey)}</h4>
+              <ul className={s.iconos}>
+                {names.map((name) => (
+                  <li key={name} className={s.icono} title={name}>
+                    <Icono name={name} />
+                    <span className={`${s.secundario} ${s.regular} um-micro`}>{t(`iconos.${name}`)}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
       </Seccion>
 
       <Seccion title={t('guia.semaforo.titulo')} text={t('guia.semaforo.texto')}>
         <div className={s.rejillaSemaforo}>
           {THERMAL_LEVELS.map((level) => (
-            <article key={level} className={s.tarjeta}>
+            <article key={level} className={s.tarjetaSemaforo}>
               <Semaforo level={level} />
               <p className={`${s.secundario} um-micro`}>{t(`guia.semaforo.${level}`)}</p>
             </article>
@@ -278,25 +308,14 @@ export function Guia() {
             {SEGMENT_STATES.map((state) => (
               <MuestraTramo key={state} state={state} label={t(`guia.mapa.${state}`)} />
             ))}
-            <div className={s.leyendaCompacta}>
-              {SEGMENT_STATES.map((state) => (
-                <MuestraTramo key={state} state={state} width={44} />
-              ))}
-            </div>
           </div>
           <div className={`${s.panelMapa} ${s.marcadores}`}>
             {MARKERS.map((kind) => (
               <figure key={kind} className={s.marcador}>
                 <Marcador kind={kind} count={kind === 'grupo' ? 12 : undefined} />
-                <figcaption className="um-micro">
-                  {kind === 'grupo' ? t('marcador.grupo', { n: 12 }) : t(`marcador.${kind}`)}
-                </figcaption>
+                <figcaption className="um-micro">{t(`guia.mapa.marcadores.${kind}`)}</figcaption>
               </figure>
             ))}
-            <figure className={s.marcador}>
-              <Marcador kind="arbol" icon="canaguate-en-flor" />
-              <figcaption className="um-micro">canaguate-en-flor</figcaption>
-            </figure>
           </div>
         </div>
       </Seccion>
@@ -310,7 +329,9 @@ export function Guia() {
             </div>
           ))}
           <div className={s.grupo}>
-            <p className={`${s.secundario} um-micro`}>{t('guia.botones.primario')} · {t('guia.botones.deshabilitado')}</p>
+            <p className={`${s.secundario} um-micro`}>
+              {t('guia.botones.primario')} · {t('guia.botones.deshabilitado')}
+            </p>
             <Boton icon="caminar" disabled>
               {t('guia.botones.muestra')}
             </Boton>
@@ -397,10 +418,13 @@ export function Guia() {
       <Seccion title={t('guia.espaciado.titulo')}>
         <div className={s.dosColumnas}>
           <div className={s.panel}>
-            <p className="um-etiqueta">{t('guia.espaciado.multiplos')}</p>
+            <p className="um-cuerpo-fuerte">{t('guia.espaciado.multiplos')}</p>
             <ul className={s.espacios}>
-              {SPACING.map((token) => (
-                <Espacio key={token} token={token} />
+              {SPACING.map((size) => (
+                <li key={size} className={`${s.espacio} um-micro`}>
+                  <span className={s.barraEspacio} style={{ width: `calc(var(--um-esp-${size}) * 4)` }} />
+                  esp/{size} · {tokenValue(`--um-esp-${size}`).replace('px', ' px')}
+                </li>
               ))}
             </ul>
             <p className={`${s.secundario} um-micro`}>{t('guia.espaciado.radios')}</p>
@@ -418,15 +442,15 @@ export function Guia() {
 
       <Seccion title={t('guia.pwa.titulo')} text={t('guia.pwa.texto')}>
         <div className={s.pwa}>
-          {[
-            { size: 160, caption: '512 / 192' },
-            { size: 96, caption: '96' },
-            { size: 48, caption: '48' },
-            { size: 32, caption: '32' },
-          ].map(({ size, caption }) => (
+          {PWA_ICONS.map(({ size, label, safeZone }) => (
             <figure key={size} className={s.iconoPwa}>
-              <img src={isotipoNegativo} width={size} height={size} alt="" />
-              <figcaption className="um-micro">{t('guia.pwa.tamano', { n: caption })}</figcaption>
+              <span className={s.fondoPwa} style={{ width: size, height: size }}>
+                {safeZone && <span className={s.zonaSegura} />}
+                <img src={isotipoNegativo} width={size * 0.56} height={size * 0.56} alt="" />
+              </span>
+              <figcaption className={`${s.secundario} ${s.regular} um-micro`}>
+                {size === 192 ? t('guia.pwa.adaptable', { n: label }) : t('guia.pwa.tamano', { n: label })}
+              </figcaption>
             </figure>
           ))}
         </div>

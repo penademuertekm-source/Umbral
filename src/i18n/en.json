@@ -38,6 +38,50 @@
     "arbol": "Tree",
     "grupo": "Group of {n} trees"
   },
+  "iconos": {
+    "volver": "Back",
+    "avanzar": "Forward",
+    "cerrar": "Close",
+    "buscar": "Search",
+    "mi-ubicacion": "My location",
+    "capas": "Layers",
+    "ajustes": "Settings",
+    "idioma": "Language",
+    "compartir": "Share",
+    "informacion": "Information",
+    "sombra-plena": "Full shade",
+    "sombra-parcial": "Partial shade",
+    "expuesto": "Exposed",
+    "indice-uv": "UV index",
+    "termometro": "Thermometer",
+    "reloj": "Clock",
+    "alerta": "Alert",
+    "ola-de-calor": "Heat wave",
+    "nublado": "Cloudy",
+    "lluvia": "Rain",
+    "sin-conexion": "Offline",
+    "mango": "Mango",
+    "canaguate-en-flor": "Cañaguate in bloom",
+    "canaguate-sin-hojas": "Leafless cañaguate",
+    "alero": "Eave",
+    "banca": "Bench",
+    "agua-potable": "Drinking water",
+    "iglesia": "Church",
+    "plaza": "Square",
+    "mercado": "Market",
+    "refugio-cubierto": "Covered shelter",
+    "placa-qr": "QR plaque",
+    "caminar": "Walk",
+    "transporte": "Transport",
+    "destino": "Destination",
+    "lugar": "Place",
+    "llegada": "Arrival",
+    "protector-solar": "Sunscreen",
+    "agua": "Water",
+    "gorra": "Cap",
+    "sombrilla": "Umbrella",
+    "ropa-clara": "Light clothing"
+  },
   "barra": {
     "utci": "Estimated UTCI · in the sun {sol} · in the shade {sombra}"
   },
@@ -74,7 +118,7 @@
     "irInicio": "Go to start"
   },
   "guia": {
-    "titulo": "graphic style guide",
+    "titulo": "umbral · graphic style guide",
     "subtitulo": "Visual system of the Isochronous Shade Map web app · Historic Center of Valledupar",
     "nota": "Development page to compare with page 03 in Figma (node 44:41). Times, names and values are sample data, not calculated.",
     "principios": {
@@ -125,10 +169,12 @@
       "regla4": "Sizes: 20 px on markers, 24 px in lists, 28 px in alerts.",
       "regla5": "On a colored background, the icon takes that level's text color.",
       "interfaz": "Interface",
-      "estado": "Status",
+      "estado": "Thermal status",
       "lugar": "Place",
       "movilidad": "Mobility",
-      "proteccion": "Protection"
+      "proteccion": "Protection",
+      "componentes": "Components · Icons",
+      "componentesTexto": "24 px grid · 2 px stroke · rounded caps and joins · base/text color (changed per instance)."
     },
     "semaforo": {
       "titulo": "Thermal traffic light",
@@ -146,7 +192,16 @@
       "texto": "The base map is warm and muted so the segments stand out. Segments and markers are components.",
       "sombra": "Shade · solid line",
       "parcial": "Partial · dashed line",
-      "expuesto": "Exposed · amber with dotted mark"
+      "expuesto": "Exposed · amber with dotted mark",
+      "marcadores": {
+        "usuario": "User",
+        "destino": "Destination",
+        "refugio": "Shelter",
+        "agua": "Water",
+        "placa": "QR plaque",
+        "arbol": "Tree",
+        "grupo": "Tree group"
+      }
     },
     "botones": {
       "titulo": "Buttons",
@@ -196,7 +251,8 @@
     "pwa": {
       "titulo": "Web app icons (PWA)",
       "texto": "Adaptive version: the symbol stays inside the safe zone (80% circle), because Android crops the edge. The final files are generated in Phase 9.",
-      "tamano": "{n} px"
+      "tamano": "{n} px",
+      "adaptable": "{n} px (adaptive)"
     },
     "pantallas": {
       "titulo": "Screens",

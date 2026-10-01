@@ -46,6 +46,13 @@ a {
   color: var(--um-termico-sombra-plena);
 }
 
+/* En Figma, Display y Dato tienen un espaciado de letras de -1,5 % (Dato: -0,42 px a 28 px).
+   tokens.css no lo incluye; se completa aquí para no editar design/. */
+.um-display,
+.um-dato {
+  letter-spacing: -0.015em;
+}
+
 /* Foco visible en todo lo interactivo (WCAG 2.4.7). */
 :focus-visible {
   outline: 3px solid var(--um-mapa-usuario);

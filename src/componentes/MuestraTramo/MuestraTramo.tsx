@@ -6,36 +6,43 @@ interface MuestraTramoProps {
   state: SegmentState
   /** Texto junto a la muestra. Por defecto, el nombre del estado; `null` lo oculta. */
   label?: string | null
-  /** Ancho de la muestra en px. Con 70 se ven tres guiones del patrón 18/8. */
-  width?: number
 }
 
-const STROKE = 8
+// Geometría exacta del componente "Tramo" de Figma (nodo 43:55): caja de 56 × 12 px,
+// barra de 8 px de alto con radio 2. En el mapa (Fase 4) los patrones se escalan con el zoom.
+const WIDTH = 56
+const HEIGHT = 12
+const BAR_Y = 2
+const BAR_HEIGHT = 8
 
-/** Muestra del patrón de un tramo: continuo, discontinuo o con marca punteada (Figma, nodo 43:55). */
-export function MuestraTramo({ state, label, width = 70 }: MuestraTramoProps) {
+/** Muestra del patrón de un tramo: continuo, discontinuo o con marca punteada. */
+export function MuestraTramo({ state, label }: MuestraTramoProps) {
   const { t } = useT()
   const text = label === undefined ? t(`tramo.${state}`) : label
-  const y = STROKE / 2
   return (
     <span className={s.muestra} data-estado={state}>
       <svg
-        width={width}
-        height={STROKE}
-        viewBox={`0 0 ${width} ${STROKE}`}
+        width={WIDTH}
+        height={HEIGHT}
+        viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
         role={text ? undefined : 'img'}
         aria-label={text ? undefined : t(`tramo.${state}`)}
         aria-hidden={text ? true : undefined}
         focusable="false"
       >
-        {state === 'sombra' && <rect className={s.sombra} width={width} height={STROKE} rx="2" />}
-        {state === 'parcial' && (
-          <line className={s.parcial} x1="0" y1={y} x2={width} y2={y} strokeWidth={STROKE} />
-        )}
+        {state === 'sombra' && <rect className={s.sombra} y={BAR_Y} width={WIDTH} height={BAR_HEIGHT} rx="2" />}
+        {/* Parcial: tres guiones de 14 px separados 6 px */}
+        {state === 'parcial' &&
+          [0, 20, 40].map((x) => (
+            <rect key={x} className={s.parcial} x={x} y={BAR_Y} width="14" height={BAR_HEIGHT} rx="2" />
+          ))}
+        {/* Expuesto: barra ámbar con cuatro marcas oscuras de 6 × 2 px */}
         {state === 'expuesto' && (
           <>
-            <rect className={s.expuesto} width={width} height={STROKE} rx="2" />
-            <line className={s.marca} x1="3" y1={y} x2={width} y2={y} strokeWidth="2" />
+            <rect className={s.expuesto} y={BAR_Y} width={WIDTH} height={BAR_HEIGHT} rx="2" />
+            {[4, 18, 32, 46].map((x) => (
+              <rect key={x} className={s.marca} x={x} y="5" width="6" height="2" />
+            ))}
           </>
         )}
       </svg>

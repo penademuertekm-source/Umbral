@@ -38,6 +38,50 @@
     "arbol": "Árbol",
     "grupo": "Grupo de {n} árboles"
   },
+  "iconos": {
+    "volver": "Volver",
+    "avanzar": "Avanzar",
+    "cerrar": "Cerrar",
+    "buscar": "Buscar",
+    "mi-ubicacion": "Mi ubicación",
+    "capas": "Capas",
+    "ajustes": "Ajustes",
+    "idioma": "Idioma",
+    "compartir": "Compartir",
+    "informacion": "Información",
+    "sombra-plena": "Sombra plena",
+    "sombra-parcial": "Sombra parcial",
+    "expuesto": "Expuesto",
+    "indice-uv": "Índice UV",
+    "termometro": "Termómetro",
+    "reloj": "Reloj",
+    "alerta": "Alerta",
+    "ola-de-calor": "Ola de calor",
+    "nublado": "Nublado",
+    "lluvia": "Lluvia",
+    "sin-conexion": "Sin conexión",
+    "mango": "Mango",
+    "canaguate-en-flor": "Cañaguate en flor",
+    "canaguate-sin-hojas": "Cañaguate sin hojas",
+    "alero": "Alero",
+    "banca": "Banca",
+    "agua-potable": "Agua potable",
+    "iglesia": "Iglesia",
+    "plaza": "Plaza",
+    "mercado": "Mercado",
+    "refugio-cubierto": "Refugio cubierto",
+    "placa-qr": "Placa QR",
+    "caminar": "Caminar",
+    "transporte": "Transporte",
+    "destino": "Destino",
+    "lugar": "Lugar",
+    "llegada": "Llegada",
+    "protector-solar": "Protector solar",
+    "agua": "Agua",
+    "gorra": "Gorra",
+    "sombrilla": "Sombrilla",
+    "ropa-clara": "Ropa clara"
+  },
   "barra": {
     "utci": "UTCI estimado · al sol {sol} · a la sombra {sombra}"
   },
@@ -74,7 +118,7 @@
     "irInicio": "Ir al inicio"
   },
   "guia": {
-    "titulo": "guía de estilo gráfico",
+    "titulo": "umbral · guía de estilo gráfico",
     "subtitulo": "Sistema visual de la app web del Mapa Isocrónico de Sombras · Centro Histórico de Valledupar",
     "nota": "Página de desarrollo para comparar con la página 03 de Figma (nodo 44:41). Las horas, nombres y valores son datos de muestra, no calculados.",
     "principios": {
@@ -125,10 +169,12 @@
       "regla4": "Tamaños: 20 px en marcadores, 24 px en listas, 28 px en avisos.",
       "regla5": "Sobre fondo de color, el ícono toma el color de texto de ese nivel.",
       "interfaz": "Interfaz",
-      "estado": "Estado",
+      "estado": "Estado térmico",
       "lugar": "Lugar",
       "movilidad": "Movilidad",
-      "proteccion": "Protección"
+      "proteccion": "Protección",
+      "componentes": "Componentes · Íconos",
+      "componentesTexto": "Rejilla de 24 px · trazo 2 px · extremos y uniones redondeadas · color base/texto (se cambia por instancia)."
     },
     "semaforo": {
       "titulo": "Semáforo térmico",
@@ -146,7 +192,16 @@
       "texto": "El mapa base es cálido y apagado para que los tramos dominen. Tramos y marcadores son componentes.",
       "sombra": "Sombra · línea continua",
       "parcial": "Parcial · línea discontinua",
-      "expuesto": "Expuesto · ámbar con marca punteada"
+      "expuesto": "Expuesto · ámbar con marca punteada",
+      "marcadores": {
+        "usuario": "Usuario",
+        "destino": "Destino",
+        "refugio": "Refugio",
+        "agua": "Agua",
+        "placa": "Placa QR",
+        "arbol": "Árbol",
+        "grupo": "Grupo de árboles"
+      }
     },
     "botones": {
       "titulo": "Botones",
@@ -196,7 +251,8 @@
     "pwa": {
       "titulo": "Íconos de la app web (PWA)",
       "texto": "Versión adaptable: el isotipo queda dentro de la zona segura (círculo del 80 %), porque Android recorta el borde. Los archivos finales se generan en la Fase 9.",
-      "tamano": "{n} px"
+      "tamano": "{n} px",
+      "adaptable": "{n} px (adaptable)"
     },
     "pantallas": {
       "titulo": "Pantallas",
