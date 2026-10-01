@@ -1,0 +1,207 @@
+{
+  "app": {
+    "nombre": "umbral",
+    "lema": "Sombra en tiempo real · Centro Histórico de Valledupar",
+    "datosProvisionales": "Datos provisionales"
+  },
+  "comun": {
+    "volver": "Volver",
+    "cerrar": "Cerrar",
+    "estimado": "estimado",
+    "sinDato": "—",
+    "grados": "{valor}°"
+  },
+  "idioma": {
+    "titulo": "Idioma",
+    "es": "Español",
+    "en": "English"
+  },
+  "semaforo": {
+    "comodo": "Cómodo",
+    "precaucion": "Precaución",
+    "evitar": "Evitar a pie",
+    "no_recomendado": "No recomendado",
+    "nublado": "Nublado",
+    "prefijoAccesible": "Semáforo térmico:"
+  },
+  "tramo": {
+    "sombra": "Sombra",
+    "parcial": "Parcial",
+    "expuesto": "Expuesto"
+  },
+  "marcador": {
+    "usuario": "Tu ubicación",
+    "destino": "Destino",
+    "refugio": "Refugio",
+    "agua": "Agua potable",
+    "placa": "Placa QR",
+    "arbol": "Árbol",
+    "grupo": "Grupo de {n} árboles"
+  },
+  "barra": {
+    "utci": "UTCI estimado · al sol {sol} · a la sombra {sombra}"
+  },
+  "pantallas": {
+    "p01": "Splash",
+    "p02": "Idioma",
+    "p03": "Permiso de ubicación",
+    "p04": "Mapa en tiempo real predictivo",
+    "p05": "Buscar destino",
+    "p06": "Comparación de rutas",
+    "p07": "Ficha de tramo",
+    "p08": "Vista tras escanear el QR",
+    "p09": "Alerta El Niño activo",
+    "p10": "Puntos de permanencia",
+    "p11": "Ajustes y accesibilidad",
+    "p12": "Placa QR urbana",
+    "p13": "Ruta en curso",
+    "p14": "Sin conexión",
+    "p15": "¿Cuándo salir?",
+    "p16": "Sin ruta con sombra",
+    "p17": "Semáforo térmico",
+    "p18": "Antes de salir · protección solar",
+    "p19": "Aviso antes de salir",
+    "p20": "Mapa con cielo nublado",
+    "p21": "Fuera del Centro Histórico",
+    "p22": "Llegada",
+    "p23": "Ajustes · Perfil de calor",
+    "numero": "Pantalla {n}",
+    "nodo": "Nodo de Figma {nodo}",
+    "pendiente": "Esta pantalla se construye en la Fase {fase}.",
+    "verFigma": "Ver el diseño en Figma",
+    "irGuia": "Ver la guía de componentes",
+    "noEncontrada": "No encontramos esta página.",
+    "irInicio": "Ir al inicio"
+  },
+  "guia": {
+    "titulo": "guía de estilo gráfico",
+    "subtitulo": "Sistema visual de la app web del Mapa Isocrónico de Sombras · Centro Histórico de Valledupar",
+    "nota": "Página de desarrollo para comparar con la página 03 de Figma (nodo 44:41). Las horas, nombres y valores son datos de muestra, no calculados.",
+    "principios": {
+      "titulo": "Principios",
+      "legibleTitulo": "Legible bajo el sol",
+      "legibleTexto": "Contraste alto, texto mínimo de 15 px y botones de 60 px. Nada de grises claros sobre blanco.",
+      "izquierdaTitulo": "La sombra va a la izquierda",
+      "izquierdaTexto": "Como en el isotipo: el verde profundo es protección; el ámbar es exposición. El punto ámbar es el sol.",
+      "colorTitulo": "Nunca solo color",
+      "colorTexto": "Cada estado combina color, forma y texto: círculo, triángulo, rombo, cuadrado; continuo, discontinuo, punteado.",
+      "honestoTitulo": "Honesto con el dato",
+      "honestoTexto": "Todo valor calculado dice \"estimado\" y muestra su hora. Si no hay sombra, la app lo dice."
+    },
+    "color": {
+      "titulo": "Color",
+      "texto": "Cada muestra es un token. El nombre CSS es el que usa el código del prototipo.",
+      "base": "Base",
+      "termico": "Térmico",
+      "semaforo": "Semáforo",
+      "mapa": "Mapa"
+    },
+    "tipografia": {
+      "titulo": "Tipografía",
+      "texto": "Inter para toda la interfaz; Archivo Black solo en el logotipo. Un estilo de texto por rol.",
+      "display": "Display",
+      "tituloEstilo": "Título",
+      "dato": "Dato",
+      "subtitulo": "Subtítulo",
+      "cuerpo": "Cuerpo",
+      "cuerpoFuerte": "Cuerpo fuerte",
+      "etiqueta": "Etiqueta",
+      "micro": "Micro",
+      "muestraDisplay": "Plaza Alfonso López",
+      "muestraTitulo": "¿Cuándo salir?",
+      "muestraDato": "11:47 a. m.",
+      "muestraSubtitulo": "Qué puedes hacer",
+      "muestraCuerpo": "Camina por la acera occidental durante 380 m.",
+      "muestraCuerpoFuerte": "Iniciar recorrido con sombra",
+      "muestraEtiqueta": "Sombra plena hasta la 1:20 p. m.",
+      "muestraMicro": "UTCI estimado · al sol 41° · a la sombra 35°"
+    },
+    "iconografia": {
+      "titulo": "Iconografía",
+      "texto": "Familia propia: 42 íconos en rejilla de 24 px.",
+      "regla1": "Rejilla de 24 × 24 px con 2 px de margen interno.",
+      "regla2": "Trazo de 2 px, extremos y uniones redondeados.",
+      "regla3": "Solo \"Sombra plena\" y \"Sombra parcial\" usan relleno: replican la lógica del isotipo.",
+      "regla4": "Tamaños: 20 px en marcadores, 24 px en listas, 28 px en avisos.",
+      "regla5": "Sobre fondo de color, el ícono toma el color de texto de ese nivel.",
+      "interfaz": "Interfaz",
+      "estado": "Estado",
+      "lugar": "Lugar",
+      "movilidad": "Movilidad",
+      "proteccion": "Protección"
+    },
+    "semaforo": {
+      "titulo": "Semáforo térmico",
+      "texto": "Cuatro niveles de decisión, más un estado neutro para cielo nublado. Umbrales provisionales según categorías UTCI.",
+      "comodo": "Sombra continua o franja fresca",
+      "precaucion": "Tramos al sol cortos",
+      "evitar": "Tramos largos al sol, 10 a. m. – 3 p. m.",
+      "no_recomendado": "Estrés muy fuerte o El Niño",
+      "nublado": "La sombra pesa menos",
+      "barraTitulo": "Barra superior en cada estado (pantalla 17)",
+      "nubladoChip": "Nublado · riesgo bajo"
+    },
+    "mapa": {
+      "titulo": "Mapa",
+      "texto": "El mapa base es cálido y apagado para que los tramos dominen. Tramos y marcadores son componentes.",
+      "sombra": "Sombra · línea continua",
+      "parcial": "Parcial · línea discontinua",
+      "expuesto": "Expuesto · ámbar con marca punteada"
+    },
+    "botones": {
+      "titulo": "Botones",
+      "texto": "60 px de alto y radio 12.",
+      "primario": "Primario",
+      "secundario": "Secundario",
+      "advertencia": "Advertencia",
+      "muestra": "Buscar una ruta con sombra",
+      "deshabilitado": "Deshabilitado"
+    },
+    "componentes": {
+      "titulo": "Componentes de pantalla",
+      "barra": "Barra superior",
+      "encabezado": "Encabezado de sección",
+      "encabezadoMuestra": "Ajustes",
+      "tarjeta": "Tarjeta de opción",
+      "tarjetaEsperarTitulo": "Esperar hasta las 4:15 p. m.",
+      "tarjetaEsperarTexto": "La mejor hora calculada para esta ruta",
+      "tarjetaTransporteTitulo": "Ir en transporte",
+      "tarjetaTransporteTexto": "Hasta el punto con sombra más cercano a la ruta",
+      "tarjetaProteccionTitulo": "Caminar con protección",
+      "tarjetaProteccionTexto": "Gorra, agua y protector solar",
+      "tarjetaNeutraTitulo": "Perfil de calor",
+      "tarjetaNeutraTexto": "General",
+      "hoja": "Hoja inferior",
+      "abrirHoja": "Abrir hoja inferior",
+      "hojaTitulo": "Calle 16 entre carreras 6 y 7",
+      "hojaTexto": "Sombra plena hasta la 1:20 p. m. · acera occidental",
+      "modal": "Modal",
+      "abrirModal": "Abrir modal",
+      "modalTitulo": "Aviso antes de salir",
+      "modalTexto": "Entre las 11 a. m. y las 3 p. m. el sol es más fuerte. Esta ruta tiene 62 % de sombra.",
+      "modalAceptar": "Iniciar recorrido",
+      "modalAlternativa": "Ver la mejor hora para salir"
+    },
+    "espaciado": {
+      "titulo": "Espaciado, forma y elevación",
+      "multiplos": "Espaciado (múltiplos de 4)",
+      "radios": "Radios: control 12 px · tarjeta 16 px · hoja 24 px · chip 20 px. Área táctil mínima 56 px.",
+      "flotante": "Flotante",
+      "flotanteTexto": "Marcadores, chips sobre mapa",
+      "hoja": "Hoja inferior",
+      "hojaTexto": "Hojas inferiores",
+      "modal": "Modal",
+      "modalTexto": "Avisos y modales"
+    },
+    "pwa": {
+      "titulo": "Íconos de la app web (PWA)",
+      "texto": "Versión adaptable: el isotipo queda dentro de la zona segura (círculo del 80 %), porque Android recorta el borde. Los archivos finales se generan en la Fase 9.",
+      "tamano": "{n} px"
+    },
+    "pantallas": {
+      "titulo": "Pantallas",
+      "texto": "Rutas de la app. Por ahora casi todas están vacías: cada una indica la fase en la que se construye."
+    },
+    "idioma": "Idioma de la interfaz"
+  }
+}

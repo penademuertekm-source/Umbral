@@ -1,5 +1,11 @@
 node_modules/
 dist/
+dist-ssr/
 scripts/.venv/
 .DS_Store
 .env*
+*.local
+*.log
+.vscode/*
+!.vscode/extensions.json
+.idea

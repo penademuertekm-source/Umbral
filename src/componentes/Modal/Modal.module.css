@@ -1,0 +1,58 @@
+.velo {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: var(--um-esp-md);
+  border: 0;
+  background: var(--um-base-velo);
+  color: var(--um-base-texto);
+}
+
+.velo[open] {
+  display: grid;
+  place-items: center;
+}
+
+.velo::backdrop {
+  background: transparent;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-md);
+  width: 100%;
+  max-width: calc(var(--app-ancho-max) - 2 * var(--um-esp-md));
+  padding: var(--um-esp-lg);
+  background: var(--um-base-superficie);
+  border-radius: var(--um-radio-hoja);
+  box-shadow: var(--um-elevacion-modal);
+  animation: aparecer 180ms ease-out;
+}
+
+.contenido {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-sm);
+}
+
+.acciones {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-sm);
+}
+
+@keyframes aparecer {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

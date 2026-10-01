@@ -1,0 +1,27 @@
+/* Colores de cada nivel del semáforo como variables locales.
+   Lo usan Semaforo (chip), FormaSemaforo y TarjetaOpcion (tinte del ícono). */
+.comodo {
+  --nivel-fondo: var(--um-semaforo-comodo-fondo);
+  --nivel-texto: var(--um-semaforo-comodo-texto);
+  --nivel-forma: var(--um-semaforo-comodo-forma);
+}
+.precaucion {
+  --nivel-fondo: var(--um-semaforo-precaucion-fondo);
+  --nivel-texto: var(--um-semaforo-precaucion-texto);
+  --nivel-forma: var(--um-semaforo-precaucion-forma);
+}
+.evitar {
+  --nivel-fondo: var(--um-semaforo-evitar-fondo);
+  --nivel-texto: var(--um-semaforo-evitar-texto);
+  --nivel-forma: var(--um-semaforo-evitar-forma);
+}
+.no_recomendado {
+  --nivel-fondo: var(--um-semaforo-no-recomendado-fondo);
+  --nivel-texto: var(--um-semaforo-no-recomendado-texto);
+  --nivel-forma: var(--um-semaforo-no-recomendado-forma);
+}
+.nublado {
+  --nivel-fondo: var(--um-semaforo-nublado-fondo);
+  --nivel-texto: var(--um-semaforo-nublado-texto);
+  --nivel-forma: var(--um-semaforo-nublado-forma);
+}

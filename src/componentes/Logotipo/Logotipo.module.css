@@ -1,0 +1,11 @@
+.logotipo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+}
+
+.palabra {
+  font-family: var(--um-fuente-logo);
+  line-height: 1;
+  text-transform: lowercase;
+}

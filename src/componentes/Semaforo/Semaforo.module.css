@@ -1,0 +1,16 @@
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--um-esp-sm);
+  padding: 10px 14px;
+  border-radius: var(--um-radio-chip);
+  background: var(--nivel-fondo);
+  color: var(--nivel-texto);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.forma {
+  flex-shrink: 0;
+  fill: var(--nivel-forma);
+}

@@ -1,0 +1,29 @@
+.muestra {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--um-esp-sm);
+}
+
+.muestra svg {
+  flex-shrink: 0;
+}
+
+.sombra {
+  fill: var(--um-termico-sombra-plena);
+}
+
+/* Discontinua 18 px / 8 px */
+.parcial {
+  stroke: var(--um-termico-sombra-parcial);
+  stroke-dasharray: 18 8;
+}
+
+.expuesto {
+  fill: var(--um-termico-exposicion);
+}
+
+/* Marca central punteada 6 px / 6 px */
+.marca {
+  stroke: var(--um-mapa-marca-expuesto);
+  stroke-dasharray: 6 6;
+}

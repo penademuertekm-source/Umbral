@@ -1,0 +1,23 @@
+.encabezado {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--um-esp-xs);
+  padding: var(--um-esp-sm) var(--um-esp-md) var(--um-esp-md);
+  padding-top: max(var(--um-esp-sm), env(safe-area-inset-top));
+}
+
+/* Área táctil de 56 px aunque el texto sea pequeño */
+.volver {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--um-esp-xs);
+  min-height: var(--um-tactil-minimo);
+  margin-left: calc(-1 * var(--um-esp-sm));
+  padding: 0 var(--um-esp-sm);
+  border: 0;
+  border-radius: var(--um-radio-control);
+  background: none;
+  color: var(--um-base-texto-secundario);
+  cursor: pointer;
+}

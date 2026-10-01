@@ -1,0 +1,41 @@
+.marcador {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--um-base-superficie);
+  color: var(--um-base-texto);
+  box-shadow: var(--um-elevacion-flotante);
+}
+
+/* Punto azul con borde blanco y halo */
+.usuario {
+  background: color-mix(in srgb, var(--um-mapa-usuario) 22%, transparent);
+  box-shadow: none;
+}
+
+.punto {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--um-mapa-usuario);
+  border: 3px solid var(--um-base-superficie);
+  box-shadow: var(--um-elevacion-flotante);
+}
+
+.destino,
+.grupo {
+  background: var(--um-termico-sombra-plena);
+  color: var(--um-base-texto-inverso);
+}
+
+.grupo {
+  font-weight: 600;
+}
+
+.arbol {
+  background: var(--um-semaforo-comodo-fondo);
+  color: var(--um-termico-sombra-plena);
+}

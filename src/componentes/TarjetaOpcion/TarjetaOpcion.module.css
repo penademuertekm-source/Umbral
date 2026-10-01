@@ -1,0 +1,54 @@
+.tarjeta {
+  display: flex;
+  align-items: center;
+  gap: var(--um-esp-md);
+  width: 100%;
+  min-height: var(--um-tactil-minimo);
+  padding: var(--um-esp-md);
+  background: var(--um-base-superficie);
+  border: 1px solid var(--um-base-borde);
+  border-radius: var(--um-radio-tarjeta);
+  color: var(--um-base-texto);
+  text-align: left;
+}
+
+.accion {
+  cursor: pointer;
+}
+
+.accion:active {
+  filter: brightness(0.97);
+}
+
+.icono {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--um-radio-control);
+  background: var(--nivel-fondo);
+  color: var(--nivel-texto);
+}
+
+.textos {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.titulo {
+  font-weight: 600;
+}
+
+.texto {
+  color: var(--um-base-texto-secundario);
+  font-weight: 400;
+}
+
+.flecha {
+  flex-shrink: 0;
+  color: var(--um-base-texto-secundario);
+}

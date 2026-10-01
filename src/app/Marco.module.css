@@ -1,0 +1,15 @@
+.marco {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: var(--app-ancho-max);
+  min-height: 100dvh;
+  margin: 0 auto;
+  background: var(--um-base-fondo);
+}
+
+@media (min-width: 431px) {
+  .marco {
+    border-inline: 1px solid var(--um-base-borde);
+  }
+}

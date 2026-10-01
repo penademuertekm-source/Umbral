@@ -1,0 +1,53 @@
+// Nombres de los 42 íconos de design/iconos/, en el mismo orden que indice.json.
+// Una prueba verifica que esta lista y el índice coincidan.
+export const ICON_NAMES = [
+  // interfaz
+  'volver',
+  'avanzar',
+  'cerrar',
+  'buscar',
+  'mi-ubicacion',
+  'capas',
+  'ajustes',
+  'idioma',
+  'compartir',
+  'informacion',
+  // estado
+  'sombra-plena',
+  'sombra-parcial',
+  'expuesto',
+  'indice-uv',
+  'termometro',
+  'reloj',
+  'alerta',
+  'ola-de-calor',
+  'nublado',
+  'lluvia',
+  'sin-conexion',
+  // lugar
+  'mango',
+  'canaguate-en-flor',
+  'canaguate-sin-hojas',
+  'alero',
+  'banca',
+  'agua-potable',
+  'iglesia',
+  'plaza',
+  'mercado',
+  'refugio-cubierto',
+  'placa-qr',
+  // movilidad
+  'caminar',
+  'transporte',
+  'destino',
+  'lugar',
+  'llegada',
+  // proteccion
+  'protector-solar',
+  'agua',
+  'gorra',
+  'sombrilla',
+  'ropa-clara',
+] as const
+
+export type IconName = (typeof ICON_NAMES)[number]

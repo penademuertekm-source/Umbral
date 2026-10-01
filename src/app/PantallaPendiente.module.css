@@ -1,0 +1,16 @@
+.contenido {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-md);
+  padding: 0 var(--um-esp-md) var(--um-esp-xl);
+}
+
+.meta {
+  color: var(--um-base-texto-secundario);
+}
+
+.contenido a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--um-tactil-minimo);
+}

@@ -1,0 +1,28 @@
+.barra {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--um-esp-xs);
+  min-height: 112px;
+  padding: var(--um-esp-md);
+  padding-top: max(var(--um-esp-md), env(safe-area-inset-top));
+  background: var(--um-base-superficie);
+  border-bottom: 1px solid var(--um-base-borde);
+}
+
+.fila {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--um-esp-sm);
+}
+
+/* La hora nunca se parte; si no cabe junto al chip, el chip baja de línea. */
+.hora {
+  white-space: nowrap;
+}
+
+.utci {
+  color: var(--um-base-texto-secundario);
+}

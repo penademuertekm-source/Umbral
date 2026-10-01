@@ -1,0 +1,207 @@
+{
+  "app": {
+    "nombre": "umbral",
+    "lema": "Real-time shade · Historic Center of Valledupar",
+    "datosProvisionales": "Provisional data"
+  },
+  "comun": {
+    "volver": "Back",
+    "cerrar": "Close",
+    "estimado": "estimated",
+    "sinDato": "—",
+    "grados": "{valor}°"
+  },
+  "idioma": {
+    "titulo": "Language",
+    "es": "Español",
+    "en": "English"
+  },
+  "semaforo": {
+    "comodo": "Comfortable",
+    "precaucion": "Caution",
+    "evitar": "Avoid walking",
+    "no_recomendado": "Not recommended",
+    "nublado": "Cloudy",
+    "prefijoAccesible": "Thermal traffic light:"
+  },
+  "tramo": {
+    "sombra": "Shade",
+    "parcial": "Partial",
+    "expuesto": "Exposed"
+  },
+  "marcador": {
+    "usuario": "Your location",
+    "destino": "Destination",
+    "refugio": "Shelter",
+    "agua": "Drinking water",
+    "placa": "QR plaque",
+    "arbol": "Tree",
+    "grupo": "Group of {n} trees"
+  },
+  "barra": {
+    "utci": "Estimated UTCI · in the sun {sol} · in the shade {sombra}"
+  },
+  "pantallas": {
+    "p01": "Splash",
+    "p02": "Language",
+    "p03": "Location permission",
+    "p04": "Predictive real-time map",
+    "p05": "Find a destination",
+    "p06": "Route comparison",
+    "p07": "Segment details",
+    "p08": "After scanning the QR",
+    "p09": "El Niño alert",
+    "p10": "Places to rest",
+    "p11": "Settings and accessibility",
+    "p12": "Street QR plaque",
+    "p13": "Route in progress",
+    "p14": "Offline",
+    "p15": "When to leave?",
+    "p16": "No shaded route",
+    "p17": "Thermal traffic light",
+    "p18": "Before you go · sun protection",
+    "p19": "Warning before you go",
+    "p20": "Map with cloudy sky",
+    "p21": "Outside the Historic Center",
+    "p22": "Arrival",
+    "p23": "Settings · Heat profile",
+    "numero": "Screen {n}",
+    "nodo": "Figma node {nodo}",
+    "pendiente": "This screen is built in Phase {fase}.",
+    "verFigma": "See the design in Figma",
+    "irGuia": "See the component guide",
+    "noEncontrada": "We couldn't find this page.",
+    "irInicio": "Go to start"
+  },
+  "guia": {
+    "titulo": "graphic style guide",
+    "subtitulo": "Visual system of the Isochronous Shade Map web app · Historic Center of Valledupar",
+    "nota": "Development page to compare with page 03 in Figma (node 44:41). Times, names and values are sample data, not calculated.",
+    "principios": {
+      "titulo": "Principles",
+      "legibleTitulo": "Readable in the sun",
+      "legibleTexto": "High contrast, 15 px minimum text and 60 px buttons. No light grays on white.",
+      "izquierdaTitulo": "Shade goes on the left",
+      "izquierdaTexto": "As in the symbol: deep green means protection; amber means exposure. The amber dot is the sun.",
+      "colorTitulo": "Never color alone",
+      "colorTexto": "Every state combines color, shape and text: circle, triangle, diamond, square; solid, dashed, dotted.",
+      "honestoTitulo": "Honest with data",
+      "honestoTexto": "Every calculated value says \"estimated\" and shows its time. If there is no shade, the app says so."
+    },
+    "color": {
+      "titulo": "Color",
+      "texto": "Each swatch is a token. The CSS name is the one the prototype code uses.",
+      "base": "Base",
+      "termico": "Thermal",
+      "semaforo": "Traffic light",
+      "mapa": "Map"
+    },
+    "tipografia": {
+      "titulo": "Typography",
+      "texto": "Inter for the whole interface; Archivo Black only in the logotype. One text style per role.",
+      "display": "Display",
+      "tituloEstilo": "Title",
+      "dato": "Data",
+      "subtitulo": "Subtitle",
+      "cuerpo": "Body",
+      "cuerpoFuerte": "Strong body",
+      "etiqueta": "Label",
+      "micro": "Micro",
+      "muestraDisplay": "Alfonso López Square",
+      "muestraTitulo": "When to leave?",
+      "muestraDato": "11:47 a.m.",
+      "muestraSubtitulo": "What you can do",
+      "muestraCuerpo": "Walk on the west sidewalk for 380 m.",
+      "muestraCuerpoFuerte": "Start shaded walk",
+      "muestraEtiqueta": "Full shade until 1:20 p.m.",
+      "muestraMicro": "Estimated UTCI · in the sun 41° · in the shade 35°"
+    },
+    "iconografia": {
+      "titulo": "Iconography",
+      "texto": "Custom family: 42 icons on a 24 px grid.",
+      "regla1": "24 × 24 px grid with 2 px inner margin.",
+      "regla2": "2 px stroke, rounded caps and joins.",
+      "regla3": "Only \"Full shade\" and \"Partial shade\" use fill: they echo the logic of the symbol.",
+      "regla4": "Sizes: 20 px on markers, 24 px in lists, 28 px in alerts.",
+      "regla5": "On a colored background, the icon takes that level's text color.",
+      "interfaz": "Interface",
+      "estado": "Status",
+      "lugar": "Place",
+      "movilidad": "Mobility",
+      "proteccion": "Protection"
+    },
+    "semaforo": {
+      "titulo": "Thermal traffic light",
+      "texto": "Four decision levels, plus a neutral state for cloudy skies. Provisional thresholds based on UTCI categories.",
+      "comodo": "Continuous shade or cool hours",
+      "precaucion": "Short sunny stretches",
+      "evitar": "Long sunny stretches, 10 a.m. – 3 p.m.",
+      "no_recomendado": "Very strong heat stress or El Niño",
+      "nublado": "Shade matters less",
+      "barraTitulo": "Top bar in each state (screen 17)",
+      "nubladoChip": "Cloudy · low risk"
+    },
+    "mapa": {
+      "titulo": "Map",
+      "texto": "The base map is warm and muted so the segments stand out. Segments and markers are components.",
+      "sombra": "Shade · solid line",
+      "parcial": "Partial · dashed line",
+      "expuesto": "Exposed · amber with dotted mark"
+    },
+    "botones": {
+      "titulo": "Buttons",
+      "texto": "60 px high, radius 12.",
+      "primario": "Primary",
+      "secundario": "Secondary",
+      "advertencia": "Warning",
+      "muestra": "Find a shaded route",
+      "deshabilitado": "Disabled"
+    },
+    "componentes": {
+      "titulo": "Screen components",
+      "barra": "Top bar",
+      "encabezado": "Section header",
+      "encabezadoMuestra": "Settings",
+      "tarjeta": "Option card",
+      "tarjetaEsperarTitulo": "Wait until 4:15 p.m.",
+      "tarjetaEsperarTexto": "The best calculated time for this route",
+      "tarjetaTransporteTitulo": "Take transport",
+      "tarjetaTransporteTexto": "To the shaded point closest to the route",
+      "tarjetaProteccionTitulo": "Walk with protection",
+      "tarjetaProteccionTexto": "Cap, water and sunscreen",
+      "tarjetaNeutraTitulo": "Heat profile",
+      "tarjetaNeutraTexto": "General",
+      "hoja": "Bottom sheet",
+      "abrirHoja": "Open bottom sheet",
+      "hojaTitulo": "Calle 16 between Carreras 6 and 7",
+      "hojaTexto": "Full shade until 1:20 p.m. · west sidewalk",
+      "modal": "Modal",
+      "abrirModal": "Open modal",
+      "modalTitulo": "Warning before you go",
+      "modalTexto": "Between 11 a.m. and 3 p.m. the sun is strongest. This route has 62% shade.",
+      "modalAceptar": "Start walk",
+      "modalAlternativa": "See the best time to leave"
+    },
+    "espaciado": {
+      "titulo": "Spacing, shape and elevation",
+      "multiplos": "Spacing (multiples of 4)",
+      "radios": "Radii: control 12 px · card 16 px · sheet 24 px · chip 20 px. Minimum touch area 56 px.",
+      "flotante": "Floating",
+      "flotanteTexto": "Markers, chips over the map",
+      "hoja": "Bottom sheet",
+      "hojaTexto": "Bottom sheets",
+      "modal": "Modal",
+      "modalTexto": "Alerts and modals"
+    },
+    "pwa": {
+      "titulo": "Web app icons (PWA)",
+      "texto": "Adaptive version: the symbol stays inside the safe zone (80% circle), because Android crops the edge. The final files are generated in Phase 9.",
+      "tamano": "{n} px"
+    },
+    "pantallas": {
+      "titulo": "Screens",
+      "texto": "App routes. For now almost all are empty: each one shows the phase in which it is built."
+    },
+    "idioma": "Interface language"
+  }
+}
