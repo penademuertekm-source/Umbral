@@ -4,61 +4,82 @@ Registro de lo hecho en cada fase, lo pendiente y las decisiones tomadas. La ent
 
 ---
 
-## Fase 2 · Datos y modelo de sombra en Python (en curso, 2026-10-01)
+## Fase 2 · Datos y modelo de sombra en Python (2026-10-01)
 
-Plan aprobado por la autora el 2026-10-01. **Falta correr el pipeline con OpenStreetMap real**: la red
-de este entorno bloquea `nominatim.openstreetmap.org` y `overpass-api.de` (y `api.open-meteo.com`, que se
-usará en la Fase 5). La autora los está habilitando en la configuración del entorno.
+Plan aprobado por la autora el 2026-10-01. `public/datos/` ya tiene datos reales de OpenStreetMap.
+
+### Resultado (`docs/reporte-datos.md`)
+
+| Dato | Valor |
+|---|---|
+| Área de estudio | 700 m alrededor de la Plaza Alfonso López (10,47775, −73,24463) · 1,54 km² |
+| Red peatonal | 502 aristas · 37,2 km de ejes · 1.004 lados de acera (240 norte, 240 sur, 262 oriental, 262 occidental) |
+| Puntos de muestreo | 14.876 (1.403 acercados al eje porque caían en un edificio; 135 siguen dentro, 0,9 %) |
+| Edificios | 1.986: 1.820 con `height` de OSM (1.457 de ellos con 3 m), 18 con pisos, 148 provisionales (3,5 m) |
+| Árboles | 1.808: 258 de OSM y 1.550 provisionales (946 mango, 377 cañaguate, 485 otro) |
+| Perfiles | `muestras.bin.gz` de 946 KB (3,1 MB sin comprimir) · meta < 2 MB: **cumple** |
+| Validación del sol | SunCalc vs SPA del NREL: separación máxima de **0,075°** |
+| Lugares | Destinos 2 de 5 con coordenadas · refugios 3 de 4 · placas 0 de 2 |
+| Tiempo | ~2 min de descarga y 14 s de cálculo de perfiles (en paralelo) |
 
 ### Hecho
 
-- `scripts/requirements.txt` (osmnx, geopandas, shapely, pyproj, pandas, numpy, scipy, pvlib, requests)
-  y entorno virtual en `scripts/.venv` (ignorado por git, igual que `scripts/.cache/`).
-- Comandos (funcionan en Windows, macOS y Linux gracias a `scripts/datos.mjs`):
+- `scripts/requirements.txt` y entorno virtual en `scripts/.venv` (ignorado por git, igual que
+  `scripts/.cache/`).
+- Comandos (Windows, macOS y Linux, gracias a `scripts/datos.mjs`):
   - `npm run datos:preparar`: crea `scripts/.venv` e instala las dependencias;
   - `npm run datos`: ejecuta `scripts/construir_datos.py` y regenera `public/datos/`;
   - `npm run datos -- --solo-validacion-sol`: solo la validación del sol (sin internet);
-  - `npm run test:datos`: 12 pruebas del pipeline (unittest).
+  - `npm run test:datos`: 18 pruebas del pipeline (unittest), todas sin red.
+- **GitHub Actions · "Datos de sombra"** (`.github/workflows/datos.yml`): corre las pruebas y
+  `npm run datos` en las máquinas de GitHub y hace commit de los datos en la rama. Para volver a
+  generarlos (por ejemplo, con datos de campo): pestaña **Actions → Datos de sombra → Run workflow**.
 - Módulos en `scripts/umbral_datos/`:
-  - `area.py`: geocodifica la Plaza Alfonso López, toma 700 m y guarda `area_estudio.geojson`; si el
-    archivo ya existe, no vuelve a geocodificar.
-  - `descarga_osm.py`: calles sin autopistas, edificios, árboles y plazas. Los obstáculos se descargan con
-    60 m de margen para que las aceras del borde reciban la sombra de lo que está justo afuera.
-  - `edificios.py`: altura desde `edificios_pisos.csv` → `height` de OSM → `building:levels` × 3,5 m →
-    3,5 m provisional. Cada edificio guarda su `origen_altura`. Aleros desde `aleros.csv`.
-  - `arboles.py`: `arboles.csv` → OSM → provisionales con semilla fija (60 % mango, 25 % cañaguate,
-    15 % otro; 40 % de los lados de acera, cada 12–25 m; rejilla de 10 m en plazas). Escribe el resultado
-    en `arboles.csv` para revisarlo a mano.
-  - `aceras.py`: dos aceras por arista, desplazadas según el tipo de vía, con orientación cardinal
-    (norte/sur/oriental/occidental). Muestras cada 5 m; si una cae dentro de un edificio, se acerca al eje.
-  - `horizonte.py`: perfil de 72 sectores, 60 m, 3 canales, Uint8 en pasos de 0,5°, y SVF.
-  - `lugares.py`: destinos y refugios geocodificados (el resultado se guarda en su CSV); si no aparecen,
-    quedan vacíos y se reportan. Las placas no se geocodifican.
-  - `exportar.py`, `reporte.py` y `validacion_sol.py`.
-- **Validación del sol** (`docs/validacion-sol.md`): SunCalc frente al SPA del NREL, día 15 de cada mes,
-  de 6:00 a 18:00. Separación angular máxima de **0,075°**.
-- Prueba de punta a punta con una cuadrícula sintética: genera los 13 archivos de `public/datos/` sin red.
+  - `area.py`: geocodifica la plaza y guarda `datos/provisional/area_estudio.geojson` (editable a mano).
+  - `descarga_osm.py`: consultas propias a Overpass (rectángulo del área, recortado después al círculo),
+    con caché en `scripts/.cache/overpass/`; osmnx solo lee el `.osm`.
+  - `edificios.py`: altura desde `edificios_pisos.csv` → `height` → `building:levels` × 3,5 m → 3,5 m
+    provisional; cada edificio guarda su `origen_altura`. Aleros desde `aleros.csv`.
+  - `arboles.py`: `arboles.csv` → OSM → provisionales con semilla fija. El resultado quedó escrito en
+    `datos/provisional/arboles.csv` y desde ahora se usa ese archivo tal cual.
+  - `aceras.py`: dos aceras por arista con orientación cardinal y muestras cada 5 m.
+  - `horizonte.py`: 72 sectores, 60 m, 3 canales, Uint8 en pasos de 0,5°, SVF; calcula en paralelo.
+  - `lugares.py`, `exportar.py`, `reporte.py` y `validacion_sol.py`.
 
 ### Decisiones
 
+- **Generación en GitHub Actions.** Las sesiones en la nube no llegaban a OpenStreetMap. Con los dominios
+  ya permitidos, `overpass-api.de` igual corta las conexiones desde la nube; las máquinas de GitHub sí
+  descargan bien.
+- **Cliente propio de Overpass.** osmnx reintenta para siempre ante 429/504 (así se quedaron trabadas las
+  dos primeras corridas, 21 y 10 min). Ahora hay 3 intentos por servidor y cambio automático entre
+  `overpass-api.de`, `overpass.kumi.systems`, `overpass.private.coffee` y `maps.mail.ru`
+  (variable `UMBRAL_OVERPASS` para cambiarlos). En la última corrida, `overpass-api.de` respondió 504/429
+  y los datos salieron de `overpass.kumi.systems`.
+- **`muestras.bin.gz` en lugar de `muestras.bin`.** La alternativa aprobada (guardar los árboles solo
+  donde existen) no ahorraba nada: hay árboles a menos de 60 m del 100 % de las aceras. Con gzip los
+  3,1 MB quedan en 946 KB sin perder datos. El índice (`muestras.json`) dice `"archivo"` y
+  `"compresion": "gzip"`. El worker de la Fase 3 lo abre con `DecompressionStream("gzip")` (probado en
+  Node con los datos reales).
 - **SunCalc 2.x cambió su formato**: `getPosition` da el azimut en **grados desde el norte** (sentido
-  horario) y la elevación **aparente** (con refracción), también en grados. Antes eran radianes con el
-  azimut desde el sur. El worker de la Fase 3 debe usar este formato.
-- **Perfil de horizonte por rayos**: 144 rayos (cada 2,5°) contra los segmentos de fachada (cortados a 5 m)
-  y las copas; cada sector toma el máximo de sus rayos y de los vértices de edificio que caen en él.
-- **Modelo de copas**: se guarda solo el borde superior (como pide CLAUDE.md). Un punto bajo una copa o un
-  alero queda con 90° en ese canal: siempre en sombra de ese objeto.
-- **Archivos extra** en `public/datos/`: `aceras.geojson` (una línea por lado de acera, para dibujar los
-  tramos en la Fase 4), `plazas.geojson` (mapa base) y `clima_config.json` (copia para la Fase 5).
-- **Formato de `muestras.bin`**: `n × 3 × 72` bytes en orden muestra → canal → sector. `muestras.json`
-  guarda los parámetros y, por columnas, `lon`, `lat`, `arista`, `lado` y `svf`.
+  horario) y la elevación **aparente** (con refracción), en grados. El worker de la Fase 3 debe usarlo así.
+- **Perfil de horizonte por rayos**: 144 rayos (cada 2,5°) contra fachadas y copas, más los vértices de
+  edificio; un punto bajo una copa o un alero queda con 90° en ese canal.
+- **Geocodificación**: se ajustaron las consultas de la iglesia ("Inmaculada Concepción, Valledupar") y
+  del Parque de la Leyenda para que coincidan con los nombres de OSM. Lo que no está en OSM queda vacío.
+- **Archivos extra** en `public/datos/`: `aceras.geojson` (un trazo por lado de acera, para la Fase 4),
+  `plazas.geojson` (mapa base) y `clima_config.json` (copia para la Fase 5).
 - **Texto Micro**: sube a 15/20 px (decisión de la autora).
 
 ### Pendiente
 
-- Correr `npm run datos` con OSM real, revisar `docs/reporte-datos.md` (meta: `muestras.bin` < 2 MB) y
-  hacer el commit "Fase 2".
-- Si `muestras.bin` pasa de 2 MB: guardar los canales de árboles solo para los puntos que los tienen.
+- **Coordenadas de campo** (no están en OSM): Casa Beto Murgas, Mercado público y Callejón de la
+  Purrututú (destino y refugio). Se escriben en `lat`/`lon` de `destinos.csv` y `refugios.csv`.
+- **Parque de la Leyenda** quedó a 3 km del centro, fuera del área de estudio: decidir si sigue en la
+  lista de refugios.
+- **Placas QR**: ubicación de las dos placas (`placas_qr.csv`), necesaria en la Fase 8.
+- **Revisar** los 1.550 árboles provisionales de `arboles.csv` y las alturas: 1.457 edificios tienen
+  `height=3` en OSM (probablemente 1 piso, sin verificar).
 - Actualizar en Figma el estilo "Micro / 13 Medium" a 15/20 px.
 
 ---
