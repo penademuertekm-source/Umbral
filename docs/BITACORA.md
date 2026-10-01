@@ -4,6 +4,65 @@ Registro de lo hecho en cada fase, lo pendiente y las decisiones tomadas. La ent
 
 ---
 
+## Fase 2 · Datos y modelo de sombra en Python (en curso, 2026-10-01)
+
+Plan aprobado por la autora el 2026-10-01. **Falta correr el pipeline con OpenStreetMap real**: la red
+de este entorno bloquea `nominatim.openstreetmap.org` y `overpass-api.de` (y `api.open-meteo.com`, que se
+usará en la Fase 5). La autora los está habilitando en la configuración del entorno.
+
+### Hecho
+
+- `scripts/requirements.txt` (osmnx, geopandas, shapely, pyproj, pandas, numpy, scipy, pvlib, requests)
+  y entorno virtual en `scripts/.venv` (ignorado por git, igual que `scripts/.cache/`).
+- Comandos (funcionan en Windows, macOS y Linux gracias a `scripts/datos.mjs`):
+  - `npm run datos:preparar`: crea `scripts/.venv` e instala las dependencias;
+  - `npm run datos`: ejecuta `scripts/construir_datos.py` y regenera `public/datos/`;
+  - `npm run datos -- --solo-validacion-sol`: solo la validación del sol (sin internet);
+  - `npm run test:datos`: 12 pruebas del pipeline (unittest).
+- Módulos en `scripts/umbral_datos/`:
+  - `area.py`: geocodifica la Plaza Alfonso López, toma 700 m y guarda `area_estudio.geojson`; si el
+    archivo ya existe, no vuelve a geocodificar.
+  - `descarga_osm.py`: calles sin autopistas, edificios, árboles y plazas. Los obstáculos se descargan con
+    60 m de margen para que las aceras del borde reciban la sombra de lo que está justo afuera.
+  - `edificios.py`: altura desde `edificios_pisos.csv` → `height` de OSM → `building:levels` × 3,5 m →
+    3,5 m provisional. Cada edificio guarda su `origen_altura`. Aleros desde `aleros.csv`.
+  - `arboles.py`: `arboles.csv` → OSM → provisionales con semilla fija (60 % mango, 25 % cañaguate,
+    15 % otro; 40 % de los lados de acera, cada 12–25 m; rejilla de 10 m en plazas). Escribe el resultado
+    en `arboles.csv` para revisarlo a mano.
+  - `aceras.py`: dos aceras por arista, desplazadas según el tipo de vía, con orientación cardinal
+    (norte/sur/oriental/occidental). Muestras cada 5 m; si una cae dentro de un edificio, se acerca al eje.
+  - `horizonte.py`: perfil de 72 sectores, 60 m, 3 canales, Uint8 en pasos de 0,5°, y SVF.
+  - `lugares.py`: destinos y refugios geocodificados (el resultado se guarda en su CSV); si no aparecen,
+    quedan vacíos y se reportan. Las placas no se geocodifican.
+  - `exportar.py`, `reporte.py` y `validacion_sol.py`.
+- **Validación del sol** (`docs/validacion-sol.md`): SunCalc frente al SPA del NREL, día 15 de cada mes,
+  de 6:00 a 18:00. Separación angular máxima de **0,075°**.
+- Prueba de punta a punta con una cuadrícula sintética: genera los 13 archivos de `public/datos/` sin red.
+
+### Decisiones
+
+- **SunCalc 2.x cambió su formato**: `getPosition` da el azimut en **grados desde el norte** (sentido
+  horario) y la elevación **aparente** (con refracción), también en grados. Antes eran radianes con el
+  azimut desde el sur. El worker de la Fase 3 debe usar este formato.
+- **Perfil de horizonte por rayos**: 144 rayos (cada 2,5°) contra los segmentos de fachada (cortados a 5 m)
+  y las copas; cada sector toma el máximo de sus rayos y de los vértices de edificio que caen en él.
+- **Modelo de copas**: se guarda solo el borde superior (como pide CLAUDE.md). Un punto bajo una copa o un
+  alero queda con 90° en ese canal: siempre en sombra de ese objeto.
+- **Archivos extra** en `public/datos/`: `aceras.geojson` (una línea por lado de acera, para dibujar los
+  tramos en la Fase 4), `plazas.geojson` (mapa base) y `clima_config.json` (copia para la Fase 5).
+- **Formato de `muestras.bin`**: `n × 3 × 72` bytes en orden muestra → canal → sector. `muestras.json`
+  guarda los parámetros y, por columnas, `lon`, `lat`, `arista`, `lado` y `svf`.
+- **Texto Micro**: sube a 15/20 px (decisión de la autora).
+
+### Pendiente
+
+- Correr `npm run datos` con OSM real, revisar `docs/reporte-datos.md` (meta: `muestras.bin` < 2 MB) y
+  hacer el commit "Fase 2".
+- Si `muestras.bin` pasa de 2 MB: guardar los canales de árboles solo para los puntos que los tienen.
+- Actualizar en Figma el estilo "Micro / 13 Medium" a 15/20 px.
+
+---
+
 ## Fase 1 · Revisión contra Figma (2026-10-01)
 
 Se corroboró la página 03 de Figma (nodo 42:26) con `get_variable_defs` (44:41), `get_design_context`
@@ -123,9 +182,8 @@ Se corroboró la página 03 de Figma (nodo 42:26) con `get_variable_defs` (44:41
 
 ### Pendiente o por revisar
 
-- **Texto Micro de 13 px**: `tokens.css` (y la barra superior de Figma) usan 13 px, pero `CLAUDE.md` pide un
-  texto mínimo de 15 px. Por ahora se respetan los tokens; revisarlo en la Fase 9 (accesibilidad).
-  Propuesta: subir Micro a 15 px en Figma y en `tokens.css` a la vez.
+- ~~Texto Micro de 13 px~~: decidido con la autora el 2026-10-01. Micro sube a 15/20 px en `tokens.css`;
+  falta actualizar el estilo "Micro / 13 Medium" en Figma para que sigan iguales.
 - ~~Color del ícono en los marcadores blancos~~: resuelto en la revisión contra Figma (`base/texto`).
 - **Íconos de la PWA**: `/guia` muestra el isotipo en negativo a cada tamaño; los archivos finales y la
   versión adaptable se generan en la Fase 9.

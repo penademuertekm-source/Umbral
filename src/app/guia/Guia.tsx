@@ -88,7 +88,7 @@ const TEXT_STYLES: { className: string; nameKey: TranslationKey; spec: string; s
   { className: 'um-cuerpo', nameKey: 'guia.tipografia.cuerpo', spec: 'Regular · 17/25 px', sampleKey: 'guia.tipografia.muestraCuerpo' },
   { className: 'um-cuerpo-fuerte', nameKey: 'guia.tipografia.cuerpoFuerte', spec: 'Medium · 17/25 px', sampleKey: 'guia.tipografia.muestraCuerpoFuerte' },
   { className: 'um-etiqueta', nameKey: 'guia.tipografia.etiqueta', spec: 'Medium · 15/20 px', sampleKey: 'guia.tipografia.muestraEtiqueta' },
-  { className: 'um-micro', nameKey: 'guia.tipografia.micro', spec: 'Medium · 13/18 px', sampleKey: 'guia.tipografia.muestraMicro' },
+  { className: 'um-micro', nameKey: 'guia.tipografia.micro', spec: 'Medium · 15/20 px', sampleKey: 'guia.tipografia.muestraMicro' },
 ]
 
 const ICON_CATEGORIES = indiceIconos as Record<string, IconName[]>

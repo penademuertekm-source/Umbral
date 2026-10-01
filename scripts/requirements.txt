@@ -1,0 +1,11 @@
+# Pipeline de datos de Umbral (Fase 2). Instalar en scripts/.venv:
+#   python3 -m venv scripts/.venv && scripts/.venv/bin/pip install -r scripts/requirements.txt
+osmnx>=2.0
+geopandas>=1.0
+shapely>=2.0
+pyproj>=3.6
+pandas>=2.2
+numpy>=1.26
+pvlib>=0.11
+requests>=2.31
+scipy>=1.11

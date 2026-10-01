@@ -9,3 +9,5 @@ scripts/.venv/
 .vscode/*
 !.vscode/extensions.json
 .idea
+scripts/.cache/
+__pycache__/

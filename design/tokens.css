@@ -84,7 +84,7 @@
 .um-cuerpo       { font: 400 17px/25px var(--um-fuente); }
 .um-cuerpo-fuerte{ font: 500 17px/25px var(--um-fuente); }
 .um-etiqueta     { font: 500 15px/20px var(--um-fuente); }
-.um-micro        { font: 500 13px/18px var(--um-fuente); }
+.um-micro        { font: 500 15px/20px var(--um-fuente); } /* 2026-10-01: subido de 13/18 a 15/20 (mínimo de 15 px de CLAUDE.md); actualizar también en Figma */
 
 /* Modo "Texto grande" (Ajustes): ningún texto por debajo de 20px */
 :root[data-texto-grande="true"] .um-etiqueta,
