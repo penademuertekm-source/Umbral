@@ -23,6 +23,15 @@ CRS_GEOGRAFICO = "EPSG:4326"
 USER_AGENT = "Umbral/0.1 (prototipo academico, Areandina; mapa de sombras de Valledupar)"
 NOMINATIM_URL = "https://nominatim.openstreetmap.org/search"
 NOMINATIM_PAUSA_S = 1.1  # política de uso: máximo 1 consulta por segundo
+# Servidores públicos de Overpass, en orden de preferencia. Si uno no responde, se usa el siguiente.
+# Se pueden reemplazar con la variable de entorno UMBRAL_OVERPASS (direcciones separadas por comas).
+SERVIDORES_OVERPASS = (
+    "https://overpass-api.de/api",
+    "https://overpass.kumi.systems/api",
+    "https://overpass.private.coffee/api",
+    "https://maps.mail.ru/osm/tools/overpass/api",
+)
+OVERPASS_TIEMPO_ESPERA_S = 120
 
 # --- Calles ---
 # Se descartan autopistas y vías que no son para caminar.
