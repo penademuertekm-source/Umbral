@@ -254,6 +254,52 @@
       "tamano": "{n} px",
       "adaptable": "{n} px (adaptive)"
     },
+    "sombra": {
+      "titulo": "Shade engine",
+      "texto": "Phase 3: calculated in the browser from public/datos. All values are estimates.",
+      "fecha": "Date",
+      "hora": "Time: {hora}",
+      "temporada": "Cañaguate trees",
+      "temporadas": {
+        "automatica": "By month",
+        "seca": "Dry season (leafless)",
+        "lluvias": "Rainy season (in leaf)"
+      },
+      "cargando": "Loading the solar model of the center…",
+      "error": "Could not calculate the shade: {error}",
+      "sinSol": "No sun at this time: the sun is below the horizon.",
+      "sol": "Estimated sun: azimuth {azimut}°, elevation {elevacion}°",
+      "conteo": "{n} sidewalk sides",
+      "conHojas": "Cañaguates in leaf",
+      "sinHojas": "Cañaguates leafless",
+      "calculo": "Calculated in {ms} ms",
+      "cache": "Calculated from the quarter-hour cache",
+      "tramo": "Sample segment",
+      "elegirTramo": "Choose a segment in shade at this time",
+      "ninguno": "No named segment is in full shade at this time.",
+      "lado": "{calle} · {orientacion} sidewalk",
+      "sinNombre": "Unnamed street",
+      "porcentaje": "{pct}% of the sidewalk in shade (estimated)",
+      "canalTitulo": "Shade comes from",
+      "canal": {
+        "ninguno": "nothing",
+        "edificio": "buildings",
+        "arbol": "trees",
+        "mixto": "buildings and trees"
+      },
+      "hasta": "Full shade until {hora}",
+      "hastaAtardecer": "Full shade until sunset",
+      "noPlena": "Not in full shade at this time",
+      "perfil": "Daily profile: % of shade from 6:00 a.m. to 6:00 p.m.",
+      "perfilBarra": "{hora}: {pct}% · {estado}",
+      "sinSolEstado": "No sun",
+      "orientaciones": {
+        "norte": "north",
+        "sur": "south",
+        "oriental": "east",
+        "occidental": "west"
+      }
+    },
     "pantallas": {
       "titulo": "Screens",
       "texto": "App routes. For now almost all are empty: each one shows the phase in which it is built."

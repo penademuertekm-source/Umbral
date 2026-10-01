@@ -1,0 +1,171 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  background: var(--um-base-superficie);
+  border: 1px solid var(--um-base-borde);
+  border-radius: var(--um-radio-tarjeta);
+}
+
+.controles {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--um-esp-md);
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-xs);
+  min-width: 0;
+}
+
+.campo input[type='date'],
+.campo select {
+  min-height: var(--um-tactil-minimo);
+  max-width: 100%;
+  padding: 0 var(--um-esp-sm);
+  border: 1px solid var(--um-base-borde);
+  border-radius: var(--um-radio-control);
+  background: var(--um-base-superficie);
+  color: var(--um-base-texto);
+}
+
+.hora {
+  flex: 1 1 260px;
+}
+
+.hora input[type='range'] {
+  width: 100%;
+  min-height: var(--um-tactil-minimo);
+  accent-color: var(--um-termico-sombra-plena);
+}
+
+.temporadas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--um-esp-sm);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.temporadas legend {
+  width: 100%;
+  margin-bottom: var(--um-esp-xs);
+  padding: 0;
+}
+
+.resultado {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-sm);
+}
+
+.aviso {
+  padding: var(--um-esp-sm) var(--um-esp-md);
+  border-radius: var(--um-radio-control);
+  background: var(--um-semaforo-no-recomendado-fondo);
+  color: var(--um-semaforo-no-recomendado-texto);
+}
+
+.conteos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--um-esp-lg);
+  padding: 0;
+  list-style: none;
+}
+
+.conteo {
+  display: flex;
+  align-items: center;
+  gap: var(--um-esp-sm);
+}
+
+.secundario {
+  color: var(--um-base-texto-secundario);
+}
+
+.tramo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-md);
+  padding-top: var(--um-esp-md);
+  border-top: 1px solid var(--um-base-borde);
+}
+
+.datosTramo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--um-esp-sm) var(--um-esp-md);
+}
+
+.pildora {
+  padding: var(--um-esp-xs) 12px;
+  border-radius: var(--um-radio-chip);
+  background: var(--um-semaforo-comodo-fondo);
+  color: var(--um-semaforo-comodo-texto);
+  font-weight: 600;
+}
+
+/* Perfil del día: una barra por cuarto de hora, alto = % de sombra, color = estado del tramo */
+.perfil {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-sm);
+  max-width: 720px;
+}
+
+.barras {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 96px;
+  border-bottom: 1px solid var(--um-base-borde);
+}
+
+.barra {
+  display: flex;
+  flex: 1;
+  align-items: flex-end;
+  height: 100%;
+  min-width: 0;
+}
+
+.barra > span {
+  width: 100%;
+  border-radius: 2px 2px 0 0;
+  background: var(--color-barra);
+}
+
+.sombra {
+  --color-barra: var(--um-termico-sombra-plena);
+}
+
+.parcial {
+  --color-barra: var(--um-termico-sombra-parcial);
+}
+
+.expuesto {
+  --color-barra: var(--um-termico-exposicion);
+}
+
+.sin_sol {
+  --color-barra: var(--um-semaforo-nublado-fondo);
+}
+
+.seleccionada {
+  outline: 2px solid var(--um-base-texto);
+  outline-offset: 1px;
+  border-radius: 2px;
+}
+
+.eje {
+  display: flex;
+  justify-content: space-between;
+  color: var(--um-base-texto-secundario);
+}

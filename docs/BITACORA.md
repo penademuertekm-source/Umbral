@@ -4,6 +4,70 @@ Registro de lo hecho en cada fase, lo pendiente y las decisiones tomadas. La ent
 
 ---
 
+## Fase 3 · Motor de sombra en el navegador (2026-10-01)
+
+Plan aprobado por la autora el 2026-10-01.
+
+### Hecho
+
+- `src/config/umbrales.ts`: umbrales provisionales (sombra ≥ 70 %, parcial 30–70 %, expuesto < 30 %),
+  meses sin hojas del cañaguate (1, 2, 3), paso de 5 min para "¿hasta cuándo?" y perfil de 6:00 a 18:00
+  cada 15 min.
+- `src/sombra/modelo.ts` (cálculo puro, sin DOM): posición del sol con SunCalc 2; un punto está en sombra
+  si `elevación < horizonte[sector]` en algún canal activo; si la elevación es ≤ 0, "sin sol". Por lado de
+  acera devuelve % de sombra, estado y canal principal (`edificio`, `arbol`, `mixto` o `ninguno`).
+- `src/sombra/tiempo.ts`: hora de Valledupar (UTC−5 fijo). El cálculo y los textos usan esta hora aunque
+  el teléfono esté en otra zona (probado con el navegador en hora de Madrid).
+- `src/sombra/cargar.ts`: carga `muestras.json` y `muestras.bin.gz` y descomprime con `DecompressionStream`.
+- `src/sombra/worker.ts`: Web Worker; carga los datos una sola vez, guarda en caché por cuarto de hora
+  (hasta 200 resultados) y mide cada cálculo.
+- `src/sombra/cliente.ts`: `motorSombra.calcular(fechaHora, opciones)`, `.sombraHasta(arista, lado, desde)`,
+  `.perfilDelDia(arista, lado, fecha)` y `.lados()`. El resultado de `calcular` trae
+  `.lado(arista, lado)` para leer un lado.
+- `src/sombra/useSombra.ts`: hook `useSombra(fechaHora, temporada)`; mientras calcula una hora nueva
+  conserva el resultado anterior (sin parpadeo).
+- `/guia` → sección **Motor de sombra**: fecha, hora (6:00–18:00 cada 15 min), temporada de los
+  cañaguates, conteo de lados en sombra/parcial/expuesto, sol estimado, tiempo de cálculo y un tramo de
+  ejemplo con "Sombra plena hasta la…" y su perfil del día (49 barras con color según el estado y
+  descripción accesible por barra). Textos en es/en.
+- Pruebas: 29 en total (13 nuevas). Las tres que pide la fase (punto sin obstáculos, muro al oriente,
+  cañaguate en febrero y agosto), más umbrales, temporada forzada, `sombraHasta`, `perfilDelDia`, agrupación
+  de lados, hora de Valledupar y una con los datos reales de `public/datos`.
+
+### Mediciones (meta: < 150 ms por cálculo en un celular medio)
+
+| Dónde | Resultado |
+|---|---|
+| Node (prueba con datos reales, 49 horas del 15 de agosto) | promedio 1,1 ms, máximo 5,5 ms |
+| Chromium con la CPU frenada 4× (build de producción, 6 horas) | 0,6–1,3 ms por cálculo |
+| Primera carga en Chromium frenado 4× (página → primer resultado) | ~2 s, incluye bajar y descomprimir 1,4 MB |
+| `sombraHasta` + `perfilDelDia` de un lado | 0,6 ms |
+
+Con datos reales, el 15 de agosto: a las 12:00 hay 67 lados en sombra, 381 parciales y 556 expuestos; a las
+16:00, 444 en sombra, 297 parciales y 263 expuestos (las fachadas dan sombra en la tarde, como se espera).
+
+### Decisiones
+
+- **Temporada**: `automatica` (cañaguates sin hojas en enero, febrero y marzo), `seca` (siempre sin hojas)
+  y `lluvias` (siempre con hojas).
+- **Caché por cuarto de hora**: `calcular` redondea la hora hacia abajo al cuarto de hora.
+- **Canal principal**: si los edificios dan ≥ 70 % de la sombra del lado, `edificio`; si dan ≤ 30 %,
+  `arbol`; si no, `mixto`. Cuando un punto tiene sombra de edificio y de árbol, cuenta como edificio.
+- **`.gz` y servidores**: `vite preview` (y otros servidores) entregan el `.gz` con
+  `Content-Encoding: gzip`, así que el navegador ya lo descomprime. El cargador revisa la firma gzip antes
+  de descomprimir y funciona en los dos casos.
+- **Nombres**: la API usa los nombres del prompt de la fase (`calcular`, `sombraHasta`, `perfilDelDia`,
+  `useSombra`); lo interno va en inglés (regla 7).
+- **TypeScript de pruebas**: `tsconfig.test.json` (con tipos de Node) para los `*.test.ts`; la app
+  (`tsconfig.app.json`) no ve los tipos de Node.
+
+### Pendiente
+
+- La Fase 4 dibuja estos resultados en el mapa (`aceras.geojson` + `useSombra`).
+- Los umbrales y los meses sin hojas siguen siendo provisionales.
+
+---
+
 ## Fase 2 · Datos y modelo de sombra en Python (2026-10-01)
 
 Plan aprobado por la autora el 2026-10-01. `public/datos/` ya tiene datos reales de OpenStreetMap.

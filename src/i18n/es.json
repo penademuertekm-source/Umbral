@@ -254,6 +254,52 @@
       "tamano": "{n} px",
       "adaptable": "{n} px (adaptable)"
     },
+    "sombra": {
+      "titulo": "Motor de sombra",
+      "texto": "Fase 3: cálculo en el navegador con los datos de public/datos. Todos los valores son estimados.",
+      "fecha": "Fecha",
+      "hora": "Hora: {hora}",
+      "temporada": "Cañaguates",
+      "temporadas": {
+        "automatica": "Según el mes",
+        "seca": "Temporada seca (sin hojas)",
+        "lluvias": "Temporada de lluvias (con hojas)"
+      },
+      "cargando": "Cargando modelo solar del centro…",
+      "error": "No se pudo calcular la sombra: {error}",
+      "sinSol": "Sin sol a esta hora: el sol está bajo el horizonte.",
+      "sol": "Sol estimado: azimut {azimut}°, elevación {elevacion}°",
+      "conteo": "{n} lados de acera",
+      "conHojas": "Cañaguates con hojas",
+      "sinHojas": "Cañaguates sin hojas",
+      "calculo": "Cálculo en {ms} ms",
+      "cache": "Cálculo desde la caché del cuarto de hora",
+      "tramo": "Tramo de ejemplo",
+      "elegirTramo": "Elegir un tramo en sombra a esta hora",
+      "ninguno": "Ningún tramo con nombre está en sombra plena a esta hora.",
+      "lado": "{calle} · acera {orientacion}",
+      "sinNombre": "Calle sin nombre",
+      "porcentaje": "{pct} % de la acera en sombra (estimado)",
+      "canalTitulo": "Da la sombra",
+      "canal": {
+        "ninguno": "nada",
+        "edificio": "edificios",
+        "arbol": "árboles",
+        "mixto": "edificios y árboles"
+      },
+      "hasta": "Sombra plena hasta la {hora}",
+      "hastaAtardecer": "Sombra plena hasta que se oculta el sol",
+      "noPlena": "No está en sombra plena a esta hora",
+      "perfil": "Perfil del día: % de sombra de 6:00 a. m. a 6:00 p. m.",
+      "perfilBarra": "{hora}: {pct} % · {estado}",
+      "sinSolEstado": "Sin sol",
+      "orientaciones": {
+        "norte": "norte",
+        "sur": "sur",
+        "oriental": "oriental",
+        "occidental": "occidental"
+      }
+    },
     "pantallas": {
       "titulo": "Pantallas",
       "texto": "Rutas de la app. Por ahora casi todas están vacías: cada una indica la fase en la que se construye."

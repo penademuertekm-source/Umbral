@@ -4,5 +4,6 @@ import { afterEach } from 'vitest'
 
 afterEach(() => {
   cleanup()
-  localStorage.clear()
+  // Las pruebas con `@vitest-environment node` no tienen localStorage.
+  if (typeof localStorage !== 'undefined') localStorage.clear()
 })

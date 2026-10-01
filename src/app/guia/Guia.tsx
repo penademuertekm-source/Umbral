@@ -24,6 +24,7 @@ import type { TranslationKey } from '../../i18n/traducir'
 import { useT } from '../../i18n/useT'
 import { SCREENS } from '../pantallas'
 import s from './Guia.module.css'
+import { PanelSombra } from './PanelSombra'
 
 // Página /guia: réplica de la guía de estilo de Figma (página 03, nodo 44:41) hecha con los
 // componentes reales, más las secciones que solo existen en código (botones, componentes de
@@ -454,6 +455,10 @@ export function Guia() {
             </figure>
           ))}
         </div>
+      </Seccion>
+
+      <Seccion title={t('guia.sombra.titulo')} text={t('guia.sombra.texto')}>
+        <PanelSombra />
       </Seccion>
 
       <Seccion title={t('guia.pantallas.titulo')} text={t('guia.pantallas.texto')}>
