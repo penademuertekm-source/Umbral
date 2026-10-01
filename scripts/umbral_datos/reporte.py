@@ -18,7 +18,7 @@ def _tabla(filas: list[tuple]) -> str:
 
 def escribir(resumen: dict, archivos: list[Path]) -> None:
     c = resumen
-    tam_bin = next((a.stat().st_size for a in archivos if a.name == "muestras.bin"), 0)
+    tam_bin = next((a.stat().st_size for a in archivos if a.name.startswith("muestras.bin")), 0)
     meta_ok = "cumple" if tam_bin < config.META_MUESTRAS_BIN_BYTES else "**no cumple**"
     avisos = "\n".join(f"- {a}" for a in c["avisos"]) or "- Ninguno."
     texto = f"""# Reporte de datos · Umbral
@@ -54,6 +54,8 @@ Tramos por tipo de vía:
 {_tabla(sorted(c['alturas'].items(), key=lambda x: -x[1]))}
 | **Total** | **{c['edificios']}** |
 
+Alturas más frecuentes: {", ".join(f"{h:g} m ({n})" for h, n in c['alturas_frecuentes'])}.
+
 Aleros cargados: {c['aleros']}.
 
 ## Árboles
@@ -87,7 +89,8 @@ Origen del inventario: **{c['arboles_origen']}**.
 |---|---|
 {_tabla([(f"`{a.name}`", _kb(a.stat().st_size)) for a in archivos])}
 
-Meta: `muestras.bin` de menos de 2 MB → {_kb(tam_bin)}, {meta_ok}.
+Meta: perfiles de horizonte (`muestras.bin.gz`, comprimido con gzip) de menos de 2 MB → {_kb(tam_bin)}, {meta_ok}.
+Sin comprimir ocupan {_kb(c['muestras'] * len(config.CANALES) * config.SECTORES)}.
 
 ## Avisos
 

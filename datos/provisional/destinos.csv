@@ -1,6 +1,6 @@
 id,nombre_es,nombre_en,tipo,consulta_geocodificacion,lat,lon,fuente,provisional
 plaza-alfonso-lopez,Plaza Alfonso López,Alfonso López Square,plaza,"Plaza Alfonso López, Valledupar, Cesar, Colombia",10.477751,-73.244632,geocodificado,si
-iglesia-concepcion,Iglesia de la Concepción,Church of La Concepción,iglesia,"Iglesia de la Concepción, Valledupar, Cesar, Colombia",,,geocodificado,si
+iglesia-concepcion,Iglesia de la Concepción,Church of La Concepción,iglesia,"Inmaculada Concepción, Valledupar",,,geocodificado,si
 casa-beto-murgas,Casa Beto Murgas,Beto Murgas House,cultura,"Casa Beto Murgas, Valledupar, Cesar, Colombia",,,geocodificado,si
 mercado-publico,Mercado público,Public market,mercado,"Mercado público, Valledupar, Cesar, Colombia",,,geocodificado,si
 callejon-purrututu,Callejón de la Purrututú,Purrututú Alley,callejon,"Callejón de la Purrututú, Valledupar, Cesar, Colombia",,,geocodificado,si

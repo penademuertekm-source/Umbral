@@ -208,6 +208,7 @@ def construir(validar_sol: bool = True) -> None:
             "tipos_via": dict(Counter(red.aristas["tipo"])),
             "edificios": len(edificios),
             "alturas": dict(alturas),
+            "alturas_frecuentes": Counter(edificios["altura_m"].round(1)).most_common(3),
             "aleros": len(aleros),
             "arboles_origen": resultado_arboles.origen,
             "arboles_fuente": dict(fuentes_arboles),

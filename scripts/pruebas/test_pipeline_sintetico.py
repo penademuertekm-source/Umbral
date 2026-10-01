@@ -3,6 +3,7 @@ Prueba de punta a punta del pipeline con una cuadrícula sintética (sin red).
 Reemplaza la descarga de OSM y Nominatim, y escribe todo en una carpeta temporal.
 """
 
+import gzip
 import json
 import shutil
 import tempfile
@@ -99,14 +100,15 @@ class PipelineSintetico(unittest.TestCase):
 
             salida = tmp / "salida"
             esperados = {
-                "muestras.bin", "muestras.json", "red.geojson", "aceras.geojson", "edificios.geojson",
+                "muestras.bin.gz", "muestras.json", "red.geojson", "aceras.geojson", "edificios.geojson",
                 "manzanas.geojson", "plazas.geojson", "arboles.geojson", "destinos.json", "refugios.json",
                 "placas.json", "meta.json", "clima_config.json",
             }
             self.assertEqual({p.name for p in salida.iterdir()}, esperados)
 
             indice = json.loads((salida / "muestras.json").read_text())
-            binario = np.frombuffer((salida / "muestras.bin").read_bytes(), dtype=np.uint8)
+            self.assertEqual(indice["compresion"], "gzip")
+            binario = np.frombuffer(gzip.decompress((salida / indice["archivo"]).read_bytes()), dtype=np.uint8)
             self.assertEqual(binario.size, indice["cantidad"] * 3 * 72)
             self.assertEqual(len(indice["lon"]), indice["cantidad"])
             perfiles = binario.reshape(indice["cantidad"], 3, 72)

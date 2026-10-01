@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import gzip
 import json
 import shutil
 from pathlib import Path
@@ -15,6 +16,7 @@ from shapely.geometry import mapping
 from . import config
 
 FORMATO_MUESTRAS = 1
+ARCHIVO_MUESTRAS = "muestras.bin.gz"
 
 
 def _redondear(coords, decimales: int):
@@ -60,15 +62,21 @@ def escribir_muestras(
     svf: np.ndarray,
 ) -> dict:
     """
-    muestras.bin: Uint8, `n × 3 × 72` en orden muestra → canal → sector (216 bytes por muestra).
+    muestras.bin.gz: Uint8, `n × 3 × 72` en orden muestra → canal → sector (216 bytes por muestra),
+    comprimido con gzip (el navegador lo abre con DecompressionStream("gzip")).
     muestras.json: índice con los parámetros y, por columnas, coordenadas, arista, lado y SVF.
     """
-    (salida / "muestras.bin").write_bytes(np.ascontiguousarray(perfiles, dtype=np.uint8).tobytes())
+    crudo = np.ascontiguousarray(perfiles, dtype=np.uint8).tobytes()
+    # mtime=0: el mismo resultado da el mismo archivo (sin cambios falsos en git).
+    (salida / ARCHIVO_MUESTRAS).write_bytes(gzip.compress(crudo, compresslevel=9, mtime=0))
+    (salida / "muestras.bin").unlink(missing_ok=True)  # formato anterior, sin comprimir
     geo = gpd.GeoSeries(gpd.points_from_xy(muestras["x"], muestras["y"]), crs=config.CRS_METRICO).to_crs(
         config.CRS_GEOGRAFICO
     )
     indice = {
         "formato": FORMATO_MUESTRAS,
+        "archivo": ARCHIVO_MUESTRAS,
+        "compresion": "gzip",
         "cantidad": int(len(muestras)),
         "orden": "muestra-canal-sector",
         "bytes_por_muestra": len(config.CANALES) * config.SECTORES,
