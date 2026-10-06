@@ -20,7 +20,9 @@
   "idioma": {
     "titulo": "Language",
     "es": "Español",
-    "en": "English"
+    "en": "English",
+    "elige": "Choose your language",
+    "cambiar": "You can change it anytime in settings."
   },
   "semaforo": {
     "comodo": "Comfortable",
@@ -203,7 +205,8 @@
     "irGuia": "See the component guide",
     "noEncontrada": "We couldn't find this page.",
     "irInicio": "Go to start",
-    "lista": "Ready since Phase {fase}"
+    "lista": "Ready since Phase {fase}",
+    "enPausa": "On hold by the author's decision."
   },
   "guia": {
     "titulo": "umbral · graphic style guide",
@@ -667,5 +670,30 @@
     "mapa": "Map of places to rest",
     "boton": "See places to rest",
     "sinDatos": "There are no places to rest registered yet."
+  },
+  "inicio": {
+    "cargando": "Loading the solar model of the center…",
+    "error": "We couldn't load the center's data.",
+    "reintentar": "Try again"
+  },
+  "permiso": {
+    "titulo": "Where are you now?",
+    "texto": "We use your location and your phone's time to work out which sidewalk is in the shade right now. We don't save your route.",
+    "permitir": "Allow location",
+    "sinUbicacion": "See the center without location",
+    "buscando": "Finding your location…"
+  },
+  "fuera": {
+    "titulo": "You're outside the Historic Center",
+    "texto": "Umbral calculates shade only inside the center. You can explore it from here or get directions to it.",
+    "consejo": "If you arrive between {desde} and {hasta}, take a taxi to Alfonso López Square and walk from there in the shade.",
+    "comoLlegar": "Directions to Alfonso López Square",
+    "abreMaps": "Opens Google Maps, outside Umbral.",
+    "explorar": "Explore the center without location",
+    "centro": "Historic Center",
+    "tu": "You · {distancia}",
+    "tuSinDistancia": "You",
+    "esquema": "Diagram: you are {distancia} from the Historic Center.",
+    "esquemaSinDistancia": "Diagram of the Historic Center."
   }
 }

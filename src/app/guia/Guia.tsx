@@ -479,9 +479,11 @@ export function Guia() {
                 </span>
                 <span className={`${s.secundario} um-micro`}>
                   <code>{screen.path}</code> ·{' '}
-                  {screen.phase <= CURRENT_PHASE
-                    ? t('pantallas.lista', { fase: screen.phase })
-                    : t('pantallas.pendiente', { fase: screen.phase })}
+                  {screen.paused
+                    ? t('pantallas.enPausa')
+                    : screen.phase <= CURRENT_PHASE
+                      ? t('pantallas.lista', { fase: screen.phase })
+                      : t('pantallas.pendiente', { fase: screen.phase })}
                 </span>
               </Link>
             </li>

@@ -20,7 +20,9 @@
   "idioma": {
     "titulo": "Idioma",
     "es": "Español",
-    "en": "English"
+    "en": "English",
+    "elige": "Elige tu idioma",
+    "cambiar": "Puedes cambiarlo cuando quieras desde ajustes."
   },
   "semaforo": {
     "comodo": "Cómodo",
@@ -203,7 +205,8 @@
     "irGuia": "Ver la guía de componentes",
     "noEncontrada": "No encontramos esta página.",
     "irInicio": "Ir al inicio",
-    "lista": "Lista desde la Fase {fase}"
+    "lista": "Lista desde la Fase {fase}",
+    "enPausa": "En pausa por decisión de la autora."
   },
   "guia": {
     "titulo": "umbral · guía de estilo gráfico",
@@ -667,5 +670,30 @@
     "mapa": "Mapa de los puntos de permanencia",
     "boton": "Ver los puntos de permanencia",
     "sinDatos": "Todavía no hay puntos de permanencia registrados."
+  },
+  "inicio": {
+    "cargando": "Cargando modelo solar del centro…",
+    "error": "No pudimos cargar los datos del centro.",
+    "reintentar": "Reintentar"
+  },
+  "permiso": {
+    "titulo": "¿Dónde estás ahora?",
+    "texto": "Usamos tu ubicación y la hora de tu teléfono para calcular qué andén está en sombra en este momento. No guardamos tu recorrido.",
+    "permitir": "Permitir ubicación",
+    "sinUbicacion": "Ver el centro sin ubicación",
+    "buscando": "Buscando tu ubicación…"
+  },
+  "fuera": {
+    "titulo": "Estás fuera del Centro Histórico",
+    "texto": "Umbral calcula la sombra solo dentro del centro. Puedes explorarlo desde aquí o pedir indicaciones para llegar.",
+    "consejo": "Si llegas entre {desde} y {hasta}, ve en taxi hasta la Plaza Alfonso López y camina desde ahí por sombra.",
+    "comoLlegar": "Cómo llegar a la Plaza Alfonso López",
+    "abreMaps": "Se abre Google Maps, fuera de Umbral.",
+    "explorar": "Explorar el centro sin ubicación",
+    "centro": "Centro Histórico",
+    "tu": "Tú · {distancia}",
+    "tuSinDistancia": "Tú",
+    "esquema": "Esquema: estás a {distancia} del Centro Histórico.",
+    "esquemaSinDistancia": "Esquema del Centro Histórico."
   }
 }

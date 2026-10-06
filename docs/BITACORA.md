@@ -4,6 +4,62 @@ Registro de lo hecho en cada fase, lo pendiente y las decisiones tomadas. La ent
 
 ---
 
+## Fase 8 · Entrada y contexto (2026-10-06)
+
+Decisiones de la autora al revisar el plan:
+
+- **Las placas QR quedan en pausa hasta nuevo aviso**: pantallas 08 (`?placa=`, `/qr/<id>`), 12
+  (`/placa/<id>`) y `/placas`. En `/guia` y en sus rutas se lee "En pausa por decisión de la autora". Siguen
+  sin coordenadas las dos placas de `placas_qr.csv`. Para "Calle Grande con Cra. 7" no se pudo confirmar
+  qué calle actual es la Calle Grande (un hotel con ese nombre está en la Carrera 7 # 15-85).
+- La pantalla 03 se hace **solo como dice la especificación**. El resto de la observación 3 (pasos según
+  el teléfono, aviso de dirección no segura, reintentar) sigue en espera.
+
+### Hecho
+
+- **Flujo de entrada**: primer uso 01 → 02 → 03 → 04; usos siguientes 01 → 04. El primer uso termina al
+  pasar por la 03 (`umbral.bienvenida`); el idioma se guarda en `umbral.idioma`. La lógica pura y sus
+  pruebas están en `src/app/entrada/entrada.ts`.
+- **01 · Inicio** (`/`): fondo verde, isotipo en negativo, "umbral" en Archivo Black, lema y "Cargando
+  modelo solar del centro…".
+  - Mientras se ve, carga los datos del centro y el motor de sombra, y descarga el mapa en paralelo.
+  - Dura al menos 0,5 s. Si falla la carga, ofrece "Reintentar".
+- **02 · Idioma** (`/idioma`): "Elige tu idioma / Choose your language", cada parte con su atributo
+  `lang`. Viene marcado el idioma del teléfono y abajo dice "Puedes cambiarlo cuando quieras desde ajustes".
+- **03 · Ubicación** (`/ubicacion`):
+  - Título "¿Dónde estás ahora?", para qué se usa la ubicación y "No guardamos tu recorrido".
+  - "Permitir ubicación" pide el permiso. Si la persona está dentro del centro va al mapa; si está fuera,
+    a la 21. Si no hay permiso o falla, va al mapa sin ubicación.
+- **21 · Fuera del Centro Histórico** (`/fuera-del-centro`):
+  - Esquema (no a escala) con el centro y la persona en la dirección real, y "Tú · 2,4 km".
+  - Consejo de llegar en taxi entre las 11:00 a. m. y las 3:00 p. m.
+  - "Cómo llegar a la Plaza Alfonso López" es un enlace universal de Google Maps, sin clave, y avisa que
+    se sale de Umbral.
+  - "Explorar el centro sin ubicación" lleva al mapa.
+  - Se abre desde la 03 y desde el botón "mi ubicación" del mapa cuando la posición queda fuera del
+    centro. La posición viaja en el estado de la navegación, nunca en la dirección, para que no llegue al
+    servidor si se recarga la página.
+- `translateIn` (`src/i18n/diccionarios.ts`) traduce en un idioma concreto, para los textos bilingües.
+- Pruebas: 85 en total (3 nuevas).
+
+### Verificación en Chromium (390 × 844 y 360 × 844, build de producción)
+
+- Primer uso: inicio → idioma (Español marcado) → elegir English → "Where are you now?" → "See the
+  center without location" → mapa, con `lang="en"` en `<html>` y la bienvenida guardada.
+- Segundo uso: `/` lleva al mapa en 0,56 s.
+- Permiso concedido dentro del centro: mapa. Concedido fuera (2,4 km): pantalla 21 con el enlace
+  `…/maps/dir/?api=1&destination=10.477751%2C-73.244632`. Rechazado: mapa sin ubicación.
+- Botón "mi ubicación" en el mapa con la posición fuera del centro: pantalla 21.
+- `/qr/calle-grande-cra7` y `/guia` muestran las placas en pausa. Sin desbordes y sin errores en la consola.
+
+### Pendiente
+
+- Placas QR (08, 12 y `/placas`): en pausa hasta que la autora lo indique. Al retomarlas hay que ubicar las
+  dos placas y definir `VITE_URL_PUBLICA`.
+- La nota de la 02 menciona Ajustes, que se construye en la Fase 9.
+
+---
+
 ## Fase 7 · Recorrido completo (2026-10-06)
 
 La autora aprobó el plan el 2026-10-06. Decisión aprobada: el recorrido real usa la hora a la que empieza;

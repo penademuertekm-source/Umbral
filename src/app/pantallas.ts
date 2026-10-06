@@ -11,10 +11,12 @@ export interface ScreenDef {
   figmaNode: string
   /** Fase de docs/PROMPTS.md en la que se construye. */
   phase: number
+  /** En pausa por decisión de la autora (no se construye hasta nuevo aviso). */
+  paused?: boolean
 }
 
 /** Última fase terminada (docs/PROMPTS.md): las pantallas de esta fase o anteriores ya están construidas. */
-export const CURRENT_PHASE = 7
+export const CURRENT_PHASE = 8
 
 // Las 23 pantallas de la especificación. Las que aún no se construyen usan PantallaPendiente.
 // La 08 se abrirá también con ?placa=<id> (Fase 8); la 17 es solo una referencia del semáforo.
@@ -26,11 +28,11 @@ export const SCREENS: readonly ScreenDef[] = [
   { number: '05', nameKey: 'pantallas.p05', path: '/buscar', figmaNode: '4:2', phase: 6 },
   { number: '06', nameKey: 'pantallas.p06', path: '/rutas', figmaNode: '4:42', phase: 6 },
   { number: '07', nameKey: 'pantallas.p07', path: '/tramo/:id', examplePath: '/tramo/89', figmaNode: '5:2', phase: 4 },
-  { number: '08', nameKey: 'pantallas.p08', path: '/qr/:id', examplePath: '/qr/calle-grande-cra7', figmaNode: '5:46', phase: 8 },
+  { number: '08', nameKey: 'pantallas.p08', path: '/qr/:id', examplePath: '/qr/calle-grande-cra7', figmaNode: '5:46', phase: 8, paused: true },
   { number: '09', nameKey: 'pantallas.p09', path: '/el-nino', figmaNode: '6:2', phase: 5 },
   { number: '10', nameKey: 'pantallas.p10', path: '/refugios', figmaNode: '6:21', phase: 7 },
   { number: '11', nameKey: 'pantallas.p11', path: '/ajustes', figmaNode: '7:2', phase: 9 },
-  { number: '12', nameKey: 'pantallas.p12', path: '/placa/:id', examplePath: '/placa/calle-grande-cra7', figmaNode: '7:40', phase: 8 },
+  { number: '12', nameKey: 'pantallas.p12', path: '/placa/:id', examplePath: '/placa/calle-grande-cra7', figmaNode: '7:40', phase: 8, paused: true },
   { number: '13', nameKey: 'pantallas.p13', path: '/recorrido', figmaNode: '13:35', phase: 7 },
   { number: '14', nameKey: 'pantallas.p14', path: '/sin-conexion', figmaNode: '13:77', phase: 9 },
   { number: '15', nameKey: 'pantallas.p15', path: '/cuando-salir', figmaNode: '32:35', phase: 6 },

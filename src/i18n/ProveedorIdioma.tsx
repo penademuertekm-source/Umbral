@@ -1,11 +1,7 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
-import en from './en.json'
-import es from './es.json'
 import { I18nContext, type I18nValue } from './contexto'
+import { translateIn } from './diccionarios'
 import { initialLanguage, storeLanguage, type Language } from './idioma'
-import { interpolate, lookup, type Dictionary } from './traducir'
-
-const DICTIONARIES: Record<Language, Dictionary> = { es, en }
 
 export function ProveedorIdioma({ children }: { children: ReactNode }) {
   const [language, setLanguageState] = useState<Language>(initialLanguage)
@@ -24,8 +20,7 @@ export function ProveedorIdioma({ children }: { children: ReactNode }) {
     () => ({
       language,
       setLanguage,
-      t: (key, vars) =>
-        interpolate(lookup(DICTIONARIES[language], key) ?? lookup(DICTIONARIES.es, key) ?? key, vars),
+      t: (key, vars) => translateIn(language, key, vars),
     }),
     [language, setLanguage],
   )

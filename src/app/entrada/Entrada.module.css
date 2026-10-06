@@ -1,0 +1,169 @@
+/* Pantallas de entrada: 01 (inicio), 02 (idioma), 03 (ubicación) y 21 (fuera del centro). */
+
+.inicio {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--um-esp-md);
+  min-height: 100dvh;
+  padding: var(--um-esp-xl) 40px;
+  background: var(--um-termico-sombra-plena);
+  color: var(--um-base-texto-inverso);
+}
+
+.isotipoGrande {
+  align-self: center;
+  margin-bottom: var(--um-esp-xl);
+}
+
+.palabra {
+  font-family: var(--um-fuente-logo);
+  font-size: 56px;
+  line-height: 1;
+  text-transform: lowercase;
+}
+
+.claro {
+  color: var(--um-semaforo-comodo-fondo);
+}
+
+.cargando {
+  position: absolute;
+  bottom: max(var(--um-esp-xl), env(safe-area-inset-bottom));
+  left: 40px;
+  right: 40px;
+}
+
+.pagina {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-md);
+  min-height: 100dvh;
+  padding: var(--um-esp-xl) var(--um-esp-lg);
+  padding-bottom: max(var(--um-esp-xl), env(safe-area-inset-bottom));
+}
+
+.centrada {
+  justify-content: center;
+}
+
+.marca {
+  margin-bottom: auto;
+}
+
+.relleno {
+  flex: 1;
+}
+
+.secundario {
+  color: var(--um-base-texto-secundario);
+}
+
+.botones {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-sm);
+  margin-top: var(--um-esp-sm);
+}
+
+/* Pantalla 03: círculo menta con el punto de ubicación. */
+.ilustracion {
+  display: grid;
+  place-items: center;
+  align-self: center;
+  width: 120px;
+  height: 120px;
+  margin-bottom: var(--um-esp-lg);
+  border-radius: 50%;
+  background: var(--um-semaforo-comodo-fondo);
+}
+
+.ilustracion::after {
+  content: '';
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--um-termico-sombra-plena);
+}
+
+/* Pantalla 21: esquema (no a escala) del centro y la persona. */
+.esquema {
+  position: relative;
+  aspect-ratio: 342 / 250;
+  overflow: hidden;
+  border-radius: var(--um-radio-tarjeta);
+  background: var(--um-mapa-fondo);
+}
+
+.esquema svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.manzana {
+  fill: var(--um-mapa-manzana);
+}
+
+.zona {
+  fill: var(--um-semaforo-comodo-fondo);
+  fill-opacity: 0.85;
+  stroke: var(--um-termico-sombra-plena);
+  stroke-width: 2;
+  stroke-dasharray: 6 5;
+}
+
+.linea {
+  stroke: var(--um-base-texto-secundario);
+  stroke-width: 2;
+  stroke-dasharray: 2 5;
+  stroke-linecap: round;
+}
+
+.persona {
+  fill: var(--um-mapa-usuario);
+  stroke: var(--um-base-superficie);
+  stroke-width: 3;
+}
+
+.etiqueta {
+  position: absolute;
+  padding: 4px 10px;
+  border-radius: var(--um-radio-control);
+  background: var(--um-base-superficie);
+  color: var(--um-base-texto);
+  box-shadow: var(--um-elevacion-flotante);
+  font-weight: 600;
+  white-space: nowrap;
+  transform: translate(-50%, 0);
+}
+
+.etiquetaCentro {
+  color: var(--um-termico-sombra-plena);
+}
+
+.consejo {
+  display: flex;
+  align-items: center;
+  gap: var(--um-esp-md);
+  padding: var(--um-esp-md);
+  border-radius: var(--um-radio-tarjeta);
+  background: var(--um-semaforo-evitar-fondo);
+  color: var(--um-semaforo-evitar-texto);
+}
+
+.consejoIcono {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--um-radio-control);
+  background: var(--um-base-superficie);
+}
+
+.enlaceBoton {
+  text-decoration: none;
+}

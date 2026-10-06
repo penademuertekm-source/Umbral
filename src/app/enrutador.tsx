@@ -6,6 +6,10 @@ import { RutaMapa, RutaMapaNublado, TramoEnMapa } from './mapa/rutas'
 import { Marco } from './Marco'
 import { NoEncontrada } from './NoEncontrada'
 import { PantallaPendiente } from './PantallaPendiente'
+import { FueraDelCentro } from './entrada/FueraDelCentro'
+import { Idioma } from './entrada/Idioma'
+import { Inicio } from './entrada/Inicio'
+import { Ubicacion } from './entrada/Ubicacion'
 import { PantallaAvisoCalor, PantallaProteccionSolar } from './recorrido/PantallasEjemplo'
 import { RutaLlegada, RutaRecorrido, RutaRefugios } from './recorrido/rutas'
 import { RutaBuscar, RutaComparacion, RutaCuandoSalir, RutaSinSombra } from './rutas/rutas'
@@ -17,6 +21,10 @@ const basename = import.meta.env.BASE_URL.replace(/\/$/, '') || '/'
 
 /** Pantallas ya construidas; el resto muestra PantallaPendiente. */
 const BUILT: Record<string, ReactNode> = {
+  '/': <Inicio />,
+  '/idioma': <Idioma />,
+  '/ubicacion': <Ubicacion />,
+  '/fuera-del-centro': <FueraDelCentro />,
   '/mapa': <RutaMapa />,
   '/tramo/:id': <TramoEnMapa />,
   '/el-nino': <PantallaElNino />,

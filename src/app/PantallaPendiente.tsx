@@ -17,7 +17,7 @@ export function PantallaPendiente({ screen }: { screen: ScreenDef }) {
         <p className={`${s.meta} um-etiqueta`}>
           {t('pantallas.numero', { n: screen.number })} · {t('pantallas.nodo', { nodo: screen.figmaNode })}
         </p>
-        <p className="um-cuerpo">{t('pantallas.pendiente', { fase: screen.phase })}</p>
+        <p className="um-cuerpo">{screen.paused ? t('pantallas.enPausa') : t('pantallas.pendiente', { fase: screen.phase })}</p>
         <a className="um-cuerpo-fuerte" href={figmaNodeUrl(screen.figmaNode)} target="_blank" rel="noreferrer">
           {t('pantallas.verFigma')}
         </a>

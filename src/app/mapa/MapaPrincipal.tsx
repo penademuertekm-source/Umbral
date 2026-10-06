@@ -184,6 +184,13 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
 
   // Ubicación: solo con permiso; el botón la pide y centra el mapa.
   const [focusUser, setFocusUser] = useState(0)
+  // Pantalla 21: si al pedir la ubicación resulta que está fuera del centro (la posición va en el estado de
+  // la navegación, nunca en la dirección).
+  useEffect(() => {
+    if (focusUser > 0 && gpsOutside && ubicacion.position) {
+      navigate('/fuera-del-centro', { state: { point: ubicacion.position } })
+    }
+  }, [focusUser, gpsOutside, ubicacion.position, navigate])
   const locationMessage =
     ubicacion.status === 'denegada'
       ? t('mapa.ubicacionDenegada')
