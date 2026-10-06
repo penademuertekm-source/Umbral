@@ -4,6 +4,28 @@ Registro de lo hecho en cada fase, lo pendiente y las decisiones tomadas. La ent
 
 ---
 
+## Ajuste · Ubicación de los destinos que faltaban (2026-10-06)
+
+A pedido de la autora se buscaron las coordenadas de los tres destinos sin ubicación. Quedan marcados
+como provisionales, con su origen en la columna `fuente`, y conviene verificarlos en campo.
+
+| Destino | Coordenadas | Fuente | Distancia a la plaza |
+|---|---|---|---|
+| Casa Beto Murgas (Museo del Acordeón) | 10.478679, −73.259661 | OpenStreetMap vía Nominatim; dirección Carrera 17 # 9A-18, barrio San Joaquín (coincide con la web del museo) | ≈ 1,6 km: **fuera del área de estudio** |
+| Mercado público | ≈ 10.4670, −73.2630 | Dirección publicada en Waze (Carrera 20 con Calle 14) cruzada con las calles de OpenStreetMap; no está en OSM con nombre | ≈ 2,3 km: **fuera del área de estudio** |
+| Callejón de la Purrututú | ≈ 10.47895, −73.24644 | Centro de la manzana entre las carreras 6 y 7 y las calles 13C y 14 (El Pilón y otras fuentes); el callejón no está en OSM | ≈ 240 m: dentro del área |
+
+- Se actualizaron `datos/provisional/destinos.csv`, `refugios.csv` (el callejón también es refugio),
+  `public/datos/destinos.json` y `refugios.json`. El pipeline usa las coordenadas del CSV si existen, así
+  que se conservan al volver a generar los datos.
+- `fuente`: `nominatim_direccion` (museo), `direccion_aproximada` (mercado) y `descripcion_aproximada`
+  (callejón).
+- La prueba sintética del pipeline ya no depende de que haya destinos sin coordenadas en los datos reales:
+  agrega su propio destino sin ubicar.
+- Pendiente de decisión: qué hacer con los dos destinos fuera del área (el área es un círculo de 700 m).
+
+---
+
 ## Observaciones de la autora en espera (2026-10-06)
 
 La autora dejó dos observaciones de sus pruebas en `docs/observaciones-autora.md`: tramos sin nombre y

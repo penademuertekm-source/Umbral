@@ -1,5 +1,5 @@
 id,nombre,tipo,descripcion_es,descripcion_en,asientos,agua_potable,cubierto,consulta_geocodificacion,lat,lon,fuente,provisional
 ref-plaza,Plaza Alfonso López,arbolado,Bancas bajo mangos,Benches under mango trees,si,no,no,"Plaza Alfonso López, Valledupar, Cesar, Colombia",10.477751,-73.244632,geocodificado,si
 ref-atrio-concepcion,Atrio de la Concepción,fachada,Sombra de fachada · sin asientos,Facade shade · no seating,no,no,parcial,"Inmaculada Concepción, Valledupar",10.478138,-73.244206,geocodificado,si
-ref-purrututu,Callejón de la Purrututú,callejon,Sección estrecha · sombra continua,Narrow lane · continuous shade,no,no,no,"Callejón de la Purrututú, Valledupar, Cesar, Colombia",,,geocodificado,si
+ref-purrututu,Callejón de la Purrututú,callejon,Sección estrecha · sombra continua,Narrow lane · continuous shade,no,no,no,"Callejón de la Purrututú, Valledupar, Cesar, Colombia",10.478950,-73.246440,descripcion_aproximada,si
 ref-parque-leyenda,Parque de la Leyenda,arbolado,Arbolado denso · agua potable,Dense trees · drinking water,si,si,no,"Parque de la Leyenda, Valledupar",10.496740,-73.264606,geocodificado,si

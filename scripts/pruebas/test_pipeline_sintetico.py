@@ -82,6 +82,9 @@ class PipelineSintetico(unittest.TestCase):
             (provisionales / "arboles.csv").write_text(
                 (config.DATOS_PROVISIONALES / "arboles.csv").read_text(encoding="utf-8").splitlines()[0] + "\n"
             )
+            # Un destino sin coordenadas: el geocodificador (simulado) no lo encuentra y el reporte lo avisa.
+            with (provisionales / "destinos.csv").open("a", encoding="utf-8") as destinos:
+                destinos.write('destino-sin-ubicar,Destino sin ubicar,Unknown place,otro,"Lugar inventado, Valledupar",,,geocodificado,si\n')
             (tmp / "docs").mkdir()
             vacio = gpd.GeoDataFrame(geometry=[], crs=config.CRS_GEOGRAFICO)
             with (
