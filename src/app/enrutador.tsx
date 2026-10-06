@@ -1,11 +1,13 @@
 import type { ReactNode } from 'react'
 import { createBrowserRouter } from 'react-router'
+import { PantallaElNino } from './elnino/PantallaElNino'
 import { Guia } from './guia/Guia'
-import { RutaMapa, TramoEnMapa } from './mapa/rutas'
+import { RutaMapa, RutaMapaNublado, TramoEnMapa } from './mapa/rutas'
 import { Marco } from './Marco'
 import { NoEncontrada } from './NoEncontrada'
 import { PantallaPendiente } from './PantallaPendiente'
 import { SCREENS } from './pantallas'
+import { ReferenciaSemaforo } from './semaforo/ReferenciaSemaforo'
 
 // La app puede publicarse en una subcarpeta (GitHub Pages, Fase 10): se respeta la base de Vite.
 const basename = import.meta.env.BASE_URL.replace(/\/$/, '') || '/'
@@ -14,6 +16,9 @@ const basename = import.meta.env.BASE_URL.replace(/\/$/, '') || '/'
 const BUILT: Record<string, ReactNode> = {
   '/mapa': <RutaMapa />,
   '/tramo/:id': <TramoEnMapa />,
+  '/el-nino': <PantallaElNino />,
+  '/semaforo': <ReferenciaSemaforo />,
+  '/mapa/nublado': <RutaMapaNublado />,
 }
 
 export const router = createBrowserRouter(

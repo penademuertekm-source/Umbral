@@ -3,3 +3,27 @@
   inset: 0;
   background: var(--um-mapa-fondo);
 }
+
+/* Etiqueta de lugar cubierto (pantalla 20, nodo 34:167) */
+.lugar {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--um-esp-sm);
+  padding: var(--um-esp-xs) var(--um-esp-md) var(--um-esp-xs) var(--um-esp-xs);
+  border-radius: var(--um-radio-chip);
+  background: var(--um-base-superficie);
+  color: var(--um-base-texto);
+  box-shadow: var(--um-elevacion-flotante);
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.lugarIcono {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--um-semaforo-nublado-fondo);
+  color: var(--um-semaforo-nublado-texto);
+}

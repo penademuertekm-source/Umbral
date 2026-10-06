@@ -13,6 +13,15 @@ export function RutaMapa() {
   )
 }
 
+/** Pantalla 20: el mapa con el cielo nublado, simulado y rotulado como simulación. */
+export function RutaMapaNublado() {
+  return (
+    <Suspense>
+      <MapaPrincipal simulateCloudy />
+    </Suspense>
+  )
+}
+
 /** Pantalla 07: la ficha es una hoja sobre el mapa, así que /tramo/:id abre el mapa con ese tramo elegido. */
 export function TramoEnMapa() {
   const { id = '' } = useParams()

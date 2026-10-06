@@ -1,0 +1,102 @@
+/* Pantalla 09 (Figma, nodo 6:2): franja ámbar, texto y botón "Entendido" al pie. */
+
+.dialogo {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: var(--um-base-velo);
+}
+
+.dialogo .pantalla {
+  max-width: var(--app-ancho-max);
+  height: 100%;
+  margin: 0 auto;
+  overflow-y: auto;
+}
+
+.pantalla {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  background: var(--um-base-fondo);
+}
+
+.dialogo .pantalla {
+  min-height: 0;
+}
+
+.cabecera {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-md);
+  padding: max(var(--um-esp-xl), env(safe-area-inset-top)) var(--um-esp-lg) var(--um-esp-lg);
+  background: var(--um-semaforo-evitar-forma);
+  /* Texto grande (24 px, 600) sobre ámbar: 3,4:1, cumple AA para texto grande. */
+  color: var(--um-semaforo-precaucion-texto);
+}
+
+.signo {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--um-base-superficie);
+  color: var(--um-semaforo-evitar-forma);
+  font: 700 32px/1 var(--um-fuente);
+}
+
+.cuerpo {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--um-esp-md);
+  padding: var(--um-esp-lg);
+}
+
+.ejemplo {
+  padding: var(--um-esp-sm) var(--um-esp-md);
+  border-radius: var(--um-radio-control);
+  background: var(--um-semaforo-nublado-fondo);
+  color: var(--um-semaforo-nublado-texto);
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-md);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--um-base-texto-secundario);
+}
+
+.lista li {
+  position: relative;
+  padding-left: var(--um-esp-lg);
+}
+
+.lista li::before {
+  content: '';
+  position: absolute;
+  top: 0.55em;
+  left: 2px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--um-semaforo-evitar-forma);
+}
+
+.fuente {
+  color: var(--um-base-texto-secundario);
+}
+
+.acciones {
+  padding: var(--um-esp-md) var(--um-esp-lg) max(var(--um-esp-lg), env(safe-area-inset-bottom));
+}

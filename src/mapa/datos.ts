@@ -39,6 +39,18 @@ export interface TreeProps {
   fuente: string
 }
 
+/** Lugar para resguardarse (public/datos/refugios.json). Sin coordenadas si no se encontró en OSM. */
+export interface Refuge {
+  id: string
+  nombre: string
+  tipo: string
+  descripcion: { es: string; en: string }
+  cubierto: 'si' | 'parcial' | 'no'
+  lat: number | null
+  lon: number | null
+  provisional: boolean
+}
+
 export interface Meta {
   datos_provisionales: boolean
   area: { centro: [number, number]; bbox: [number, number, number, number] }
@@ -52,6 +64,7 @@ export interface MapData {
   red: FeatureCollection<LineString, EdgeProps>
   aceras: FeatureCollection<LineString, SidewalkProps>
   arboles: FeatureCollection<Point, TreeProps>
+  refugios: Refuge[]
 }
 
 let cache: Promise<MapData> | null = null
@@ -71,8 +84,9 @@ export function loadMapData(): Promise<MapData> {
     getJson<MapData['red']>('red.geojson'),
     getJson<MapData['aceras']>('aceras.geojson'),
     getJson<MapData['arboles']>('arboles.geojson'),
+    getJson<Refuge[]>('refugios.json'),
   ])
-    .then(([meta, manzanas, edificios, plazas, red, aceras, arboles]) => ({
+    .then(([meta, manzanas, edificios, plazas, red, aceras, arboles, refugios]) => ({
       meta,
       manzanas,
       edificios,
@@ -80,6 +94,7 @@ export function loadMapData(): Promise<MapData> {
       red,
       aceras,
       arboles,
+      refugios,
     }))
     .catch((error: unknown) => {
       cache = null

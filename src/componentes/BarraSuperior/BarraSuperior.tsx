@@ -12,10 +12,12 @@ interface BarraSuperiorProps {
   /** UTCI estimado en °C; `null` muestra "—" (sin dato). */
   utciSun?: number | null
   utciShade?: number | null
+  /** Nota al final de la línea del UTCI, p. ej. "dato de las 9:00 a. m." cuando el clima viene guardado. */
+  note?: string
 }
 
 /** Barra superior de 112 px: hora, semáforo y línea de UTCI estimado. */
-export function BarraSuperior({ time, level, levelLabel, utciSun = null, utciShade = null }: BarraSuperiorProps) {
+export function BarraSuperior({ time, level, levelLabel, utciSun = null, utciShade = null, note }: BarraSuperiorProps) {
   const { t } = useT()
   const degrees = (value: number | null) =>
     value === null ? t('comun.sinDato') : t('comun.grados', { valor: Math.round(value) })
@@ -27,6 +29,7 @@ export function BarraSuperior({ time, level, levelLabel, utciSun = null, utciSha
       </div>
       <p className={`${s.utci} um-micro`}>
         {t('barra.utci', { sol: degrees(utciSun), sombra: degrees(utciShade) })}
+        {note && ` · ${note}`}
       </p>
     </header>
   )

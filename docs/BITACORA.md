@@ -4,6 +4,97 @@ Registro de lo hecho en cada fase, lo pendiente y las decisiones tomadas. La ent
 
 ---
 
+## Fase 5 · Clima, UTCI y semáforo (2026-10-06)
+
+Plan aprobado por la autora el 2026-10-06.
+
+### Hecho
+
+- **Clima** (`src/clima/openMeteo.ts`): pronóstico horario de Open-Meteo para hoy y mañana en el centro del
+  área (nunca la ubicación de la persona), con `timezone=America/Bogota`, viento en m/s y
+  `timeformat=unixtime`. Se guarda en `localStorage` (`umbral.clima`) con la hora de descarga y se renueva
+  cada hora. Sin conexión se usa el guardado y la barra dice "dato de las {hora}".
+- **UTCI** (`src/clima/utci.ts`): a la sombra, Trm = Ta; al sol, Trm = Ta + ΔTrm con SolarCal. Usa
+  `jsthermalcomfort` (MIT, CBE de Berkeley) importando solo `utci` y `solar_gain`. Método y supuestos en
+  `docs/metodo-utci.md`.
+- **Reglas** (`src/config/reglas-semaforo.ts`): categorías del UTCI, nivel general, nivel de ruta (para la
+  Fase 6), El Niño, perfil vulnerable y estado nublado. Los cuatro ejemplos de la pantalla 17 son casos de prueba.
+- **Barra superior** del mapa: hora del deslizador, semáforo y "UTCI estimado · al sol X° · a la sombra Y°"
+  con el clima de esa hora. La ficha del tramo (07) muestra ahora "34° sombra · 42° sol".
+  Atribución visible: "© colaboradores de OpenStreetMap · Clima: Open-Meteo".
+- **Pantalla 20** (nublado): con nubosidad ≥ 80 % y riesgo bajo, tramos en gris, sin árboles ni leyenda,
+  tarjeta "Está nublado: la sombra pesa menos ahora" con la lluvia más probable de las próximas 3 horas,
+  etiquetas de los lugares cubiertos (`refugios.json`) y botón "Buscar una ruta". `/mapa/nublado` muestra
+  el mismo estado simulado (90 % de nubes, sin sol directo) con el chip "Simulación: cielo nublado".
+- **Pantalla 09** (El Niño): si `el_nino_activo` es verdadero, aparece sobre el mapa una vez por día
+  (`umbral.elNinoVisto`), con la fuente y la fecha del indicador. También en `/el-nino` (si el indicador
+  está apagado, la página dice que es una vista de ejemplo).
+- **Pantalla 17** en `/semaforo`: los cuatro niveles con los valores de ejemplo de Figma (el nivel lo
+  calculan las reglas) y el simulador.
+- **Simulador** en `/guia` y `/semaforo`: temperatura, humedad, viento, radiación directa, elevación del
+  sol, nubosidad, minutos al sol, El Niño y perfil; botones con un ejemplo para cada uno de los 5 estados.
+- `scripts/copiar_clima_config.mjs` copia `datos/provisional/clima_config.json` a `public/datos/` antes de
+  `npm run dev` y `npm run build`.
+- La lista de pantallas de `/guia` dice "Lista desde la Fase N" para las ya construidas (04, 07, 09, 17 y 20).
+- Pruebas: 61 en total (27 nuevas): reglas del semáforo, UTCI y SolarCal contra tablas de referencia,
+  cliente de Open-Meteo y su caché, y estado térmico de una hora.
+
+### Open-Meteo: lo verificado en la documentación oficial
+
+- Fuente: https://open-meteo.com/en/docs y https://open-meteo.com/en/terms (consultadas el 2026-10-06).
+- Nombres de variables confirmados: `temperature_2m`, `relative_humidity_2m`, `wind_speed_10m`,
+  `shortwave_radiation`, `direct_radiation`, `diffuse_radiation`, `direct_normal_irradiance`, `cloud_cover`,
+  `uv_index` y `precipitation_probability`. Se agregó `direct_normal_irradiance`, que necesita SolarCal.
+- Validez: temperatura, humedad, viento y nubosidad son instantáneas. La radiación es el **promedio de la
+  hora anterior** y la probabilidad de lluvia es **de la hora anterior**. Regla de la app: para las 10:15
+  se interpolan los instantáneos entre 10:00 y 11:00, y la radiación y la lluvia salen del registro de las
+  11:00.
+- Condiciones de uso (API gratuita): solo uso no comercial; menos de 10.000 llamadas al día, 5.000 por hora
+  y 600 por minuto; licencia CC BY 4.0 con atribución. La app hace como máximo una llamada por hora y por
+  dispositivo.
+
+### Verificación en Chromium (390 × 844, build de producción, Open-Meteo simulado)
+
+Desde la sesión en la nube no se llega a `api.open-meteo.com` (la conexión se agota; la documentación sí
+abre). Por eso el navegador se probó con respuestas simuladas con la misma forma que las de Open-Meteo:
+
+- Día despejado, 12:00: "Evitar a pie", UTCI 42° al sol y 34° a la sombra; la ficha muestra lo mismo.
+- Cielo cubierto, 3:15 p. m.: "Nublado · riesgo bajo", tramos grises, tarjeta con "60 % de lluvia a las
+  5:00 p. m.", etiqueta del Atrio de la Concepción y botón "Buscar una ruta".
+- El Niño activo: el aviso sale al abrir, el foco queda en "Entendido", no vuelve a salir al recargar y el
+  mediodía pasa a "No recomendado".
+- Sin conexión con un pronóstico de hace 3 horas: "… · dato de las 4:44 a. m."; sin conexión y sin
+  pronóstico: chip neutro "Sin datos de clima" y UTCI "—".
+- Simulador: cada ejemplo da su estado (cómodo, precaución, evitar, no recomendado y nublado).
+- Una sola llamada a Open-Meteo con la URL esperada, sin errores en la consola y sin desbordes.
+
+### Decisiones
+
+- **Albedo del suelo 0,2** en SolarCal (asfalto y concreto) en lugar del 0,6 de ASHRAE (pensado para
+  interiores): con 0,6, un mediodía típico daba un UTCI al sol de ≈ 48 °C; con 0,2 da ≈ 42 °C, del orden de
+  los ejemplos de la pantalla 17. Otros supuestos: de pie, sol de costado y cielo abierto.
+- **Límite de Trm − Ta**: el plan decía +30 °C porque así lo dice la documentación de la librería, pero su
+  código y Bröde et al. (2012) aceptan +70 °C. Se usa +70; en la práctica no se alcanza.
+- **"Nublado · riesgo bajo"** solo si el nivel, ya endurecido, no pasa de "Precaución". Con más riesgo se
+  muestra el nivel de calor aunque esté nublado, para no decir "riesgo bajo" a quien no corresponde.
+- **El Niño** endurece un nivel desde "Precaución" (estrés fuerte o más), como dice la pantalla 17
+  ("estrés muy fuerte o El Niño activo" → nivel 4).
+- **Nivel de ruta**: UTCI = sombra + (sol − sombra) × min(1, minutos al sol / 10).
+- **`clima_config.json`**: `fuente_el_nino` pasó a "Boletín del IDEAM" (se muestra en la pantalla 09) y la
+  instrucción de actualizarlo a mano quedó en `nota`.
+- **Peso**: la guía y la pantalla 17 cargan el UTCI en el paquete principal (+35 kB; mathjs no entra).
+
+### Pendiente
+
+- Ver en el celular, con internet, que la barra muestre el clima de hoy (desde la nube no se pudo).
+- Calibrar los umbrales y los supuestos de SolarCal con las mediciones de campo.
+- La pantalla 09 promete rutas más protegidas (Fase 6), puntos de hidratación y el aviso de 11 a 3
+  (Fase 7). El perfil de calor se elige en la Fase 9; hasta entonces se usa "estándar".
+- Solo el Atrio de la Concepción tiene coordenadas entre los lugares cubiertos; faltan el Mercado público
+  y otros (datos de campo).
+
+---
+
 ## Fase 4 · Mapa principal y ficha de tramo (2026-10-01)
 
 Plan aprobado por la autora el 2026-10-01 (semáforo fijo en "Precaución" y UTCI "—" hasta la Fase 5).
@@ -69,7 +160,7 @@ Plan aprobado por la autora el 2026-10-01 (semáforo fijo en "Precaución" y UTC
 
 ### Pendiente
 
-- Fase 5: semáforo y UTCI reales (hoy el chip es fijo y el UTCI dice "—").
+- ~~Fase 5: semáforo y UTCI reales~~ (hecho en la Fase 5).
 - El ejemplo de `/guia` para la pantalla 07 usa la arista 89 (Calle 16); si los datos se regeneran con
   otra numeración, hay que cambiarlo en `src/app/pantallas.ts`.
 - Con 1.550 árboles provisionales, muchas calles salen "parcial" al mediodía: revisar con el

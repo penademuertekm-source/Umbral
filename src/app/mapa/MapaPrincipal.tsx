@@ -1,6 +1,10 @@
 import { useEffect, useId, useMemo, useState, type CSSProperties } from 'react'
 import { useNavigate, useSearchParams } from 'react-router'
 import { BarraSuperior, Boton, Icono, MuestraTramo } from '../../componentes'
+import { readHeatProfile } from '../../clima/configClima'
+import { simulateOvercast, thermalStateAt, type ThermalContext } from '../../clima/estado'
+import { rainOutlook } from '../../clima/openMeteo'
+import { useClima, useClimaConfig } from '../../clima/useClima'
 import { SEGMENT_STATES } from '../../config/niveles'
 import { laHora } from '../../i18n/hora'
 import { useT } from '../../i18n/useT'
@@ -8,13 +12,17 @@ import { loadMapData, type MapData } from '../../mapa/datos'
 import { MapaSombra } from '../../mapa/MapaSombra'
 import { indexEdges, treesByEdge } from '../../mapa/tramos'
 import { useUbicacion } from '../../mapa/useUbicacion'
-import { formatTime, localDate, localParts, minutesOfDay } from '../../sombra/tiempo'
+import { formatDateTime, formatTime, isoLocalDate, localDate, localParts, minutesOfDay } from '../../sombra/tiempo'
 import { useSombra } from '../../sombra/useSombra'
+import { AvisoElNino } from '../elnino/AvisoElNino'
+import { markElNinoSeen, seenElNinoToday } from '../elnino/visto'
+import { AvisoNublado } from './AvisoNublado'
 import { FichaTramo } from './FichaTramo'
 import s from './MapaPrincipal.module.css'
 
-// Pantalla 04 (nodo 3:2): mapa de sombra del centro a la hora del deslizador.
-// El semáforo y el UTCI llegan en la Fase 5; por ahora el chip es un valor fijo y el UTCI dice "—".
+// Pantalla 04 (nodo 3:2): mapa de sombra del centro a la hora del deslizador, con el semáforo y el UTCI
+// estimados para esa hora (Fase 5). Con el cielo cubierto pasa al estado nublado (pantalla 20) y, si El Niño
+// está activo, muestra una vez al día la pantalla 09.
 
 const MIN_MINUTE = 6 * 60
 const MAX_MINUTE = 18 * 60
@@ -38,7 +46,12 @@ function useDebounced<T>(value: T, ms: number): T {
   return debounced
 }
 
-export function MapaPrincipal() {
+interface MapaPrincipalProps {
+  /** Ruta /mapa/nublado: simula el cielo cubierto (pantalla 20) con un aviso visible de simulación. */
+  simulateCloudy?: boolean
+}
+
+export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
   const i18n = useT()
   const { t, language } = i18n
   const navigate = useNavigate()
@@ -76,6 +89,43 @@ export function MapaPrincipal() {
   const sombra = useSombra(shadeTime)
   const resultado = sombra.resultado
 
+  // Clima (Open-Meteo) y semáforo para la hora del deslizador.
+  const center = data?.meta.area.centro ?? null
+  const clima = useClima(center)
+  const climaConfig = useClimaConfig()
+  const [profile] = useState(readHeatProfile)
+  const forecast = clima.status === 'listo' ? clima.forecast : null
+  const context: ThermalContext | null = center ? { center, elNino: climaConfig?.elNino ?? false, profile } : null
+  const transform = simulateCloudy ? simulateOvercast : undefined
+  const thermal = context ? thermalStateAt(forecast, shownTime, context, transform) : null
+  const decision = thermal?.decision ?? null
+  const cloudy = decision?.cloudy ?? false
+  const rain = cloudy && forecast ? rainOutlook(forecast, shownTime) : null
+  const levelLabel = decision
+    ? decision.level === 'nublado'
+      ? t('semaforo.nubladoRiesgoBajo')
+      : undefined
+    : clima.status === 'cargando'
+      ? t('semaforo.cargandoClima')
+      : t('semaforo.sinClima')
+  // Sin conexión se usa el pronóstico guardado y se dice de cuándo es.
+  let weatherNote: string | undefined
+  if (clima.status === 'listo' && clima.stale) {
+    const fetched = new Date(clima.forecast.fetchedAt)
+    weatherNote =
+      isoLocalDate(fetched) === isoLocalDate(now)
+        ? t('clima.datoDe', { laHora: laHora(i18n, fetched) })
+        : t('clima.datoDel', { fecha: formatDateTime(fetched, language) })
+  }
+
+  const coveredPlaces = useMemo(
+    () => data?.refugios.filter((r) => r.cubierto !== 'no' && r.lat !== null && r.lon !== null) ?? [],
+    [data],
+  )
+
+  // Pantalla 09: una vez por día si El Niño está activo.
+  const [elNinoClosed, setElNinoClosed] = useState(() => seenElNinoToday())
+
   // Tramo elegido: va en la URL (?tramo=<id>) para poder enlazarlo y para que "atrás" funcione igual.
   const edgeIndex = useMemo(() => (data ? indexEdges(data.red) : null), [data])
   const trees = useMemo(() => (data ? treesByEdge(data.red, data.arboles) : null), [data])
@@ -83,6 +133,9 @@ export function MapaPrincipal() {
   const selected = rawEdge && /^\d+$/.test(rawEdge) && edgeIndex?.byId.has(Number(rawEdge)) ? Number(rawEdge) : null
   const select = (edge: number) => setParams({ tramo: String(edge) }, { replace: true })
   const close = () => setParams({}, { replace: true })
+  // La ficha usa la misma hora que el cálculo de sombra que muestra.
+  const fichaUtci =
+    context && resultado ? thermalStateAt(forecast, new Date(resultado.time), context, transform).utci : null
 
   // Ubicación: solo con permiso; el botón la pide y centra el mapa.
   const ubicacion = useUbicacion()
@@ -100,7 +153,14 @@ export function MapaPrincipal() {
 
   return (
     <div className={s.pantalla}>
-      <BarraSuperior time={formatTime(shownTime, language)} level="precaucion" />
+      <BarraSuperior
+        time={formatTime(shownTime, language)}
+        level={decision?.level ?? 'nublado'}
+        levelLabel={levelLabel}
+        utciSun={thermal?.utci?.sun ?? null}
+        utciShade={thermal?.utci?.shade ?? null}
+        note={weatherNote}
+      />
 
       <main className={s.principal}>
         <div className={s.mapaZona}>
@@ -112,6 +172,8 @@ export function MapaPrincipal() {
               onSelect={select}
               user={ubicacion.position}
               focusUser={focusUser}
+              cloudy={cloudy}
+              coveredPlaces={coveredPlaces}
             />
           )}
 
@@ -137,52 +199,70 @@ export function MapaPrincipal() {
           </div>
 
           <div className={s.arriba}>
-            {data?.meta.datos_provisionales ? (
-              <details className={s.provisional}>
-                <summary>
-                  <span className={`${s.chip} um-etiqueta`}>
-                    <Icono name="informacion" size={20} />
-                    {t('mapa.provisional')}
-                  </span>
-                </summary>
-                <p className={`${s.globo} um-etiqueta`}>{t('mapa.provisionalDetalle')}</p>
-              </details>
-            ) : (
-              <span />
-            )}
-            <div className={s.ubicacion}>
-              <button
-                type="button"
-                className={s.botonFlotante}
-                aria-label={t('mapa.miUbicacion')}
-                onClick={() => {
-                  ubicacion.start()
-                  setFocusUser((n) => n + 1)
-                }}
-              >
-                <Icono name="mi-ubicacion" />
-              </button>
-              {locationMessage && (
-                <p className={`${s.globo} um-etiqueta`} role="status">
-                  {locationMessage}
-                </p>
-              )}
+            <div className={s.filaArriba}>
+              <div className={s.chips}>
+                {simulateCloudy && (
+                  <details className={s.desplegable}>
+                    <summary>
+                      <span className={`${s.chip} ${s.chipSimulacion} um-etiqueta`}>
+                        <Icono name="nublado" size={20} />
+                        {t('mapa.simulacion')}
+                      </span>
+                    </summary>
+                    <p className={`${s.globo} um-etiqueta`}>{t('mapa.simulacionDetalle')}</p>
+                  </details>
+                )}
+                {data?.meta.datos_provisionales && (
+                  <details className={s.desplegable}>
+                    <summary>
+                      <span className={`${s.chip} um-etiqueta`}>
+                        <Icono name="informacion" size={20} />
+                        {t('mapa.provisional')}
+                      </span>
+                    </summary>
+                    <p className={`${s.globo} um-etiqueta`}>{t('mapa.provisionalDetalle')}</p>
+                  </details>
+                )}
+              </div>
+              <div className={s.ubicacion}>
+                <button
+                  type="button"
+                  className={s.botonFlotante}
+                  aria-label={t('mapa.miUbicacion')}
+                  onClick={() => {
+                    ubicacion.start()
+                    setFocusUser((n) => n + 1)
+                  }}
+                >
+                  <Icono name="mi-ubicacion" />
+                </button>
+                {locationMessage && (
+                  <p className={`${s.globo} um-etiqueta`} role="status">
+                    {locationMessage}
+                  </p>
+                )}
+              </div>
             </div>
+            {cloudy && <AvisoNublado rain={rain} hasCoveredPlaces={coveredPlaces.length > 0} />}
           </div>
 
           <div className={s.abajo}>
-            <div className={s.leyenda} role="group" aria-label={t('mapa.leyenda')}>
-              <p className={`${s.leyendaHora} um-micro`}>
-                {t('mapa.horaElegida', { laHora: laHora(i18n, shadeTime) })}
-                {resultado?.noSun && ` · ${t('mapa.sinSol')}`}
-              </p>
-              <div className={s.muestras}>
-                {SEGMENT_STATES.map((state) => (
-                  <MuestraTramo key={state} state={state} size="compacta" />
-                ))}
+            {!cloudy && (
+              <div className={s.leyenda} role="group" aria-label={t('mapa.leyenda')}>
+                <p className={`${s.leyendaHora} um-micro`}>
+                  {t('mapa.horaElegida', { laHora: laHora(i18n, shadeTime) })}
+                  {resultado?.noSun && ` · ${t('mapa.sinSol')}`}
+                </p>
+                <div className={s.muestras}>
+                  {SEGMENT_STATES.map((state) => (
+                    <MuestraTramo key={state} state={state} size="compacta" />
+                  ))}
+                </div>
               </div>
-            </div>
-            <p className={`${s.atribucion} um-micro`}>{t('mapa.atribucion')}</p>
+            )}
+            <p className={`${s.atribucion} um-micro`}>
+              {t('mapa.atribucion')} · {t('clima.atribucion')}
+            </p>
           </div>
         </div>
 
@@ -192,7 +272,7 @@ export function MapaPrincipal() {
           </label>
           <input
             id={sliderId}
-            className={s.deslizador}
+            className={`${s.deslizador} ${cloudy ? s.deslizadorNublado : ''}`}
             type="range"
             min={MIN_MINUTE}
             max={MAX_MINUTE}
@@ -209,7 +289,9 @@ export function MapaPrincipal() {
         </section>
 
         <div className={s.acciones}>
-          <Boton onClick={() => navigate('/buscar')}>{t('mapa.buscarRuta')}</Boton>
+          <Boton onClick={() => navigate('/buscar')}>
+            {cloudy ? t('mapa.buscarRutaSimple') : t('mapa.buscarRuta')}
+          </Boton>
         </div>
       </main>
 
@@ -220,7 +302,18 @@ export function MapaPrincipal() {
           index={edgeIndex}
           trees={trees}
           resultado={resultado}
+          utci={fichaUtci}
           onClose={close}
+        />
+      )}
+
+      {climaConfig?.elNino && !elNinoClosed && (
+        <AvisoElNino
+          config={climaConfig}
+          onClose={() => {
+            markElNinoSeen()
+            setElNinoClosed(true)
+          }}
         />
       )}
     </div>

@@ -1,0 +1,80 @@
+.simulador {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-md);
+}
+
+.grupo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--um-esp-sm);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.grupo legend {
+  width: 100%;
+  margin-bottom: var(--um-esp-xs);
+  padding: 0;
+}
+
+.vista {
+  max-width: var(--app-ancho-max);
+  overflow: hidden;
+  border: 1px solid var(--um-base-borde);
+  border-radius: var(--um-radio-tarjeta);
+  background: var(--um-base-superficie);
+}
+
+.detalles {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-xs);
+  padding: var(--um-esp-md);
+}
+
+.secundario {
+  color: var(--um-base-texto-secundario);
+}
+
+.ruta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--um-esp-sm);
+  margin-top: var(--um-esp-xs);
+}
+
+.controles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--um-esp-sm) var(--um-esp-lg);
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-xs);
+  min-width: 0;
+}
+
+.campo input {
+  width: 100%;
+  min-height: var(--um-tactil-minimo);
+  accent-color: var(--um-termico-sombra-plena);
+}
+
+.casilla {
+  display: flex;
+  align-items: center;
+  gap: var(--um-esp-sm);
+  min-height: var(--um-tactil-minimo);
+  cursor: pointer;
+}
+
+.casilla input {
+  width: 24px;
+  height: 24px;
+  accent-color: var(--um-termico-sombra-plena);
+}

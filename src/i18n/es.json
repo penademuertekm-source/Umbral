@@ -27,7 +27,17 @@
     "evitar": "Evitar a pie",
     "no_recomendado": "No recomendado",
     "nublado": "Nublado",
-    "prefijoAccesible": "Semáforo térmico:"
+    "prefijoAccesible": "Semáforo térmico:",
+    "nubladoRiesgoBajo": "Nublado · riesgo bajo",
+    "sinClima": "Sin datos de clima",
+    "cargandoClima": "Cargando clima…",
+    "categorias": {
+      "sin_estres": "sin estrés térmico",
+      "moderado": "estrés moderado",
+      "fuerte": "estrés fuerte",
+      "muy_fuerte": "estrés muy fuerte",
+      "extremo": "estrés extremo"
+    }
   },
   "tramo": {
     "sombra": "Sombra",
@@ -105,7 +115,10 @@
     "sinSol": "Sin sol a esta hora",
     "ubicacionBuscando": "Buscando tu ubicación…",
     "ubicacionNoDisponible": "No se pudo obtener tu ubicación",
-    "horaElegida": "Sombra estimada para {laHora}"
+    "horaElegida": "Sombra estimada para {laHora}",
+    "buscarRutaSimple": "Buscar una ruta",
+    "simulacion": "Simulación: cielo nublado",
+    "simulacionDetalle": "Así se ve el mapa con el cielo cubierto. La temperatura y la humedad son las del pronóstico; la nubosidad (90 %) y la falta de sol directo son simuladas."
   },
   "ficha": {
     "entre": "{calle} entre {a} y {b}",
@@ -124,7 +137,6 @@
     "svf": "Detalles técnicos · Sky View Factor",
     "svfExplicacion": "Parte del cielo que se ve desde el costado {orientacion}: 0 es cielo tapado y 1 es cielo abierto. Es el promedio estimado de los puntos de esa acera, con edificios y árboles.",
     "utci": "UTCI estimado",
-    "utciPendiente": "—",
     "arbolado": "Arbolado del tramo",
     "sinArboles": "Sin árboles registrados",
     "especies": {
@@ -155,7 +167,8 @@
       "sur": "sur",
       "oriental": "oriental",
       "occidental": "occidental"
-    }
+    },
+    "utciValor": "{sombra}° sombra · {sol}° sol"
   },
   "pantallas": {
     "p01": "Splash",
@@ -187,7 +200,8 @@
     "verFigma": "Ver el diseño en Figma",
     "irGuia": "Ver la guía de componentes",
     "noEncontrada": "No encontramos esta página.",
-    "irInicio": "Ir al inicio"
+    "irInicio": "Ir al inicio",
+    "lista": "Lista desde la Fase {fase}"
   },
   "guia": {
     "titulo": "umbral · guía de estilo gráfico",
@@ -376,6 +390,69 @@
       "titulo": "Pantallas",
       "texto": "Rutas de la app. Por ahora casi todas están vacías: cada una indica la fase en la que se construye."
     },
-    "idioma": "Idioma de la interfaz"
+    "idioma": "Idioma de la interfaz",
+    "simulador": {
+      "titulo": "Simulador del semáforo",
+      "texto": "Fuerza el clima para probar los cinco estados de la barra superior. Los valores son simulados: no salen del pronóstico.",
+      "ejemplos": "Ejemplos",
+      "hora": "Simulación",
+      "temperatura": "Temperatura del aire: {v} °C",
+      "humedad": "Humedad relativa: {v} %",
+      "viento": "Viento a 10 m: {v} m/s",
+      "radiacion": "Radiación directa normal: {v} W/m²",
+      "elevacion": "Elevación del sol: {v}°",
+      "nubosidad": "Nubosidad: {v} %",
+      "minutos": "Minutos al sol de la ruta: {v}",
+      "elNino": "El Niño activo",
+      "perfil": "Perfil de calor",
+      "perfiles": {
+        "estandar": "Estándar",
+        "vulnerable": "Vulnerable"
+      },
+      "categoria": "Al sol: {categoria}",
+      "ganancia": "Ganancia solar: +{v} °C de temperatura radiante media",
+      "endurecido": "Endurecido un nivel por: {motivos}",
+      "motivos": {
+        "el_nino": "El Niño",
+        "perfil": "perfil vulnerable"
+      },
+      "ruta": "Nivel de la ruta",
+      "fueraDeRango": "Las condiciones salen del rango del modelo UTCI.",
+      "verReferencia": "Ver la referencia de la pantalla 17"
+    }
+  },
+  "clima": {
+    "atribucion": "Clima: Open-Meteo",
+    "datoDe": "dato de {laHora}",
+    "datoDel": "dato del {fecha}"
+  },
+  "nublado": {
+    "titulo": "Está nublado: la sombra pesa menos ahora",
+    "lluvia": "Pronóstico: {p} % de lluvia a {laHora}",
+    "cubiertos": "Te mostramos lugares cubiertos cerca.",
+    "lugar": "Lugar cubierto: {nombre}"
+  },
+  "elNino": {
+    "titulo": "Fenómeno de El Niño activo",
+    "texto": "El IDEAM reporta condiciones de El Niño en el Cesar. Las máximas están por encima del promedio histórico y la radiación es más intensa de lo habitual.",
+    "queCambia": "Qué cambia mientras tanto",
+    "rutas": "Las rutas priorizan sombra continua aunque sean un poco más largas.",
+    "hidratacion": "Se marcan los puntos de hidratación y descanso del centro.",
+    "aviso": "Entre 11:00 a. m. y 3:00 p. m. verás un aviso antes de iniciar cualquier recorrido.",
+    "fuente": "Fuente: {fuente}. Actualizado el {fecha}.",
+    "entendido": "Entendido",
+    "ejemplo": "Vista de ejemplo: hoy El Niño no está activo según la configuración de la app."
+  },
+  "referencia": {
+    "titulo": "Semáforo térmico · barra superior",
+    "texto": "El chip de temperatura pasa a ser una decisión. Cada nivel tiene forma propia, no solo color.",
+    "ejemplo": "Valores de ejemplo de Figma (nodo 32:154); el nivel lo calculan las reglas de la app.",
+    "niveles": {
+      "comodo": "Nivel 1 · Sombra continua o franja fresca. Ruta normal.",
+      "precaucion": "Nivel 2 · Tramos al sol cortos (menos de 3 min). Lleva agua.",
+      "evitar": "Nivel 3 · Tramos largos al sol entre 10 a. m. y 3 p. m. Sugiere otra hora o transporte.",
+      "no_recomendado": "Nivel 4 · Estrés muy fuerte o El Niño activo. No se recomienda caminar el trayecto."
+    },
+    "nota": "Umbrales provisionales basados en las categorías del UTCI; se calibran con las mediciones de campo."
   }
 }

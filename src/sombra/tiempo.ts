@@ -57,6 +57,29 @@ export function formatTime(date: Date, language: string): string {
   }).format(date)
 }
 
+/** "6 oct., 9:00 p. m." en español, "Oct 6, 9:00 PM" en inglés (hora de Valledupar). */
+export function formatDateTime(date: Date, language: string): string {
+  return new Intl.DateTimeFormat(language === 'es' ? 'es-CO' : 'en-US', {
+    day: 'numeric',
+    month: 'short',
+    hour: 'numeric',
+    minute: '2-digit',
+    timeZone: TIME_ZONE,
+  }).format(date)
+}
+
+/** "2026-10-01" → "1 de octubre de 2026" ("October 1, 2026" en inglés). Texto vacío si la fecha no es válida. */
+export function formatIsoDate(isoDate: string, language: string): string {
+  const date = new Date(`${isoDate}T12:00:00Z`)
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(isoDate) || Number.isNaN(date.getTime())) return ''
+  return new Intl.DateTimeFormat(language === 'es' ? 'es-CO' : 'en-US', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'UTC',
+  }).format(date)
+}
+
 /** "2026-10-01": fecha de Valledupar para un <input type="date">. */
 export function isoLocalDate(date: Date): string {
   const { year, month, day } = localParts(date)

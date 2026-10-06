@@ -1,0 +1,42 @@
+.contenido {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-xl);
+  padding: var(--um-esp-md) var(--um-esp-md) var(--um-esp-xl);
+}
+
+.seccion {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-md);
+}
+
+.secundario {
+  color: var(--um-base-texto-secundario);
+}
+
+.tarjetas {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-lg);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ejemplo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-sm);
+}
+
+/* La barra superior dentro de una tarjeta, como en Figma. */
+.tarjeta {
+  overflow: hidden;
+  border: 1px solid var(--um-base-borde);
+  border-radius: var(--um-radio-tarjeta);
+}
+
+.tarjeta header {
+  border-bottom: 0;
+}

@@ -1,4 +1,5 @@
 import { useEffect, useId, useMemo, useState } from 'react'
+import type { UtciEstimate } from '../../clima/utci'
 import { HojaInferior, Icono } from '../../componentes'
 import { laHora } from '../../i18n/hora'
 import { useT } from '../../i18n/useT'
@@ -11,7 +12,7 @@ import niveles from '../../estilos/niveles.module.css'
 import s from './FichaTramo.module.css'
 
 // Pantalla 07 (nodo 5:2): ficha del tramo tocado en el mapa. Todos los valores son estimados
-// para la hora del deslizador; el UTCI llega en la Fase 5.
+// para la hora del deslizador. El UTCI es el general del centro a esa hora (Fase 5).
 
 interface FichaTramoProps {
   edge: number
@@ -19,6 +20,8 @@ interface FichaTramoProps {
   index: EdgeIndex
   trees: Map<number, TreeCounts>
   resultado: ResultadoSombra
+  /** UTCI estimado a la sombra y al sol a la misma hora, o null si no hay clima. */
+  utci: UtciEstimate | null
   onClose: () => void
 }
 
@@ -40,7 +43,7 @@ const PILL_LEVEL: Record<SideState, 'comodo' | 'precaucion' | 'nublado'> = {
 
 const SPECIES: Species[] = ['mango', 'canaguate', 'otro']
 
-export function FichaTramo({ edge, data, index, trees, resultado, onClose }: FichaTramoProps) {
+export function FichaTramo({ edge, data, index, trees, resultado, utci, onClose }: FichaTramoProps) {
   const i18n = useT()
   const { t, language } = i18n
   const explanationId = useId()
@@ -171,7 +174,11 @@ export function FichaTramo({ edge, data, index, trees, resultado, onClose }: Fic
         </div>
         <div className={s.fila}>
           <dt className="um-etiqueta">{t('ficha.utci')}</dt>
-          <dd className={`${s.valor} um-etiqueta`}>{t('ficha.utciPendiente')}</dd>
+          <dd className={`${s.valor} um-etiqueta`}>
+            {utci
+              ? t('ficha.utciValor', { sombra: Math.round(utci.shade), sol: Math.round(utci.sun) })
+              : t('comun.sinDato')}
+          </dd>
         </div>
         <div className={s.fila}>
           <dt className="um-etiqueta">{t('ficha.arbolado')}</dt>

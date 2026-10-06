@@ -27,7 +27,17 @@
     "evitar": "Avoid walking",
     "no_recomendado": "Not recommended",
     "nublado": "Cloudy",
-    "prefijoAccesible": "Thermal traffic light:"
+    "prefijoAccesible": "Thermal traffic light:",
+    "nubladoRiesgoBajo": "Cloudy · low risk",
+    "sinClima": "No weather data",
+    "cargandoClima": "Loading weather…",
+    "categorias": {
+      "sin_estres": "no thermal stress",
+      "moderado": "moderate stress",
+      "fuerte": "strong stress",
+      "muy_fuerte": "very strong stress",
+      "extremo": "extreme stress"
+    }
   },
   "tramo": {
     "sombra": "Shade",
@@ -105,7 +115,10 @@
     "sinSol": "No sun at this time",
     "ubicacionBuscando": "Finding your location…",
     "ubicacionNoDisponible": "Could not get your location",
-    "horaElegida": "Estimated shade for {laHora}"
+    "horaElegida": "Estimated shade for {laHora}",
+    "buscarRutaSimple": "Find a route",
+    "simulacion": "Simulation: cloudy sky",
+    "simulacionDetalle": "This is how the map looks with an overcast sky. Temperature and humidity come from the forecast; the cloud cover (90 %) and the lack of direct sun are simulated."
   },
   "ficha": {
     "entre": "{calle} between {a} and {b}",
@@ -124,7 +137,6 @@
     "svf": "Technical details · Sky View Factor",
     "svfExplicacion": "Share of the sky visible from the {orientacion} side: 0 means covered and 1 means open sky. It is the estimated average of the points on that sidewalk, with buildings and trees.",
     "utci": "Estimated UTCI",
-    "utciPendiente": "—",
     "arbolado": "Trees on this segment",
     "sinArboles": "No trees recorded",
     "especies": {
@@ -155,7 +167,8 @@
       "sur": "South",
       "oriental": "East",
       "occidental": "West"
-    }
+    },
+    "utciValor": "{sombra}° shade · {sol}° sun"
   },
   "pantallas": {
     "p01": "Splash",
@@ -187,7 +200,8 @@
     "verFigma": "See the design in Figma",
     "irGuia": "See the component guide",
     "noEncontrada": "We couldn't find this page.",
-    "irInicio": "Go to start"
+    "irInicio": "Go to start",
+    "lista": "Ready since Phase {fase}"
   },
   "guia": {
     "titulo": "umbral · graphic style guide",
@@ -376,6 +390,69 @@
       "titulo": "Screens",
       "texto": "App routes. For now almost all are empty: each one shows the phase in which it is built."
     },
-    "idioma": "Interface language"
+    "idioma": "Interface language",
+    "simulador": {
+      "titulo": "Traffic light simulator",
+      "texto": "Force the weather to test the five states of the top bar. These values are simulated, not taken from the forecast.",
+      "ejemplos": "Examples",
+      "hora": "Simulation",
+      "temperatura": "Air temperature: {v} °C",
+      "humedad": "Relative humidity: {v} %",
+      "viento": "Wind at 10 m: {v} m/s",
+      "radiacion": "Direct normal radiation: {v} W/m²",
+      "elevacion": "Sun elevation: {v}°",
+      "nubosidad": "Cloud cover: {v} %",
+      "minutos": "Route minutes in the sun: {v}",
+      "elNino": "El Niño active",
+      "perfil": "Heat profile",
+      "perfiles": {
+        "estandar": "Standard",
+        "vulnerable": "Vulnerable"
+      },
+      "categoria": "In the sun: {categoria}",
+      "ganancia": "Solar gain: +{v} °C of mean radiant temperature",
+      "endurecido": "Raised one level by: {motivos}",
+      "motivos": {
+        "el_nino": "El Niño",
+        "perfil": "vulnerable profile"
+      },
+      "ruta": "Route level",
+      "fueraDeRango": "These conditions are outside the range of the UTCI model.",
+      "verReferencia": "See the screen 17 reference"
+    }
+  },
+  "clima": {
+    "atribucion": "Weather: Open-Meteo",
+    "datoDe": "data from {laHora}",
+    "datoDel": "data from {fecha}"
+  },
+  "nublado": {
+    "titulo": "It's cloudy: shade matters less right now",
+    "lluvia": "Forecast: {p} % chance of rain at {laHora}",
+    "cubiertos": "We show you covered places nearby.",
+    "lugar": "Covered place: {nombre}"
+  },
+  "elNino": {
+    "titulo": "El Niño is active",
+    "texto": "IDEAM reports El Niño conditions in Cesar. Highs are above the historical average and solar radiation is stronger than usual.",
+    "queCambia": "What changes in the meantime",
+    "rutas": "Routes favor continuous shade even if they are a little longer.",
+    "hidratacion": "Water and rest points in the center are highlighted.",
+    "aviso": "Between 11:00 AM and 3:00 PM you will see a warning before starting any walk.",
+    "fuente": "Source: {fuente}. Updated on {fecha}.",
+    "entendido": "Got it",
+    "ejemplo": "Example view: El Niño is not active today according to the app settings."
+  },
+  "referencia": {
+    "titulo": "Heat traffic light · top bar",
+    "texto": "The temperature chip becomes a decision. Each level has its own shape, not just a color.",
+    "ejemplo": "Example values from Figma (node 32:154); the level comes from the app rules.",
+    "niveles": {
+      "comodo": "Level 1 · Continuous shade or a cool strip. Normal route.",
+      "precaucion": "Level 2 · Short stretches in the sun (under 3 min). Bring water.",
+      "evitar": "Level 3 · Long stretches in the sun between 10 AM and 3 PM. Suggests another time or transport.",
+      "no_recomendado": "Level 4 · Very strong stress or El Niño active. Walking this trip is not recommended."
+    },
+    "nota": "Provisional thresholds based on the UTCI categories; they will be calibrated with field measurements."
   }
 }

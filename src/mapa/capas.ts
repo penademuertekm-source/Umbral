@@ -83,6 +83,13 @@ export function addDataLayers(map: MapLibreMap, data: MapData, colors: MapColors
       'line-opacity': onlyState(STATE.expuesto),
     },
   })
+  // Pantalla 20: con el cielo cubierto los tramos van en gris (se muestra en lugar de las capas de estado).
+  map.addLayer({
+    ...line,
+    id: 'tramos-nublado',
+    layout: { ...line.layout, visibility: 'none' },
+    paint: { 'line-color': colors.nublado, 'line-width': WIDTH },
+  })
   map.addLayer({
     ...line,
     id: 'tramo-seleccionado',
@@ -115,6 +122,23 @@ export function addDataLayers(map: MapLibreMap, data: MapData, colors: MapColors
       'icon-padding': 0,
     },
   })
+}
+
+/** Capas que solo tienen sentido con sol: el estado de cada tramo y los árboles. */
+const SUNNY_LAYERS = [
+  'tramos-sin-sol',
+  'tramos-sombra',
+  'tramos-parcial',
+  'tramos-expuesto',
+  'tramos-expuesto-marca',
+  'arboles-grupo',
+  'arboles',
+]
+
+/** Estado nublado (pantalla 20): tramos en gris y sin árboles. */
+export function setCloudy(map: MapLibreMap, cloudy: boolean): void {
+  for (const id of SUNNY_LAYERS) map.setLayoutProperty(id, 'visibility', cloudy ? 'none' : 'visible')
+  map.setLayoutProperty('tramos-nublado', 'visibility', cloudy ? 'visible' : 'none')
 }
 
 export function selectEdge(map: MapLibreMap, edge: number | null): void {

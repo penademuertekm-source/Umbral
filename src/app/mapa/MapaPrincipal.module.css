@@ -56,17 +56,29 @@
   right: var(--um-esp-md);
   left: var(--um-esp-md);
   display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-sm);
+}
+
+.filaArriba {
+  display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: var(--um-esp-sm);
 }
 
-.provisional,
+.chips {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.desplegable,
 .ubicacion {
   pointer-events: auto;
 }
 
-.provisional summary {
+.desplegable summary {
   display: flex;
   align-items: center;
   min-height: var(--um-tactil-minimo);
@@ -74,7 +86,7 @@
   cursor: pointer;
 }
 
-.provisional summary::-webkit-details-marker {
+.desplegable summary::-webkit-details-marker {
   display: none;
 }
 
@@ -156,6 +168,12 @@
   background: var(--um-base-superficie);
 }
 
+/* Simulación de la pantalla 20 (/mapa/nublado): chip neutro con el ícono de nube. */
+.chipSimulacion {
+  background: var(--um-semaforo-nublado-fondo);
+  color: var(--um-semaforo-nublado-texto);
+}
+
 /* Deslizador "Ver la sombra a otra hora" */
 .panel {
   display: flex;
@@ -184,7 +202,7 @@
   border-radius: 3px;
   background: linear-gradient(
     to right,
-    var(--um-termico-sombra-plena) var(--progreso),
+    var(--color-deslizador, var(--um-termico-sombra-plena)) var(--progreso),
     var(--um-base-borde) var(--progreso)
   );
 }
@@ -193,11 +211,15 @@
   width: 32px;
   height: 32px;
   margin-top: -13px;
-  border: 3px solid var(--um-termico-sombra-plena);
+  border: 3px solid var(--color-deslizador, var(--um-termico-sombra-plena));
   border-radius: 50%;
   background: var(--um-base-superficie);
   box-shadow: var(--um-elevacion-flotante);
   appearance: none;
+}
+
+.deslizadorNublado {
+  --color-deslizador: var(--um-semaforo-nublado-forma);
 }
 
 .deslizador::-moz-range-track {
@@ -209,14 +231,14 @@
 .deslizador::-moz-range-progress {
   height: 6px;
   border-radius: 3px;
-  background: var(--um-termico-sombra-plena);
+  background: var(--color-deslizador, var(--um-termico-sombra-plena));
 }
 
 .deslizador::-moz-range-thumb {
   box-sizing: border-box;
   width: 32px;
   height: 32px;
-  border: 3px solid var(--um-termico-sombra-plena);
+  border: 3px solid var(--color-deslizador, var(--um-termico-sombra-plena));
   border-radius: 50%;
   background: var(--um-base-superficie);
   box-shadow: var(--um-elevacion-flotante);

@@ -22,9 +22,10 @@ import niveles from '../../estilos/niveles.module.css'
 import { LANGUAGES } from '../../i18n/idioma'
 import type { TranslationKey } from '../../i18n/traducir'
 import { useT } from '../../i18n/useT'
-import { SCREENS } from '../pantallas'
+import { CURRENT_PHASE, SCREENS } from '../pantallas'
 import s from './Guia.module.css'
 import { PanelSombra } from './PanelSombra'
+import { SimuladorSemaforo } from './SimuladorSemaforo'
 
 // Página /guia: réplica de la guía de estilo de Figma (página 03, nodo 44:41) hecha con los
 // componentes reales, más las secciones que solo existen en código (botones, componentes de
@@ -461,6 +462,13 @@ export function Guia() {
         <PanelSombra />
       </Seccion>
 
+      <Seccion title={t('guia.simulador.titulo')} text={t('guia.simulador.texto')}>
+        <SimuladorSemaforo />
+        <Link to="/semaforo" className="um-cuerpo-fuerte">
+          {t('guia.simulador.verReferencia')}
+        </Link>
+      </Seccion>
+
       <Seccion title={t('guia.pantallas.titulo')} text={t('guia.pantallas.texto')}>
         <ol className={s.pantallas}>
           {SCREENS.map((screen) => (
@@ -470,7 +478,10 @@ export function Guia() {
                   {screen.number} · {t(screen.nameKey)}
                 </span>
                 <span className={`${s.secundario} um-micro`}>
-                  <code>{screen.path}</code> · {t('pantallas.pendiente', { fase: screen.phase })}
+                  <code>{screen.path}</code> ·{' '}
+                  {screen.phase <= CURRENT_PHASE
+                    ? t('pantallas.lista', { fase: screen.phase })
+                    : t('pantallas.pendiente', { fase: screen.phase })}
                 </span>
               </Link>
             </li>

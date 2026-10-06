@@ -3,12 +3,12 @@ import 'maplibre-gl/dist/maplibre-gl.css'
 import maplibreWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { Marcador } from '../componentes'
+import { Icono, Marcador } from '../componentes'
 import { motorSombra, type ResultadoSombra } from '../sombra/cliente'
 import type { Side, SideLetter } from '../sombra/modelo'
 import { useT } from '../i18n/useT'
-import { addDataLayers, baseStyle, selectEdge } from './capas'
-import type { MapData } from './datos'
+import { addDataLayers, baseStyle, selectEdge, setCloudy } from './capas'
+import type { MapData, Refuge } from './datos'
 import { addMapImages } from './imagenes'
 import s from './MapaSombra.module.css'
 import { mapColors } from './tokens'
@@ -22,7 +22,13 @@ interface MapaSombraProps {
   user: [number, number] | null
   /** Cambia cada vez que se pide centrar el mapa en el usuario. */
   focusUser: number
+  /** Estado nublado (pantalla 20): tramos en gris y etiquetas de los lugares cubiertos. */
+  cloudy?: boolean
+  /** Lugares cubiertos con coordenadas (se muestran solo con el cielo nublado). Debe ser estable (useMemo). */
+  coveredPlaces?: Refuge[]
 }
+
+const NO_PLACES: Refuge[] = []
 
 // MapLibre 6 busca su worker junto a su propio archivo; con Vite hay que empaquetarlo y darle la URL.
 setWorkerUrl(maplibreWorkerUrl)
@@ -32,7 +38,16 @@ const INITIAL_ZOOM = 16.5
 const VISIBLE_SHARE = 0.4
 
 /** Mapa de sombra (pantalla 04): estilo propio, tramos por lado de acera y árboles. */
-export function MapaSombra({ data, resultado, selectedEdge, onSelect, user, focusUser }: MapaSombraProps) {
+export function MapaSombra({
+  data,
+  resultado,
+  selectedEdge,
+  onSelect,
+  user,
+  focusUser,
+  cloudy = false,
+  coveredPlaces = NO_PLACES,
+}: MapaSombraProps) {
   const { t } = useT()
   const container = useRef<HTMLDivElement>(null)
   const mapRef = useRef<MapLibreMap | null>(null)
@@ -159,6 +174,36 @@ export function MapaSombra({ data, resultado, selectedEdge, onSelect, user, focu
     }
   }, [ready, selectedEdge, edgeMidpoints])
 
+  // Pantalla 20: con el cielo cubierto, tramos grises y etiquetas de los lugares cubiertos.
+  useEffect(() => {
+    const map = mapRef.current
+    if (map && ready) setCloudy(map, cloudy)
+  }, [ready, cloudy])
+
+  const placeElements = useMemo(
+    () => coveredPlaces.map((place) => ({ place, element: document.createElement('div') })),
+    [coveredPlaces],
+  )
+  useEffect(() => {
+    const map = mapRef.current
+    if (!map || !ready || !cloudy) return
+    const located = placeElements.filter(({ place }) => place.lon !== null && place.lat !== null)
+    const markers = located.map(({ place, element }) =>
+      new Marker({ element, anchor: 'center' }).setLngLat([place.lon!, place.lat!]).addTo(map),
+    )
+    // La tarjeta de nublado tapa la parte de arriba del mapa: los lugares se llevan a la parte de abajo.
+    if (located.length > 0) {
+      const lon = located.reduce((sum, { place }) => sum + place.lon!, 0) / located.length
+      const lat = located.reduce((sum, { place }) => sum + place.lat!, 0) / located.length
+      const { x, y } = map.project([lon, lat])
+      const { clientWidth: width, clientHeight: height } = map.getContainer()
+      if (y < height * 0.55 || y > height - 80 || x < 120 || x > width - 120) {
+        map.easeTo({ center: [lon, lat], offset: [0, height * 0.2] })
+      }
+    }
+    return () => markers.forEach((marker) => marker.remove())
+  }, [ready, cloudy, placeElements])
+
   // Marcador del usuario.
   useEffect(() => {
     const map = mapRef.current
@@ -185,6 +230,19 @@ export function MapaSombra({ data, resultado, selectedEdge, onSelect, user, focu
     <>
       <div ref={container} className={s.mapa} />
       {createPortal(<Marcador kind="usuario" />, userElement)}
+      {placeElements.map(({ place, element }) =>
+        createPortal(
+          <span className={`${s.lugar} um-etiqueta`}>
+            <span className={s.lugarIcono} aria-hidden="true">
+              <Icono name="sombrilla" size={20} />
+            </span>
+            <span className="sr-only">{t('nublado.lugar', { nombre: place.nombre })}</span>
+            <span aria-hidden="true">{place.nombre}</span>
+          </span>,
+          element,
+          place.id,
+        ),
+      )}
     </>
   )
 }
