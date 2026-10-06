@@ -1,0 +1,158 @@
+/* Pantalla 15 (Figma, nodo 32:35) */
+
+.resumen,
+.grafico {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-xs);
+  padding: var(--um-esp-md);
+  border: 1px solid var(--um-base-borde);
+  border-radius: var(--um-radio-tarjeta);
+  background: var(--um-base-superficie);
+}
+
+.grafico {
+  gap: var(--um-esp-sm);
+}
+
+.lienzo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-xs);
+}
+
+/* Área de las barras: 13 columnas iguales (una por hora). */
+.area {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(13, 1fr);
+  align-items: end;
+  height: 150px;
+  padding-top: 28px;
+  border-bottom: 1px solid var(--um-base-borde);
+}
+
+.ventana {
+  position: absolute;
+  top: 28px;
+  bottom: 0;
+  border-radius: 6px;
+  background: var(--um-semaforo-comodo-fondo);
+}
+
+.columna {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  gap: 3px;
+}
+
+.forma {
+  display: flex;
+  min-height: 10px;
+}
+
+/* Barra delgada con los extremos de datos redondeados y anclada a la base. */
+.barra {
+  width: 14px;
+  max-width: calc(100% - 4px);
+  border-radius: 4px 4px 0 0;
+  background: var(--nivel-forma);
+}
+
+.ahora {
+  position: absolute;
+  top: 18px;
+  bottom: 0;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--um-base-texto);
+}
+
+.ahoraTexto {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  color: var(--um-base-texto);
+  font-weight: 600;
+}
+
+.eje {
+  display: grid;
+  /* minmax(0, …): las columnas no crecen con el texto, que desborda hacia las columnas vacías. */
+  grid-template-columns: repeat(13, minmax(0, 1fr));
+  color: var(--um-base-texto-secundario);
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* La primera y la última marca se alinean con el borde para no salirse de la tarjeta. */
+.eje > span {
+  display: flex;
+  justify-content: center;
+}
+
+.eje > span:first-child {
+  justify-content: flex-start;
+}
+
+.eje > span:last-child {
+  justify-content: flex-end;
+}
+
+.leyenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--um-esp-xs) var(--um-esp-md);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.leyenda li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ventanas {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-sm);
+}
+
+.tarjeta {
+  display: flex;
+  align-items: center;
+  gap: var(--um-esp-md);
+  padding: var(--um-esp-md);
+  border: 1.5px solid var(--um-termico-sombra-plena);
+  border-radius: var(--um-radio-tarjeta);
+  background: var(--um-base-superficie);
+}
+
+.reloj {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--um-radio-control);
+  background: var(--um-semaforo-comodo-fondo);
+  color: var(--um-semaforo-comodo-texto);
+}
+
+.siAhora {
+  display: flex;
+  align-items: center;
+  gap: var(--um-esp-sm);
+  padding: var(--um-esp-sm) var(--um-esp-md);
+  border-radius: var(--um-radio-control);
+  background: var(--nivel-fondo);
+  color: var(--nivel-texto);
+}

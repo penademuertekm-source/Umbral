@@ -4,6 +4,125 @@ Registro de lo hecho en cada fase, lo pendiente y las decisiones tomadas. La ent
 
 ---
 
+## Fase 6 · Rutas con sombra, ¿cuándo salir? e isócronas (2026-10-06)
+
+La autora aprobó el plan el 2026-10-06 y decidió que los destinos fuera del área se muestran sin ruta.
+
+### Hecho
+
+- **Grafo peatonal** (`src/rutas/grafo.ts`):
+  - Cada lado de acera es una arista. En cada nodo, los extremos de acera se ordenan por ángulo.
+  - Entre calles vecinas hay una **esquina**: se dobla por la misma acera sin costo extra.
+  - Entre los dos lados de una misma calle hay un **cruce**, que vale el ancho de la calzada según el tipo
+    de vía (`CROSSING_WIDTH_M`) más 5 s y cuenta como tramo al sol.
+  - Con el centro completo: 1004 aceras, 2008 cruces y 1924 esquinas; se arma en ≈ 18 ms.
+- **Rutas** (`src/rutas/rutas.ts`):
+  - Dijkstra con dos costos: el más corto (distancia) y el de sombra, igual a tiempo × (1 + k × fracción
+    al sol).
+  - k = 2 en el perfil estándar y k = 3 en el vulnerable, que además camina a 1,0 m/s en vez de 1,2 m/s.
+    Están en `src/config/rutas.ts` y son provisionales.
+  - El origen y el destino se proyectan sobre la acera más cercana.
+  - Cada ruta da metros, minutos, % en sombra, minutos al sol, tramos expuestos y calles recorridas.
+  - Tarda ≈ 3 ms por ruta.
+- **Isócronas** (`src/rutas/isocronas.ts`): bandas de 5, 10 y 15 min con el costo de sombra, así que llegan
+  más lejos por la sombra. Tardan ≈ 21 ms.
+- **¿Cuándo salir?** (`src/rutas/salidas.ts` y `useSalidas.ts`):
+  - Calcula la ruta con sombra para 49 horas de salida, de 6:00 a 18:00 cada 15 min. Toma ≈ 0,2 s en el
+    navegador de la sesión.
+  - Busca la mejor ventana de la mañana y la de la tarde y sugiere la siguiente.
+  - También encuentra el último tramo de la ruta que va en sombra, para la opción de transporte.
+- **Hora y punto de partida compartidos**:
+  - `?hora=HH:MM` va en la dirección, así que el mapa, la búsqueda y las rutas usan la misma hora.
+  - El punto de partida es el GPS solo si está dentro del centro. Si no, se elige tocando el mapa
+    (`/mapa?elegir=1`) y queda en `?desde=lat,lon`. No se guarda en ningún lado.
+- **Pantallas**:
+  - **05** (`/buscar`): filtra los destinos locales, sin buscador externo. Cada fila muestra distancia,
+    minutos y la píldora "Sombra NN %" con el color del nivel. Los destinos fuera del área dicen "fuera
+    del mapa de sombra".
+  - **06** (`/rutas`):
+    - Mapa con la ruta con sombra (verde) y la más corta (ámbar con marca), árboles de la ruta y los
+      puntos de partida y destino.
+    - Tarjetas con % protegido, minutos al sol y conteo de mangos y cañaguates.
+    - Si la ruta con sombra no reduce al menos 15 % los minutos al sol, muestra una sola ruta: "la más
+      corta ya es la de más sombra".
+    - Con nivel "Evitar a pie" o "No recomendado" pasa a la 16, salvo que se pida `forzar=1` ("Caminar de
+      todos modos").
+    - "Iniciar recorrido" lleva a `/recorrido`, que se construye en la Fase 7.
+  - **15** (`/cuando-salir`):
+    - Barras de minutos al sol por hora, cada una con la forma de su nivel, y la línea "Ahora".
+    - Las mejores ventanas sombreadas, con tarjetas de mañana y tarde.
+    - "Si sales ahora…", el botón "Ver la ruta a {hora}" y la misma información como lista para
+      lectores de pantalla.
+  - **16** (`/sin-ruta-con-sombra`): banda del nivel; % en sombra, minutos al sol y UV, y tres opciones:
+    esperar a la mejor hora, una parte en taxi y "si caminas de todos modos", con los puntos de descanso a
+    menos de 60 m.
+- **Mapa (04)**:
+  - Botón de capas con las isócronas desde el punto de partida (`?capa=isocronas`), leyenda de bandas y
+    encuadre automático.
+  - Las bandas se distinguen por grosor y trazo, no solo por color.
+- **Honestidad del dato**: en las cuatro pantallas se lee "Valores estimados para {hora} · Datos
+  provisionales".
+- Pruebas: 75 en total (14 nuevas).
+  - Con una manzana sintética: esquinas y cruces, u/v al revés, rutas, una sola ruta, isócronas,
+    ventanas y transporte.
+  - Con los datos reales: grafo, rutas e isócronas con sus tiempos.
+
+### Verificación en Chromium (390 × 844, build de producción, Open-Meteo simulado)
+
+- Desde 10.4745, −73.2470 a la Plaza Alfonso López:
+  - 7:00 a. m.: ruta con sombra 71 % (10 min) frente a la corta 33 % con unos 6 min al sol (9 min).
+  - 12:00 m.: 46 % frente a 11 %; el nivel de la ruta es "Precaución", así que no hay desvío.
+  - 4:00 p. m.: una sola ruta, 68 %.
+- Con El Niño activo, a la 1:00 p. m. la 06 pasa a la 16 ("No recomendado"):
+  - "Caminar de todos modos" vuelve a la 06 con `forzar=1`.
+  - "Atrás" no entra en un bucle.
+- ¿Cuándo salir?:
+  - Barras de 1 a 5 min al sol; mejores ventanas antes de las 6:30 a. m. y desde las 5:45 p. m.
+  - El botón abre la 06 a las 5:45 p. m.
+- GPS dentro del centro en inglés: rutas con "Shade 80 %". GPS fuera del centro: aviso "elige un punto
+  en el mapa".
+- Elegir el punto en el mapa vuelve a `/buscar?desde=…`.
+- Destino fuera del área (Casa Beto Murgas): "queda fuera del mapa de sombra, a 1,6 km…".
+- Sin desbordes horizontales y sin errores en la consola.
+
+### Correcciones durante la verificación
+
+- **Topología**: en la red de OSMnx, la geometría de algunas calles va de v a u. Al unir las aceras por
+  `u`/`v` salían "esquinas" de más de 100 m y rutas absurdas de 753 m. Los nodos se reconocen ahora por
+  la coordenada del extremo, y una prueba intercambia u/v para comprobarlo. La ficha de tramo (Fase 4)
+  no cambia.
+- El worker de MapLibre solo se configuraba en el mapa principal y el de la 06 no cargaba. Ahora
+  `src/mapa/trabajador.ts` lo configura para todos.
+- El ancho de la banda de 5 min usaba una expresión que MapLibre rechaza. Ahora tiene sus propias paradas.
+- Las horas del eje de la 15 se montaban a 390 px. Quedan tres marcas: 6 a. m., 12 p. m. y 6 p. m.
+- Si el refugio más cercano es el propio destino, la 16 dice "Llega en taxi hasta {destino} y evita el
+  trayecto al sol" y no lo presenta como "un lugar cerca".
+
+### Decisiones
+
+- **Una arista por lado de acera** (no por calle): la sombra cambia de un lado al otro y la ruta
+  recomienda la acera. El GPS no la verifica (CLAUDE.md).
+- **Los cruces cuentan al sol**: la calzada casi nunca tiene sombra. Las esquinas no cuentan.
+- **Destinos fuera del área**: aparecen en la 05 sin ruta y la 06 explica por qué (decisión de la autora).
+- **Clima del centro, no de la persona**: el nivel de cada ruta usa el UTCI de esa hora en el centro y los
+  minutos al sol de la ruta (regla de la Fase 5).
+- **Desvío a la 16** solo con el nivel de la ruta, no con el nivel general: a mediodía una ruta con poco
+  sol puede quedar en "Precaución" aunque la barra diga "Evitar a pie".
+- **Colores de precaución y evitar**: el validador de paletas da una diferencia muy baja entre
+  `--um-semaforo-precaucion` (#d69e00) y `--um-semaforo-evitar` (#ef9f27), ΔE ≈ 4,5 con visión normal.
+  Casi no se distinguen por color. Por eso la 15 usa además la forma de cada nivel (triángulo y rombo),
+  una leyenda y una lista accesible. No se cambiaron los tokens (`design/` no se edita sin pedido). Queda
+  como insumo para la observación 2 de la autora.
+
+### Pendiente
+
+- Calibrar k, las velocidades, el umbral de una sola ruta y el ancho de los cruces con el trabajo de campo.
+- `/recorrido` (13), los puntos de hidratación y el aviso de 11 a 3: Fase 7.
+- El perfil vulnerable se elige en la Fase 9; hasta entonces se usa el estándar.
+- Medir en un celular medio el cálculo de las 49 salidas (≈ 0,2 s aquí; se espera entre 1 y 1,5 s).
+
+---
+
 ## Ajuste · Ubicación de los destinos que faltaban (2026-10-06)
 
 A pedido de la autora se buscaron las coordenadas de los tres destinos sin ubicación. Quedan marcados
@@ -23,6 +142,7 @@ como provisionales, con su origen en la columna `fuente`, y conviene verificarlo
 - La prueba sintética del pipeline ya no depende de que haya destinos sin coordenadas en los datos reales:
   agrega su propio destino sin ubicar.
 - Pendiente de decisión: qué hacer con los dos destinos fuera del área (el área es un círculo de 700 m).
+  Resuelto en la Fase 6: se muestran sin ruta.
 
 ---
 

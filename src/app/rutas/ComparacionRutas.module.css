@@ -1,0 +1,74 @@
+/* Pantalla 06 (Figma, nodo 4:42): mapa con las dos rutas y tarjetas. */
+
+.pantalla {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  height: 100dvh;
+}
+
+.mapa {
+  position: relative;
+  flex: 1;
+  min-height: 240px;
+  overflow: hidden;
+  background: var(--um-mapa-fondo);
+}
+
+.estado {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: var(--um-esp-md);
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-sm);
+  padding: var(--um-esp-md);
+  padding-bottom: max(var(--um-esp-md), env(safe-area-inset-bottom));
+  border-top: 1px solid var(--um-base-borde);
+  background: var(--um-base-fondo);
+}
+
+.tarjeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--um-esp-md);
+  width: 100%;
+  min-height: 72px;
+  padding: var(--um-esp-md);
+  border: 1.5px solid var(--um-base-borde);
+  border-radius: var(--um-radio-tarjeta);
+  background: var(--um-base-superficie);
+  color: var(--um-base-texto-secundario);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.activa {
+  border: 2px solid var(--um-termico-sombra-plena);
+  color: var(--um-termico-sombra-plena);
+}
+
+.tarjetaTexto {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.minutos {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.enlace {
+  display: grid;
+  place-items: center;
+  min-height: var(--um-tactil-minimo);
+  color: var(--um-termico-sombra-plena);
+}

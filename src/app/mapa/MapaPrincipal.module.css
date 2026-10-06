@@ -254,3 +254,50 @@
   padding: var(--um-esp-md);
   padding-bottom: max(var(--um-esp-md), env(safe-area-inset-bottom));
 }
+
+/* Fase 6: botón de capas activo, tarjeta de "elegir el punto de partida" y leyenda de isócronas. */
+.botonActivo {
+  background: var(--um-termico-sombra-plena);
+  color: var(--um-base-texto-inverso);
+}
+
+.tarjetaModo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-sm);
+  padding: var(--um-esp-md);
+  border-radius: var(--um-radio-tarjeta);
+  background: var(--um-base-superficie);
+  box-shadow: var(--um-elevacion-flotante);
+  pointer-events: auto;
+}
+
+.secundario {
+  color: var(--um-base-texto-secundario);
+}
+
+.banda {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.banda line {
+  stroke: var(--um-mapa-usuario);
+  stroke-linecap: round;
+}
+
+.banda1 {
+  stroke-width: 6;
+}
+
+.banda2 {
+  stroke-width: 4;
+  stroke-opacity: 0.7;
+}
+
+.banda3 {
+  stroke-width: 4;
+  stroke-opacity: 0.45;
+  stroke-dasharray: 6 4;
+}

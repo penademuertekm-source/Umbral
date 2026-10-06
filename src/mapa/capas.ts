@@ -8,6 +8,9 @@ export const STATE = { sombra: 0, parcial: 1, expuesto: 2, sin_sol: 3 } as const
 
 /** Grosor de los tramos según el zoom (en px). */
 const WIDTH: ExpressionSpecification = ['interpolate', ['exponential', 2], ['zoom'], 14, 1, 16, 2.5, 17, 4, 18, 7, 19, 11]
+// La banda de 5 min de las isócronas va más gruesa: MapLibre exige que el zoom quede en la interpolación de
+// primer nivel, así que se escalan las paradas en vez de multiplicar la expresión.
+const WIDE_WIDTH: ExpressionSpecification = ['interpolate', ['exponential', 2], ['zoom'], 14, 1.6, 16, 4, 17, 6.4, 18, 11.2, 19, 17.6]
 const MARK_WIDTH: ExpressionSpecification = ['interpolate', ['exponential', 2], ['zoom'], 14, 0.3, 16, 0.6, 17, 1, 18, 1.8, 19, 2.8]
 const OUTLINE_GAP: ExpressionSpecification = ['interpolate', ['exponential', 2], ['zoom'], 14, 6, 16, 9, 17, 13, 18, 20, 19, 30]
 /** Sin estado (todavía calculando) se dibuja como "sin sol": gris neutro. */
@@ -25,14 +28,12 @@ export function baseStyle(colors: MapColors): StyleSpecification {
   }
 }
 
-export function addDataLayers(map: MapLibreMap, data: MapData, colors: MapColors): void {
+/** Fondo de la ciudad: plazas, manzanas, edificios y ejes de calle (lo comparten el mapa de sombra y el de rutas). */
+export function addBaseLayers(map: MapLibreMap, data: MapData, colors: MapColors): void {
   map.addSource('plazas', { type: 'geojson', data: data.plazas })
   map.addSource('manzanas', { type: 'geojson', data: data.manzanas })
   map.addSource('edificios', { type: 'geojson', data: data.edificios })
   map.addSource('calles', { type: 'geojson', data: data.red })
-  map.addSource('aceras', { type: 'geojson', data: data.aceras, promoteId: 'id' })
-  map.addSource('arboles', { type: 'geojson', data: data.arboles, cluster: true, clusterMaxZoom: 17, clusterRadius: 80 })
-
   map.addLayer({ id: 'plazas', type: 'fill', source: 'plazas', paint: { 'fill-color': colors.plaza } })
   map.addLayer({ id: 'manzanas', type: 'fill', source: 'manzanas', paint: { 'fill-color': colors.manzana } })
   map.addLayer({ id: 'edificios', type: 'fill', source: 'edificios', paint: { 'fill-color': colors.manzana } })
@@ -43,6 +44,13 @@ export function addDataLayers(map: MapLibreMap, data: MapData, colors: MapColors
     layout: { 'line-cap': 'round', 'line-join': 'round' },
     paint: { 'line-color': colors.via, 'line-width': ['interpolate', ['linear'], ['zoom'], 14, 0.5, 18, 2] },
   })
+}
+
+export function addDataLayers(map: MapLibreMap, data: MapData, colors: MapColors): void {
+  addBaseLayers(map, data, colors)
+  map.addSource('aceras', { type: 'geojson', data: data.aceras, promoteId: 'id' })
+  map.addSource('arboles', { type: 'geojson', data: data.arboles, cluster: true, clusterMaxZoom: 17, clusterRadius: 80 })
+  map.addSource('isocronas', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } })
 
   // Tramos por lado de acera. Las capas no se recrean: al cambiar la hora solo cambia feature-state.
   const line = { type: 'line' as const, source: 'aceras', layout: { 'line-join': 'round' as const } }
@@ -83,6 +91,33 @@ export function addDataLayers(map: MapLibreMap, data: MapData, colors: MapColors
       'line-opacity': onlyState(STATE.expuesto),
     },
   })
+  // Isócronas (Fase 6): bandas de 5, 10 y 15 min en un solo color; se distinguen también por grosor y trazo.
+  const band = (n: number): ExpressionSpecification => ['==', ['get', 'band'], n]
+  map.addLayer({
+    id: 'isocronas-3',
+    type: 'line',
+    source: 'isocronas',
+    filter: band(3),
+    layout: { 'line-join': 'round', visibility: 'none' },
+    paint: { 'line-color': colors.usuario, 'line-width': WIDTH, 'line-opacity': 0.45, 'line-dasharray': [1.5, 1] },
+  })
+  map.addLayer({
+    id: 'isocronas-2',
+    type: 'line',
+    source: 'isocronas',
+    filter: band(2),
+    layout: { 'line-join': 'round', 'line-cap': 'round', visibility: 'none' },
+    paint: { 'line-color': colors.usuario, 'line-width': WIDTH, 'line-opacity': 0.7 },
+  })
+  map.addLayer({
+    id: 'isocronas-1',
+    type: 'line',
+    source: 'isocronas',
+    filter: band(1),
+    layout: { 'line-join': 'round', 'line-cap': 'round', visibility: 'none' },
+    paint: { 'line-color': colors.usuario, 'line-width': WIDE_WIDTH, 'line-opacity': 1 },
+  })
+
   // Pantalla 20: con el cielo cubierto los tramos van en gris (se muestra en lugar de las capas de estado).
   map.addLayer({
     ...line,
@@ -135,10 +170,20 @@ const SUNNY_LAYERS = [
   'arboles',
 ]
 
-/** Estado nublado (pantalla 20): tramos en gris y sin árboles. */
-export function setCloudy(map: MapLibreMap, cloudy: boolean): void {
-  for (const id of SUNNY_LAYERS) map.setLayoutProperty(id, 'visibility', cloudy ? 'none' : 'visible')
-  map.setLayoutProperty('tramos-nublado', 'visibility', cloudy ? 'visible' : 'none')
+export type MapMode = 'sombra' | 'nublado' | 'isocronas'
+
+const ISOCHRONE_LAYERS = ['isocronas-1', 'isocronas-2', 'isocronas-3']
+
+/**
+ * Qué se ve sobre las calles: la sombra de cada tramo, el estado nublado (pantalla 20: tramos en gris y
+ * sin árboles) o las isócronas (sin tramos ni árboles, para que las bandas se lean claras).
+ */
+export function setMapMode(map: MapLibreMap, mode: MapMode): void {
+  const show = (ids: string[], visible: boolean) =>
+    ids.forEach((id) => map.setLayoutProperty(id, 'visibility', visible ? 'visible' : 'none'))
+  show(SUNNY_LAYERS, mode === 'sombra')
+  show(['tramos-nublado'], mode === 'nublado')
+  show(ISOCHRONE_LAYERS, mode === 'isocronas')
 }
 
 export function selectEdge(map: MapLibreMap, edge: number | null): void {

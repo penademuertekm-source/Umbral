@@ -14,7 +14,7 @@ export interface ScreenDef {
 }
 
 /** Última fase terminada (docs/PROMPTS.md): las pantallas de esta fase o anteriores ya están construidas. */
-export const CURRENT_PHASE = 5
+export const CURRENT_PHASE = 6
 
 // Las 23 pantallas de la especificación. Las que aún no se construyen usan PantallaPendiente.
 // La 08 se abrirá también con ?placa=<id> (Fase 8); la 17 es solo una referencia del semáforo.

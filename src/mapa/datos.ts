@@ -51,6 +51,17 @@ export interface Refuge {
   provisional: boolean
 }
 
+/** Destino de public/datos/destinos.json (sin coordenadas si todavía no se ubicó). */
+export interface Destination {
+  id: string
+  nombre: { es: string; en: string }
+  tipo: string
+  lat: number | null
+  lon: number | null
+  fuente: string
+  provisional: boolean
+}
+
 export interface Meta {
   datos_provisionales: boolean
   area: { centro: [number, number]; bbox: [number, number, number, number] }
@@ -65,6 +76,7 @@ export interface MapData {
   aceras: FeatureCollection<LineString, SidewalkProps>
   arboles: FeatureCollection<Point, TreeProps>
   refugios: Refuge[]
+  destinos: Destination[]
 }
 
 let cache: Promise<MapData> | null = null
@@ -85,8 +97,9 @@ export function loadMapData(): Promise<MapData> {
     getJson<MapData['aceras']>('aceras.geojson'),
     getJson<MapData['arboles']>('arboles.geojson'),
     getJson<Refuge[]>('refugios.json'),
+    getJson<Destination[]>('destinos.json'),
   ])
-    .then(([meta, manzanas, edificios, plazas, red, aceras, arboles, refugios]) => ({
+    .then(([meta, manzanas, edificios, plazas, red, aceras, arboles, refugios, destinos]) => ({
       meta,
       manzanas,
       edificios,
@@ -95,10 +108,24 @@ export function loadMapData(): Promise<MapData> {
       aceras,
       arboles,
       refugios,
+      destinos,
     }))
     .catch((error: unknown) => {
       cache = null
       throw error
     })
   return cache
+}
+
+/** Metros entre dos puntos [lon, lat] (aproximación plana, suficiente a escala de ciudad). */
+export function metersBetween(a: [number, number], b: [number, number]): number {
+  const mx = 111_320 * Math.cos((a[1] * Math.PI) / 180)
+  return Math.hypot((a[0] - b[0]) * mx, (a[1] - b[1]) * 110_574)
+}
+
+/** ¿Está el punto dentro del área de estudio? (círculo inscrito en el bbox de meta.json). */
+export function insideArea(meta: Meta, point: [number, number]): boolean {
+  const [west, south, east, north] = meta.area.bbox
+  const radius = Math.min(metersBetween([west, south], [east, south]), metersBetween([west, south], [west, north])) / 2
+  return metersBetween(meta.area.centro, point) <= radius
 }

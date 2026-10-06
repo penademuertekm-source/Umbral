@@ -1,4 +1,4 @@
-import { useEffect, useId, useMemo, useState, type CSSProperties } from 'react'
+import { useCallback, useEffect, useId, useMemo, useState, type CSSProperties } from 'react'
 import { useNavigate, useSearchParams } from 'react-router'
 import { BarraSuperior, Boton, Icono, MuestraTramo } from '../../componentes'
 import { readHeatProfile } from '../../clima/configClima'
@@ -6,36 +6,32 @@ import { simulateOvercast, thermalStateAt, type ThermalContext } from '../../cli
 import { rainOutlook } from '../../clima/openMeteo'
 import { useClima, useClimaConfig } from '../../clima/useClima'
 import { SEGMENT_STATES } from '../../config/niveles'
+import { ISOCHRONE_BANDS_MIN } from '../../config/rutas'
 import { laHora } from '../../i18n/hora'
 import { useT } from '../../i18n/useT'
-import { loadMapData, type MapData } from '../../mapa/datos'
+import { insideArea, loadMapData, type MapData } from '../../mapa/datos'
 import { MapaSombra } from '../../mapa/MapaSombra'
 import { indexEdges, treesByEdge } from '../../mapa/tramos'
-import { useUbicacion } from '../../mapa/useUbicacion'
-import { formatDateTime, formatTime, isoLocalDate, localDate, localParts, minutesOfDay } from '../../sombra/tiempo'
+import { snap } from '../../rutas/grafo'
+import { isochrones } from '../../rutas/isocronas'
+import { formatDateTime, formatTime, isoLocalDate } from '../../sombra/tiempo'
 import { useSombra } from '../../sombra/useSombra'
 import { AvisoElNino } from '../elnino/AvisoElNino'
 import { markElNinoSeen, seenElNinoToday } from '../elnino/visto'
+import { costModel, useGraph } from '../rutas/useContextoRutas'
+import { formatDesde, parseDesde, useOrigen } from '../rutas/useOrigen'
+import { MAX_MINUTE, MIN_MINUTE, STEP_MIN, useHoraElegida } from '../useHoraElegida'
 import { AvisoNublado } from './AvisoNublado'
 import { FichaTramo } from './FichaTramo'
 import s from './MapaPrincipal.module.css'
 
 // Pantalla 04 (nodo 3:2): mapa de sombra del centro a la hora del deslizador, con el semáforo y el UTCI
 // estimados para esa hora (Fase 5). Con el cielo cubierto pasa al estado nublado (pantalla 20) y, si El Niño
-// está activo, muestra una vez al día la pantalla 09.
+// está activo, muestra una vez al día la pantalla 09. Fase 6: capa de isócronas y modo "elegir el punto de
+// partida" (?elegir=1&volver=/buscar).
 
-const MIN_MINUTE = 6 * 60
-const MAX_MINUTE = 18 * 60
-const STEP_MIN = 15
 /** Espera antes de recalcular mientras se arrastra el deslizador. */
 const DEBOUNCE_MS = 80
-/** Cada cuánto se revisa la hora real mientras el usuario no mueve el deslizador. */
-const CLOCK_MS = 30_000
-
-function clampToQuarter(minute: number): number {
-  const quarter = Math.floor(minute / STEP_MIN) * STEP_MIN
-  return Math.min(MAX_MINUTE, Math.max(MIN_MINUTE, quarter))
-}
 
 function useDebounced<T>(value: T, ms: number): T {
   const [debounced, setDebounced] = useState(value)
@@ -57,6 +53,22 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
   const navigate = useNavigate()
   const [params, setParams] = useSearchParams()
   const sliderId = useId()
+  /** Cambia parámetros de la dirección sin perder los demás (hora, punto de partida…). */
+  const updateParams = useCallback(
+    (changes: Record<string, string | null>) =>
+      setParams(
+        (prev) => {
+          const next = new URLSearchParams(prev)
+          for (const [key, value] of Object.entries(changes)) {
+            if (value === null) next.delete(key)
+            else next.set(key, value)
+          }
+          return next
+        },
+        { replace: true },
+      ),
+    [setParams],
+  )
 
   // Datos del mapa (public/datos).
   const [data, setData] = useState<MapData | null>(null)
@@ -72,17 +84,10 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
     }
   }, [attempt])
 
-  // Hora: sigue la hora real (al cuarto de hora) hasta que el usuario mueve el deslizador.
-  const [now, setNow] = useState(() => new Date())
-  const [chosenMinute, setChosenMinute] = useState<number | null>(null)
-  useEffect(() => {
-    const id = window.setInterval(() => setNow(new Date()), CLOCK_MS)
-    return () => window.clearInterval(id)
-  }, [])
-  const minute = chosenMinute ?? clampToQuarter(minutesOfDay(now))
+  // Hora: la del deslizador, compartida con las demás pantallas por ?hora=.
+  const hora = useHoraElegida()
+  const { minute, now, at } = hora
   const shadeMinute = useDebounced(minute, DEBOUNCE_MS)
-  const { year, month, day } = localParts(now)
-  const at = (m: number) => localDate(year, month, day, Math.floor(m / 60), m % 60)
   const shownTime = at(minute)
   // useSombra solo depende del instante (número), así que un Date nuevo en cada render no recalcula.
   const shadeTime = at(shadeMinute)
@@ -126,19 +131,56 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
   // Pantalla 09: una vez por día si El Niño está activo.
   const [elNinoClosed, setElNinoClosed] = useState(() => seenElNinoToday())
 
+  // Modos del mapa (Fase 6): elegir el punto de partida o ver las isócronas.
+  const picking = params.get('elegir') === '1'
+  const showIsochrones = !picking && params.get('capa') === 'isocronas'
+  const { origen, ubicacion, gpsOutside } = useOrigen(data?.meta ?? null)
+  const [pickOutside, setPickOutside] = useState(false)
+  const graph = useGraph(showIsochrones ? data : null)
+  // La clave de texto evita recalcular cuando llega la misma posición en un objeto nuevo.
+  const originKey = origen ? formatDesde(origen.point) : null
+  const isochroneLayer = useMemo(() => {
+    const point = parseDesde(originKey)
+    if (!graph || !resultado || !point) return null
+    const start = snap(graph, point)
+    return start ? isochrones(graph, start, costModel(graph, resultado.fraction, 'sombra', profile), ISOCHRONE_BANDS_MIN) : null
+  }, [graph, resultado, originKey, profile])
+  const onMapClick = (point: [number, number]) => {
+    if (!data) return
+    if (!insideArea(data.meta, point)) {
+      setPickOutside(true)
+      return
+    }
+    setPickOutside(false)
+    if (picking) {
+      const back = params.get('volver') ?? '/buscar'
+      const next = new URLSearchParams()
+      for (const key of ['hora', 'destino']) {
+        const value = params.get(key)
+        if (value) next.set(key, value)
+      }
+      next.set('desde', formatDesde(point))
+      navigate(`${back.startsWith('/') ? back : '/buscar'}?${next}`)
+    } else {
+      updateParams({ desde: formatDesde(point) })
+    }
+  }
+
   // Tramo elegido: va en la URL (?tramo=<id>) para poder enlazarlo y para que "atrás" funcione igual.
   const edgeIndex = useMemo(() => (data ? indexEdges(data.red) : null), [data])
   const trees = useMemo(() => (data ? treesByEdge(data.red, data.arboles) : null), [data])
   const rawEdge = params.get('tramo')
-  const selected = rawEdge && /^\d+$/.test(rawEdge) && edgeIndex?.byId.has(Number(rawEdge)) ? Number(rawEdge) : null
-  const select = (edge: number) => setParams({ tramo: String(edge) }, { replace: true })
-  const close = () => setParams({}, { replace: true })
+  const selected =
+    !picking && !showIsochrones && rawEdge && /^\d+$/.test(rawEdge) && edgeIndex?.byId.has(Number(rawEdge))
+      ? Number(rawEdge)
+      : null
+  const select = (edge: number) => updateParams({ tramo: String(edge) })
+  const close = () => updateParams({ tramo: null })
   // La ficha usa la misma hora que el cálculo de sombra que muestra.
   const fichaUtci =
     context && resultado ? thermalStateAt(forecast, new Date(resultado.time), context, transform).utci : null
 
   // Ubicación: solo con permiso; el botón la pide y centra el mapa.
-  const ubicacion = useUbicacion()
   const [focusUser, setFocusUser] = useState(0)
   const locationMessage =
     ubicacion.status === 'denegada'
@@ -150,6 +192,7 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
           : ''
 
   const progress = ((minute - MIN_MINUTE) / (MAX_MINUTE - MIN_MINUTE)) * 100
+  const originLabel = origen?.kind === 'gps' ? t('origen.tuUbicacion') : t('origen.puntoElegido')
 
   return (
     <div className={s.pantalla}>
@@ -174,6 +217,9 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
               focusUser={focusUser}
               cloudy={cloudy}
               coveredPlaces={coveredPlaces}
+              isochrones={showIsochrones ? isochroneLayer : null}
+              onMapClick={picking || showIsochrones ? onMapClick : undefined}
+              pin={(picking || showIsochrones) && origen?.kind === 'punto' ? origen.point : null}
             />
           )}
 
@@ -199,66 +245,117 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
           </div>
 
           <div className={s.arriba}>
-            <div className={s.filaArriba}>
-              <div className={s.chips}>
-                {simulateCloudy && (
-                  <details className={s.desplegable}>
-                    <summary>
-                      <span className={`${s.chip} ${s.chipSimulacion} um-etiqueta`}>
-                        <Icono name="nublado" size={20} />
-                        {t('mapa.simulacion')}
-                      </span>
-                    </summary>
-                    <p className={`${s.globo} um-etiqueta`}>{t('mapa.simulacionDetalle')}</p>
-                  </details>
-                )}
-                {data?.meta.datos_provisionales && (
-                  <details className={s.desplegable}>
-                    <summary>
-                      <span className={`${s.chip} um-etiqueta`}>
-                        <Icono name="informacion" size={20} />
-                        {t('mapa.provisional')}
-                      </span>
-                    </summary>
-                    <p className={`${s.globo} um-etiqueta`}>{t('mapa.provisionalDetalle')}</p>
-                  </details>
-                )}
+            {picking ? (
+              <div className={s.tarjetaModo} role="status">
+                <p className="um-cuerpo-fuerte">{t('origen.elegirTitulo')}</p>
+                {pickOutside && <p className={`${s.secundario} um-etiqueta`}>{t('origen.elegirFuera')}</p>}
+                <Boton variant="secundario" onClick={() => navigate(-1)}>
+                  {t('comun.cancelar')}
+                </Boton>
               </div>
-              <div className={s.ubicacion}>
-                <button
-                  type="button"
-                  className={s.botonFlotante}
-                  aria-label={t('mapa.miUbicacion')}
-                  onClick={() => {
-                    ubicacion.start()
-                    setFocusUser((n) => n + 1)
-                  }}
-                >
-                  <Icono name="mi-ubicacion" />
-                </button>
-                {locationMessage && (
-                  <p className={`${s.globo} um-etiqueta`} role="status">
-                    {locationMessage}
-                  </p>
+            ) : (
+              <>
+                <div className={s.filaArriba}>
+                  <div className={s.chips}>
+                    {simulateCloudy && (
+                      <details className={s.desplegable}>
+                        <summary>
+                          <span className={`${s.chip} ${s.chipSimulacion} um-etiqueta`}>
+                            <Icono name="nublado" size={20} />
+                            {t('mapa.simulacion')}
+                          </span>
+                        </summary>
+                        <p className={`${s.globo} um-etiqueta`}>{t('mapa.simulacionDetalle')}</p>
+                      </details>
+                    )}
+                    {data?.meta.datos_provisionales && (
+                      <details className={s.desplegable}>
+                        <summary>
+                          <span className={`${s.chip} um-etiqueta`}>
+                            <Icono name="informacion" size={20} />
+                            {t('mapa.provisional')}
+                          </span>
+                        </summary>
+                        <p className={`${s.globo} um-etiqueta`}>{t('mapa.provisionalDetalle')}</p>
+                      </details>
+                    )}
+                  </div>
+                  <div className={s.ubicacion}>
+                    <button
+                      type="button"
+                      className={s.botonFlotante}
+                      aria-label={t('mapa.miUbicacion')}
+                      onClick={() => {
+                        ubicacion.start()
+                        setFocusUser((n) => n + 1)
+                      }}
+                    >
+                      <Icono name="mi-ubicacion" />
+                    </button>
+                    <button
+                      type="button"
+                      className={`${s.botonFlotante} ${showIsochrones ? s.botonActivo : ''}`}
+                      aria-label={t('isocronas.boton')}
+                      aria-pressed={showIsochrones}
+                      onClick={() => updateParams({ capa: showIsochrones ? null : 'isocronas', tramo: null })}
+                    >
+                      <Icono name="capas" />
+                    </button>
+                    {locationMessage && (
+                      <p className={`${s.globo} um-etiqueta`} role="status">
+                        {locationMessage}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                {cloudy && !showIsochrones && (
+                  <AvisoNublado rain={rain} hasCoveredPlaces={coveredPlaces.length > 0} />
                 )}
-              </div>
-            </div>
-            {cloudy && <AvisoNublado rain={rain} hasCoveredPlaces={coveredPlaces.length > 0} />}
+              </>
+            )}
           </div>
 
           <div className={s.abajo}>
-            {!cloudy && (
+            {showIsochrones ? (
               <div className={s.leyenda} role="group" aria-label={t('mapa.leyenda')}>
                 <p className={`${s.leyendaHora} um-micro`}>
-                  {t('mapa.horaElegida', { laHora: laHora(i18n, shadeTime) })}
-                  {resultado?.noSun && ` · ${t('mapa.sinSol')}`}
+                  {origen
+                    ? t('isocronas.titulo', { lugar: originLabel, hora: formatTime(shadeTime, language) })
+                    : t('isocronas.tocar')}
                 </p>
-                <div className={s.muestras}>
-                  {SEGMENT_STATES.map((state) => (
-                    <MuestraTramo key={state} state={state} size="compacta" />
-                  ))}
-                </div>
+                {origen && (
+                  <>
+                    <div className={s.muestras}>
+                      {ISOCHRONE_BANDS_MIN.map((n, i) => (
+                        <span key={n} className={`${s.banda} um-etiqueta`}>
+                          <svg width="28" height="12" viewBox="0 0 28 12" aria-hidden="true">
+                            <line className={s[`banda${i + 1}`]} x1="2" y1="6" x2="26" y2="6" />
+                          </svg>
+                          {t('isocronas.banda', { n })}
+                        </span>
+                      ))}
+                    </div>
+                    <p className={`${s.leyendaHora} um-micro`}>
+                      {gpsOutside ? t('origen.fueraDelCentro') : t('isocronas.nota')}
+                    </p>
+                  </>
+                )}
               </div>
+            ) : (
+              !cloudy &&
+              !picking && (
+                <div className={s.leyenda} role="group" aria-label={t('mapa.leyenda')}>
+                  <p className={`${s.leyendaHora} um-micro`}>
+                    {t('mapa.horaElegida', { laHora: laHora(i18n, shadeTime) })}
+                    {resultado?.noSun && ` · ${t('mapa.sinSol')}`}
+                  </p>
+                  <div className={s.muestras}>
+                    {SEGMENT_STATES.map((state) => (
+                      <MuestraTramo key={state} state={state} size="compacta" />
+                    ))}
+                  </div>
+                </div>
+              )
             )}
             <p className={`${s.atribucion} um-micro`}>
               {t('mapa.atribucion')} · {t('clima.atribucion')}
@@ -278,7 +375,7 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
             max={MAX_MINUTE}
             step={STEP_MIN}
             value={minute}
-            onChange={(e) => setChosenMinute(Number(e.target.value))}
+            onChange={(e) => hora.setMinute(Number(e.target.value))}
             aria-valuetext={formatTime(shownTime, language)}
             style={{ '--progreso': `${progress}%` } as CSSProperties}
           />
@@ -289,7 +386,7 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
         </section>
 
         <div className={s.acciones}>
-          <Boton onClick={() => navigate('/buscar')}>
+          <Boton onClick={() => navigate(`/buscar?${new URLSearchParams(pickShared(params))}`)}>
             {cloudy ? t('mapa.buscarRutaSimple') : t('mapa.buscarRuta')}
           </Boton>
         </div>
@@ -307,7 +404,7 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
         />
       )}
 
-      {climaConfig?.elNino && !elNinoClosed && (
+      {climaConfig?.elNino && !elNinoClosed && !picking && (
         <AvisoElNino
           config={climaConfig}
           onClose={() => {
@@ -318,4 +415,14 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
       )}
     </div>
   )
+}
+
+/** Hora y punto de partida que viajan a la búsqueda. */
+function pickShared(params: URLSearchParams): Record<string, string> {
+  const out: Record<string, string> = {}
+  for (const key of ['hora', 'desde']) {
+    const value = params.get(key)
+    if (value) out[key] = value
+  }
+  return out
 }

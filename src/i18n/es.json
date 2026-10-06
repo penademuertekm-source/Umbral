@@ -14,7 +14,8 @@
     "laHora": {
       "una": "la {hora}",
       "otra": "las {hora}"
-    }
+    },
+    "cancelar": "Cancelar"
   },
   "idioma": {
     "titulo": "Idioma",
@@ -454,5 +455,115 @@
       "no_recomendado": "Nivel 4 · Estrés muy fuerte o El Niño activo. No se recomienda caminar el trayecto."
     },
     "nota": "Umbrales provisionales basados en las categorías del UTCI; se calibran con las mediciones de campo."
+  },
+  "origen": {
+    "punto": "Punto de partida",
+    "desde": "Desde {lugar}",
+    "tuUbicacion": "tu ubicación",
+    "puntoElegido": "el punto elegido en el mapa",
+    "cambiar": "Cambiar",
+    "falta": "Para calcular las rutas hace falta un punto de partida.",
+    "usarUbicacion": "Usar mi ubicación",
+    "elegirEnMapa": "Elegir en el mapa",
+    "fueraDelCentro": "Tu ubicación está fuera del centro histórico: elige un punto en el mapa.",
+    "elegirTitulo": "Toca el mapa para elegir el punto de partida",
+    "elegirFuera": "Elige un punto dentro del centro histórico."
+  },
+  "buscar": {
+    "campo": "¿A dónde vas?",
+    "frecuentes": "Destinos frecuentes · sombra a {laHora}",
+    "detalle": "{distancia} · {min} min por sombra",
+    "fueraDelMapa": "{distancia} · fuera del mapa de sombra",
+    "sinUbicacion": "Ubicación pendiente",
+    "sinOrigen": "Elige un punto de partida",
+    "pildora": "Sombra {p} %",
+    "sinResultados": "No hay destinos con ese nombre.",
+    "calculando": "Calculando…"
+  },
+  "rutas": {
+    "conSombra": "Ruta con sombra",
+    "corta": "Ruta más corta",
+    "recomendada": "Ruta recomendada",
+    "protegido": "{p} % del trayecto protegido",
+    "protegidoCorto": "{p} % protegido",
+    "alSol": "unos {n} min al sol directo",
+    "unaSola": "la más corta ya es la de más sombra",
+    "minutos": "{n} min",
+    "iniciar": "Iniciar recorrido con sombra",
+    "iniciarSimple": "Iniciar recorrido",
+    "cuandoSalir": "¿Cuándo conviene salir?",
+    "sinRuta": "No encontramos una ruta entre estos puntos.",
+    "fueraDelArea": "{destino} queda fuera del mapa de sombra, a {distancia} de la Plaza Alfonso López. Por ahora no hay rutas con sombra hasta allá.",
+    "destinoDesconocido": "Ese destino no existe o todavía no tiene ubicación.",
+    "mapa": "Mapa con las rutas hacia {destino}",
+    "verDestinos": "Ver los destinos"
+  },
+  "cuando": {
+    "hacia": "Hacia {destino}",
+    "resumen": "{distancia} · {min} min a pie · ruta con más sombra",
+    "grafico": "Minutos al sol según la hora de salida",
+    "ahora": "Ahora {hora}",
+    "barra": "{hora}: {n} min al sol, {nivel}",
+    "barraSinNivel": "{hora}: {n} min al sol",
+    "antesDe": "Antes de {laHora}",
+    "desde": "Desde {laHora}",
+    "entre": "De {desde} a {hasta}",
+    "manana": "Mañana",
+    "tarde": "Tarde",
+    "rango": "{a} a {b} min al sol",
+    "rangoUno": "{a} min al sol",
+    "estimadosHoy": "Valores estimados para hoy",
+    "siSalesAhora": "Si sales ahora: unos {n} min al sol directo",
+    "verRuta": "Ver la ruta a {laHora}",
+    "calculando": "Calculando las rutas del día…",
+    "sinClima": "Sin datos de clima: las barras muestran los minutos al sol, sin nivel.",
+    "ventanas": "Mejores horas para salir",
+    "niveles": {
+      "comodo": "cómodo",
+      "precaucion": "precaución",
+      "evitar": "evitar a pie",
+      "no_recomendado": "no recomendado"
+    }
+  },
+  "sinRuta": {
+    "titulo": "A esta hora no hay una ruta con sombra",
+    "hacia": "Hacia {destino} · {distancia} · {min} min a pie",
+    "enSombra": "en sombra",
+    "alSol": "al sol directo",
+    "indice": "índice {categoria}",
+    "queHacer": "Qué puedes hacer",
+    "esperarManana": "Esperar a la mañana",
+    "esperarTarde": "Esperar a la tarde",
+    "esperarTexto": "Desde {laHora} el {p} % del trayecto queda en sombra.",
+    "esperarNo": "Hoy no hay una hora con menos sol para esta ruta.",
+    "transporteTitulo": "Hacer una parte en transporte",
+    "transporteTexto": "Llega en taxi hasta {lugar} y camina {n} min por sombra.",
+    "transporteDestino": "Llega en taxi hasta {lugar} y evita el trayecto al sol.",
+    "transporteRefugio": "Llega en taxi hasta {lugar}, un lugar con sombra cerca del destino.",
+    "transporteNo": "No hay un tramo final en sombra ni un refugio cerca del destino.",
+    "protegerseTitulo": "Si caminas de todos modos",
+    "protegerseVarios": "Protector solar, agua y gorra. Hay {n} puntos de descanso en el camino.",
+    "protegerseUno": "Protector solar, agua y gorra. Hay 1 punto de descanso en el camino.",
+    "protegerseCero": "Protector solar, agua y gorra. No hay puntos de descanso registrados en el camino.",
+    "verMejorHora": "Ver la mejor hora",
+    "caminar": "Caminar de todos modos"
+  },
+  "uv": {
+    "valor": "UV {n}",
+    "sinDato": "UV —",
+    "categorias": {
+      "bajo": "bajo",
+      "moderado": "moderado",
+      "alto": "alto",
+      "muy_alto": "muy alto",
+      "extremo": "extremo"
+    }
+  },
+  "isocronas": {
+    "boton": "Isócronas: minutos a pie por la sombra",
+    "titulo": "A pie por la sombra desde {lugar} · {hora}",
+    "banda": "{n} min",
+    "tocar": "Toca el mapa para elegir desde dónde.",
+    "nota": "Los minutos al sol cuentan más, por eso las bandas siguen la sombra."
   }
 }

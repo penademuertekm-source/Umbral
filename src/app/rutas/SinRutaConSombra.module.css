@@ -1,0 +1,85 @@
+/* Pantalla 16 (Figma, nodo 32:105) */
+
+.banda {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--um-esp-sm);
+  padding: var(--um-esp-sm) var(--um-esp-md) var(--um-esp-md);
+  padding-top: max(var(--um-esp-sm), env(safe-area-inset-top));
+  background: var(--nivel-fondo);
+}
+
+.volver {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--um-esp-xs);
+  min-height: var(--um-tactil-minimo);
+  margin-left: calc(-1 * var(--um-esp-sm));
+  padding: 0 var(--um-esp-sm);
+  border: 0;
+  border-radius: var(--um-radio-control);
+  background: none;
+  color: var(--nivel-texto);
+  cursor: pointer;
+}
+
+.nivel {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--um-esp-xs);
+  color: var(--nivel-texto);
+  font-weight: 600;
+}
+
+.subtitulo {
+  color: var(--um-base-texto-secundario);
+}
+
+.datos {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--um-esp-sm);
+  margin-top: var(--um-esp-md);
+}
+
+.dato {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  padding: var(--um-esp-md) var(--um-esp-sm) var(--um-esp-md) var(--um-esp-md);
+  border: 1px solid var(--um-base-borde);
+  border-radius: var(--um-radio-tarjeta);
+  background: var(--um-base-superficie);
+}
+
+.opciones {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-sm);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.opcion {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--um-esp-md);
+  padding: var(--um-esp-md);
+  border: 1px solid var(--um-base-borde);
+  border-radius: var(--um-radio-tarjeta);
+  background: var(--um-base-superficie);
+}
+
+.icono {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--um-radio-control);
+  background: var(--nivel-fondo);
+  color: var(--nivel-texto);
+}

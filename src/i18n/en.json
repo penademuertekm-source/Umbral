@@ -14,7 +14,8 @@
     "laHora": {
       "una": "{hora}",
       "otra": "{hora}"
-    }
+    },
+    "cancelar": "Cancel"
   },
   "idioma": {
     "titulo": "Language",
@@ -454,5 +455,115 @@
       "no_recomendado": "Level 4 · Very strong stress or El Niño active. Walking this trip is not recommended."
     },
     "nota": "Provisional thresholds based on the UTCI categories; they will be calibrated with field measurements."
+  },
+  "origen": {
+    "punto": "Starting point",
+    "desde": "From {lugar}",
+    "tuUbicacion": "your location",
+    "puntoElegido": "the point chosen on the map",
+    "cambiar": "Change",
+    "falta": "Routes need a starting point.",
+    "usarUbicacion": "Use my location",
+    "elegirEnMapa": "Choose on the map",
+    "fueraDelCentro": "Your location is outside the historic center: choose a point on the map.",
+    "elegirTitulo": "Tap the map to choose the starting point",
+    "elegirFuera": "Choose a point inside the historic center."
+  },
+  "buscar": {
+    "campo": "Where are you going?",
+    "frecuentes": "Frequent destinations · shade at {laHora}",
+    "detalle": "{distancia} · {min} min in the shade",
+    "fueraDelMapa": "{distancia} · outside the shade map",
+    "sinUbicacion": "Location pending",
+    "sinOrigen": "Choose a starting point",
+    "pildora": "Shade {p} %",
+    "sinResultados": "No destinations with that name.",
+    "calculando": "Calculating…"
+  },
+  "rutas": {
+    "conSombra": "Shaded route",
+    "corta": "Shortest route",
+    "recomendada": "Recommended route",
+    "protegido": "{p} % of the way protected",
+    "protegidoCorto": "{p} % protected",
+    "alSol": "about {n} min in direct sun",
+    "unaSola": "the shortest is already the shadiest",
+    "minutos": "{n} min",
+    "iniciar": "Start shaded walk",
+    "iniciarSimple": "Start walk",
+    "cuandoSalir": "When is it best to leave?",
+    "sinRuta": "We couldn't find a route between these points.",
+    "fueraDelArea": "{destino} is outside the shade map, {distancia} from Alfonso López Square. There are no shaded routes there yet.",
+    "destinoDesconocido": "That destination doesn't exist or has no location yet.",
+    "mapa": "Map with the routes to {destino}",
+    "verDestinos": "See destinations"
+  },
+  "cuando": {
+    "hacia": "To {destino}",
+    "resumen": "{distancia} · {min} min on foot · shadiest route",
+    "grafico": "Minutes in the sun by departure time",
+    "ahora": "Now {hora}",
+    "barra": "{hora}: {n} min in the sun, {nivel}",
+    "barraSinNivel": "{hora}: {n} min in the sun",
+    "antesDe": "Before {laHora}",
+    "desde": "From {laHora}",
+    "entre": "From {desde} to {hasta}",
+    "manana": "Morning",
+    "tarde": "Afternoon",
+    "rango": "{a} to {b} min in the sun",
+    "rangoUno": "{a} min in the sun",
+    "estimadosHoy": "Estimated values for today",
+    "siSalesAhora": "If you leave now: about {n} min in direct sun",
+    "verRuta": "See the route at {laHora}",
+    "calculando": "Calculating the day's routes…",
+    "sinClima": "No weather data: the bars show minutes in the sun, without a level.",
+    "ventanas": "Best times to leave",
+    "niveles": {
+      "comodo": "comfortable",
+      "precaucion": "caution",
+      "evitar": "avoid walking",
+      "no_recomendado": "not recommended"
+    }
+  },
+  "sinRuta": {
+    "titulo": "There's no shaded route at this time",
+    "hacia": "To {destino} · {distancia} · {min} min on foot",
+    "enSombra": "in the shade",
+    "alSol": "in direct sun",
+    "indice": "{categoria} index",
+    "queHacer": "What you can do",
+    "esperarManana": "Wait for the morning",
+    "esperarTarde": "Wait for the afternoon",
+    "esperarTexto": "From {laHora}, {p} % of the way is in the shade.",
+    "esperarNo": "There is no time with less sun for this route today.",
+    "transporteTitulo": "Take transport part of the way",
+    "transporteTexto": "Take a taxi to {lugar} and walk {n} min in the shade.",
+    "transporteDestino": "Take a taxi to {lugar} and skip the walk in the sun.",
+    "transporteRefugio": "Take a taxi to {lugar}, a shaded place near your destination.",
+    "transporteNo": "There is no shaded final stretch or shelter near the destination.",
+    "protegerseTitulo": "If you walk anyway",
+    "protegerseVarios": "Sunscreen, water and a hat. There are {n} rest points along the way.",
+    "protegerseUno": "Sunscreen, water and a hat. There is 1 rest point along the way.",
+    "protegerseCero": "Sunscreen, water and a hat. No rest points are recorded along the way.",
+    "verMejorHora": "See the best time",
+    "caminar": "Walk anyway"
+  },
+  "uv": {
+    "valor": "UV {n}",
+    "sinDato": "UV —",
+    "categorias": {
+      "bajo": "low",
+      "moderado": "moderate",
+      "alto": "high",
+      "muy_alto": "very high",
+      "extremo": "extreme"
+    }
+  },
+  "isocronas": {
+    "boton": "Isochrones: walking minutes in the shade",
+    "titulo": "Walking in the shade from {lugar} · {hora}",
+    "banda": "{n} min",
+    "tocar": "Tap the map to choose where from.",
+    "nota": "Minutes in the sun count more, so the bands follow the shade."
   }
 }

@@ -1,13 +1,15 @@
-import { Map as MapLibreMap, Marker, setWorkerUrl, type MapMouseEvent } from 'maplibre-gl'
+import type { FeatureCollection, LineString } from 'geojson'
+import { LngLatBounds, Map as MapLibreMap, Marker, type GeoJSONSource, type MapMouseEvent } from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
-import maplibreWorkerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url'
+import './trabajador'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Icono, Marcador } from '../componentes'
+import type { IsochroneProps } from '../rutas/isocronas'
 import { motorSombra, type ResultadoSombra } from '../sombra/cliente'
 import type { Side, SideLetter } from '../sombra/modelo'
 import { useT } from '../i18n/useT'
-import { addDataLayers, baseStyle, selectEdge, setCloudy } from './capas'
+import { addDataLayers, baseStyle, selectEdge, setMapMode } from './capas'
 import type { MapData, Refuge } from './datos'
 import { addMapImages } from './imagenes'
 import s from './MapaSombra.module.css'
@@ -26,16 +28,21 @@ interface MapaSombraProps {
   cloudy?: boolean
   /** Lugares cubiertos con coordenadas (se muestran solo con el cielo nublado). Debe ser estable (useMemo). */
   coveredPlaces?: Refuge[]
+  /** Capa de isócronas (Fase 6). Mientras haya una, se ocultan los tramos de sombra y los árboles. */
+  isochrones?: FeatureCollection<LineString, IsochroneProps> | null
+  /** Si se da, tocar el mapa entrega el punto [lon, lat] en lugar de abrir la ficha del tramo. */
+  onMapClick?: (point: [number, number]) => void
+  /** Punto de partida elegido en el mapa [lon, lat]. */
+  pin?: [number, number] | null
 }
 
 const NO_PLACES: Refuge[] = []
 
-// MapLibre 6 busca su worker junto a su propio archivo; con Vite hay que empaquetarlo y darle la URL.
-setWorkerUrl(maplibreWorkerUrl)
-
 const INITIAL_ZOOM = 16.5
 /** Con la ficha abierta solo se ve la parte de arriba del mapa: el tramo elegido debe quedar ahí. */
 const VISIBLE_SHARE = 0.4
+/** Parte del mapa, desde arriba, que no tapa la leyenda de las isócronas. */
+const ISOCHRONE_VISIBLE_SHARE = 0.62
 
 /** Mapa de sombra (pantalla 04): estilo propio, tramos por lado de acera y árboles. */
 export function MapaSombra({
@@ -47,6 +54,9 @@ export function MapaSombra({
   focusUser,
   cloudy = false,
   coveredPlaces = NO_PLACES,
+  isochrones = null,
+  onMapClick,
+  pin = null,
 }: MapaSombraProps) {
   const { t } = useT()
   const container = useRef<HTMLDivElement>(null)
@@ -55,7 +65,10 @@ export function MapaSombra({
   const [sides, setSides] = useState<Side[] | null>(null)
   const [userElement] = useState(() => document.createElement('div'))
   const userMarker = useRef<Marker | null>(null)
+  const [pinElement] = useState(() => document.createElement('div'))
+  const pinMarker = useRef<Marker | null>(null)
   const onSelectRef = useRef(onSelect)
+  const onMapClickRef = useRef(onMapClick)
   const userRef = useRef(user)
   /** Estado ya pintado de cada lado, para tocar solo los que cambian al mover el deslizador. */
   const painted = useRef<Uint8Array | null>(null)
@@ -72,6 +85,7 @@ export function MapaSombra({
 
   useEffect(() => {
     onSelectRef.current = onSelect
+    onMapClickRef.current = onMapClick
     userRef.current = user
   })
 
@@ -111,6 +125,10 @@ export function MapaSombra({
     })
 
     const pick = (event: MapMouseEvent) => {
+      if (onMapClickRef.current) {
+        onMapClickRef.current([event.lngLat.lng, event.lngLat.lat])
+        return
+      }
       const { x, y } = event.point
       const features = map.queryRenderedFeatures(
         [
@@ -174,11 +192,37 @@ export function MapaSombra({
     }
   }, [ready, selectedEdge, edgeMidpoints])
 
-  // Pantalla 20: con el cielo cubierto, tramos grises y etiquetas de los lugares cubiertos.
+  // Qué se ve sobre las calles: sombra, nublado (pantalla 20) o isócronas (Fase 6).
+  const mode = isochrones ? 'isocronas' : cloudy ? 'nublado' : 'sombra'
   useEffect(() => {
     const map = mapRef.current
-    if (map && ready) setCloudy(map, cloudy)
-  }, [ready, cloudy])
+    if (map && ready) setMapMode(map, mode)
+  }, [ready, mode])
+
+  useEffect(() => {
+    const map = mapRef.current
+    if (!map || !ready || !isochrones) return
+    ;(map.getSource('isocronas') as GeoJSONSource | undefined)?.setData(isochrones)
+  }, [ready, isochrones])
+
+  // Al activar las isócronas o cambiar el punto de partida, las bandas se encuadran en la parte del mapa que
+  // deja libre la leyenda. Al cambiar la hora no se mueve el mapa. Con GPS no se reencuadra a cada posición.
+  const framed = useRef<string | null>(null)
+  const frameKey = isochrones ? (pin ? pin.join(',') : 'gps') : null
+  useEffect(() => {
+    const map = mapRef.current
+    if (!frameKey) framed.current = null
+    if (!map || !ready || !isochrones || !frameKey || framed.current === frameKey) return
+    const coords = isochrones.features.flatMap((f) => f.geometry.coordinates as [number, number][])
+    if (coords.length === 0) return
+    framed.current = frameKey
+    const bounds = coords.reduce((b, c) => b.extend(c), new LngLatBounds(coords[0], coords[0]))
+    const { clientHeight: height } = map.getContainer()
+    map.fitBounds(bounds, {
+      padding: { top: 72, right: 72, bottom: height * (1 - ISOCHRONE_VISIBLE_SHARE), left: 24 },
+      maxZoom: 17.5,
+    })
+  }, [ready, isochrones, frameKey])
 
   const placeElements = useMemo(
     () => coveredPlaces.map((place) => ({ place, element: document.createElement('div') })),
@@ -186,7 +230,7 @@ export function MapaSombra({
   )
   useEffect(() => {
     const map = mapRef.current
-    if (!map || !ready || !cloudy) return
+    if (!map || !ready || mode !== 'nublado') return
     const located = placeElements.filter(({ place }) => place.lon !== null && place.lat !== null)
     const markers = located.map(({ place, element }) =>
       new Marker({ element, anchor: 'center' }).setLngLat([place.lon!, place.lat!]).addTo(map),
@@ -202,7 +246,7 @@ export function MapaSombra({
       }
     }
     return () => markers.forEach((marker) => marker.remove())
-  }, [ready, cloudy, placeElements])
+  }, [ready, mode, placeElements])
 
   // Marcador del usuario.
   useEffect(() => {
@@ -217,6 +261,19 @@ export function MapaSombra({
     userMarker.current.setLngLat(user)
   }, [user, userElement])
 
+  // Punto de partida elegido en el mapa.
+  useEffect(() => {
+    const map = mapRef.current
+    if (!map || !ready) return
+    if (!pin) {
+      pinMarker.current?.remove()
+      pinMarker.current = null
+      return
+    }
+    pinMarker.current ??= new Marker({ element: pinElement }).setLngLat(pin).addTo(map)
+    pinMarker.current.setLngLat(pin)
+  }, [ready, pin, pinElement])
+
   // Centrar en el usuario solo cuando se pide (focusUser cambia), o cuando llega la primera posición
   // después de pedirla.
   const hasUser = user !== null
@@ -230,6 +287,7 @@ export function MapaSombra({
     <>
       <div ref={container} className={s.mapa} />
       {createPortal(<Marcador kind="usuario" />, userElement)}
+      {createPortal(<Marcador kind="usuario" label={t('origen.punto')} />, pinElement)}
       {placeElements.map(({ place, element }) =>
         createPortal(
           <span className={`${s.lugar} um-etiqueta`}>

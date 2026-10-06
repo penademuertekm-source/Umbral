@@ -6,6 +6,7 @@ import { RutaMapa, RutaMapaNublado, TramoEnMapa } from './mapa/rutas'
 import { Marco } from './Marco'
 import { NoEncontrada } from './NoEncontrada'
 import { PantallaPendiente } from './PantallaPendiente'
+import { RutaBuscar, RutaComparacion, RutaCuandoSalir, RutaSinSombra } from './rutas/rutas'
 import { SCREENS } from './pantallas'
 import { ReferenciaSemaforo } from './semaforo/ReferenciaSemaforo'
 
@@ -19,6 +20,10 @@ const BUILT: Record<string, ReactNode> = {
   '/el-nino': <PantallaElNino />,
   '/semaforo': <ReferenciaSemaforo />,
   '/mapa/nublado': <RutaMapaNublado />,
+  '/buscar': <RutaBuscar />,
+  '/rutas': <RutaComparacion />,
+  '/cuando-salir': <RutaCuandoSalir />,
+  '/sin-ruta-con-sombra': <RutaSinSombra />,
 }
 
 export const router = createBrowserRouter(

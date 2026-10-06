@@ -1,0 +1,115 @@
+/* Pantallas de rutas (05, 06, 15 y 16): estilos comunes. */
+
+.contenido {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--um-esp-md);
+  padding: 0 var(--um-esp-md) var(--um-esp-lg);
+}
+
+.secundario {
+  color: var(--um-base-texto-secundario);
+}
+
+.subtitulo {
+  color: var(--um-base-texto-secundario);
+}
+
+/* Pantalla 05 */
+.campo {
+  width: 100%;
+  min-height: var(--um-tactil-minimo);
+  padding: 0 var(--um-esp-md);
+  border: 2px solid var(--um-base-texto);
+  border-radius: var(--um-radio-control);
+  background: var(--um-base-superficie);
+  color: var(--um-base-texto);
+}
+
+.campo::placeholder {
+  color: var(--um-base-texto-secundario);
+}
+
+.origen {
+  color: var(--um-base-texto-secundario);
+}
+
+.origen a {
+  display: inline-block;
+  min-height: var(--um-tactil-minimo);
+  line-height: var(--um-tactil-minimo);
+  color: var(--um-termico-sombra-plena);
+  font-weight: 600;
+}
+
+.aviso {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-sm);
+  padding: var(--um-esp-md);
+  border-radius: var(--um-radio-tarjeta);
+  background: var(--um-base-superficie);
+  border: 1px solid var(--um-base-borde);
+}
+
+.botones {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-sm);
+}
+
+.botonEnlace {
+  display: grid;
+  place-items: center;
+  min-height: var(--um-boton-alto);
+  border: 2px solid var(--um-termico-sombra-plena);
+  border-radius: var(--um-radio-control);
+  color: var(--um-termico-sombra-plena);
+  text-decoration: none;
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  margin: 0 calc(-1 * var(--um-esp-md));
+  padding: 0;
+  list-style: none;
+  background: var(--um-base-superficie);
+  border-top: 1px solid var(--um-base-borde);
+}
+
+.lista li {
+  border-bottom: 1px solid var(--um-base-borde);
+}
+
+.fila {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--um-esp-md);
+  min-height: 72px;
+  padding: var(--um-esp-sm) var(--um-esp-md);
+  color: var(--um-base-texto);
+  text-decoration: none;
+}
+
+.filaInactiva {
+  color: var(--um-base-texto-secundario);
+}
+
+.filaTexto {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.pildora {
+  flex-shrink: 0;
+  padding: var(--um-esp-xs) var(--um-esp-sm);
+  border-radius: var(--um-radio-control);
+  background: var(--nivel-fondo);
+  color: var(--nivel-texto);
+  font-weight: 600;
+  white-space: nowrap;
+}
