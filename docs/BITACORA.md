@@ -151,6 +151,9 @@ como provisionales, con su origen en la columna `fuente`, y conviene verificarlo
 La autora dejó dos observaciones de sus pruebas en `docs/observaciones-autora.md`: tramos sin nombre y
 reestructurar la composición y el texto de las pantallas. **No se trabajan hasta que ella lo pida.**
 
+Después de la Fase 6 agregó una tercera: que la app guíe el permiso de ubicación (o lo evite) para que nadie
+se pierda, y cómo tener un enlace seguro (HTTPS) para probar en el celular. También queda en espera.
+
 ---
 
 ## Ajuste · Pruebas en GitHub Codespaces (2026-10-06)
