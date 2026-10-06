@@ -8,6 +8,9 @@ import { buildGraph, snap, type Graph } from './grafo'
 import { isochrones } from './isocronas'
 import { findRoute, singleRoute, type CostModel, type Route, type RoutePiece } from './rutas'
 import { bestWindows, shadedTail, suggestedWindow, type Departure } from './salidas'
+import { preflightSteps } from './avisos'
+import { advance, buildLegs, buildTrack, guidanceAt, hasArrived, pointAt } from './recorrido'
+import { localDate } from '../sombra/tiempo'
 
 // Una manzana de 100 × 300 m. Carreras en x = 0 y x = 100; calles en y = 0 y y = 300 (metros).
 //
@@ -190,6 +193,7 @@ describe('transporte hasta la sombra (pantalla 16)', () => {
   const piece = (kind: RoutePiece['kind'], length: number, shade: number, at: number): RoutePiece => ({
     kind,
     segment: kind === 'acera' ? 0 : -1,
+    edge: kind === 'esquina' ? -1 : 0,
     length,
     shade,
     coords: [
@@ -207,5 +211,88 @@ describe('transporte hasta la sombra (pantalla 16)', () => {
   it('no propone transporte si el final está al sol o si toda la ruta ya va en sombra', () => {
     expect(shadedTail(routeOf([piece('acera', 40, 1, 0), piece('acera', 30, 0.1, 1)]))).toBeNull()
     expect(shadedTail(routeOf([piece('acera', 40, 1, 0), piece('acera', 30, 1, 1)]))).toBeNull()
+  })
+})
+
+describe('recorrido en curso (pantalla 13)', () => {
+  // La ruta con sombra rodea la manzana: Carrera 2 (al sol) → Calle 1 → Carrera 1 → Calle 2 → Carrera 2 (al sol).
+  const route = findRoute(graph, origin, destination, model('sombra'))!
+  const track = buildTrack(route, graph.projection)
+  const names = new Map(EDGES.map(([id, , , name]) => [id, name]))
+  const legs = buildLegs(track, graph, (edge) => names.get(edge) ?? '')
+  const corner = Math.hypot(4, 4)
+
+  it('agrupa la ruta en tramos por calle, con las esquinas sumadas y los giros', () => {
+    expect(legs.map((l) => names.get(l.edge))).toEqual(['Carrera 2', 'Calle 1', 'Carrera 1', 'Calle 2', 'Carrera 2'])
+    expect(legs.every((l) => l.kind === 'acera')).toBe(true)
+    expect(legs[0].end).toBeCloseTo(20 + corner, 1)
+    expect(legs[1].end - legs[1].start).toBeCloseTo(100 + corner, 1)
+    // Rodea la manzana por dentro: siempre dobla a la derecha.
+    expect(legs.slice(1).map((l) => l.maneuver)).toEqual(['derecha', 'derecha', 'derecha', 'derecha'])
+    expect(legs[legs.length - 1].end).toBeCloseTo(route.meters, 6)
+  })
+
+  it('ubica el GPS sobre la ruta, no retrocede y tolera 20 m', () => {
+    const along = 20 + corner + 100 + corner + 150
+    const onCarrera1 = advance(track, 140, ll([4, 150]), 20)
+    expect(onCarrera1.onRoute).toBe(true)
+    expect(onCarrera1.along).toBeCloseTo(along, 0)
+    expect(advance(track, along + 10, ll([4, 150]), 20).along).toBe(along + 10)
+    const far = advance(track, along, ll([-50, 150]), 20)
+    expect(far).toMatchObject({ onRoute: false, along })
+    const point = pointAt(track, along)!
+    const xy = graph.projection.toXY(point)
+    expect(xy[0]).toBeCloseTo(4, 0)
+    expect(xy[1]).toBeCloseTo(150, 0)
+  })
+
+  it('da la instrucción, el aviso a 150 m de un tramo expuesto y lo que falta', () => {
+    const start = guidanceAt(track, legs, 0, vulnerable)!
+    expect(start.leg).toBe(legs[0])
+    expect(start.next).toBe(legs[1])
+    expect(start.toLegEnd).toBeCloseTo(20 + corner, 1)
+    expect(start.exposed).toMatchObject({ ahead: 0 })
+    expect(start.exposed!.length).toBeCloseTo(20, 0)
+
+    const lastExposed = route.exposed[route.exposed.length - 1]
+    expect(guidanceAt(track, legs, lastExposed.startMeters - 200, vulnerable)!.exposed).toBeNull()
+    const warned = guidanceAt(track, legs, lastExposed.startMeters - 140, vulnerable)!
+    expect(warned.exposed!.ahead).toBeCloseTo(140, 6)
+    expect(warned.exposed!.length).toBeCloseTo(20, 0)
+
+    const half = guidanceAt(track, legs, route.meters / 2, vulnerable)!
+    expect(half.progress).toBeCloseTo(0.5, 6)
+    expect(half.remainingMeters).toBeCloseTo(route.meters / 2, 6)
+    expect(half.remainingMinutes).toBeCloseTo(route.meters / 2 / 60, 6)
+  })
+
+  it('llega a menos de 25 m del destino', () => {
+    const near = { along: route.meters - 20, onRoute: true, distance: 1 }
+    expect(hasArrived(track, near, null, destination.point, 25)).toBe(true)
+    expect(hasArrived(track, { ...near, along: route.meters - 60 }, null, destination.point, 25)).toBe(false)
+    expect(hasArrived(track, { along: 0, onRoute: false, distance: 99 }, ll([96, 270]), destination.point, 25)).toBe(true)
+    expect(hasArrived(track, { along: route.meters, onRoute: false, distance: 99 }, null, destination.point, 25)).toBe(true)
+  })
+})
+
+describe('avisos antes de salir (pantallas 19 y 18)', () => {
+  const at = (hour: number, minute = 0) => localDate(2026, 3, 15, hour, minute)
+  const base = { heatWarningEnabled: true, heatWarningHiddenToday: false, sunMinutes: 2, uv: 11 }
+
+  it('el aviso de calor sale de 11:00 a 14:59, si está activo y no se ocultó hoy', () => {
+    expect(preflightSteps({ ...base, now: at(10, 59) })).toEqual([])
+    expect(preflightSteps({ ...base, now: at(11) })).toEqual(['aviso'])
+    expect(preflightSteps({ ...base, now: at(14, 59) })).toEqual(['aviso'])
+    expect(preflightSteps({ ...base, now: at(15) })).toEqual([])
+    expect(preflightSteps({ ...base, now: at(12), heatWarningHiddenToday: true })).toEqual([])
+    expect(preflightSteps({ ...base, now: at(12), heatWarningEnabled: false })).toEqual([])
+  })
+
+  it('la protección solar sale con 5 min o más al sol y UV de 8 o más, después del aviso', () => {
+    expect(preflightSteps({ ...base, now: at(9), sunMinutes: 5 })).toEqual(['proteccion'])
+    expect(preflightSteps({ ...base, now: at(12), sunMinutes: 6 })).toEqual(['aviso', 'proteccion'])
+    expect(preflightSteps({ ...base, now: at(9), sunMinutes: 4.9 })).toEqual([])
+    expect(preflightSteps({ ...base, now: at(9), sunMinutes: 8, uv: 7 })).toEqual([])
+    expect(preflightSteps({ ...base, now: at(9), sunMinutes: 8, uv: null })).toEqual([])
   })
 })

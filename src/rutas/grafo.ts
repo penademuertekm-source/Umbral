@@ -9,7 +9,7 @@
 // dirigida de OSMnx la geometría de algunas calles va de v a u, y las aceras siguen a la geometría.
 import type { FeatureCollection, LineString } from 'geojson'
 import { CROSSING_WIDTH_M, DEFAULT_CROSSING_WIDTH_M } from '../config/rutas'
-import type { EdgeProps, SidewalkProps } from '../mapa/datos'
+import type { EdgeProps, Orientation, SidewalkProps } from '../mapa/datos'
 import { sideKey, type Side, type SideLetter } from '../sombra/modelo'
 import { cumulative, distance, project, projection, type LonLat, type Projection, type XY } from './geometria'
 
@@ -23,11 +23,15 @@ export interface Link {
   segment: number
   fromAlong: number
   toAlong: number
+  /** En los cruces: la calle que se cruza (id de arista). Para las instrucciones del recorrido (pantalla 13). */
+  crossed?: number
 }
 
 export interface Segment {
   edge: number
   side: SideLetter
+  /** Hacia dónde da la acera: "Sigue por la acera occidental". */
+  orientation: Orientation
   /** Posición del lado en los arreglos del motor de sombra (-1 si no tiene muestras). */
   shadeIndex: number
   coords: LonLat[]
@@ -74,14 +78,23 @@ export function buildGraph(
   const segments: Segment[] = []
   const links: Link[][] = []
   for (const feature of aceras.features) {
-    const { arista, lado } = feature.properties
+    const { arista, lado, orientacion } = feature.properties
     if (!edges.has(arista)) continue
     const coords = feature.geometry.coordinates as LonLat[]
     const xy = coords.map((c) => proj.toXY(c))
     const cum = cumulative(xy)
     const s = segments.length
     const length = cum[cum.length - 1]
-    segments.push({ edge: arista, side: lado, shadeIndex: shadeIndex.get(sideKey(arista, lado)) ?? -1, coords, xy, cum, length })
+    segments.push({
+      edge: arista,
+      side: lado,
+      orientation: orientacion,
+      shadeIndex: shadeIndex.get(sideKey(arista, lado)) ?? -1,
+      coords,
+      xy,
+      cum,
+      length,
+    })
     links.push([{ to: 2 * s + 1, length, kind: 'acera', segment: s, fromAlong: 0, toAlong: length }])
     links.push([{ to: 2 * s, length, kind: 'acera', segment: s, fromAlong: length, toAlong: 0 }])
   }
@@ -105,9 +118,9 @@ export function buildGraph(
     }
   })
 
-  const add = (a: number, b: number, length: number, kind: LinkKind) => {
-    links[a].push({ to: b, length, kind, segment: -1, fromAlong: 0, toAlong: 0 })
-    links[b].push({ to: a, length, kind, segment: -1, fromAlong: 0, toAlong: 0 })
+  const add = (a: number, b: number, length: number, kind: LinkKind, crossed?: number) => {
+    links[a].push({ to: b, length, kind, segment: -1, fromAlong: 0, toAlong: 0, crossed })
+    links[b].push({ to: a, length, kind, segment: -1, fromAlong: 0, toAlong: 0, crossed })
   }
   for (const list of ends.values()) {
     if (list.length < 2) continue
@@ -121,7 +134,7 @@ export function buildGraph(
       seen.add(key)
       if (p.edge === q.edge && p.atStart === q.atStart) {
         const type = edges.get(p.edge)!.properties.tipo
-        add(p.vertex, q.vertex, CROSSING_WIDTH_M[type] ?? DEFAULT_CROSSING_WIDTH_M, 'cruce')
+        add(p.vertex, q.vertex, CROSSING_WIDTH_M[type] ?? DEFAULT_CROSSING_WIDTH_M, 'cruce', p.edge)
       } else {
         const gap = distance(vertexXYFrom(segments, p.vertex), vertexXYFrom(segments, q.vertex))
         add(p.vertex, q.vertex, gap, 'esquina')

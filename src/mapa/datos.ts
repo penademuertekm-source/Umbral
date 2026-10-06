@@ -45,6 +45,8 @@ export interface Refuge {
   nombre: string
   tipo: string
   descripcion: { es: string; en: string }
+  asientos: 'si' | 'no'
+  agua_potable: 'si' | 'no'
   cubierto: 'si' | 'parcial' | 'no'
   lat: number | null
   lon: number | null

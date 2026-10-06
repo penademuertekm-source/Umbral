@@ -1,0 +1,69 @@
+/* Pantalla 10 (Figma, nodo 6:21): mapa de refugios y lista. */
+
+.pantalla {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+.mapa {
+  position: relative;
+  height: 38dvh;
+  min-height: 220px;
+  overflow: hidden;
+  background: var(--um-mapa-fondo);
+}
+
+.contenido {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-sm);
+  padding: var(--um-esp-md);
+  padding-bottom: max(var(--um-esp-md), env(safe-area-inset-bottom));
+}
+
+.secundario {
+  color: var(--um-base-texto-secundario);
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  margin: 0 calc(-1 * var(--um-esp-md));
+  padding: 0;
+  list-style: none;
+}
+
+.fila {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--um-esp-md);
+  padding: var(--um-esp-md);
+  border-bottom: 1px solid var(--um-base-borde);
+}
+
+.fila:first-child {
+  border-top: 1px solid var(--um-base-borde);
+}
+
+.icono {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--um-radio-control);
+  background: var(--um-semaforo-comodo-fondo);
+  color: var(--um-semaforo-comodo-texto);
+}
+
+.iconoFuera {
+  background: var(--um-semaforo-nublado-fondo);
+  color: var(--um-semaforo-nublado-texto);
+}
+
+.textos {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}

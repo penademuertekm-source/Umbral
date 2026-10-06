@@ -18,6 +18,7 @@ import { formatDateTime, formatTime, isoLocalDate } from '../../sombra/tiempo'
 import { useSombra } from '../../sombra/useSombra'
 import { AvisoElNino } from '../elnino/AvisoElNino'
 import { markElNinoSeen, seenElNinoToday } from '../elnino/visto'
+import { useEnlace } from '../rutas/enlaces'
 import { costModel, useGraph } from '../rutas/useContextoRutas'
 import { formatDesde, parseDesde, useOrigen } from '../rutas/useOrigen'
 import { MAX_MINUTE, MIN_MINUTE, STEP_MIN, useHoraElegida } from '../useHoraElegida'
@@ -51,6 +52,7 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
   const i18n = useT()
   const { t, language } = i18n
   const navigate = useNavigate()
+  const enlace = useEnlace()
   const [params, setParams] = useSearchParams()
   const sliderId = useId()
   /** Cambia parámetros de la dirección sin perder los demás (hora, punto de partida…). */
@@ -187,9 +189,11 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
       ? t('mapa.ubicacionDenegada')
       : ubicacion.status === 'no_disponible'
         ? t('mapa.ubicacionNoDisponible')
-        : ubicacion.status === 'buscando'
-          ? t('mapa.ubicacionBuscando')
-          : ''
+        : ubicacion.status === 'insegura'
+          ? t('mapa.ubicacionInsegura')
+          : ubicacion.status === 'buscando'
+            ? t('mapa.ubicacionBuscando')
+            : ''
 
   const progress = ((minute - MIN_MINUTE) / (MAX_MINUTE - MIN_MINUTE)) * 100
   const originLabel = origen?.kind === 'gps' ? t('origen.tuUbicacion') : t('origen.puntoElegido')
@@ -300,6 +304,14 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
                       onClick={() => updateParams({ capa: showIsochrones ? null : 'isocronas', tramo: null })}
                     >
                       <Icono name="capas" />
+                    </button>
+                    <button
+                      type="button"
+                      className={s.botonFlotante}
+                      aria-label={t('refugios.boton')}
+                      onClick={() => navigate(enlace('/refugios'))}
+                    >
+                      <Icono name="refugio-cubierto" />
                     </button>
                     {locationMessage && (
                       <p className={`${s.globo} um-etiqueta`} role="status">

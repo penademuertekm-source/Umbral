@@ -3,11 +3,14 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 // Ubicación del usuario (CLAUDE.md, "Privacidad"): se usa solo en el dispositivo, no se guarda ni
 // se envía. El GPS no distingue la acera, así que solo sirve para dibujar el marcador.
 
-export type EstadoUbicacion = 'inactiva' | 'buscando' | 'activa' | 'denegada' | 'no_disponible'
+/** `insegura`: la página no es HTTPS (p. ej. `npm run dev -- --host` en el celular) y el navegador no da el GPS. */
+export type EstadoUbicacion = 'inactiva' | 'buscando' | 'activa' | 'denegada' | 'no_disponible' | 'insegura'
 
 export interface Ubicacion {
   /** [lon, lat] o null si no hay posición. */
   position: [number, number] | null
+  /** Radio de error de la última posición (m). */
+  accuracy: number | null
   status: EstadoUbicacion
   /** Pide el permiso (si hace falta) y empieza a seguir la posición. */
   start: () => void
@@ -15,6 +18,7 @@ export interface Ubicacion {
 
 export function useUbicacion(): Ubicacion {
   const [position, setPosition] = useState<[number, number] | null>(null)
+  const [accuracy, setAccuracy] = useState<number | null>(null)
   const [status, setStatus] = useState<EstadoUbicacion>('inactiva')
   const watchId = useRef<number | null>(null)
 
@@ -23,11 +27,16 @@ export function useUbicacion(): Ubicacion {
       setStatus('no_disponible')
       return
     }
+    if (!window.isSecureContext) {
+      setStatus('insegura')
+      return
+    }
     if (watchId.current !== null) return
     setStatus('buscando')
     watchId.current = navigator.geolocation.watchPosition(
       (p) => {
         setPosition([p.coords.longitude, p.coords.latitude])
+        setAccuracy(p.coords.accuracy)
         setStatus('activa')
       },
       (error) => {
@@ -59,5 +68,5 @@ export function useUbicacion(): Ubicacion {
     }
   }, [start])
 
-  return { position, status, start }
+  return { position, accuracy, status, start }
 }

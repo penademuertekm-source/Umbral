@@ -1,0 +1,149 @@
+/* Pantalla 13 (Figma, nodo 13:35): banda con la instrucción, mapa, aviso ámbar y progreso. */
+
+.pantalla {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  height: 100dvh;
+}
+
+.banda {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--um-esp-md);
+  min-height: 120px;
+  padding: var(--um-esp-lg) var(--um-esp-md);
+  padding-top: max(var(--um-esp-lg), env(safe-area-inset-top));
+  background: var(--um-termico-sombra-plena);
+  color: var(--um-base-texto-inverso);
+}
+
+.instruccion {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-xs);
+}
+
+.claro {
+  color: var(--um-semaforo-comodo-fondo);
+}
+
+.flecha {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  color: var(--um-marca-canaguate);
+}
+
+.mapa {
+  position: relative;
+  flex: 1;
+  min-height: 200px;
+  overflow: hidden;
+  background: var(--um-mapa-fondo);
+}
+
+.estado {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: var(--um-esp-md);
+}
+
+.simulacion {
+  position: absolute;
+  top: var(--um-esp-md);
+  left: var(--um-esp-md);
+  right: var(--um-esp-md);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--um-esp-sm);
+  padding: var(--um-esp-xs) var(--um-esp-xs) var(--um-esp-xs) var(--um-esp-md);
+  border-radius: var(--um-radio-chip);
+  background: var(--um-semaforo-nublado-fondo);
+  color: var(--um-semaforo-nublado-texto);
+  box-shadow: var(--um-elevacion-flotante);
+  font-weight: 600;
+}
+
+.pausa {
+  min-width: var(--um-tactil-minimo);
+  min-height: var(--um-tactil-minimo);
+  padding: 0 var(--um-esp-md);
+  border: 1px solid var(--um-base-borde);
+  border-radius: var(--um-radio-chip);
+  background: var(--um-base-superficie);
+  color: var(--um-base-texto);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.expuesto {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--um-esp-sm);
+  padding: var(--um-esp-md);
+  background: var(--um-semaforo-evitar-fondo);
+  color: var(--um-semaforo-evitar-texto);
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-sm);
+  padding: var(--um-esp-md);
+  padding-bottom: max(var(--um-esp-md), env(safe-area-inset-bottom));
+  background: var(--um-base-fondo);
+}
+
+.tarjeta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-sm);
+  padding: var(--um-esp-md);
+  border: 1px solid var(--um-base-borde);
+  border-radius: var(--um-radio-tarjeta);
+  background: var(--um-base-superficie);
+}
+
+.secundario {
+  color: var(--um-base-texto-secundario);
+}
+
+.barra {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: var(--um-base-borde);
+}
+
+.relleno {
+  display: block;
+  height: 100%;
+  background: var(--um-termico-sombra-plena);
+  transition: width 250ms linear;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .relleno {
+    transition: none;
+  }
+}
+
+.vacio {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-md);
+  padding: var(--um-esp-lg) var(--um-esp-md);
+}
+
+.enlace {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--um-tactil-minimo);
+  color: var(--um-termico-sombra-plena);
+}

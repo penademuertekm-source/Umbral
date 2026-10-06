@@ -6,6 +6,8 @@ import { RutaMapa, RutaMapaNublado, TramoEnMapa } from './mapa/rutas'
 import { Marco } from './Marco'
 import { NoEncontrada } from './NoEncontrada'
 import { PantallaPendiente } from './PantallaPendiente'
+import { PantallaAvisoCalor, PantallaProteccionSolar } from './recorrido/PantallasEjemplo'
+import { RutaLlegada, RutaRecorrido, RutaRefugios } from './recorrido/rutas'
 import { RutaBuscar, RutaComparacion, RutaCuandoSalir, RutaSinSombra } from './rutas/rutas'
 import { SCREENS } from './pantallas'
 import { ReferenciaSemaforo } from './semaforo/ReferenciaSemaforo'
@@ -24,6 +26,11 @@ const BUILT: Record<string, ReactNode> = {
   '/rutas': <RutaComparacion />,
   '/cuando-salir': <RutaCuandoSalir />,
   '/sin-ruta-con-sombra': <RutaSinSombra />,
+  '/aviso-calor': <PantallaAvisoCalor />,
+  '/proteccion-solar': <PantallaProteccionSolar />,
+  '/recorrido': <RutaRecorrido />,
+  '/llegada': <RutaLlegada />,
+  '/refugios': <RutaRefugios />,
 }
 
 export const router = createBrowserRouter(

@@ -2,9 +2,9 @@ import type { Feature, FeatureCollection, MultiLineString, Point } from 'geojson
 import { LngLatBounds, Map as MapLibreMap, Marker, type GeoJSONSource } from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import './trabajador'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { Marcador } from '../componentes'
+import { Marcador, type MarkerKind } from '../componentes'
 import { useT } from '../i18n/useT'
 import type { LonLat } from '../rutas/geometria'
 import type { Route } from '../rutas/rutas'
@@ -14,26 +14,45 @@ import { addMapImages } from './imagenes'
 import s from './MapaSombra.module.css'
 import { mapColors } from './tokens'
 
-// Mapa de la pantalla 06: las dos rutas con los estilos de MuestraTramo (con sombra: verde continua; corta:
-// ámbar con marca punteada), los árboles a lo largo de la ruta con sombra y los puntos de partida y destino.
+// Mapa de las pantallas de rutas (06, 13 y 10): las rutas con los estilos de MuestraTramo (con sombra: verde
+// continua; corta: ámbar con marca punteada), los árboles de la ruta con sombra, los puntos de partida y
+// destino, la persona en movimiento (13) y lugares sueltos como los refugios (10).
+
+export interface MapPlace {
+  id: string
+  point: LonLat
+  kind: MarkerKind
+  label: string
+}
 
 interface MapaRutasProps {
   data: MapData
-  shaded: Route | null
-  shortest: Route | null
+  shaded?: Route | null
+  shortest?: Route | null
   /** Ruta resaltada (se dibuja encima). */
-  selected: 'sombra' | 'corta'
-  origin: LonLat
-  destination: LonLat
+  selected?: 'sombra' | 'corta'
+  /** Punto de partida (marcador "Punto de partida"). */
+  origin?: LonLat | null
+  destination?: LonLat | null
   /** Árboles a lo largo de la ruta con sombra. */
-  trees: FeatureCollection<Point, TreeProps>
+  trees?: FeatureCollection<Point, TreeProps>
+  /** Posición de la persona durante el recorrido (13): punto azul. */
+  user?: LonLat | null
+  /** Si es true, el mapa sigue a `user`. */
+  follow?: boolean
+  places?: readonly MapPlace[]
   label: string
 }
 
 const EMPTY: FeatureCollection = { type: 'FeatureCollection', features: [] }
+const NO_TREES = EMPTY as FeatureCollection<Point, TreeProps>
+const NO_PLACES: readonly MapPlace[] = []
+/** Al seguir a la persona: zoom mínimo y franja del borde (fracción de la vista) que obliga a recentrar. */
+const FOLLOW_ZOOM = 17.5
+const FOLLOW_MARGIN = 0.25
 const ROUTE_WIDTH = ['interpolate', ['exponential', 2], ['zoom'], 14, 3, 16, 5, 18, 10] as const
 
-function asLines(route: Route | null): FeatureCollection<MultiLineString> {
+function asLines(route: Route | null | undefined): FeatureCollection<MultiLineString> {
   if (!route) return EMPTY as FeatureCollection<MultiLineString>
   const feature: Feature<MultiLineString> = {
     type: 'Feature',
@@ -43,15 +62,28 @@ function asLines(route: Route | null): FeatureCollection<MultiLineString> {
   return { type: 'FeatureCollection', features: [feature] }
 }
 
-export function MapaRutas({ data, shaded, shortest, selected, origin, destination, trees, label }: MapaRutasProps) {
+export function MapaRutas({
+  data,
+  shaded = null,
+  shortest = null,
+  selected = 'sombra',
+  origin = null,
+  destination = null,
+  trees = NO_TREES,
+  user = null,
+  follow = false,
+  places = NO_PLACES,
+  label,
+}: MapaRutasProps) {
   const { t } = useT()
   const container = useRef<HTMLDivElement>(null)
   const mapRef = useRef<MapLibreMap | null>(null)
   const [ready, setReady] = useState(false)
   const [originElement] = useState(() => document.createElement('div'))
   const [destinationElement] = useState(() => document.createElement('div'))
+  const [userElement] = useState(() => document.createElement('div'))
   // Centro inicial: el mapa se crea una vez por juego de datos y luego se encuadra con las rutas.
-  const initialCenter = useRef(origin)
+  const initialCenter = useRef<LonLat>(origin ?? destination ?? data.meta.area.centro)
 
   useEffect(() => {
     if (!container.current) return
@@ -141,28 +173,60 @@ export function MapaRutas({ data, shaded, shortest, selected, origin, destinatio
       map.moveLayer('ruta-corta', 'ruta-sombra')
       map.moveLayer('ruta-corta-marca', 'ruta-sombra')
     }
-    const bounds = new LngLatBounds(origin, origin)
-    bounds.extend(destination)
+    const bounds = new LngLatBounds()
+    for (const point of [origin, destination]) if (point) bounds.extend(point)
     for (const route of [shaded, shortest]) route?.pieces.forEach((p) => p.coords.forEach((c) => bounds.extend(c)))
-    map.fitBounds(bounds, { padding: 48, maxZoom: 18, duration: 0 })
-  }, [ready, shaded, shortest, selected, trees, origin, destination])
+    for (const place of places) bounds.extend(place.point)
+    if (!bounds.isEmpty()) map.fitBounds(bounds, { padding: 48, maxZoom: 18, duration: 0 })
+  }, [ready, shaded, shortest, selected, trees, origin, destination, places])
 
   // Marcadores de partida y destino.
   useEffect(() => {
     const map = mapRef.current
     if (!map || !ready) return
     const markers = [
-      new Marker({ element: originElement }).setLngLat(origin).addTo(map),
-      new Marker({ element: destinationElement }).setLngLat(destination).addTo(map),
+      origin && new Marker({ element: originElement }).setLngLat(origin).addTo(map),
+      destination && new Marker({ element: destinationElement }).setLngLat(destination).addTo(map),
     ]
-    return () => markers.forEach((m) => m.remove())
+    return () => markers.forEach((m) => m?.remove())
   }, [ready, origin, destination, originElement, destinationElement])
+
+  // Lugares sueltos (refugios).
+  const placeElements = useMemo(() => places.map((place) => ({ place, element: document.createElement('div') })), [places])
+  useEffect(() => {
+    const map = mapRef.current
+    if (!map || !ready) return
+    const markers = placeElements.map(({ place, element }) => new Marker({ element }).setLngLat(place.point).addTo(map))
+    return () => markers.forEach((m) => m.remove())
+  }, [ready, placeElements])
+
+  // La persona durante el recorrido; con `follow`, el mapa la sigue.
+  const userMarker = useRef<Marker | null>(null)
+  useEffect(() => {
+    const map = mapRef.current
+    if (!map || !ready) return
+    if (!user) {
+      userMarker.current?.remove()
+      userMarker.current = null
+      return
+    }
+    userMarker.current ??= new Marker({ element: userElement }).setLngLat(user).addTo(map)
+    userMarker.current.setLngLat(user)
+    if (!follow) return
+    // Recentrar solo si el punto se acerca al borde: mover la cámara en cada paso cuesta batería.
+    const { x, y } = map.project(user)
+    const { clientWidth: width, clientHeight: height } = map.getContainer()
+    const inside = x > width * FOLLOW_MARGIN && x < width * (1 - FOLLOW_MARGIN) && y > height * FOLLOW_MARGIN && y < height * (1 - FOLLOW_MARGIN)
+    if (!inside || map.getZoom() < FOLLOW_ZOOM) map.easeTo({ center: user, zoom: Math.max(map.getZoom(), FOLLOW_ZOOM), duration: 400 })
+  }, [ready, user, follow, userElement])
 
   return (
     <>
       <div ref={container} className={s.mapa} />
       {createPortal(<Marcador kind="usuario" label={t('origen.punto')} />, originElement)}
       {createPortal(<Marcador kind="destino" />, destinationElement)}
+      {createPortal(<Marcador kind="usuario" />, userElement)}
+      {placeElements.map(({ place, element }) => createPortal(<Marcador kind={place.kind} label={place.label} />, element, place.id))}
     </>
   )
 }

@@ -10,6 +10,7 @@ import { computeShade } from '../sombra/modelo'
 import { localDate } from '../sombra/tiempo'
 import { buildGraph, snap } from './grafo'
 import { isochrones } from './isocronas'
+import { buildLegs, buildTrack } from './recorrido'
 import { findRoute, type CostModel } from './rutas'
 
 const DATOS = new URL('../../public/datos/', import.meta.url)
@@ -72,5 +73,21 @@ describe('rutas con los datos reales', async () => {
     expect(count(1)).toBeGreaterThan(0)
     expect(count(2)).toBeGreaterThan(count(1) / 2)
     expect(ms).toBeLessThan(300)
+  })
+
+  it('arma las instrucciones del recorrido de la Plaza al Callejón por calles con nombre', () => {
+    const route = findRoute(graph, plaza, callejon, costModel(localDate(2026, 10, 6, 16), 'sombra'))!
+    const names = new Map(red.features.map((f) => [f.properties.id, f.properties.nombre]))
+    const legs = buildLegs(buildTrack(route, graph.projection), graph, (edge) => names.get(edge) ?? '')
+    const text = legs.map((l) => `${l.kind === 'cruce' ? 'cruza' : `acera ${l.orientation}`} ${names.get(l.edge) || '(sin nombre)'} ${Math.round(l.end - l.start)} m ${l.maneuver}`)
+    console.info(`[recorrido] ${text.join(' → ')}`)
+    expect(legs.length).toBeGreaterThan(1)
+    expect(legs.length).toBeLessThan(20)
+    expect(legs[legs.length - 1].end).toBeCloseTo(route.meters, 6)
+    // Dos tramos de acera seguidos son de calles u orientaciones distintas.
+    for (let i = 1; i < legs.length; i++) {
+      const [a, b] = [legs[i - 1], legs[i]]
+      if (a.kind === 'acera' && b.kind === 'acera') expect(names.get(a.edge) !== names.get(b.edge) || a.orientation !== b.orientation).toBe(true)
+    }
   })
 })

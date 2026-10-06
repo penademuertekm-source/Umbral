@@ -4,6 +4,107 @@ Registro de lo hecho en cada fase, lo pendiente y las decisiones tomadas. La ent
 
 ---
 
+## Fase 7 · Recorrido completo (2026-10-06)
+
+La autora aprobó el plan el 2026-10-06. Decisión aprobada: el recorrido real usa la hora a la que empieza;
+el modo simulación usa la hora elegida en el deslizador.
+
+### Hecho
+
+- **Antes de salir** (al tocar "Iniciar recorrido" en la 06; reglas en `src/rutas/avisos.ts`):
+  - **19 · Aviso antes de salir** (modal):
+    - Sale de 11:00 a. m. a 2:59 p. m., hora real del teléfono.
+    - Muestra el % de sombra y los minutos al sol de la ruta elegida.
+    - La casilla "No volver a avisarme hoy" guarda la fecha en `umbral.avisoCalorOculto`.
+    - "Ver la mejor hora para salir" abre la 15.
+    - El aviso queda activo por defecto (`umbral.avisoCalor`); el interruptor llega con Ajustes, en la
+      Fase 9.
+  - **18 · Protección solar** (hoja inferior): sale con 5 min o más al sol y UV de 8 o más. Muestra el chip
+    "UV 11 · extremo", protector, agua y gorra o sombrilla, y la nota de salud.
+  - Los umbrales son provisionales y están en `src/config/recorrido.ts`.
+  - `/aviso-calor` y `/proteccion-solar` muestran las dos pantallas como "Vista de ejemplo".
+- **13 · Ruta en curso** (`/recorrido`; lógica pura en `src/rutas/recorrido.ts`):
+  - **Banda verde con la instrucción del tramo**: "Sigue por la acera oriental · 70 m hasta la esquina de
+    la Calle 16" o "Cruza la Cra. 7 · Luego sigue por la acera sur".
+    - La flecha marca el giro: derecho, izquierda o derecha.
+    - Los tramos salen de agrupar las aceras de una misma calle y orientación. Cada cruce es su propio
+      tramo, y los trozos de acera de menos de 10 m se suman al anterior.
+  - **Aviso ámbar** 150 m antes de un tramo expuesto: "En 150 m cruzas un tramo expuesto · 10 m sin
+    sombra · unos 5 s de sol directo". Dentro del tramo dice "Vas por un tramo expuesto".
+  - **Progreso**: minutos y metros restantes, % en sombra y barra de avance.
+  - **GPS**:
+    - `watchPosition` con alta precisión. El punto se ubica sobre la ruta con un margen de 20 m (o la
+      precisión que informe el teléfono, hasta 40 m).
+    - El avance nunca retrocede y no hay aviso de "te desviaste".
+    - Si la persona está a más de 60 m antes de empezar, se le sugiere acercarse o usar el modo
+      simulación.
+    - La posición vive solo en memoria y no se guarda el trazado.
+  - **Modo simulación**: el punto avanza solo por la ruta, 8 veces más rápido que caminando, con botón de
+    pausa. Se rotula "Simulación · {hora}" y se ofrece si no hay permiso, si no hay señal, si la persona
+    está fuera del centro o si la dirección no es segura (http).
+  - **Llegada**: a menos de 25 m del destino, o al final de la simulación, pasa a la 22.
+- **22 · Llegada** (`/llegada`):
+  - Minutos, % en sombra y minutos de sol evitados frente a la ruta corta, rotulados "estimado".
+  - El refugio más cercano al destino, con su "sombra hasta".
+  - "¿Te sirvió esta ruta?" (Sí / Más o menos / No): se guarda en `umbral.respuestas` con fecha, hora,
+    destino, nivel y si fue simulado. Si la persona cambia de respuesta, se corrige la misma fila.
+  - Sin datos de un recorrido, muestra una vista de ejemplo que no guarda respuestas.
+- **10 · Puntos de permanencia** (`/refugios`; botón nuevo en el mapa principal):
+  - Mapa con los refugios y una lista con nombre, descripción, "sombra hasta" a la hora elegida,
+    distancia, asientos y agua.
+  - El Parque de la Leyenda sale como "3,1 km · fuera del mapa de sombra".
+- **Ubicación**: `useUbicacion` informa la precisión y el estado nuevo `insegura` (página sin HTTPS). El
+  mapa principal dice "Esta dirección no es segura (https) y el navegador no da la ubicación". Es un primer
+  paso de la observación 3; el resto sigue en espera.
+- **Grafo**: cada cruce sabe qué calle cruza y cada acera, su orientación (para las instrucciones).
+- Pruebas: 82 en total (7 nuevas).
+  - Con la manzana sintética: tramos y giros, GPS con margen y sin retroceso, aviso a 150 m, llegada a
+    25 m, avisos 19 y 18.
+  - Con los datos reales: instrucciones de la ruta de la Plaza al Callejón.
+
+### Verificación en Chromium (390 × 844, build de producción, Open-Meteo simulado, reloj fijo)
+
+- 12:30 p. m., ruta con sombra a las 12:00 m.:
+  - "Iniciar recorrido" abre la 19 ("46 % en sombra… unos 5 min al sol").
+  - Con la casilla marcada se guarda la fecha y se pasa a la 13.
+- Simulación de la 06 a la 22: la banda cambia de "Sigue por la acera oriental" a "Cruza la Cra. 7"; el
+  aviso ámbar sale a 150 m; la 22 abre en 0,7 s con 10 min, 46 % y 3 min de sol evitado; la respuesta
+  queda guardada y marcada como simulada.
+- Ruta corta a las 12:00 m.: la 19 y después la 18 ("UV 11 · extremo… unos 8 min al sol").
+- GPS a 290 m de la ruta: "Estás a 290 m de la ruta…". GPS en la plaza: pasa a la 22.
+- Inglés ("Keep to the east sidewalk… Simulation · 4:00 PM"), la 10 desde el botón del mapa y las vistas
+  de ejemplo. Sin desbordes horizontales y sin errores en la consola.
+
+### Correcciones durante la verificación
+
+- **Giros**: las piezas de esquina unen extremos de acera que se traslapan cerca del nodo y su dirección
+  no es la de la marcha. Los giros se miden ahora entre aceras y cruces.
+- **Seguir a la persona**: mover la cámara con animación en cada paso de la simulación (4 por segundo)
+  saturaba la página. En la prueba, la 22 tardaba 30 s en aparecer. Ahora el mapa solo se recentra cuando
+  el punto se acerca al borde.
+- Doble punto en "…p. m.." en dos textos.
+
+### Decisiones
+
+- **Hora del recorrido**: el real usa la hora a la que se abre la 13 y su ruta queda fija desde ese
+  momento. La 19 mira la hora real del teléfono.
+- **Resumen de la 22**: usa los minutos y la sombra estimados de la ruta, no el tiempo cronometrado. Así
+  es igual en la simulación y con GPS, y se rotula "estimado".
+- **"Sombra hasta" de un refugio**: se estima con la acera más cercana al lugar, porque el motor de sombra
+  modela aceras. Puede no coincidir con el interior de una plaza o un callejón que no está en OSM. Por
+  ejemplo, el Callejón de la Purrututú sale "Al sol a esta hora" a las 2 p. m. aunque su descripción dice
+  "sombra continua". Se corrige con datos de campo.
+- **Respuestas con `simulado`**: además de lo pedido (fecha, hora, destino y nivel), para separar las
+  demostraciones de clase al validar.
+
+### Pendiente
+
+- Probar el GPS en la calle con un celular y HTTPS (Codespaces o la publicación de la Fase 10).
+- Interruptor "Aviso de calor extremo" y exportación CSV de las respuestas: Fase 9.
+- Calibrar los umbrales de `src/config/recorrido.ts` en campo.
+
+---
+
 ## Fase 6 · Rutas con sombra, ¿cuándo salir? e isócronas (2026-10-06)
 
 La autora aprobó el plan el 2026-10-06 y decidió que los destinos fuera del área se muestran sin ruta.

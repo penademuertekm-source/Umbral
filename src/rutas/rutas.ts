@@ -141,6 +141,8 @@ export interface RoutePiece {
   kind: LinkKind
   /** Acera (-1 en esquinas y cruces). */
   segment: number
+  /** Calle: la de la acera o, en un cruce, la que se cruza (-1 en esquinas). */
+  edge: number
   length: number
   /** Fracción en sombra (0–1). */
   shade: number
@@ -207,6 +209,7 @@ export function findRoute(graph: Graph, origin: Snap, destination: Snap, model: 
     pieces.push({
       kind: link.kind,
       segment: link.segment,
+      edge: link.kind === 'acera' ? graph.segments[link.segment].edge : (link.crossed ?? -1),
       length: link.length,
       shade: link.kind === 'acera' ? model.shade(link.segment) : 0,
       coords: xy.map((p) => graph.projection.toLonLat(p)),

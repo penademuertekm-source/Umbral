@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { Link, Navigate, useNavigate, useSearchParams } from 'react-router'
 import type { Feature, Point } from 'geojson'
 import { Boton, Encabezado } from '../../componentes'
+import { weatherAt } from '../../clima/openMeteo'
 import { SINGLE_ROUTE_MIN_IMPROVEMENT } from '../../config/rutas'
 import { TREE_DISTANCE_M } from '../../mapa/tramos'
 import { formatDistance, roundMinutes } from '../../i18n/numeros'
@@ -9,7 +10,11 @@ import { useT } from '../../i18n/useT'
 import { insideArea, metersBetween, type TreeProps } from '../../mapa/datos'
 import { MapaRutas } from '../../mapa/MapaRutas'
 import { nearRoute } from '../../rutas/cercanos'
+import { preflightSteps } from '../../rutas/avisos'
 import { singleRoute } from '../../rutas/rutas'
+import { AvisoCalor } from '../recorrido/AvisoCalor'
+import { heatWarningEnabled, heatWarningHiddenToday, hideHeatWarningToday } from '../recorrido/preferencias'
+import { ProteccionSolar } from '../recorrido/ProteccionSolar'
 import { useVolver } from '../useVolver'
 import { useEnlace } from './enlaces'
 import { NotaEstimado } from './NotaEstimado'
@@ -30,6 +35,8 @@ export function ComparacionRutas() {
   const ctx = useContextoRutas()
   const { data, graph, resultado, origen, profile, context } = ctx
   const [selected, setSelected] = useState<'sombra' | 'corta'>('sombra')
+  // Avisos antes de salir (pantallas 19 y 18), en orden; vacío si no hay ninguno abierto.
+  const [pending, setPending] = useState<('aviso' | 'proteccion')[]>([])
   const destinoId = params.get('destino')
   const destino = data?.destinos.find((d) => d.id === destinoId)
   const nombre = destino ? (language === 'es' ? destino.nombre.es : destino.nombre.en) : ''
@@ -71,6 +78,27 @@ export function ComparacionRutas() {
     return <Navigate to={enlace('/sin-ruta-con-sombra', { destino: destino?.id })} replace />
   }
   const unica = routes ? singleRoute(routes.shortest, routes.shaded, SINGLE_ROUTE_MIN_IMPROVEMENT) : false
+  const chosen = routes ? (unica || selected === 'corta' ? routes.shortest : routes.shaded) : null
+  const uv = ctx.forecast ? (weatherAt(ctx.forecast, ctx.hora.time)?.uvIndex ?? null) : null
+  const start = () => navigate(enlace('/recorrido', { destino: destino?.id, ruta: unica ? 'corta' : selected }))
+  // "Iniciar recorrido": primero el aviso de calor (19) y la protección solar (18), si corresponden.
+  const onStart = () => {
+    if (!chosen) return
+    const steps = preflightSteps({
+      now: new Date(),
+      heatWarningEnabled: heatWarningEnabled(),
+      heatWarningHiddenToday: heatWarningHiddenToday(),
+      sunMinutes: chosen.sunMinutes,
+      uv,
+    })
+    if (steps.length > 0) setPending(steps)
+    else start()
+  }
+  const nextStep = () => {
+    const rest = pending.slice(1)
+    setPending(rest)
+    if (rest.length === 0) start()
+  }
 
   return (
     <div className={c.pantalla}>
@@ -123,16 +151,35 @@ export function ComparacionRutas() {
             minutos={roundMinutes(routes.shortest.minutes)}
           />
         )}
-        <Boton
-          disabled={!routes}
-          onClick={() => navigate(enlace('/recorrido', { destino: destino?.id, ruta: unica ? 'corta' : selected }))}
-        >
+        <Boton disabled={!routes} onClick={onStart}>
           {unica || selected === 'corta' ? t('rutas.iniciarSimple') : t('rutas.iniciar')}
         </Boton>
         <Link className={`${c.enlace} um-cuerpo-fuerte`} to={enlace('/cuando-salir', { destino: destino?.id })}>
           {t('rutas.cuandoSalir')}
         </Link>
       </section>
+      {chosen && (
+        <AvisoCalor
+          open={pending[0] === 'aviso'}
+          shadePercent={chosen.shadePercent}
+          sunMinutes={chosen.sunMinutes}
+          onClose={() => setPending([])}
+          onBestTime={() => navigate(enlace('/cuando-salir', { destino: destino?.id }))}
+          onStart={(hideToday) => {
+            if (hideToday) hideHeatWarningToday()
+            nextStep()
+          }}
+        />
+      )}
+      {chosen && uv !== null && (
+        <ProteccionSolar
+          open={pending[0] === 'proteccion'}
+          uv={uv}
+          sunMinutes={chosen.sunMinutes}
+          onClose={() => setPending([])}
+          onStart={nextStep}
+        />
+      )}
     </div>
   )
 }
