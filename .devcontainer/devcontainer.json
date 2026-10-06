@@ -1,0 +1,15 @@
+{
+  "name": "Umbral",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:22",
+  "postCreateCommand": "npm install",
+  "forwardPorts": [5173, 4173],
+  "portsAttributes": {
+    "5173": { "label": "Umbral (npm run dev)", "onAutoForward": "openBrowser" },
+    "4173": { "label": "Umbral (npm run preview)", "onAutoForward": "openBrowser" }
+  },
+  "customizations": {
+    "vscode": {
+      "settings": { "files.eol": "\n" }
+    }
+  }
+}

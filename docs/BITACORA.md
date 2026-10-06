@@ -4,6 +4,17 @@ Registro de lo hecho en cada fase, lo pendiente y las decisiones tomadas. La ent
 
 ---
 
+## Ajuste · Pruebas en GitHub Codespaces (2026-10-06)
+
+- `.devcontainer/devcontainer.json`: Codespace con Node 22 que corre `npm install` al crearse y abre el
+  puerto 5173 (`npm run dev`) o 4173 (`npm run preview`) en el navegador.
+- `vite.config.ts`: `allowedHosts: ['.app.github.dev']` en `server` y `preview`. Vite rechaza los dominios
+  que no conoce (protección contra DNS rebinding) y Codespaces sirve la app en
+  `https://<nombre>-5173.app.github.dev`. Probado: ese dominio responde 200 y uno desconocido, 403.
+- Como Codespaces da HTTPS, desde un celular real (puerto en "Public") funciona también el GPS.
+
+---
+
 ## Fase 5 · Clima, UTCI y semáforo (2026-10-06)
 
 Plan aprobado por la autora el 2026-10-06.
