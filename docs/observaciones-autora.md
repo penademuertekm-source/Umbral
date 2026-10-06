@@ -1,0 +1,47 @@
+# Observaciones de la autora (en espera)
+
+Observaciones de las pruebas de la autora. **No se trabajan hasta que ella lo pida.** Cuando dé la orden,
+cada una se convierte en un plan corto para aprobar (CLAUDE.md, "Forma de trabajo"). Probablemente se
+trabajen en Claude (chat) o Claude Design, así que cada punto debe entenderse sin el resto de la conversación.
+
+---
+
+## 1. Información faltante: tramos sin nombre
+
+**Recibida:** 2026-10-06 · **Estado:** en espera
+
+> Hay información faltante, como tramos sin nombre. Solo necesito saber qué información necesitas aquí para
+> poder proporcionártela y cómo lo hago.
+
+Contexto ya conocido (sin trabajo nuevo):
+
+- Los nombres salen de la etiqueta `name` de las calles en OpenStreetMap (pipeline de la Fase 2,
+  `public/datos/red.geojson`).
+- Con los datos actuales, 80 de las 502 aristas (5,1 km de 37,2 km) no tienen nombre. La ficha de esos tramos
+  (pantalla 07) dice "Tramo sin nombre".
+- Por responder cuando se pida: qué datos hacen falta, en qué formato y cómo entregarlos (por ejemplo, un
+  CSV en `datos/provisional/` o una corrección directa en OpenStreetMap).
+
+---
+
+## 2. Reestructurar la composición y la cantidad de información en pantalla
+
+**Recibida:** 2026-10-06 · **Estado:** en espera
+
+> Se necesitará una reestructuración de la composición del diseño y de cómo se muestra la información en
+> pantalla, ya que de por sí es mucho texto que puede abrumar. También toca hacer un análisis de los tipos de
+> textos que debe haber, para que sean digeribles para el usuario, evitar ser muy técnicos y no abrumarlo.
+> Además de los textos que se deben usar, toca generar qué se puede hacer para ser más visuales e intuitivos,
+> para que el usuario no se pierda, y evitar sobresaturar la pantalla con elementos.
+
+Alcance, según la observación:
+
+1. **Análisis de los textos:** qué tipos de texto hay (títulos, avisos, valores, explicaciones técnicas,
+   atribuciones) y cuáles sobran o deben simplificarse para un público no técnico.
+2. **Propuesta visual:** qué se puede comunicar con íconos, color y forma, jerarquía o elementos que se
+   despliegan, en lugar de texto.
+3. **Recomposición de las pantallas:** menos elementos simultáneos y una jerarquía clara.
+
+Límites que hay que respetar (CLAUDE.md): rotular "estimado" con la hora, aviso de "Datos provisionales",
+atribuciones visibles (OpenStreetMap y Open-Meteo), texto de 15 px como mínimo y no distinguir nada solo por
+color.

@@ -4,6 +4,13 @@ Registro de lo hecho en cada fase, lo pendiente y las decisiones tomadas. La ent
 
 ---
 
+## Observaciones de la autora en espera (2026-10-06)
+
+La autora dejó dos observaciones de sus pruebas en `docs/observaciones-autora.md`: tramos sin nombre y
+reestructurar la composición y el texto de las pantallas. **No se trabajan hasta que ella lo pida.**
+
+---
+
 ## Ajuste · Pruebas en GitHub Codespaces (2026-10-06)
 
 - `.devcontainer/devcontainer.json`: Codespace con Node 22 que corre `npm install` al crearse y abre el
