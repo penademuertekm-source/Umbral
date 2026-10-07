@@ -18,6 +18,10 @@ es HTTPS, así que el GPS funciona en cualquier celular, sin VS Code ni terminal
 
 ## Activar Pages (una sola vez)
 
+> **Estado (2026-10-07):** Pages ya estaba activado con la fuente "GitHub Actions". La primera publicación
+> salió bien en la corrida 1 del flujo. Los pasos quedan aquí por si algún día hay que volver a activarlo
+> (por ejemplo, en una copia del repositorio).
+
 1. Entra a https://github.com/penademuertekm-source/Umbral.
 2. Arriba, en las pestañas del repositorio, haz clic en **Settings** (Configuración).
 3. En el menú de la izquierda, en la sección *Code and automation*, haz clic en **Pages**.

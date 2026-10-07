@@ -4,6 +4,73 @@ Registro de lo hecho en cada fase, lo pendiente y las decisiones tomadas. La ent
 
 ---
 
+## Fase 10 · Publicación y prueba en la calle (2026-10-07)
+
+La autora aprobó seguir con el plan con una condición: cuando un paso dependa de ella, se para y se espera
+su confirmación, y después se revisa y se corrige lo que salga. Créditos "[por completar]" y licencia "por
+definir". Antes de empezar pidió guardar los pendientes: quedan resumidos en
+`docs/observaciones-autora.md`.
+
+### Hecho
+
+- **Publicación en GitHub Pages** (`.github/workflows/pages.yml`):
+  - Corre al subir cambios a la rama principal (`claude/inspiring-cannon-6rmgzq`, la única y la principal
+    del repositorio; también `main` si se crea) o a mano.
+  - Instala, corre las pruebas y la revisión de código, y arma la app con `VITE_BASE=/Umbral/` y
+    `VITE_URL_PUBLICA`.
+  - Solo publica si Pages está activado. Si no lo está, termina con un aviso y sin error.
+  - Dirección: **https://penademuertekm-source.github.io/Umbral/**.
+- **Ruta base** (`vite.config.ts`): `base` sale de `VITE_BASE` ("/" en local).
+  - El enrutador, los datos, el manifiesto, los íconos y el service worker ya usaban rutas relativas a la
+    base.
+  - El ícono de iOS, que tenía una ruta relativa, ahora lleva la base completa.
+- **`404.html`**: una copia de `index.html` que genera el build, para que GitHub Pages abra cualquier
+  pantalla por enlace directo. No entra en la precarga.
+- **`VITE_URL_PUBLICA`**: definida en el flujo, tipada en `src/vite-env.d.ts` y documentada en
+  `.env.example`. La usarán los QR cuando se retomen las placas.
+- **`docs/publicacion.md`**: cómo funciona, cómo activar Pages, qué hacer si falla y cómo probar la misma
+  ruta en local.
+- **`docs/guia-prueba-campo.md`** y **`docs/plantilla-prueba-campo.csv`**:
+  - 10 puntos elegidos con el modelo para tener variedad: sombra de árboles, de edificios y mixta, al sol
+    todo el día, cambios en la mañana o en la tarde, parcial, y un par de aceras enfrentadas.
+  - Todos a menos de 250 m de la plaza, con coordenadas.
+  - 4 horas (10, 12, 2 y 4), paso a paso para la foto y la clasificación con los umbrales de la app.
+  - % de acierto, matriz de confusión con errores graves y fórmulas para la hoja de cálculo.
+  - Pruebas del celular en la misma salida: instalar, GPS, modo avión y lector de pantalla.
+- **`README.md`**: qué es, cómo funciona, cómo correrla (con `npm.cmd` en Windows), comandos, publicación,
+  privacidad, estructura, fuentes de datos con su licencia y atribución, licencias de terceros, licencia
+  por definir y créditos por completar.
+
+### Verificación
+
+- **Local, imitando a GitHub Pages**: un servidor sirve `dist/` bajo `/Umbral/` y responde 404 con
+  `404.html` para las rutas que no existen.
+  - El primer uso lleva de `/Umbral/` a `/Umbral/idioma`.
+  - Las 22 pantallas abren por enlace directo, incluida la página de "no encontrada".
+  - Ningún pedido sale de `/Umbral/` y el service worker queda con alcance `/Umbral/`.
+  - Sin conexión abren por enlace directo el perfil de calor y la comparación de rutas.
+- **En GitHub**: la corrida 1 del flujo pasó las pruebas y el build en las máquinas de GitHub y publicó.
+  Pages ya estaba activado.
+- **Pendiente de la autora**: abrir la dirección publicada en el computador y en el celular. Desde esta
+  sesión no se puede, porque el proxy bloquea github.io.
+
+### Decisiones
+
+- **Se publica desde la rama de trabajo**, que es la principal del repositorio. No hace falta crear `main`
+  ni un pull request; si algún día se crea `main`, el flujo también la acepta.
+- **El flujo revisa si Pages está activo** antes de publicar, para no dejar una corrida en rojo mientras no
+  lo esté.
+- **Puntos de campo**: la predicción de referencia es la del 21 de octubre. En la planilla se anota la de
+  la app el día de la prueba, porque el sol cambia con las fechas.
+
+### Pendiente
+
+- Que la autora confirme que la publicación abre bien en el computador y en el celular.
+- La prueba de campo con la guía, y anotar el resultado en esta bitácora.
+- Créditos, licencia y los pendientes de `docs/observaciones-autora.md`, cuando la autora lo indique.
+
+---
+
 ## Fase 9 · Ajustes, sin conexión y accesibilidad (2026-10-07)
 
 La autora aprobó el plan el 2026-10-07.
