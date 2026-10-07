@@ -695,5 +695,58 @@
     "tuSinDistancia": "Tú",
     "esquema": "Esquema: estás a {distancia} del Centro Histórico.",
     "esquemaSinDistancia": "Esquema del Centro Histórico."
+  },
+  "ajustes": {
+    "textoGrande": "Texto grande",
+    "textoGrandeTexto": "Aumenta el tamaño mínimo a 20 px",
+    "altoContraste": "Alto contraste",
+    "altoContrasteTexto": "Refuerza bordes y quita grises",
+    "avisoCalor": "Aviso de calor extremo",
+    "avisoCalorTexto": "Aviso de {desde} a {hasta}",
+    "perfil": "Perfil de calor",
+    "perfilTexto": "{perfil} · ajusta cuándo avisar",
+    "ahorro": "Ahorro de datos",
+    "ahorroTexto": "No descarga el clima; usa el último guardado",
+    "idioma": "Idioma / Language",
+    "idiomaTexto": "{actual} · cambiar a {otro}",
+    "exportar": "Exportar respuestas (CSV)",
+    "exportarTexto": "{n} respuestas de \"¿Te sirvió esta ruta?\" en este teléfono",
+    "exportarUna": "1 respuesta de \"¿Te sirvió esta ruta?\" en este teléfono",
+    "exportarNinguna": "Todavía no hay respuestas guardadas",
+    "comoTitulo": "Cómo se calcula la sombra",
+    "comoTexto": "Sin sensores en la calle: con la hora del teléfono, la posición del sol y un modelo 3D del centro (edificios, aleros y árboles). Los valores son estimados y parte de los datos son provisionales.",
+    "guardadoLocal": "Los ajustes se guardan solo en este teléfono.",
+    "boton": "Ajustes"
+  },
+  "perfil": {
+    "intro": "Si caminas con alguien más sensible al calor, los avisos aparecen antes y las rutas priorizan más la sombra.",
+    "opciones": {
+      "general": "General",
+      "adulto_mayor": "Adulto mayor",
+      "ninos": "Con niños pequeños",
+      "embarazo": "Embarazo",
+      "salud": "Sensibilidad al calor por salud"
+    },
+    "general": "Avisos con los umbrales estándar",
+    "sensible": "El semáforo sube un nivel y las rutas buscan más sombra",
+    "privacidad": "Se guarda solo en este teléfono. No pedimos datos de salud.",
+    "guardar": "Guardar",
+    "guardado": "Perfil guardado."
+  },
+  "sinConexion": {
+    "texto": "Umbral sigue funcionando con lo que ya descargaste.",
+    "funciona": "Sigue funcionando",
+    "noFunciona": "No disponible sin conexión",
+    "mapa": "El mapa de sombra",
+    "deslizador": "El deslizador de horas",
+    "rutas": "Las rutas a los destinos del centro",
+    "recorrido": "El recorrido y el modo simulación",
+    "clima": "El clima de hoy (se usa el último guardado, con su hora)",
+    "buscar": "Buscar lugares nuevos fuera de la lista",
+    "elNino": "El aviso de El Niño actualizado",
+    "modelo": "Modelo del centro descargado el {fecha}.",
+    "aviso": "Sin conexión",
+    "verMas": "Qué funciona sin conexión",
+    "volverMapa": "Volver al mapa"
   }
 }

@@ -65,6 +65,8 @@ export interface Destination {
 }
 
 export interface Meta {
+  /** Fecha y hora en que se generó el modelo (ISO 8601). */
+  generado: string
   datos_provisionales: boolean
   area: { centro: [number, number]; bbox: [number, number, number, number] }
 }

@@ -1,10 +1,10 @@
 import { isoLocalDate, minutesOfDay } from '../../sombra/tiempo'
+import { readSettings } from '../ajustes/preferencias'
 import { formatHora } from '../useHoraElegida'
 
 // Lo que el recorrido guarda en el teléfono (CLAUDE.md, "Privacidad"): nada de posiciones, solo
 // preferencias del aviso de calor y las respuestas de "¿Te sirvió esta ruta?".
 
-const HEAT_WARNING_KEY = 'umbral.avisoCalor'
 const HEAT_WARNING_HIDDEN_KEY = 'umbral.avisoCalorOculto'
 const ANSWERS_KEY = 'umbral.respuestas'
 
@@ -24,9 +24,9 @@ function write(key: string, value: string): void {
   }
 }
 
-/** "Aviso de calor extremo" (se edita en Ajustes, Fase 9). Activo por defecto. */
+/** "Aviso de calor extremo" (pantalla 11). Activo por defecto. */
 export function heatWarningEnabled(): boolean {
-  return read(HEAT_WARNING_KEY) !== 'no'
+  return readSettings().heatWarning
 }
 
 /** "No volver a avisarme hoy": se guarda la fecha. */

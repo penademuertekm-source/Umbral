@@ -37,7 +37,7 @@
   gap: var(--um-esp-md);
   padding: max(var(--um-esp-xl), env(safe-area-inset-top)) var(--um-esp-lg) var(--um-esp-lg);
   background: var(--um-semaforo-evitar-forma);
-  /* Texto grande (24 px, 600) sobre ámbar: 3,4:1, cumple AA para texto grande. */
+  /* contraste: grande (título de 24 px, 600, sobre ámbar: 3,4:1) */
   color: var(--um-semaforo-precaucion-texto);
 }
 
@@ -48,7 +48,8 @@
   height: 56px;
   border-radius: 50%;
   background: var(--um-base-superficie);
-  color: var(--um-semaforo-evitar-forma);
+  /* El ámbar de la forma sobre blanco daba 2,2:1; el texto del mismo nivel da 6,7:1 (Fase 9). */
+  color: var(--um-semaforo-evitar-texto);
   font: 700 32px/1 var(--um-fuente);
 }
 

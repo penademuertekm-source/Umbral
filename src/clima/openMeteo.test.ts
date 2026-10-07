@@ -112,6 +112,17 @@ describe('caché del pronóstico', () => {
     await expect(getForecast(10.4778, -73.2446, { fetchFn: offline, storage: memoryStorage() })).rejects.toThrow()
   })
 
+  it('con ahorro de datos no descarga: usa lo guardado y avisa que es viejo', async () => {
+    const storage = memoryStorage()
+    await getForecast(10.4778, -73.2446, { fetchFn: ok, storage, now: 1_000 })
+    const fetchFn = vi.fn(ok)
+    const result = await getForecast(10.4778, -73.2446, { fetchFn, storage, now: 1_000 + 5 * REFRESH_MS, saveData: true })
+    expect(fetchFn).not.toHaveBeenCalled()
+    expect(result).toMatchObject({ stale: true, forecast: { fetchedAt: 1_000 } })
+    await expect(getForecast(10.4778, -73.2446, { fetchFn, storage: memoryStorage(), saveData: true })).rejects.toThrow()
+    expect(fetchFn).not.toHaveBeenCalled()
+  })
+
   it('no reutiliza el pronóstico de otro lugar', async () => {
     const storage = memoryStorage()
     const fetchFn = vi.fn(ok)

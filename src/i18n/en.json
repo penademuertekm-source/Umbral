@@ -695,5 +695,58 @@
     "tuSinDistancia": "You",
     "esquema": "Diagram: you are {distancia} from the Historic Center.",
     "esquemaSinDistancia": "Diagram of the Historic Center."
+  },
+  "ajustes": {
+    "textoGrande": "Large text",
+    "textoGrandeTexto": "Raises the minimum size to 20 px",
+    "altoContraste": "High contrast",
+    "altoContrasteTexto": "Stronger borders, no grays",
+    "avisoCalor": "Extreme heat warning",
+    "avisoCalorTexto": "Warning from {desde} to {hasta}",
+    "perfil": "Heat profile",
+    "perfilTexto": "{perfil} · sets when to warn you",
+    "ahorro": "Data saver",
+    "ahorroTexto": "Doesn't download the weather; uses the last one saved",
+    "idioma": "Idioma / Language",
+    "idiomaTexto": "{actual} · switch to {otro}",
+    "exportar": "Export answers (CSV)",
+    "exportarTexto": "{n} answers to \"Was this route helpful?\" on this phone",
+    "exportarUna": "1 answer to \"Was this route helpful?\" on this phone",
+    "exportarNinguna": "No answers saved yet",
+    "comoTitulo": "How shade is calculated",
+    "comoTexto": "No street sensors: it uses your phone's time, the sun's position and a 3D model of the center (buildings, eaves and trees). Values are estimates and some data are provisional.",
+    "guardadoLocal": "Settings are saved only on this phone.",
+    "boton": "Settings"
+  },
+  "perfil": {
+    "intro": "If you walk with someone more sensitive to heat, warnings appear earlier and routes give more priority to shade.",
+    "opciones": {
+      "general": "General",
+      "adulto_mayor": "Older adult",
+      "ninos": "With young children",
+      "embarazo": "Pregnancy",
+      "salud": "Heat sensitivity for health reasons"
+    },
+    "general": "Warnings with the standard thresholds",
+    "sensible": "The traffic light goes up one level and routes look for more shade",
+    "privacidad": "Saved only on this phone. We don't ask for health data.",
+    "guardar": "Save",
+    "guardado": "Profile saved."
+  },
+  "sinConexion": {
+    "texto": "Umbral keeps working with what you already downloaded.",
+    "funciona": "Still works",
+    "noFunciona": "Not available offline",
+    "mapa": "The shade map",
+    "deslizador": "The time slider",
+    "rutas": "Routes to destinations in the center",
+    "recorrido": "The walk and simulation mode",
+    "clima": "Today's weather (the last one saved is used, with its time)",
+    "buscar": "Searching for new places outside the list",
+    "elNino": "The updated El Niño warning",
+    "modelo": "Model of the center downloaded on {fecha}.",
+    "aviso": "Offline",
+    "verMas": "What works offline",
+    "volverMapa": "Back to the map"
   }
 }

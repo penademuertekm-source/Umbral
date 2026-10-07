@@ -301,3 +301,12 @@
   stroke-opacity: 0.45;
   stroke-dasharray: 6 4;
 }
+
+/* Aviso de sin conexión (pantalla 14): enlace con ícono y texto, no solo color. */
+.chipSinConexion {
+  min-height: var(--um-tactil-minimo);
+  background: var(--um-semaforo-nublado-fondo);
+  color: var(--um-semaforo-nublado-texto);
+  font-weight: 600;
+  pointer-events: auto;
+}

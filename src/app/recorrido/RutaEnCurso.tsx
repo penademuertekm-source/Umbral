@@ -128,7 +128,7 @@ export function RutaEnCurso() {
   const far = live && gps && !gps.state.onRoute && gps.state.along === 0 && gps.state.distance > FAR_FROM_ROUTE_M
 
   return (
-    <div className={s.pantalla}>
+    <main className={s.pantalla}>
       {guidance ? <Banda guidance={guidance} streetName={streetName} /> : <div className={s.banda} />}
 
       <div className={s.mapa}>
@@ -199,7 +199,7 @@ export function RutaEnCurso() {
           {t('recorrido.salir')}
         </Boton>
       </section>
-    </div>
+    </main>
   )
 }
 

@@ -26,10 +26,12 @@
 }
 
 .claro {
+  /* contraste: fondo=um-termico-sombra-plena (texto claro sobre la banda verde) */
   color: var(--um-semaforo-comodo-fondo);
 }
 
 .flecha {
+  /* contraste: fondo=um-termico-sombra-plena grafico (flecha sobre la banda verde) */
   display: grid;
   place-items: center;
   flex-shrink: 0;

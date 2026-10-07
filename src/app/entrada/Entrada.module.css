@@ -25,6 +25,7 @@
 }
 
 .claro {
+  /* contraste: fondo=um-termico-sombra-plena (texto claro sobre la banda verde) */
   color: var(--um-semaforo-comodo-fondo);
 }
 

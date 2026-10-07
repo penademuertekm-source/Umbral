@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { readSettings } from '../app/ajustes/preferencias'
 import { loadClimaConfig, type ClimaConfig } from './configClima'
 import { getForecast, type Forecast } from './openMeteo'
 
@@ -30,7 +31,7 @@ export function useClima(center: [number, number] | null): EstadoClima {
   useEffect(() => {
     if (lat === undefined || lon === undefined) return
     let vigente = true
-    getForecast(lat, lon)
+    getForecast(lat, lon, { saveData: readSettings().dataSaver })
       .then(({ forecast, stale }) => {
         if (vigente) setEstado({ status: 'listo', forecast, stale })
       })

@@ -6,6 +6,9 @@ import { RutaMapa, RutaMapaNublado, TramoEnMapa } from './mapa/rutas'
 import { Marco } from './Marco'
 import { NoEncontrada } from './NoEncontrada'
 import { PantallaPendiente } from './PantallaPendiente'
+import { SinConexion } from './SinConexion'
+import { Ajustes } from './ajustes/Ajustes'
+import { PerfilCalor } from './ajustes/PerfilCalor'
 import { FueraDelCentro } from './entrada/FueraDelCentro'
 import { Idioma } from './entrada/Idioma'
 import { Inicio } from './entrada/Inicio'
@@ -25,6 +28,9 @@ const BUILT: Record<string, ReactNode> = {
   '/idioma': <Idioma />,
   '/ubicacion': <Ubicacion />,
   '/fuera-del-centro': <FueraDelCentro />,
+  '/ajustes': <Ajustes />,
+  '/ajustes/perfil-calor': <PerfilCalor />,
+  '/sin-conexion': <SinConexion />,
   '/mapa': <RutaMapa />,
   '/tramo/:id': <TramoEnMapa />,
   '/el-nino': <PantallaElNino />,

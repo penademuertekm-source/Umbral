@@ -184,10 +184,20 @@ export interface ForecastResult {
 export async function getForecast(
   lat: number,
   lon: number,
-  { fetchFn = fetch, now = Date.now(), storage = defaultStorage() }: { fetchFn?: typeof fetch; now?: number; storage?: KeyValueStorage | null } = {},
+  {
+    fetchFn = fetch,
+    now = Date.now(),
+    storage = defaultStorage(),
+    saveData = false,
+  }: { fetchFn?: typeof fetch; now?: number; storage?: KeyValueStorage | null; saveData?: boolean } = {},
 ): Promise<ForecastResult> {
   const cached = readCachedForecast(lat, lon, storage)
   if (cached && now - cached.fetchedAt < REFRESH_MS) return { forecast: cached, stale: false }
+  // Ahorro de datos (Ajustes): no se descarga nada; se usa lo guardado, aunque sea viejo, y se avisa.
+  if (saveData) {
+    if (cached) return { forecast: cached, stale: true }
+    throw new Error('Ahorro de datos activo y sin pronóstico guardado')
+  }
   try {
     const forecast = await fetchForecast(lat, lon, fetchFn, now)
     saveForecast(forecast, storage)

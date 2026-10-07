@@ -4,6 +4,95 @@ Registro de lo hecho en cada fase, lo pendiente y las decisiones tomadas. La ent
 
 ---
 
+## Fase 9 · Ajustes, sin conexión y accesibilidad (2026-10-07)
+
+La autora aprobó el plan el 2026-10-07.
+
+### Hecho
+
+- **11 · Ajustes** (`/ajustes`; botón con el ícono de ajustes en el mapa):
+  - **Interruptores** (`role="switch"`; el estado se ve por la posición de la perilla, no solo por el
+    color):
+    - *Texto grande* y *Alto contraste*: pasan `data-texto-grande` y `data-alto-contraste` a `<html>`,
+      definidos en `design/tokens.css`. Se aplican antes del primer render para que no haya salto visual.
+    - *Aviso de calor extremo*: es el mismo ajuste que consulta la pantalla 19.
+    - *Ahorro de datos*: no descarga el clima; usa el último pronóstico guardado y lo rotula con su hora.
+  - **Perfil de calor** (lleva a la 23) e **Idioma** (cambia en el sitio).
+  - **Exportar respuestas (CSV)**: descarga en el teléfono las respuestas de la 22, con columnas fecha,
+    hora, destino, nivel, respuesta y simulado. Lleva la marca BOM para que Excel lea bien las tildes.
+  - **Tarjeta "Cómo se calcula la sombra"**: sin sensores, valores estimados y datos provisionales.
+  - Todo se guarda en `localStorage` (`umbral.textoGrande`, `umbral.altoContraste`, `umbral.avisoCalor`,
+    `umbral.ahorroDatos`).
+- **23 · Perfil de calor** (`/ajustes/perfil-calor`):
+  - Opciones: General, Adulto mayor, Con niños pequeños, Embarazo y Sensibilidad al calor por salud, con
+    el botón "Guardar".
+  - Las cuatro últimas aplican la regla vulnerable de las fases 5 y 6: el semáforo sube un nivel, k = 3 y
+    se camina a 1,0 m/s. Las opciones y su regla están en `src/config/reglas-semaforo.ts`.
+  - Los valores guardados antes (`estandar` y `vulnerable`) se convierten solos.
+- **PWA** (`vite-plugin-pwa` 2):
+  - Precarga 61 archivos (5,6 MB): la app, las fuentes latinas, los íconos y `public/datos`.
+  - Cualquier ruta abre sin conexión.
+  - El clima de Open-Meteo va a la red primero y, si falla, usa la última respuesta (además de la caché
+    propia de la Fase 5).
+  - Manifiesto "Umbral" en español, a pantalla completa, con el color de los tokens. `scripts/tokens.mjs`
+    lee `design/tokens.css` para el manifiesto y la etiqueta `theme-color`.
+  - Íconos de 192 y 512 px, uno adaptable de 512 px y el de iOS de 180 px, generados con `npm run iconos`
+    (sharp) desde `design/marca/isotipo-negativo.svg` hacia `public/iconos/`, sin tocar `design/`.
+- **14 · Sin conexión** (`/sin-conexion`):
+  - `useConexion` (con `navigator.onLine` y sus eventos) muestra el aviso "Sin conexión" en el mapa, que
+    lleva a la 14.
+  - La 14 lista lo que sigue funcionando y lo que no, y dice "Modelo del centro descargado el 1 de octubre
+    de 2026".
+  - Las placas QR no se mencionan porque están en pausa.
+- **Accesibilidad**: revisión completa en `docs/accesibilidad.md`.
+  - Contraste de tokens con `npm run contraste`.
+  - axe-core en 22 pantallas, también con Texto grande y Alto contraste.
+  - Medición de áreas táctiles, foco, movimiento reducido e idioma.
+- Pruebas: 90 en total (5 nuevas): ajustes, perfil, CSV y ahorro de datos.
+
+### Verificación en Chromium (390 × 844, build de producción)
+
+- Ajustes:
+  - Los cuatro interruptores se guardan. Texto grande sube la etiqueta a 20 px, y ese modo y el alto
+    contraste siguen activos al recargar.
+  - El idioma cambia a inglés en el sitio.
+  - El CSV sale como `umbral-respuestas-AAAA-MM-DD.csv` con su encabezado.
+- Perfil "Adulto mayor": la misma ruta a la Plaza a las 10 a. m. pasa de "Precaución" a "Evitar" y de 9 a
+  12 min; la ruta es un poco más larga y con más sombra (47 % frente a 43 %).
+- **Modo avión** (prueba pedida por la fase): con el service worker activo y 61 archivos en caché, la
+  recarga sin red abre el mapa, muestra "Sin conexión", lleva a la 14 y calcula la ruta de la 06. Sin
+  errores en la consola.
+- Accesibilidad: axe-core sin hallazgos en las 22 pantallas (y con los modos de Ajustes activos), todo lo
+  interactivo de 56 px o más y sin desbordes.
+
+### Correcciones durante la verificación
+
+- Los íconos entraban dos veces en la lista de precarga, lo que puede romper la instalación del service
+  worker; se precargaban también fuentes cirílicas, griegas y vietnamitas.
+- El aviso "Sin conexión" no se podía tocar porque el mapa capturaba los toques.
+- Accesibilidad (detalle en `docs/accesibilidad.md`):
+  - El signo "!" de El Niño daba 2,2:1 y el subtítulo de la banda de la 16, 4,4:1.
+  - Faltaban regiones `<main>` en la 06, la 13, la 10 y la 09.
+  - El mapa no tenía título principal y la 14 saltaba del h1 al h3.
+
+### Decisiones
+
+- **Descripciones del perfil (23)**: Figma decía "Avisos desde el nivel Precaución" para tres opciones y
+  "Prioriza sombra continua…" para la cuarta, pero las cuatro aplican la misma regla. Para no prometer algo
+  distinto de lo que hace la app, las cuatro dicen "El semáforo sube un nivel y las rutas buscan más sombra".
+- **Tarjeta "Cómo se calcula"**: Figma nombra el algoritmo solar del NREL. La app usa SunCalc, validado
+  contra el SPA del NREL en la Fase 2, así que la tarjeta no lo menciona como si fuera el que corre.
+- **Ahorro de datos sin pronóstico guardado**: la barra queda en "Sin datos de clima"; no se inventa un
+  valor.
+
+### Pendiente
+
+- Probar en un celular: instalar la app ("Agregar a pantalla de inicio"), modo avión, TalkBack y VoiceOver
+  (Fase 10, con HTTPS).
+- Los colores de Precaución y Evitar (observación 2) y el resto de la observación 3 siguen en espera.
+
+---
+
 ## Fase 8 · Entrada y contexto (2026-10-06)
 
 Decisiones de la autora al revisar el plan:

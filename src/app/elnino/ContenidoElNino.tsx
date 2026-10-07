@@ -16,9 +16,11 @@ interface ContenidoElNinoProps {
 export function ContenidoElNino({ config, onDone, asPage = false, titleId }: ContenidoElNinoProps) {
   const { t, language } = useT()
   const Heading = asPage ? 'h1' : 'h2'
+  // Como página es el contenido principal; dentro del aviso (diálogo) es un bloque más.
+  const Root = asPage ? 'main' : 'div'
   const updated = config ? formatIsoDate(config.updated, language) : ''
   return (
-    <div className={s.pantalla}>
+    <Root className={s.pantalla}>
       <header className={s.cabecera}>
         <span className={s.signo} aria-hidden="true">
           !
@@ -43,6 +45,6 @@ export function ContenidoElNino({ config, onDone, asPage = false, titleId }: Con
       <div className={s.acciones}>
         <Boton onClick={onDone}>{t('elNino.entendido')}</Boton>
       </div>
-    </div>
+    </Root>
   )
 }

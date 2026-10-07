@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useId, useMemo, useState, type CSSProperties } from 'react'
-import { useNavigate, useSearchParams } from 'react-router'
+import { Link, useNavigate, useSearchParams } from 'react-router'
 import { BarraSuperior, Boton, Icono, MuestraTramo } from '../../componentes'
 import { readHeatProfile } from '../../clima/configClima'
 import { simulateOvercast, thermalStateAt, type ThermalContext } from '../../clima/estado'
@@ -18,6 +18,7 @@ import { formatDateTime, formatTime, isoLocalDate } from '../../sombra/tiempo'
 import { useSombra } from '../../sombra/useSombra'
 import { AvisoElNino } from '../elnino/AvisoElNino'
 import { markElNinoSeen, seenElNinoToday } from '../elnino/visto'
+import { useConexion } from '../useConexion'
 import { useEnlace } from '../rutas/enlaces'
 import { costModel, useGraph } from '../rutas/useContextoRutas'
 import { formatDesde, parseDesde, useOrigen } from '../rutas/useOrigen'
@@ -53,6 +54,7 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
   const { t, language } = i18n
   const navigate = useNavigate()
   const enlace = useEnlace()
+  const online = useConexion()
   const [params, setParams] = useSearchParams()
   const sliderId = useId()
   /** Cambia parámetros de la dirección sin perder los demás (hora, punto de partida…). */
@@ -217,6 +219,7 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
       />
 
       <main className={s.principal}>
+        <h1 className="sr-only">{t('pantallas.p04')}</h1>
         <div className={s.mapaZona}>
           {data && (
             <MapaSombra
@@ -268,6 +271,12 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
               <>
                 <div className={s.filaArriba}>
                   <div className={s.chips}>
+                    {!online && (
+                      <Link className={`${s.chip} ${s.chipSinConexion} um-etiqueta`} to="/sin-conexion">
+                        <Icono name="sin-conexion" size={20} />
+                        {t('sinConexion.aviso')}
+                      </Link>
+                    )}
                     {simulateCloudy && (
                       <details className={s.desplegable}>
                         <summary>
@@ -319,6 +328,14 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
                       onClick={() => navigate(enlace('/refugios'))}
                     >
                       <Icono name="refugio-cubierto" />
+                    </button>
+                    <button
+                      type="button"
+                      className={s.botonFlotante}
+                      aria-label={t('ajustes.boton')}
+                      onClick={() => navigate('/ajustes')}
+                    >
+                      <Icono name="ajustes" />
                     </button>
                     {locationMessage && (
                       <p className={`${s.globo} um-etiqueta`} role="status">

@@ -1,0 +1,172 @@
+/* Pantallas 11 (Figma, nodo 7:2) y 23 (nodo 35:121). */
+
+.pantalla {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+.contenido {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--um-esp-md);
+  padding: var(--um-esp-md) 0 max(var(--um-esp-lg), env(safe-area-inset-bottom));
+}
+
+.lista {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-block: 1px solid var(--um-base-borde);
+  background: var(--um-base-superficie);
+}
+
+.lista > li + li {
+  border-top: 1px solid var(--um-base-borde);
+}
+
+.fila {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--um-esp-md);
+  width: 100%;
+  min-height: 72px;
+  padding: var(--um-esp-sm) var(--um-esp-lg);
+  border: 0;
+  background: none;
+  color: var(--um-base-texto);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.fila:disabled {
+  cursor: default;
+}
+
+.textos {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.secundario {
+  color: var(--um-base-texto-secundario);
+}
+
+.flecha {
+  flex-shrink: 0;
+  color: var(--um-base-texto-secundario);
+}
+
+/* Interruptor: el estado se lee por la posición de la perilla y por aria-checked, no solo por el color. */
+.interruptor {
+  position: relative;
+  flex-shrink: 0;
+  width: 56px;
+  height: 32px;
+  border: 2px solid var(--um-base-borde);
+  border-radius: 16px;
+  background: var(--um-base-fondo);
+  transition: background 150ms ease;
+}
+
+.interruptor::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--um-base-superficie);
+  box-shadow: var(--um-elevacion-flotante);
+  transition: transform 150ms ease;
+}
+
+[aria-checked='true'] > .interruptor {
+  border-color: var(--um-termico-sombra-plena);
+  background: var(--um-termico-sombra-plena);
+}
+
+[aria-checked='true'] > .interruptor::after {
+  transform: translateX(24px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .interruptor,
+  .interruptor::after {
+    transition: none;
+  }
+}
+
+.tarjeta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-xs);
+  margin: 0 var(--um-esp-lg);
+  padding: var(--um-esp-md) var(--um-esp-lg);
+  border-radius: var(--um-radio-tarjeta);
+  background: var(--um-semaforo-comodo-fondo);
+  color: var(--um-semaforo-comodo-texto);
+}
+
+.nota {
+  margin: 0 var(--um-esp-lg);
+}
+
+/* Pantalla 23 */
+.intro {
+  margin: 0 var(--um-esp-lg);
+}
+
+.opciones {
+  margin: 0 var(--um-esp-lg);
+  padding: 0;
+  border: 1px solid var(--um-base-borde);
+  border-radius: var(--um-radio-tarjeta);
+  background: var(--um-base-superficie);
+  overflow: hidden;
+}
+
+.opcion {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--um-esp-md);
+  min-height: 72px;
+  padding: var(--um-esp-md);
+  cursor: pointer;
+}
+
+.opcion + .opcion {
+  border-top: 1px solid var(--um-base-borde);
+}
+
+.opcion input {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  margin: 2px 0 0;
+  accent-color: var(--um-termico-sombra-plena);
+}
+
+.elegida {
+  font-weight: 600;
+}
+
+.privacidad {
+  display: flex;
+  align-items: center;
+  gap: var(--um-esp-sm);
+  margin: 0 var(--um-esp-lg);
+  color: var(--um-base-texto-secundario);
+}
+
+.acciones {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-sm);
+  margin: auto var(--um-esp-lg) 0;
+}

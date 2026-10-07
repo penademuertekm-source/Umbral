@@ -47,6 +47,19 @@ export const FULL_SUN_MINUTES = 10
 export const HEAT_PROFILES = ['estandar', 'vulnerable'] as const
 export type HeatProfile = (typeof HEAT_PROFILES)[number]
 
+/** Opciones de la pantalla 23. No se piden datos de salud: solo se guarda la opción elegida. */
+export const HEAT_PROFILE_OPTIONS = ['general', 'adulto_mayor', 'ninos', 'embarazo', 'salud'] as const
+export type HeatProfileOption = (typeof HEAT_PROFILE_OPTIONS)[number]
+
+/** Regla que aplica cada opción: las cuatro últimas endurecen un nivel y priorizan la sombra (k más alto). */
+export const PROFILE_OF_OPTION: Record<HeatProfileOption, HeatProfile> = {
+  general: 'estandar',
+  adulto_mayor: 'vulnerable',
+  ninos: 'vulnerable',
+  embarazo: 'vulnerable',
+  salud: 'vulnerable',
+}
+
 export interface ThermalInputs {
   /** UTCI estimado al sol y a la sombra (°C). */
   utciSun: number

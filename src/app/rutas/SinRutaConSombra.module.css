@@ -20,11 +20,13 @@
   border: 0;
   border-radius: var(--um-radio-control);
   background: none;
+  /* contraste: fondo=nivel-fondo */
   color: var(--nivel-texto);
   cursor: pointer;
 }
 
 .nivel {
+  /* contraste: fondo=nivel-fondo */
   display: inline-flex;
   align-items: center;
   gap: var(--um-esp-xs);
@@ -33,7 +35,8 @@
 }
 
 .subtitulo {
-  color: var(--um-base-texto-secundario);
+  /* contraste: fondo=nivel-fondo (dentro de la banda del nivel; el gris daba 4,4:1 sobre ámbar) */
+  color: var(--nivel-texto);
 }
 
 .datos {

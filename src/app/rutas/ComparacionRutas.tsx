@@ -101,7 +101,7 @@ export function ComparacionRutas() {
   }
 
   return (
-    <div className={c.pantalla}>
+    <main className={c.pantalla}>
       <Encabezado title={nombre} onBack={volver} />
       <div className={c.mapa}>
         {data && origen && point && routes && (
@@ -180,7 +180,7 @@ export function ComparacionRutas() {
           onStart={nextStep}
         />
       )}
-    </div>
+    </main>
   )
 }
 

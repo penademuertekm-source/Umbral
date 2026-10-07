@@ -56,12 +56,12 @@ export function Refugios() {
   )
 
   return (
-    <div className={s.pantalla}>
+    <main className={s.pantalla}>
       <Encabezado title={t('pantallas.p10')} onBack={volver} />
       <div className={s.mapa}>
         {data && <MapaRutas data={data} places={places} origin={origen?.point ?? null} label={t('refugios.mapa')} />}
       </div>
-      <main className={s.contenido}>
+      <div className={s.contenido}>
         <NotaEstimado time={ctx.hora.time} provisional={!!data?.meta.datos_provisionales} />
         <p className={`${s.secundario} um-etiqueta`}>{t('refugios.distancias', { lugar })}</p>
         {data && filas.length === 0 && <p className="um-cuerpo">{t('refugios.sinDatos')}</p>}
@@ -89,7 +89,7 @@ export function Refugios() {
             )
           })}
         </ul>
-      </main>
-    </div>
+      </div>
+    </main>
   )
 }

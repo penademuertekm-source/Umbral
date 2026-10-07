@@ -1,6 +1,6 @@
 // Configuración del clima (public/datos/clima_config.json, copiada de datos/provisional/ al correr dev o build).
 // El indicador de El Niño se actualiza a mano según los boletines del IDEAM.
-import { HEAT_PROFILES, type HeatProfile } from '../config/reglas-semaforo'
+import { HEAT_PROFILE_OPTIONS, PROFILE_OF_OPTION, type HeatProfile, type HeatProfileOption } from '../config/reglas-semaforo'
 import { dataBaseUrl } from '../sombra/cargar'
 
 export interface ClimaConfig {
@@ -32,12 +32,29 @@ export function loadClimaConfig(fetchFn: typeof fetch = fetch): Promise<ClimaCon
 
 const PROFILE_KEY = 'umbral.perfilCalor'
 
-/** Perfil de calor guardado en el dispositivo (lo elige la pantalla 23, Fase 9). Por defecto, estándar. */
-export function readHeatProfile(): HeatProfile {
+/** Valores de antes de la Fase 9 (solo había dos perfiles). */
+const LEGACY: Record<string, HeatProfileOption> = { estandar: 'general', vulnerable: 'salud' }
+
+/** Opción de la pantalla 23 guardada en el dispositivo. Por defecto, General. */
+export function readHeatProfileOption(): HeatProfileOption {
   try {
-    const value = localStorage.getItem(PROFILE_KEY)
-    return (HEAT_PROFILES as readonly string[]).includes(value ?? '') ? (value as HeatProfile) : 'estandar'
+    const value = localStorage.getItem(PROFILE_KEY) ?? ''
+    if ((HEAT_PROFILE_OPTIONS as readonly string[]).includes(value)) return value as HeatProfileOption
+    return LEGACY[value] ?? 'general'
   } catch {
-    return 'estandar'
+    return 'general'
   }
+}
+
+export function writeHeatProfileOption(option: HeatProfileOption): void {
+  try {
+    localStorage.setItem(PROFILE_KEY, option)
+  } catch {
+    // Sin almacenamiento: el perfil vale solo mientras la página esté abierta.
+  }
+}
+
+/** Regla del perfil guardado (estándar o vulnerable), para el semáforo y el costo de las rutas. */
+export function readHeatProfile(): HeatProfile {
+  return PROFILE_OF_OPTION[readHeatProfileOption()]
 }
