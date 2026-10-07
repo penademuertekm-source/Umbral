@@ -82,3 +82,20 @@ Lo que **sí** puede hacer (propuesta para cuando se pida):
 fijo con HTTPS que cualquiera abre en el celular, sin VS Code ni terminal. Si se necesita antes (por
 ejemplo, para pruebas con usuarios), se puede adelantar una publicación de prueba, pero solo si la autora lo
 pide. Mientras tanto, Codespaces con el puerto 5173 en "Público" también da HTTPS.
+
+---
+
+## Resumen de pendientes en espera (2026-10-07)
+
+La autora probó la Fase 9 y pidió guardar los pendientes hasta que los pida. Ninguno se trabaja sin su orden.
+
+| Pendiente | De dónde viene | Estado |
+|---|---|---|
+| Tramos sin nombre (80 de 502) | Observación 1 | En espera: falta decidir cómo entregar los nombres |
+| Menos texto y más claridad visual en las pantallas | Observación 2 | En espera |
+| Colores de Precaución (#d69e00) y Evitar (#ef9f27) casi iguales (ΔE ≈ 4,5) | Validador de paleta (Fase 6) y revisión de accesibilidad (Fase 9) | En espera, como insumo de la observación 2. Hoy se distinguen por forma y nombre. Cambiarlos toca `design/` |
+| Que la app guíe el permiso de ubicación | Observación 3 | Hecho en parte: aviso de dirección no segura (Fase 7) y pantalla 03 (Fase 8). Faltan los pasos según el teléfono y el botón de reintentar |
+| Placas QR (pantallas 08, 12 y `/placas`) | Decisión de la autora en la Fase 8 | En pausa. Al retomarlas hay que ubicar las dos placas; falta saber qué calle es la "Calle Grande" |
+| Créditos del README (nombres de autores y docente) | Fase 10 | "[por completar]" hasta que la autora los dé |
+| Licencia del código | Fase 10 | Por definir |
+| Pruebas en un celular real: instalar la app, GPS en la calle, TalkBack y VoiceOver | Fases 7 y 9 | Para la prueba de campo de la Fase 10 |

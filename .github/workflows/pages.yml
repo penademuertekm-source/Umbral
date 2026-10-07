@@ -1,0 +1,78 @@
+# Publica la app en GitHub Pages (Fase 10): https://penademuertekm-source.github.io/Umbral/
+# Corre al subir cambios a la rama principal o a mano desde la pestaña Actions ("Run workflow").
+# Primero prueba y arma la app; solo publica si Pages está activado (Settings → Pages → Source: GitHub Actions).
+name: Publicar en GitHub Pages
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - claude/inspiring-cannon-6rmgzq
+      - main
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  construir:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      pages: ${{ steps.pages.outputs.activo }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Pruebas y revisión de código
+        run: |
+          npm test
+          npm run lint
+
+      - name: Armar la app para /${{ github.event.repository.name }}/
+        env:
+          VITE_BASE: /${{ github.event.repository.name }}/
+          VITE_URL_PUBLICA: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
+        run: npm run build
+
+      - name: ¿Está activado GitHub Pages?
+        id: pages
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          code=$(curl -s -o /dev/null -w "%{http_code}" -H "Authorization: Bearer $GH_TOKEN" \
+            "https://api.github.com/repos/${{ github.repository }}/pages")
+          if [ "$code" = "200" ]; then
+            echo "activo=si" >> "$GITHUB_OUTPUT"
+          else
+            echo "activo=no" >> "$GITHUB_OUTPUT"
+            echo "::notice::GitHub Pages no está activado (respuesta $code). Actívalo en Settings → Pages → Source: GitHub Actions y vuelve a correr este flujo."
+          fi
+
+      - uses: actions/upload-pages-artifact@v3
+        if: steps.pages.outputs.activo == 'si'
+        with:
+          path: dist
+
+  publicar:
+    needs: construir
+    if: needs.construir.outputs.pages == 'si'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
