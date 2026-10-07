@@ -4,6 +4,23 @@ Registro de lo hecho en cada fase, lo pendiente y las decisiones tomadas. La ent
 
 ---
 
+## Ajuste · Observación 4 y registro para trabajar fuera de la sesión (2026-10-07)
+
+- La autora abrió la app publicada en el celular y preguntó por qué "Cómo llegar a la Plaza Alfonso López"
+  abre Google Maps. Es lo que pedían la pantalla 21 y la Fase 8: Umbral solo conoce las calles del centro.
+  Quedó como **observación 4** en `docs/observaciones-autora.md`, con tres mejoras posibles, en espera.
+- `docs/registro-y-observaciones.md` reúne todo para llevarlo a Claude normal o Claude Design y volver:
+  - estado de las fases y de las 23 pantallas, con sus nodos de Figma;
+  - observaciones de la autora y técnicas;
+  - decisiones tomadas;
+  - lo que pidió la autora en orden;
+  - lo que se necesita de ella;
+  - contratiempos y preguntas abiertas.
+- La Fase 10 sigue esperando la confirmación de que la publicación abre bien en el computador y en el
+  celular.
+
+---
+
 ## Fase 10 · Publicación y prueba en la calle (2026-10-07)
 
 La autora aprobó seguir con el plan con una condición: cuando un paso dependa de ella, se para y se espera

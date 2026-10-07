@@ -85,6 +85,32 @@ pide. Mientras tanto, Codespaces con el puerto 5173 en "Público" también da HT
 
 ---
 
+## 4. "Cómo llegar a la Plaza Alfonso López" sale de la app hacia Google Maps
+
+**Recibida:** 2026-10-07 · **Estado:** en espera
+
+> Lo abrí en el móvil y cuando undí "Cómo llegar a la Plaza Alfonso López" me redirigió a Maps. ¿Por qué pasa
+> eso? ¿No debería indicarme en la misma app web? Cuando uso mi ubicación, principalmente porque no estoy en
+> el Centro Histórico.
+
+Por qué pasa (es lo que pedían la pantalla 21 y la Fase 8): Umbral solo tiene las calles, las aceras y la
+sombra de un círculo de 700 m alrededor de la plaza. Fuera de ahí no tiene red de calles para trazar un
+camino, y Google Maps conoce toda la ciudad, el tráfico y los buses. El botón le pasa solo el destino (sin
+clave y sin la ubicación de la persona) y avisa "Se abre Google Maps, fuera de Umbral".
+
+Mejoras posibles (para decidir cuando se pida):
+
+1. **Mapa de la ciudad dentro de la pantalla 21** (OpenFreeMap, que CLAUDE.md permite fuera del centro):
+   dónde está la persona, dónde está el centro y la distancia, sin salir de la app. No da el camino calle
+   por calle.
+2. **"Ya llegué al centro"**: al volver de Google Maps, un botón que lleve directo a buscar la ruta con
+   sombra.
+3. **Rutas completas dentro de la app**: exige la red de calles de toda la ciudad y un servicio de rutas.
+   Los confiables piden clave (CLAUDE.md: detenerse y preguntar) y la sombra fuera del centro no está
+   modelada. No se recomienda para el prototipo.
+
+---
+
 ## Resumen de pendientes en espera (2026-10-07)
 
 La autora probó la Fase 9 y pidió guardar los pendientes hasta que los pida. Ninguno se trabaja sin su orden.
@@ -95,6 +121,7 @@ La autora probó la Fase 9 y pidió guardar los pendientes hasta que los pida. N
 | Menos texto y más claridad visual en las pantallas | Observación 2 | En espera |
 | Colores de Precaución (#d69e00) y Evitar (#ef9f27) casi iguales (ΔE ≈ 4,5) | Validador de paleta (Fase 6) y revisión de accesibilidad (Fase 9) | En espera, como insumo de la observación 2. Hoy se distinguen por forma y nombre. Cambiarlos toca `design/` |
 | Que la app guíe el permiso de ubicación | Observación 3 | Hecho en parte: aviso de dirección no segura (Fase 7) y pantalla 03 (Fase 8). Faltan los pasos según el teléfono y el botón de reintentar |
+| "Cómo llegar" sale a Google Maps; mapa de la ciudad dentro de la 21 | Observación 4 | En espera |
 | Placas QR (pantallas 08, 12 y `/placas`) | Decisión de la autora en la Fase 8 | En pausa. Al retomarlas hay que ubicar las dos placas; falta saber qué calle es la "Calle Grande" |
 | Créditos del README (nombres de autores y docente) | Fase 10 | "[por completar]" hasta que la autora los dé |
 | Licencia del código | Fase 10 | Por definir |
