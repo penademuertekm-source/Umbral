@@ -126,7 +126,10 @@ docs/              especificación, prompts por fases, reportes de validación
 5. **Sin claves ni secretos.** Open-Meteo y OpenStreetMap no requieren clave. No uses ShadeMap
    ni Shadowmap. Si hace falta una clave, detente y pregunta.
 6. **Licencias.** Usa librerías por npm o pip. No copies código de repositorios con licencia GPL/AGPL.
-   Atribución visible: "© colaboradores de OpenStreetMap" y "Clima: Open-Meteo".
+   Atribución: "© colaboradores de OpenStreetMap" y "Clima: Open-Meteo". Decisión de la autora
+   (2026-10-08): va fuera del mapa, en Ajustes › Créditos. Para cumplir la guía de OpenStreetMap
+   (https://osmfoundation.org/wiki/Licence/Attribution_Guidelines) también se muestra al abrir la app y el
+   mapa conserva un botón ⓘ que lleva a Créditos.
 7. **Identificadores de código en inglés**, comentarios y documentación en español.
 
 ## Forma de trabajo (plan Pro: el uso es limitado)
@@ -140,6 +143,29 @@ docs/              especificación, prompts por fases, reportes de validación
   3. haz un commit `Fase N: <resumen>`,
   4. termina con una lista de "cómo probarlo" en tres pasos.
 - Si algo no se puede hacer como dice este archivo, explícalo y propone una alternativa. No improvises en silencio.
+
+## Trabajo con Claude (chat)
+
+Desde el rediseño de octubre de 2026 el proyecto se trabaja entre dos: Claude (chat), en la nube, y Claude
+Code, en el PC de la autora. Se coordinan por este repositorio; no comparten conversación.
+
+- **Reparto.** Claude (chat) hace Figma, `docs/especificacion-pantallas.md`, `docs/cambios-interfaz.md`, los
+  prompts y la revisión del enlace publicado. Claude Code hace todo el código (`src/`, `public/`, `scripts/`,
+  `design/` cuando se autorice) y la bitácora.
+- **Lista de estado.** `docs/cambios-interfaz.md` es la lista única de cambios, cada uno con su número
+  (por ejemplo `04-1`). Trabaja solo los puntos en `listo para código` que nombre el prompt. Al terminar un
+  punto, cambia su estado a `hecho` en el mismo commit del cambio. No marques `verificado`: eso lo hace
+  Claude (chat) después de revisar el enlace publicado.
+- **Archivos de cada uno.** No edites la especificación ni los textos de las decisiones en
+  `docs/cambios-interfaz.md`; solo la columna de estado. Si encuentras algo que contradice la lista o Figma,
+  detente y anótalo en la sección "Notas de Claude Code" al final de esa lista.
+- **Sincronizar.** Antes de empezar: `git pull`. Al terminar cada punto: build, pruebas, commit
+  `<número>: <resumen>` (por ejemplo `04-1: leyenda con trazos distintos`) y `git push`. Subir a esta rama
+  publica en GitHub Pages; si las pruebas fallan, no se publica.
+- **Respaldo.** La rama `respaldo/antes-del-rediseno` guarda la versión que probó la autora. No la borres
+  ni la modifiques.
+- **Figma.** Cada pantalla terminada tiene su nodo en la especificación. Mira solo ese nodo con
+  `get_screenshot` cuando la especificación no alcance.
 
 ## Comandos
 
