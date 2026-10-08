@@ -19,6 +19,15 @@ Enlace base: `https://www.figma.com/design/AYqMU7Zqwegk1SGgZFJqTX/?node-id=<nodo
 | Guía de estilo | 44:41 | Principios, color, tipografía, iconografía, mapa, espaciado y PWA. |
 | Íconos | 42:27 | 42 íconos (también en `design/iconos/`). |
 
+**Componentes nuevos del rediseño (2026-10-08, ver `docs/cambios-interfaz.md`).** Revisión con todos los estados: nodo 105:329.
+
+| Componente | Nodo | Variantes / reglas |
+|---|---|---|
+| Chip estimado (G1) | 104:137 | Datos = Provisionales · Definitivos. Propiedad de texto "Hora" ("Estimado · 12:00"). Superficie, borde, radio 20 (`--um-radio-chip`), padding 6/8, Etiqueta 15, ícono Información de 20 px. En Provisionales agrega "· provisional" en color texto de Precaución. Visual de 32 px de alto, pero área táctil de 56 px con relleno invisible. Al tocarlo abre una hoja con "Datos provisionales", fuentes y atribuciones. |
+| Aviso (G6) | 105:161 | Nivel = Alerta · Aviso · Recogido. Propiedades: Título, Detalle, Mostrar detalle, Contador ("+1"), Hay más avisos, Ícono (cambio de instancia). Alerta: fondo y texto No recomendado, borde de 2 px y triángulo de Alerta. Aviso: fondo y texto Precaución. Ambos de 358 px de ancho, radio 16, padding 8/16, título Cuerpo fuerte 17 y detalle Etiqueta 15, botón Recoger de 56 × 56. Recogido: chip con radio 20, ícono de 20 px, título Etiqueta y contador. Se ve un aviso a la vez; al leerlo pasa a Recogido. |
+| Barra inferior (04-8) | 105:315 | Activa = Mapa · Ir a · Descansar · Ajustes. 390 px de ancho, fondo superficie, borde superior, padding 8/4, más el área segura del celular. Usa la pestaña 105:174 (Estado = Activa · Inactiva, 97 × 64): indicador de 56 × 32 con radio 20, ícono de 24 y Etiqueta 15. Activa: indicador fondo Cómodo y color `--um-termico-sombra-plena`; inactiva: `--um-base-texto-secundario`. Íconos: Capas (Mapa, provisional), Caminar, Banca y Ajustes. |
+| Hoja inferior (04-5) | 105:328 | Altura = Asomada (≈ 200) · Media (≈ 420) · Completa (≈ 720). Superficie, radio superior 24 (`--um-radio-hoja`), elevación de hoja, asa de 40 × 5 en una zona de 28 px, slot "Contenido" con padding 0/16/16 y separación 8. En código la altura va en % del alto de pantalla. |
+
 Patrones comunes:
 - **Barra superior**: fondo blanco de 112 px con borde inferior. Muestra la hora (Dato 28), el chip del semáforo a la derecha y, debajo, la línea "UTCI estimado · al sol X° · a la sombra Y°" (Micro).
 - **Encabezado de sección**: "‹ Volver" (Etiqueta, secundario) y título (Título 24).

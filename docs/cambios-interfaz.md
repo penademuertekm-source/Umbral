@@ -86,7 +86,7 @@ Sin cambios: 01, 02, 14 y 22. En pausa: 08 y 12.
 
 | N.º | Qué | Prior. | Estado |
 |---|---|---|---|
-| N1 | Componentes: hoja inferior (3 alturas), avisos (alerta, aviso, dato recogido, contador), barra inferior, chip "Estimado" | P2 | pendiente |
+| N1 | Componentes: hoja inferior (3 alturas), avisos (alerta, aviso, dato recogido, contador), barra inferior, chip "Estimado". En Figma, página 03: nodos 104:137, 105:161, 105:315 y 105:328; revisión en 105:329. Se aplican en código junto con la pantalla 04 | P2 | en Figma (componentes listos) |
 | N2 | Cómo leer el mapa (primera vez; se puede saltar y volver a abrir) | P2 | pendiente |
 | N3 | Noche: "Ya no hay sol" y ver el día siguiente | P2 | pendiente |
 | N4 | Estados: calculando, sin clima, GPS perdido durante el recorrido | P2 | pendiente |
