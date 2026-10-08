@@ -107,8 +107,8 @@ Sin cambios: 01, 02, 14 y 22. En pausa: 08 y 12.
 
 | N.º | Qué | Estado |
 |---|---|---|
-| F1 | Estilo Micro de 13 a 15 px | pendiente |
-| F2 | Revisar la organización de páginas (la lista de páginas solo muestra "01 · Sistema e identidad") | pendiente |
+| F1 | Estilo Micro de 13 a 15 px. También se pasaron al estilo Micro los 53 textos sueltos de 13 px de la página "02 · Pantallas" | hecho (2026-10-08) |
+| F2 | Revisar la organización de páginas: están las tres ("01 · Sistema e identidad", "02 · Pantallas", "03 · Iconografía y estilo gráfico"); no hace falta reorganizar | hecho (2026-10-08) |
 | F3 | Pantallas al día con lo que ya tiene el código | pendiente |
 
 ## Notas de Claude Code
