@@ -9,6 +9,8 @@ export const VERSION = 1
 
 /** Máximo sugerido de lugares (especificación S1): el undécimo pide borrar uno. */
 export const MAX_PLACES = 10
+/** Máximo de llegadas, salidas planeadas y respuestas que se recuerdan (las más recientes). */
+export const MAX_EVENTS = 500
 /** Máximo de salidas planeadas a la vez. */
 export const MAX_TRIPS = 20
 /** Una salida sigue guardada hasta estos minutos después de su hora (es el tiempo del aviso "Es hora de salir"). */
@@ -41,6 +43,20 @@ export interface PlannedTrip {
   inCalendar: boolean
 }
 
+/** Una llegada (S3): solo cuenta si el recorrido terminó en la 22. Nunca se guarda el camino. */
+export interface Arrival {
+  id: string
+  /** Cuándo llegó (ISO 8601). */
+  date: string
+  destinationId: string
+  /** Minutos de sol evitado frente a la ruta más corta a la hora de salida (mínimo 0). */
+  avoided: number
+  /** Hora de salida del recorrido (ISO 8601). */
+  departure: string
+  /** Recorrido en modo simulación (decisión de la autora, P3a: cuenta, pero queda marcado). */
+  simulated: boolean
+}
+
 export interface ProfileData {
   version: typeof VERSION
   /** Nombre opcional, solo para el saludo de Perfil. Vacío si no lo puso. */
@@ -49,8 +65,12 @@ export interface ProfileData {
   // Espacio reservado para los pasos P2 y P3 (docs/prompts-sugerencias.md). Cada paso define su forma.
   /** Salidas planeadas (S2), de la más próxima a la más lejana. */
   trips: PlannedTrip[]
-  /** Llegadas con su sol evitado (S3). */
-  arrivals: unknown[]
+  /** Llegadas con su sol evitado (S3), de la más antigua a la más reciente. */
+  arrivals: Arrival[]
+  /** Fechas en que se planeó una salida nueva (S3: logro Planificador y reto "Planea una salida"). */
+  planned: string[]
+  /** Fechas en que se respondió "¿Te sirvió esta ruta?" (S3: logro "Ayudaste a la investigación"). */
+  answered: string[]
   /** Sellos del Pasaporte del centro (S3). */
   stamps: unknown[]
   /** Láminas del Álbum de la sombra (S3). */
@@ -60,7 +80,18 @@ export interface ProfileData {
 }
 
 export function emptyProfile(): ProfileData {
-  return { version: VERSION, name: '', places: [], trips: [], arrivals: [], stamps: [], cards: [], achievements: [] }
+  return {
+    version: VERSION,
+    name: '',
+    places: [],
+    trips: [],
+    arrivals: [],
+    planned: [],
+    answered: [],
+    stamps: [],
+    cards: [],
+    achievements: [],
+  }
 }
 
 /** Lo mínimo de Storage que se usa (las pruebas pasan uno propio). */
@@ -89,6 +120,19 @@ function isPlace(value: unknown): value is SavedPlace {
 const list = (value: unknown): unknown[] => (Array.isArray(value) ? value : [])
 
 const isIsoDate = (value: unknown) => typeof value === 'string' && !Number.isNaN(Date.parse(value))
+
+function isArrival(value: unknown): value is Arrival {
+  return (
+    isRecord(value) &&
+    typeof value.id === 'string' &&
+    isIsoDate(value.date) &&
+    typeof value.destinationId === 'string' &&
+    typeof value.avoided === 'number' &&
+    Number.isFinite(value.avoided) &&
+    isIsoDate(value.departure) &&
+    typeof value.simulated === 'boolean'
+  )
+}
 
 function isTrip(value: unknown): value is PlannedTrip {
   return (
@@ -120,7 +164,9 @@ export function parse(raw: string | null): ProfileData {
     name: typeof value.name === 'string' ? value.name.slice(0, MAX_NAME_LENGTH) : '',
     places: list(value.places).filter(isPlace).slice(0, MAX_PLACES),
     trips: list(value.trips).filter(isTrip).slice(0, MAX_TRIPS),
-    arrivals: list(value.arrivals),
+    arrivals: list(value.arrivals).filter(isArrival).slice(-MAX_EVENTS),
+    planned: list(value.planned).filter(isIsoDate).slice(-MAX_EVENTS) as string[],
+    answered: list(value.answered).filter(isIsoDate).slice(-MAX_EVENTS) as string[],
     stamps: list(value.stamps),
     cards: list(value.cards),
     achievements: list(value.achievements),
@@ -274,7 +320,9 @@ export function saveTrip(trip: Omit<PlannedTrip, 'id'> & { id?: string }, storag
   const others = profile.trips.filter((t) => t.id !== trip.id)
   if (others.length >= MAX_TRIPS) return { ok: false, reason: 'limite' }
   const saved: PlannedTrip = { ...trip, id: trip.id ?? newId() }
-  writeProfile({ ...profile, trips: [...others, saved].sort(byDeparture) }, storage)
+  // Una salida nueva (no una editada) cuenta para el logro Planificador y el reto "Planea una salida".
+  const planned = trip.id ? profile.planned : [...profile.planned, new Date().toISOString()].slice(-MAX_EVENTS)
+  writeProfile({ ...profile, trips: [...others, saved].sort(byDeparture), planned }, storage)
   return { ok: true, trip: saved }
 }
 
@@ -308,3 +356,20 @@ export function tripDueNow(profile: ProfileData, now = new Date(), beforeMin = 1
     return t >= departure - beforeMin * 60_000 && t <= departure + TRIP_GRACE_MIN * 60_000
   })
 }
+
+// --- Llegadas y respuestas (S3) ---
+
+/** Guarda una llegada al terminar el recorrido (pantalla 13 → 22). */
+export function recordArrival(arrival: Omit<Arrival, 'id'>, storage = defaultStorage()): Arrival {
+  const profile = readProfile(storage)
+  const saved: Arrival = { ...arrival, id: newId(), avoided: Math.max(0, Math.round(arrival.avoided * 10) / 10) }
+  writeProfile({ ...profile, arrivals: [...profile.arrivals, saved].slice(-MAX_EVENTS) }, storage)
+  return saved
+}
+
+/** Anota que se respondió "¿Te sirvió esta ruta?" (la respuesta en sí se guarda aparte, para el CSV). */
+export function recordAnswered(now = new Date(), storage = defaultStorage()): void {
+  const profile = readProfile(storage)
+  writeProfile({ ...profile, answered: [...profile.answered, now.toISOString()].slice(-MAX_EVENTS) }, storage)
+}
+
