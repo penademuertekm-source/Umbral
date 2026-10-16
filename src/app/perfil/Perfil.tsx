@@ -3,7 +3,9 @@ import { Link } from 'react-router'
 import { BarraInferior, Encabezado, Icono } from '../../componentes'
 import type { TranslationKey } from '../../i18n/traducir'
 import { useT } from '../../i18n/useT'
+import { avoidedThisWeek } from '../../perfil/logros'
 import { usePerfil } from '../../perfil/usePerfil'
+import { readSettings } from '../ajustes/preferencias'
 import { formatTime } from '../../sombra/tiempo'
 import { useMapData } from '../rutas/useContextoRutas'
 import { HojaNombre } from './HojaNombre'
@@ -12,7 +14,7 @@ import { tripNames } from './salidas/comun'
 import s from './Perfil.module.css'
 
 // Perfil (S0 y S1, Figma 143:1977): la cuarta pestaña de la barra inferior. Sin registro ni contraseña: todo
-// lo de aquí vive solo en el teléfono. Logros (S3) llega en el paso P3.
+// lo de aquí vive solo en el teléfono.
 
 /** Lugares que se ven en Perfil; el resto, en "Ver todos mis lugares". */
 const PREVIEW_PLACES = 2
@@ -31,6 +33,8 @@ export function Perfil() {
   const [editingName, setEditingName] = useState(false)
   const destino = (id: string) => data?.destinos.find((d) => d.id === id)
   const next = profile.trips[0]
+  const [showAchievements] = useState(() => readSettings().achievements)
+  const [now] = useState(() => new Date())
 
   return (
     <div className={s.pantalla}>
@@ -105,14 +109,20 @@ export function Perfil() {
               <Icono name="avanzar" className={s.flecha} />
             </Link>
           </li>
-          <li>
-            <div className={`${s.fila} ${s.inactiva}`}>
-              <span className={s.textos}>
-                <span className="um-cuerpo">{t('miPerfil.logros')}</span>
-                <span className={`${s.secundario} um-etiqueta`}>{t('miPerfil.proximamente')}</span>
-              </span>
-            </div>
-          </li>
+          {/* S3: el interruptor "Logros y retos" de Ajustes la oculta (no borra nada). */}
+          {showAchievements && (
+            <li>
+              <Link className={s.fila} to="/perfil/logros">
+                <span className={s.textos}>
+                  <span className="um-cuerpo">{t('miPerfil.logros')}</span>
+                  <span className={`${s.secundario} um-etiqueta`}>
+                    {t('miPerfil.logrosSemana', { n: Math.round(avoidedThisWeek(profile, now)) })}
+                  </span>
+                </span>
+                <Icono name="avanzar" className={s.flecha} />
+              </Link>
+            </li>
+          )}
         </ul>
 
         <h2 className={`${s.grupo} um-etiqueta`}>{t('miPerfil.laApp')}</h2>

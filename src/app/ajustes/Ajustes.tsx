@@ -41,6 +41,7 @@ export function Ajustes() {
     { key: 'largeText', title: t('ajustes.textoGrande'), text: t('ajustes.textoGrandeTexto') },
     { key: 'highContrast', title: t('ajustes.altoContraste'), text: t('ajustes.altoContrasteTexto') },
     { key: 'heatWarning', title: t('ajustes.avisoCalor'), text: t('ajustes.avisoCalorTexto', horas) },
+    { key: 'achievements', title: t('ajustes.logros'), text: t('ajustes.logrosTexto') },
   ]
 
   return (

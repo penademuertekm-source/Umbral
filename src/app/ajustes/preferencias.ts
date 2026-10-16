@@ -9,6 +9,8 @@ export interface Settings {
   heatWarning: boolean
   /** No descargar el clima: usar el último pronóstico guardado. */
   dataSaver: boolean
+  /** S3: mostrar Logros en Perfil y los premios de la llegada (22). Activo por defecto. Apagado no borra nada. */
+  achievements: boolean
 }
 
 export type SettingKey = keyof Settings
@@ -18,9 +20,10 @@ const KEYS: Record<SettingKey, string> = {
   highContrast: 'umbral.altoContraste',
   heatWarning: 'umbral.avisoCalor',
   dataSaver: 'umbral.ahorroDatos',
+  achievements: 'umbral.logros',
 }
 
-const DEFAULTS: Settings = { largeText: false, highContrast: false, heatWarning: true, dataSaver: false }
+const DEFAULTS: Settings = { largeText: false, highContrast: false, heatWarning: true, dataSaver: false, achievements: true }
 
 function read(key: string): string | null {
   try {
@@ -40,6 +43,7 @@ export function readSettings(): Settings {
     highContrast: value('highContrast'),
     heatWarning: value('heatWarning'),
     dataSaver: value('dataSaver'),
+    achievements: value('achievements'),
   }
 }
 

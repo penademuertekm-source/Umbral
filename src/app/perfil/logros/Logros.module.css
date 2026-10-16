@@ -1,0 +1,129 @@
+/* Logros (S3, Figma 150:2601). */
+
+.tarjeta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-xs);
+  padding: var(--um-esp-md);
+  border: 1px solid var(--um-base-borde);
+  border-radius: var(--um-radio-tarjeta);
+  background: var(--um-base-superficie);
+}
+
+.tarjeta h2,
+.tarjeta p {
+  margin: 0;
+}
+
+.cifra {
+  color: var(--um-termico-sombra-plena); /* contraste: fondo=um-base-superficie grande */
+}
+
+.tarjeta .nivel {
+  margin-top: var(--um-esp-sm);
+}
+
+.barra {
+  display: block;
+  height: 8px;
+  overflow: hidden;
+  border-radius: 4px;
+  background: var(--um-base-borde);
+}
+
+.relleno {
+  display: block;
+  height: 100%;
+  border-radius: 4px;
+  background: var(--um-termico-sombra-plena);
+}
+
+.reto {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--um-esp-md);
+  min-height: 56px;
+  padding: var(--um-esp-sm) var(--um-esp-md);
+}
+
+/* Reto hecho: fondo Cómodo y la palabra "Hecho" (no solo el color). */
+.hecho {
+  background: var(--um-semaforo-comodo-fondo);
+}
+
+.textoHecho {
+  color: var(--um-semaforo-comodo-texto); /* contraste: fondo=um-semaforo-comodo-fondo */
+  font-weight: 600;
+}
+
+.iconoReto {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--um-radio-control);
+  background: var(--um-base-fondo);
+  color: var(--um-base-texto-secundario);
+}
+
+.hecho .iconoReto {
+  background: var(--um-base-superficie);
+  color: var(--um-termico-sombra-plena);
+}
+
+.colecciones {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--um-esp-sm);
+}
+
+.coleccion {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-xs);
+  padding: var(--um-esp-md);
+  border: 1px solid var(--um-base-borde);
+  border-radius: var(--um-radio-tarjeta);
+  background: var(--um-base-superficie);
+}
+
+.insignias {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--um-esp-md) var(--um-esp-sm);
+  margin: 0;
+  padding: var(--um-esp-md);
+  list-style: none;
+  border: 1px solid var(--um-base-borde);
+  border-radius: var(--um-radio-tarjeta);
+  background: var(--um-base-superficie);
+}
+
+.insignia {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--um-esp-xs);
+  text-align: center;
+}
+
+.circulo {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+}
+
+/* Conseguida: fondo Cómodo y aro continuo cañaguate de 3 px. Por conseguir: aro punteado gris. */
+.conseguida {
+  border: 3px solid var(--um-marca-canaguate);
+  background: var(--um-semaforo-comodo-fondo);
+  color: var(--um-termico-sombra-plena);
+}
+
+.pendiente {
+  border: 2px dashed var(--um-base-borde);
+  color: var(--um-base-texto-secundario);
+}

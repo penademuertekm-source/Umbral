@@ -672,7 +672,16 @@
     "gracias": "Thank you. Your answer was saved on this phone.",
     "volverMapa": "Back to the map",
     "ejemplo": "Example view with sample values: finish a walk to open this screen.",
-    "estimado": "Estimated values for {laHora}"
+    "estimado": "Estimated values for {laHora}",
+    "llegasteA": "You reached {nombre}",
+    "resumen": "{lugar} · {min} min · {p} % in shade",
+    "resumenCorto": "{min} min · {p} % in shade",
+    "evitadoMas": "+{n} min of sun avoided",
+    "frente": "compared with the shortest route",
+    "reto": "Challenge: {reto} · {v} of {t}",
+    "retoHecho": "Challenge done: {reto}",
+    "simulada": "Simulation-mode trip: it counts for your achievements, marked as simulated.",
+    "listo": "Done"
   },
   "refugios": {
     "distancias": "Distances from {lugar}",
@@ -734,7 +743,9 @@
     "titulo": "Settings",
     "tusDatos": "Your data",
     "borrar": "Delete my data",
-    "borrarTexto": "Places, trips and achievements on this phone"
+    "borrarTexto": "Places, trips and achievements on this phone",
+    "logros": "Achievements and challenges",
+    "logrosTexto": "Shows your progress and rewards"
   },
   "perfil": {
     "intro": "If you walk with someone more sensitive to heat, warnings appear earlier and routes give more priority to shade.",
@@ -818,7 +829,8 @@
     "logros": "Achievements",
     "proximamente": "Coming soon",
     "salidasNinguna": "None planned",
-    "salidasProxima": "Next: {hora} · {nombre}"
+    "salidasProxima": "Next: {hora} · {nombre}",
+    "logrosSemana": "This week: {n} min of sun avoided"
   },
   "comoLeer": {
     "intro": "Each sidewalk in the center is drawn with a line that shows its shade at the chosen time.",
@@ -966,5 +978,55 @@
     "detalle": "Leave now by the shadiest route · {min} min",
     "detalleSinRuta": "Leave now by the shadiest route",
     "verRuta": "See the route"
+  },
+  "logros": {
+    "titulo": "Achievements",
+    "subtitulo": "Your progress in the shade",
+    "semana": "Sun avoided this week",
+    "minutos": "{n} min",
+    "total": "{n} min in total, compared with the shortest route",
+    "nivel": "Level {n} · {nombre}",
+    "faltan": "{n} min to level {siguiente}",
+    "maximo": "You reached the top level",
+    "niveles": {
+      "n1": "First steps in the shade",
+      "n2": "Shade walker",
+      "n3": "Shade expert",
+      "n4": "Shade guardian",
+      "n5": "Shade master of Valledupar"
+    },
+    "retosTitulo": "This week's challenges",
+    "retosNota": "New challenges every Monday. If you miss them, you lose nothing.",
+    "hecho": "Done",
+    "todavia": "Not yet",
+    "avance": "{v} of {t}",
+    "retos": {
+      "evitar": "Avoid {n} min of sun",
+      "temprano": "Leave once before {hora}",
+      "tarde": "Leave once after {hora}",
+      "planear": "Plan a trip",
+      "lugar_nuevo": "Reach a new place"
+    },
+    "colecciones": "Collections",
+    "pasaporte": "Downtown passport",
+    "album": "Shade album",
+    "proximamente": "Coming soon",
+    "cuenta": "Achievements · {n} of {total}",
+    "insignias": {
+      "primera_ruta": "First shaded route",
+      "planificador": "Planner",
+      "ayudaste": "You helped the research",
+      "madrugador": "Early bird",
+      "tarde_fresca": "Cool afternoon",
+      "hora_evitada": "1 hour of sun avoided"
+    },
+    "conseguido": "earned",
+    "porConseguir": "not earned yet",
+    "premios": "Rewards",
+    "beneficios": "Sample benefits",
+    "meta": "Community goal",
+    "simuladas": "Includes {n} arrivals in simulation mode.",
+    "simuladaUna": "Includes 1 arrival in simulation mode.",
+    "estimado": "Sun avoided is estimated from each trip's departure time."
   }
 }

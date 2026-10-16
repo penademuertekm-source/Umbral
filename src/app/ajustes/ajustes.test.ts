@@ -7,7 +7,7 @@ describe('ajustes (pantallas 11 y 23)', () => {
   beforeEach(() => localStorage.clear())
 
   it('lee los valores por defecto y guarda cada interruptor', () => {
-    expect(readSettings()).toEqual({ largeText: false, highContrast: false, heatWarning: true, dataSaver: false })
+    expect(readSettings()).toEqual({ largeText: false, highContrast: false, heatWarning: true, dataSaver: false, achievements: true })
     writeSetting('largeText', true)
     writeSetting('heatWarning', false)
     expect(readSettings()).toMatchObject({ largeText: true, heatWarning: false })

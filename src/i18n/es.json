@@ -672,7 +672,16 @@
     "gracias": "Gracias. Tu respuesta quedó guardada en este teléfono.",
     "volverMapa": "Volver al mapa",
     "ejemplo": "Vista de ejemplo con valores de muestra: abre esta pantalla terminando un recorrido.",
-    "estimado": "Valores estimados para {laHora}"
+    "estimado": "Valores estimados para {laHora}",
+    "llegasteA": "Llegaste a {nombre}",
+    "resumen": "{lugar} · {min} min · {p} % en sombra",
+    "resumenCorto": "{min} min · {p} % en sombra",
+    "evitadoMas": "+{n} min de sol evitado",
+    "frente": "frente a ir por la ruta más corta",
+    "reto": "Reto: {reto} · {v} de {t}",
+    "retoHecho": "Reto cumplido: {reto}",
+    "simulada": "Recorrido en modo simulación: cuenta para tus logros, marcado como simulado.",
+    "listo": "Listo"
   },
   "refugios": {
     "distancias": "Distancias desde {lugar}",
@@ -734,7 +743,9 @@
     "titulo": "Ajustes",
     "tusDatos": "Tus datos",
     "borrar": "Borrar mis datos",
-    "borrarTexto": "Lugares, salidas y logros de este teléfono"
+    "borrarTexto": "Lugares, salidas y logros de este teléfono",
+    "logros": "Logros y retos",
+    "logrosTexto": "Muestra tu progreso y los premios"
   },
   "perfil": {
     "intro": "Si caminas con alguien más sensible al calor, los avisos aparecen antes y las rutas priorizan más la sombra.",
@@ -818,7 +829,8 @@
     "logros": "Logros",
     "proximamente": "Próximamente",
     "salidasNinguna": "Ninguna planeada",
-    "salidasProxima": "Próxima: {hora} · {nombre}"
+    "salidasProxima": "Próxima: {hora} · {nombre}",
+    "logrosSemana": "Esta semana: {n} min de sol evitado"
   },
   "comoLeer": {
     "intro": "Cada andén del centro se dibuja con un trazo según la sombra que tiene a la hora elegida.",
@@ -966,5 +978,55 @@
     "detalle": "Sal ahora por la ruta con más sombra · {min} min",
     "detalleSinRuta": "Sal ahora por la ruta con más sombra",
     "verRuta": "Ver la ruta"
+  },
+  "logros": {
+    "titulo": "Logros",
+    "subtitulo": "Tu progreso a la sombra",
+    "semana": "Sol evitado esta semana",
+    "minutos": "{n} min",
+    "total": "{n} min en total, frente a ir por la ruta más corta",
+    "nivel": "Nivel {n} · {nombre}",
+    "faltan": "Faltan {n} min para el nivel {siguiente}",
+    "maximo": "Llegaste al nivel más alto",
+    "niveles": {
+      "n1": "Primeros pasos a la sombra",
+      "n2": "Caminante de sombra",
+      "n3": "Conocedor de la sombra",
+      "n4": "Guardián de la sombra",
+      "n5": "Maestro de la sombra de Valledupar"
+    },
+    "retosTitulo": "Retos de esta semana",
+    "retosNota": "Retos nuevos cada lunes. Si no los cumples, no pierdes nada.",
+    "hecho": "Hecho",
+    "todavia": "Todavía no",
+    "avance": "{v} de {t}",
+    "retos": {
+      "evitar": "Evita {n} min de sol",
+      "temprano": "Sal una vez antes de las {hora}",
+      "tarde": "Sal una vez después de las {hora}",
+      "planear": "Planea una salida",
+      "lugar_nuevo": "Llega a un lugar nuevo"
+    },
+    "colecciones": "Colecciones",
+    "pasaporte": "Pasaporte del centro",
+    "album": "Álbum de la sombra",
+    "proximamente": "Próximamente",
+    "cuenta": "Logros · {n} de {total}",
+    "insignias": {
+      "primera_ruta": "Primera ruta con sombra",
+      "planificador": "Planificador",
+      "ayudaste": "Ayudaste a la investigación",
+      "madrugador": "Madrugador",
+      "tarde_fresca": "Tarde fresca",
+      "hora_evitada": "1 hora de sol evitado"
+    },
+    "conseguido": "conseguido",
+    "porConseguir": "por conseguir",
+    "premios": "Premios",
+    "beneficios": "Beneficios de ejemplo",
+    "meta": "Meta de la comunidad",
+    "simuladas": "Incluye {n} llegadas en modo simulación.",
+    "simuladaUna": "Incluye 1 llegada en modo simulación.",
+    "estimado": "El sol evitado es estimado: se calcula con la hora de salida de cada recorrido."
   }
 }
