@@ -13,19 +13,19 @@ Enlace base: `https://www.figma.com/design/AYqMU7Zqwegk1SGgZFJqTX/?node-id=<nodo
 | Componente | Nodo | Variantes / reglas |
 |---|---|---|
 | Semáforo | 43:42 | Cómodo (círculo) · Precaución (triángulo) · Evitar a pie (rombo) · No recomendado (cuadrado) · Nublado (círculo gris). Chip con radio 20, padding 10/14, gap 8 y texto Etiqueta semibold. |
-| Tramo | 43:55 | Sombra = línea continua verde · Parcial = discontinua menta (18 px / 8 px) · Expuesto = ámbar con marca central punteada `--um-mapa-marca-expuesto` (6 px / 6 px). |
+| Tramo | 43:55 | **Actualizado 2026-10-16 (04-1):** Sombra = línea continua verde oscuro (`--um-termico-sombra-plena`, punta redonda) · Parcial = rayas de 10 px con hueco de 5 px (`--um-termico-sombra-parcial`, punta recta) · Al sol = puntos redondos cada 7 px (`--um-termico-exposicion`, raya 0,1 y punta redonda). Grosor 4 px en el mapa. Se distinguen sin color. En la leyenda: "Sombra · Parcial · Al sol". |
 | Marcador | 43:86 | Usuario (punto azul con halo) · Destino · Refugio · Agua · Placa QR · Árbol · Grupo de árboles (número). 40 px, elevación flotante. |
 | Botón | 43:93 | Primario · Secundario · Advertencia. 60 px de alto y radio 12. |
 | Guía de estilo | 44:41 | Principios, color, tipografía, iconografía, mapa, espaciado y PWA. |
-| Íconos | 42:27 | 42 íconos (también en `design/iconos/`). |
+| Íconos | 42:27 | 43 íconos (también en `design/iconos/`). Nuevo 2026-10-16: **Ícono/Interfaz/Mapa** (106:339), plano plegado, para la pestaña Mapa. SVG para `design/iconos/interfaz/mapa.svg`: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14"/><path d="M15 6v14"/></svg>` |
 
 **Componentes nuevos del rediseño (2026-10-08, ver `docs/cambios-interfaz.md`).** Revisión con todos los estados: nodo 105:329.
 
 | Componente | Nodo | Variantes / reglas |
 |---|---|---|
 | Chip estimado (G1) | 104:137 | Datos = Provisionales · Definitivos. Propiedad de texto "Hora" ("Estimado · 12:00"). Superficie, borde, radio 20 (`--um-radio-chip`), padding 6/8, Etiqueta 15, ícono Información de 20 px. En Provisionales agrega "· provisional" en color texto de Precaución. Visual de 32 px de alto, pero área táctil de 56 px con relleno invisible. Al tocarlo abre una hoja con "Datos provisionales", fuentes y atribuciones. |
-| Aviso (G6) | 105:161 | Nivel = Alerta · Aviso · Recogido. Propiedades: Título, Detalle, Mostrar detalle, Contador ("+1"), Hay más avisos, Ícono (cambio de instancia). Alerta: fondo y texto No recomendado, borde de 2 px y triángulo de Alerta. Aviso: fondo y texto Precaución. Ambos de 358 px de ancho, radio 16, padding 8/16, título Cuerpo fuerte 17 y detalle Etiqueta 15, botón Recoger de 56 × 56. Recogido: chip con radio 20, ícono de 20 px, título Etiqueta y contador. Se ve un aviso a la vez; al leerlo pasa a Recogido. |
-| Barra inferior (04-8) | 105:315 | Activa = Mapa · Ir a · Descansar · Ajustes. 390 px de ancho, fondo superficie, borde superior, padding 8/4, más el área segura del celular. Usa la pestaña 105:174 (Estado = Activa · Inactiva, 97 × 64): indicador de 56 × 32 con radio 20, ícono de 24 y Etiqueta 15. Activa: indicador fondo Cómodo y color `--um-termico-sombra-plena`; inactiva: `--um-base-texto-secundario`. Íconos: Capas (Mapa, provisional), Caminar, Banca y Ajustes. |
+| Aviso (G6) | 105:161 | Nivel = Alerta · Aviso · Recogido · Nublado (106:364, gris: fondo y texto del estado Nublado, ícono Nublado fijo). Propiedades: Título, Detalle, Mostrar detalle, Contador ("+1"), Hay más avisos, Ícono (cambio de instancia). Alerta: fondo y texto No recomendado, borde de 2 px y triángulo de Alerta. Aviso: fondo y texto Precaución. Ambos de 358 px de ancho, radio 16, padding 8/16, título Cuerpo fuerte 17 y detalle Etiqueta 15, botón Recoger de 56 × 56. Recogido: chip con radio 20, ícono de 20 px, título Etiqueta y contador. Se ve un aviso a la vez; al leerlo pasa a Recogido. |
+| Barra inferior (04-8) | 105:315 | Activa = Mapa · Ir a · Descansar · Ajustes. 390 px de ancho, fondo superficie, borde superior, padding 8/4, más el área segura del celular. Usa la pestaña 105:174 (Estado = Activa · Inactiva, 97 × 64): indicador de 56 × 32 con radio 20, ícono de 24 y Etiqueta 15. Activa: indicador fondo Cómodo y color `--um-termico-sombra-plena`; inactiva: `--um-base-texto-secundario`. Íconos: Mapa (nuevo), Caminar, Banca y Ajustes. |
 | Hoja inferior (04-5) | 105:328 | Altura = Asomada (≈ 200) · Media (≈ 420) · Completa (≈ 720). Superficie, radio superior 24 (`--um-radio-hoja`), elevación de hoja, asa de 40 × 5 en una zona de 28 px, slot "Contenido" con padding 0/16/16 y separación 8. En código la altura va en % del alto de pantalla. |
 
 Patrones comunes:
@@ -35,6 +35,33 @@ Patrones comunes:
 - **Hoja inferior**: radio superior 24, asa centrada y elevación de hoja. **Modal**: radio 24, velo `--um-base-velo` y elevación modal.
 
 ## Pantallas
+
+### 04 · Mapa — rediseño 2026 (reemplaza a 04 y 20) — nodos 110:78 (soleado) y 110:282 (nublado)
+
+Mapa base con la geometría real (manzanas, plazas, calles y sombra por andén a las 9:30 a. m.): nodo 108:78. Los valores de la pantalla son de muestra.
+
+De arriba abajo:
+1. **Encabezado** (64 px, superficie, borde inferior). A la izquierda la hora en Título 24 con un chevron hacia abajo: tocarla abre el deslizador de hora (04-6). A la derecha el chip del semáforo con el nivel de calor. El cielo no va aquí (G2).
+2. **Mapa** a pantalla completa entre el encabezado y la barra inferior.
+   - Andenes con los tres trazos del componente Tramo (04-1).
+   - Nombres de calles en pastillas blancas al 85 % (Micro 15, girados con la calle).
+   - Lugares de referencia en pastillas con ícono: Plaza Alfonso López e Iglesia La Concepción (04-7).
+   - Grupos de árboles con el marcador Árbol de 28 px, sin número (04-9).
+   - Marcador "Tú". Vista inicial que encuadra a la persona y la plaza.
+3. **Chip estimado** flotando arriba a la izquierda del mapa (G1). Su hora coincide siempre con la del encabezado.
+4. **Botones flotantes** sobre la hoja: "Mi ubicación" (56 px, derecha) y "Créditos y datos" ⓘ (40 px visibles, área táctil de 56, izquierda), que abre Ajustes › Créditos (G10). No hay atribución dentro del mapa.
+5. **Hoja inferior asomada** (04-5):
+   - aviso (si hay);
+   - "Sensación térmica: X° al sol · Y° a la sombra" (Etiqueta, secundario), en lugar del UTCI;
+   - leyenda en una o dos filas: Sombra · Parcial · Al sol · Árboles;
+   - buscador "¿A dónde vas?" de 56 px que lleva a la pantalla 05.
+   - Altura: unos 200 px sin aviso y unos 288 px con aviso.
+6. **Barra inferior** con Mapa activa (04-8).
+
+**Estado nublado** (04-10): la capa de sombra al 35 % y los árboles al 60 %. En la hoja va el aviso Nublado (gris): "Está nublado: la sombra cambia poco" / "El mapa la muestra más tenue". El semáforo sigue mostrando el nivel de calor.
+
+Quedan para los estados siguientes: el deslizador abierto, la ficha de la cuadra en la hoja media (07), el aviso de lluvia que encuadra el lugar cubierto (04-2) y el estado sin clima (04-3).
+
 
 ### 01 · Splash — nodo 2:2
 Isotipo, logotipo "umbral" y el lema "Sombra en tiempo real · Centro Histórico de Valledupar". Texto inferior: "Cargando modelo solar del centro…". Aparece mientras cargan los datos y el worker; si ya están en caché, menos de 1 s.
