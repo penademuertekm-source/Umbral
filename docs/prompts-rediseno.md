@@ -279,6 +279,49 @@ en "Notas de Claude Code".
 
 ---
 
+## Paso R5 · Estados nuevos: guía, noche, espera y error, ubicación bloqueada y fuera del centro
+
+Puntos: **N2, N3, N4, N5, 04-3, 21-1, 21-2**. Necesita los pasos R1a a R1c.
+
+**Prompt**
+```
+Lee CLAUDE.md, docs/cambios-interfaz.md y, en docs/especificacion-pantallas.md, las secciones
+N2 (126:1156), N3 (126:1299), N4 (126:2245, 126:2418, 126:2579), N5 (128:1617) y
+"21 · Fuera del centro — rediseño 2026" (128:1650). Haz git pull antes de empezar.
+
+Vamos con el paso R5 de docs/prompts-rediseno.md.
+
+1. N2 · "Cómo leer el mapa": hoja completa la primera vez que se abre el mapa (recordarlo en
+   localStorage) y desde Ajustes › Ayuda. Cuatro claves con su muestra, la franja de "todo es
+   estimado" y el botón "Entendido".
+2. N3 · Noche: con el sol bajo el horizonte, chip "Sin sol", mapa sin capa de sombra, aviso gris
+   "Ya no hay sol · La sombra vuelve mañana desde las 6:00 a. m." y botón "Ver mañana a las
+   8:00 a. m." que abre el selector de hora en Mañana.
+3. N4 y 04-3 · Estados: "Calculando la sombra" con barra indeterminada mientras trabaja el
+   worker; "Sin clima" con chip gris en el encabezado, aviso con la hora del último clima
+   guardado y "Reintentar" (nunca "—"); "GPS perdido" en el recorrido con el panel "Sin señal de
+   ubicación", el marcador al 40 % y el aviso gris.
+4. N5 · Ubicación bloqueada (permiso "denied" en la API de permisos): pasos según el navegador
+   (Android con Chrome o iPhone con Safari; el selector elige solo) con los textos de la
+   especificación, "Ya lo activé, volver a intentar", "Elegir mi punto en el mapa" y "Ver el
+   centro sin ubicación". "Ubicación apagada o sin señal" es otro mensaje con las mismas salidas.
+5. 21-1 y 21-2 · Fuera del centro: mapa de la ciudad con OpenFreeMap (sin clave), círculo del
+   centro, marcador y distancia; botones "Cómo llegar en Google Maps" y "Ya llegué al centro"
+   (vuelve a revisar la ubicación y lleva al mapa). Al abrir la pantalla y al volver de Google
+   Maps, revisa la ubicación: si ya está dentro del centro, va directo al mapa.
+
+Mismas reglas de los pasos anteriores: i18n, tokens, 15 px, nada solo por color, un commit por
+punto con su estado en "hecho", build y pruebas antes de cada commit, y anotar contradicciones
+en "Notas de Claude Code".
+```
+
+**Cómo verificar**
+1. Borra los datos del sitio y abre `/mapa`: sale "Cómo leer el mapa" una sola vez.
+2. Bloquea la ubicación en el navegador del celular: sale la pantalla con los pasos de tu teléfono.
+3. Abre `/fuera-del-centro` estando dentro del centro: te lleva al mapa en lugar de decir "estás fuera".
+
+---
+
 ## Retomar (si se cortó el uso)
 
 ```
