@@ -63,8 +63,8 @@ Fuera de esta lista: la prueba de campo de la sombra (hoja en preparación) y la
 | 06-1 | Rutas | "Ruta con más sombra" en lugar de "Ruta con sombra" | P1 | C | pendiente |
 | 06-2 | Rutas | El conteo de árboles pasa a los detalles | P2 | C | pendiente |
 | 06-3 | Rutas | Cada tarjeta muestra la muestra de su línea del mapa | P2 | F C | pendiente |
-| 07-1 | Ficha | Cuadras sin nombre nombradas por sus esquinas (observación 1) | P1 | C D | en Figma (por revisar) |
-| 07-2 | Ficha | "Sensación térmica" en lugar de UTCI; Sky View Factor plegado | P1 | C | en Figma (por revisar) |
+| 07-1 | Ficha | Cuadras sin nombre nombradas por sus esquinas (observación 1) | P1 | C D | listo para código |
+| 07-2 | Ficha | "Sensación térmica" en lugar de UTCI; Sky View Factor plegado | P1 | C | listo para código |
 | 09-1 | El Niño | Revisar en la primera pasada (no revisada aún) | P2 | — | pendiente |
 | 10-1 | Dónde descansar | El Callejón no dice "sombra continua" junto a "Al sol a esta hora"; se describe lo de ahora | P1 | C | pendiente |
 | 10-2 | Dónde descansar | Los mismos íconos en el mapa y en la lista | P2 | F C | pendiente |

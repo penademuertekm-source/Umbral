@@ -111,6 +111,48 @@ con su estado en "hecho", build y pruebas antes de cada commit, y anotar contrad
 
 ---
 
+## Paso R1c · Ficha de la cuadra y selector de hora
+
+Puntos: **07-1, 07-2** y el selector de hora de **04-6**, más "Mañana" (parte de **N3**). Necesita los pasos R1a y R1b.
+
+**Prompt**
+```
+Lee CLAUDE.md, docs/cambios-interfaz.md y, en docs/especificacion-pantallas.md, los estados
+"ficha de la cuadra" (nodo 113:329) y "elegir hora" (nodo 113:836) de la sección
+"04 · Mapa — rediseño 2026". Haz git pull antes de empezar.
+
+Vamos con el paso R1c de docs/prompts-rediseno.md.
+
+1. La ficha de la cuadra (hoy src/app/mapa/FichaTramo.tsx) pasa a la hoja inferior en altura
+   media: al tocar un andén se resalta la cuadra en el mapa (halo oscuro al 28 %) y el mapa se
+   desplaza para que se vea encima de la hoja. Los botones flotantes se ocultan mientras tanto.
+2. Contenido, en este orden: nombre de la cuadra y su referencia; estado general con su trazo
+   ("Sombra parcial a las 9:30"); tarjeta con los dos andenes nombrados por referencia ("Andén
+   del lado de la plaza" / "Andén de enfrente"; si no hay plaza cerca, el nombre de la calle de
+   enfrente), cada uno con trazo, estado y %, y la pastilla "Mejor" en el de más sombra;
+   "Sensación térmica: X° a la sombra · Y° al sol"; árboles con ícono ("5 mangos y 5
+   cañaguates en la cuadra"); fila plegada "Detalles técnicos" con el Sky View Factor.
+3. 07-1 · Cuadras sin nombre: el título usa las calles de las esquinas ("Cuadra entre Cra. 6 y
+   Calle 15"). Solo si no hay ninguna calle con nombre en las esquinas queda "Cuadra sin nombre".
+4. Selector de hora en la hoja media al tocar la hora del encabezado: Hoy · Mañana (Mañana usa
+   el segundo día del pronóstico de Open-Meteo), la hora elegida en grande con la pastilla
+   "ahora" cuando coincide, el deslizador de 6 a. m. a 6 p. m. y el texto "El mapa muestra la
+   sombra estimada para esa hora". El botón "Volver a ahora" aparece solo si la hora elegida no
+   es la actual. El encabezado y el chip estimado muestran siempre la hora elegida (y "mañana"
+   cuando corresponda).
+
+Mismas reglas que los pasos anteriores: i18n, tokens, 15 px, nada solo por color, un commit por
+punto con su estado en "hecho", build y pruebas antes de cada commit, y anotar contradicciones
+en "Notas de Claude Code".
+```
+
+**Cómo verificar**
+1. Toca un andén en `/mapa`: la cuadra se resalta y la ficha sale en la hoja con los dos andenes.
+2. Busca una cuadra que antes decía "Tramo sin nombre": ahora se nombra por sus esquinas.
+3. Toca la hora, elige "Mañana" a las 4:00 p. m.: el encabezado y el chip lo dicen y el mapa cambia.
+
+---
+
 ## Retomar (si se cortó el uso)
 
 ```
