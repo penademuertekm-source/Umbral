@@ -681,7 +681,9 @@
     "reto": "Challenge: {reto} · {v} of {t}",
     "retoHecho": "Challenge done: {reto}",
     "simulada": "Simulation-mode trip: it counts for your achievements, marked as simulated.",
-    "listo": "Done"
+    "listo": "Done",
+    "nuevoSello": "New stamp!",
+    "verPasaporte": "See my passport"
   },
   "refugios": {
     "distancias": "Distances from {lugar}",
@@ -1027,6 +1029,83 @@
     "meta": "Community goal",
     "simuladas": "Includes {n} arrivals in simulation mode.",
     "simuladaUna": "Includes 1 arrival in simulation mode.",
-    "estimado": "Sun avoided is estimated from each trip's departure time."
+    "estimado": "Sun avoided is estimated from each trip's departure time.",
+    "sellosCuenta": "{n} of {total} stamps",
+    "laminasCuenta": "{n} of {total} cards"
+  },
+  "pasaporte": {
+    "titulo": "Downtown passport",
+    "cuenta": "{n} of {total} stamps",
+    "intro": "Reach each place to earn its stamp.",
+    "porDescubrir": "To discover",
+    "conseguidoEl": "Stamp earned on {fecha}",
+    "verSello": "See the {nombre} stamp",
+    "sabias": "Did you know…?",
+    "datos": {
+      "plaza": "The first Vallenato Legend Festival was held here, in 1968."
+    },
+    "verMapa": "See on the map"
+  },
+  "album": {
+    "titulo": "Shade album",
+    "cuenta": "{n} of {total} cards",
+    "intro": "Where does your shade come from? You earn each card when your route goes through that shade.",
+    "porDescubrir": "To discover",
+    "aproximado": "It is estimated from the trees and buildings near each block.",
+    "laminas": {
+      "mango": {
+        "nombre": "Mango",
+        "texto": "Gives shade all year round."
+      },
+      "canaguate": {
+        "nombre": "Cañaguate",
+        "texto": "In the dry season it loses its leaves and blooms yellow."
+      },
+      "alero": {
+        "nombre": "Eave",
+        "texto": "Shade right along the façade."
+      },
+      "otros": {
+        "nombre": "Other trees",
+        "texto": "More downtown trees that also give shade."
+      },
+      "muro": {
+        "nombre": "High wall",
+        "texto": "The shade of the center's tall walls."
+      }
+    }
+  },
+  "premios": {
+    "titulo": "Rewards",
+    "subtitulo": "Example · simulation",
+    "franja": "This is a prototype simulation. It shows how rewards with partner shops would work.",
+    "metaAvance": "{h} of {meta} hours · you added {min} min",
+    "metaCorta": "{nombre} · {h} of {meta} h (example)",
+    "beneficios": "Benefits",
+    "disponible": "Available from level {n}",
+    "bloqueado": "From level {n} · {faltan} to go",
+    "faltaUno": "1 level",
+    "faltanVarios": "{n} levels",
+    "verCodigo": "See code",
+    "codigoTitulo": "Sample code",
+    "codigoNota": "Sample code: it does not work in real shops.",
+    "disponibles": "{n} available · simulation",
+    "disponibleUno": "1 available · simulation",
+    "ningunoDisponible": "None available yet · simulation",
+    "cargando": "Loading…",
+    "ejemplo": {
+      "arbol": {
+        "nombre": "A tree for the center",
+        "texto": "For every 100 hours of sun avoided by everyone, a tree is planted."
+      },
+      "jugo": {
+        "titulo": "10 % off a corozo juice",
+        "comercio": "Downtown juices · sample shop"
+      },
+      "recorrido": {
+        "titulo": "Guided walk through the center",
+        "comercio": "Sample shop"
+      }
+    }
   }
 }

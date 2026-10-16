@@ -19,6 +19,8 @@ import { RutaLlegada, RutaRecorrido, RutaRefugios } from './recorrido/rutas'
 import { RutaBuscar, RutaComparacion, RutaCuandoSalir, RutaSinSombra } from './rutas/rutas'
 import { SCREENS } from './pantallas'
 import { Acerca, ComoLeer, ComoSeCalcula } from './perfil/PaginasInfo'
+import { Album } from './perfil/colecciones/Album'
+import { Pasaporte } from './perfil/colecciones/Pasaporte'
 import { Logros } from './perfil/logros/Logros'
 import { MisLugares } from './perfil/MisLugares'
 import { Perfil } from './perfil/Perfil'
@@ -71,6 +73,8 @@ export const router = createBrowserRouter(
         { path: '/perfil', element: <Perfil /> },
         { path: '/perfil/lugares', element: <MisLugares /> },
         { path: '/perfil/logros', element: <Logros /> },
+        { path: '/perfil/pasaporte', element: <Pasaporte /> },
+        { path: '/perfil/album', element: <Album /> },
         { path: '/perfil/salidas', element: <MisSalidas /> },
         { path: '/perfil/salidas/nueva', element: <PlanearSalida /> },
         { path: '/perfil/salidas/tu-salida', element: <TuSalida /> },

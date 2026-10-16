@@ -681,7 +681,9 @@
     "reto": "Reto: {reto} · {v} de {t}",
     "retoHecho": "Reto cumplido: {reto}",
     "simulada": "Recorrido en modo simulación: cuenta para tus logros, marcado como simulado.",
-    "listo": "Listo"
+    "listo": "Listo",
+    "nuevoSello": "¡Nuevo sello!",
+    "verPasaporte": "Ver mi pasaporte"
   },
   "refugios": {
     "distancias": "Distancias desde {lugar}",
@@ -1027,6 +1029,83 @@
     "meta": "Meta de la comunidad",
     "simuladas": "Incluye {n} llegadas en modo simulación.",
     "simuladaUna": "Incluye 1 llegada en modo simulación.",
-    "estimado": "El sol evitado es estimado: se calcula con la hora de salida de cada recorrido."
+    "estimado": "El sol evitado es estimado: se calcula con la hora de salida de cada recorrido.",
+    "sellosCuenta": "{n} de {total} sellos",
+    "laminasCuenta": "{n} de {total} láminas"
+  },
+  "pasaporte": {
+    "titulo": "Pasaporte del centro",
+    "cuenta": "{n} de {total} sellos",
+    "intro": "Llega a cada lugar para ganar su sello.",
+    "porDescubrir": "Por descubrir",
+    "conseguidoEl": "Sello conseguido el {fecha}",
+    "verSello": "Ver el sello de {nombre}",
+    "sabias": "¿Sabías que…?",
+    "datos": {
+      "plaza": "Aquí se celebró el primer Festival de la Leyenda Vallenata, en 1968."
+    },
+    "verMapa": "Ver en el mapa"
+  },
+  "album": {
+    "titulo": "Álbum de la sombra",
+    "cuenta": "{n} de {total} láminas",
+    "intro": "¿De dónde viene tu sombra? Cada lámina se gana cuando tu ruta pasa por esa sombra.",
+    "porDescubrir": "Por descubrir",
+    "aproximado": "Se calcula de forma aproximada con los árboles y edificios cercanos a cada cuadra.",
+    "laminas": {
+      "mango": {
+        "nombre": "Mango",
+        "texto": "Da sombra todo el año."
+      },
+      "canaguate": {
+        "nombre": "Cañaguate",
+        "texto": "En la sequía pierde las hojas y florece amarillo."
+      },
+      "alero": {
+        "nombre": "Alero",
+        "texto": "Sombra pegada a la fachada."
+      },
+      "otros": {
+        "nombre": "Otros árboles",
+        "texto": "Más árboles del centro que también dan sombra."
+      },
+      "muro": {
+        "nombre": "Muro alto",
+        "texto": "La sombra de las paredes altas del centro."
+      }
+    }
+  },
+  "premios": {
+    "titulo": "Premios",
+    "subtitulo": "Ejemplo · simulación",
+    "franja": "Esto es una simulación del prototipo. Muestra cómo funcionarían los premios con comercios aliados.",
+    "metaAvance": "{h} de {meta} horas · tú aportaste {min} min",
+    "metaCorta": "{nombre} · {h} de {meta} h (ejemplo)",
+    "beneficios": "Beneficios",
+    "disponible": "Disponible desde el nivel {n}",
+    "bloqueado": "Desde el nivel {n} · te faltan {faltan}",
+    "faltaUno": "1 nivel",
+    "faltanVarios": "{n} niveles",
+    "verCodigo": "Ver código",
+    "codigoTitulo": "Código de ejemplo",
+    "codigoNota": "Código de ejemplo: no sirve en comercios reales.",
+    "disponibles": "{n} disponibles · simulación",
+    "disponibleUno": "1 disponible · simulación",
+    "ningunoDisponible": "Ninguno disponible todavía · simulación",
+    "cargando": "Cargando…",
+    "ejemplo": {
+      "arbol": {
+        "nombre": "Un árbol para el centro",
+        "texto": "Cada 100 horas de sol evitado entre todos, se siembra un árbol."
+      },
+      "jugo": {
+        "titulo": "Jugo de corozo con 10 % de descuento",
+        "comercio": "Jugos del centro · comercio de ejemplo"
+      },
+      "recorrido": {
+        "titulo": "Recorrido guiado por el centro",
+        "comercio": "Comercio de ejemplo"
+      }
+    }
   }
 }

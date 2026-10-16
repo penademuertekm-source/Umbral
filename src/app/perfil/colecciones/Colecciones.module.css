@@ -1,0 +1,138 @@
+/* Pasaporte del centro (151:2661), detalle del sello (151:2764) y Álbum de la sombra (151:2844). */
+
+.rejilla {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--um-esp-sm);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.celda {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--um-esp-xs);
+  width: 100%;
+  height: 100%;
+  min-height: var(--um-tactil-minimo);
+  padding: var(--um-esp-md) var(--um-esp-sm);
+  border: 1px solid var(--um-base-borde);
+  border-radius: var(--um-radio-tarjeta);
+  background: var(--um-base-superficie);
+  color: var(--um-base-texto);
+  font: inherit;
+  text-align: center;
+  cursor: pointer;
+}
+
+div.celda {
+  cursor: default;
+}
+
+.celda > :first-child {
+  margin-bottom: var(--um-esp-sm);
+}
+
+.secundario {
+  color: var(--um-base-texto-secundario);
+}
+
+.fecha {
+  color: var(--um-semaforo-comodo-texto); /* contraste: fondo=um-base-superficie */
+}
+
+/* Sello */
+.sello {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  border-radius: 50%;
+}
+
+.selloInterior {
+  display: grid;
+  place-items: center;
+  width: 84%;
+  height: 84%;
+  border-radius: 50%;
+}
+
+.selloGanado {
+  border: 3px solid var(--um-termico-sombra-plena);
+  background: var(--um-semaforo-comodo-fondo);
+  color: var(--um-termico-sombra-plena);
+}
+
+.selloGanado .selloInterior {
+  border: 2px dotted var(--um-marca-canaguate);
+}
+
+.selloPendiente {
+  border: 2px dashed var(--um-base-borde);
+  background: var(--um-base-fondo);
+  color: var(--um-base-texto-secundario);
+}
+
+.selloPendiente .selloInterior {
+  border: 1px solid var(--um-base-borde);
+}
+
+/* Detalle del sello */
+.detalle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--um-esp-sm);
+  text-align: center;
+}
+
+.detalle p {
+  margin: 0;
+}
+
+.dato {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-xs);
+  align-self: stretch;
+  padding: var(--um-esp-md);
+  border-radius: var(--um-radio-control);
+  background: var(--um-base-fondo);
+  text-align: left;
+}
+
+/* Lámina */
+.lamina {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--um-base-borde);
+  border-radius: var(--um-radio-tarjeta);
+  background: var(--um-base-superficie);
+}
+
+.ilustracion {
+  display: grid;
+  place-items: center;
+  height: 112px;
+  background: var(--um-base-fondo);
+  color: var(--um-base-texto-secundario);
+}
+
+.laminaGanada .ilustracion {
+  background: var(--um-semaforo-comodo-fondo);
+  color: var(--um-termico-sombra-plena);
+}
+
+.laminaGanada.canaguate .ilustracion {
+  background: var(--um-semaforo-precaucion-fondo);
+}
+
+.laminaTextos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-xs);
+  padding: var(--um-esp-sm) var(--um-esp-md) var(--um-esp-md);
+}
