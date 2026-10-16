@@ -1,6 +1,7 @@
 import { useState } from 'react'
+import { Link } from 'react-router'
 import { BarraInferior, Encabezado, Icono } from '../../../componentes'
-import { ACHIEVEMENTS, LEVELS } from '../../../config/logros'
+import { ACHIEVEMENTS, CARDS, LEVELS } from '../../../config/logros'
 import { useT } from '../../../i18n/useT'
 import {
   avoidedThisWeek,
@@ -10,18 +11,24 @@ import {
   levelFor,
   weeklyChallenges,
 } from '../../../perfil/logros'
+import { earnedCards, earnedStamps } from '../../../perfil/colecciones'
 import { usePerfil } from '../../../perfil/usePerfil'
+import { useMapData } from '../../rutas/useContextoRutas'
 import { useVolver } from '../../useVolver'
+import { passportPlaces } from '../colecciones/comun'
+import { communityMinutes, usePremios } from '../premios/usePremios'
 import p from '../Perfil.module.css'
 import s from './Logros.module.css'
 import { ACHIEVEMENT_ICON, CHALLENGE_ICON, challengeText } from './textos'
 
-// Logros (S3, Figma 150:2601): sol evitado de la semana, nivel, retos y logros. Colecciones y premios llegan
-// en el paso P3b. Todo sale de lo guardado en el teléfono; nada premia distancia ni salir entre 11 y 3.
+// Logros (S3, Figma 150:2601): sol evitado de la semana, nivel, retos, colecciones, logros y premios de
+// ejemplo. Todo sale de lo guardado en el teléfono; nada premia distancia ni salir entre 11 y 3.
 
 export function Logros() {
   const i18n = useT()
-  const { t } = i18n
+  const { t, language } = i18n
+  const { data } = useMapData()
+  const premios = usePremios()
   const volver = useVolver('/perfil')
   const profile = usePerfil()
   const [now] = useState(() => new Date())
@@ -31,6 +38,20 @@ export function Logros() {
   const challenges = weeklyChallenges(now).map((c) => challengeProgress(c, profile, now))
   const earned = earnedAchievements(profile)
   const simulated = profile.arrivals.filter((a) => a.simulated).length
+  const places = passportPlaces(data, language)
+  const stamps = earnedStamps(profile)
+  const stampCount = places.filter((place) => stamps.has(place.id)).length
+  const cardCount = earnedCards(profile).size
+  const available = premios ? premios.beneficios.filter((b) => level.level >= b.nivel_minimo).length : 0
+  const collections = [
+    {
+      path: '/perfil/pasaporte',
+      icon: 'plaza' as const,
+      title: t('logros.pasaporte'),
+      count: data ? t('logros.sellosCuenta', { n: stampCount, total: places.length }) : '',
+    },
+    { path: '/perfil/album', icon: 'mango' as const, title: t('logros.album'), count: t('logros.laminasCuenta', { n: cardCount, total: CARDS.length }) },
+  ]
 
   return (
     <div className={p.pantalla}>
@@ -83,11 +104,14 @@ export function Logros() {
 
         <h2 className={`${p.grupo} um-etiqueta`}>{t('logros.colecciones')}</h2>
         <div className={s.colecciones}>
-          {(['logros.pasaporte', 'logros.album'] as const).map((key) => (
-            <div key={key} className={s.coleccion}>
-              <span className="um-cuerpo-fuerte">{t(key)}</span>
-              <span className={`${p.secundario} um-etiqueta`}>{t('logros.proximamente')}</span>
-            </div>
+          {collections.map((item) => (
+            <Link key={item.path} to={item.path} className={s.coleccion}>
+              <span className={p.icono} aria-hidden="true">
+                <Icono name={item.icon} />
+              </span>
+              <span className="um-cuerpo-fuerte">{item.title}</span>
+              <span className={`${p.secundario} um-etiqueta`}>{item.count}</span>
+            </Link>
           ))}
         </div>
 
@@ -109,16 +133,38 @@ export function Logros() {
 
         <h2 className={`${p.grupo} um-etiqueta`}>{t('logros.premios')}</h2>
         <ul className={p.tarjeta}>
-          {(['logros.beneficios', 'logros.meta'] as const).map((key) => (
-            <li key={key}>
-              <div className={`${p.fila} ${p.inactiva}`}>
-                <span className={p.textos}>
-                  <span className="um-cuerpo">{t(key)}</span>
-                  <span className={`${p.secundario} um-etiqueta`}>{t('logros.proximamente')}</span>
+          <li>
+            <Link className={p.fila} to="/perfil/premios">
+              <span className={p.textos}>
+                <span className="um-cuerpo">{t('logros.beneficios')}</span>
+                <span className={`${p.secundario} um-etiqueta`}>
+                  {available === 0
+                    ? t('premios.ningunoDisponible')
+                    : available === 1
+                      ? t('premios.disponibleUno')
+                      : t('premios.disponibles', { n: available })}
                 </span>
-              </div>
-            </li>
-          ))}
+              </span>
+              <Icono name="avanzar" className={p.flecha} />
+            </Link>
+          </li>
+          <li>
+            <Link className={p.fila} to="/perfil/premios">
+              <span className={p.textos}>
+                <span className="um-cuerpo">{t('logros.meta')}</span>
+                {premios && (
+                  <span className={`${p.secundario} um-etiqueta`}>
+                    {t('premios.metaCorta', {
+                      nombre: t('premios.ejemplo.arbol.nombre'),
+                      h: Math.min(premios.meta_comunidad.meta_horas, Math.floor(communityMinutes(premios, total) / 60)),
+                      meta: premios.meta_comunidad.meta_horas,
+                    })}
+                  </span>
+                )}
+              </span>
+              <Icono name="avanzar" className={p.flecha} />
+            </Link>
+          </li>
         </ul>
         <p className={`${p.nota} um-etiqueta`}>{t('logros.estimado')}</p>
       </main>

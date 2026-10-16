@@ -107,7 +107,7 @@ hecho se repite con un toque, máximo tres toques para cualquier acción y un so
 | S0 | Barra inferior: Mapa · Ir a · Descansar · **Perfil** | Barra y pestaña Perfil | Ruta /perfil; Ajustes pasa a /perfil/ajustes (o queda en /ajustes, enlazado desde Perfil) | hecho |
 | S1 | Mis lugares: perfil en el teléfono, lugares guardados con su ruta con sombra, "Ir con sombra" de un toque | Perfil · Mis lugares (y vacío) · Guardar lugar en 06 · "Tus lugares" en 05 · cambiar nombre y borrar | Módulo de guardado local, CRUD de lugares, enlace con 05 y 06, "Borrar mis datos" | hecho |
 | S2 | Agenda de salidas: "quiero llegar a las…", hora de salida con más sombra, calendario del teléfono | Planear salida · resultado · Mis salidas (y vacío) · aviso "Es hora de salir" | Cálculo hacia atrás con la lógica de 15, archivo .ics, aviso dentro de la app | hecho |
-| S3 | Metas de sol evitado: progreso (sol evitado, nivel, retos), colecciones (Pasaporte del centro, Álbum de la sombra) y premios (logros; beneficios y meta de la comunidad simulados) | Logros · Pasaporte · detalle del sello · Álbum · 22 con premios · Premios de ejemplo · interruptor en Ajustes | Suma del sol evitado en cada llegada, reglas de logros en `src/config/`, beneficios simulados en archivo aparte | hecho en parte (P3a) |
+| S3 | Metas de sol evitado: progreso (sol evitado, nivel, retos), colecciones (Pasaporte del centro, Álbum de la sombra) y premios (logros; beneficios y meta de la comunidad simulados) | Logros · Pasaporte · detalle del sello · Álbum · 22 con premios · Premios de ejemplo · interruptor en Ajustes | Suma del sol evitado en cada llegada, reglas de logros en `src/config/`, beneficios simulados en archivo aparte | hecho |
 
 Regla de S3: ninguna meta premia distancia ni salir entre 11 a. m. y 3 p. m.
 
@@ -201,3 +201,21 @@ Aquí Claude Code anota contradicciones o dudas que encuentre al aplicar un punt
 6. **Con "Logros y retos" apagado**, la 22 oculta toda la tarjeta del sol evitado y del reto, y quedan el
    resumen y la pregunta. Las llegadas se siguen registrando: al volver a encender el interruptor, el
    progreso está completo.
+
+**Paso P3b (2026-10-16): notas**
+
+1. **Hoy no se pueden ganar 3 de los 6 sellos.** Casa Beto Murgas, Mercado público y Parque de la Leyenda
+   están fuera del mapa de sombra, así que ningún recorrido llega a ellos, y se ven "Por descubrir". Se
+   podrán ganar cuando haya cómo llegar a esos lugares (05-1, D1).
+2. **La lámina Alero tampoco se puede ganar todavía.** `datos/provisional/aleros.csv` no tiene filas, y los
+   aleros no se publican por cuadra en `public/datos/`. El código ya los espera: es `EAVES_EDGES` en
+   `src/app/recorrido/laminas.ts`.
+3. **El Álbum usa una regla aproximada.** El motor dice si la sombra de un andén es de edificios, de
+   árboles o de ambos, pero no de qué árbol. La especie se deduce de los árboles a menos de 12 m de la
+   cuadra. Va dicho en el código y en la pantalla.
+4. **Sellos y láminas no se guardan aparte**: salen de las llegadas, que guardan sus láminas. Así "Borrar
+   mis datos" los borra con las llegadas. Los campos `stamps` y `cards` del perfil quedan sin uso.
+5. **`premios.json` solo trae números, niveles y códigos.** Los textos de los premios de ejemplo están en
+   i18n (`premios.ejemplo`), porque la regla 4 pide que todo texto visible salga de ahí.
+6. **"Ver en el mapa"** (detalle del sello) abre la ruta hacia ese lugar (06), que muestra el lugar en el
+   mapa. La 04 todavía no centra un lugar elegido.

@@ -22,6 +22,7 @@ import { Acerca, ComoLeer, ComoSeCalcula } from './perfil/PaginasInfo'
 import { Album } from './perfil/colecciones/Album'
 import { Pasaporte } from './perfil/colecciones/Pasaporte'
 import { Logros } from './perfil/logros/Logros'
+import { Premios } from './perfil/premios/Premios'
 import { MisLugares } from './perfil/MisLugares'
 import { Perfil } from './perfil/Perfil'
 import { MisSalidas } from './perfil/salidas/MisSalidas'
@@ -75,6 +76,7 @@ export const router = createBrowserRouter(
         { path: '/perfil/logros', element: <Logros /> },
         { path: '/perfil/pasaporte', element: <Pasaporte /> },
         { path: '/perfil/album', element: <Album /> },
+        { path: '/perfil/premios', element: <Premios /> },
         { path: '/perfil/salidas', element: <MisSalidas /> },
         { path: '/perfil/salidas/nueva', element: <PlanearSalida /> },
         { path: '/perfil/salidas/tu-salida', element: <TuSalida /> },

@@ -1,0 +1,13 @@
+{
+  "simulado": true,
+  "nota": "Datos de ejemplo del prototipo (S3). No son comercios ni beneficios reales. Los textos están en src/i18n (premios.ejemplo).",
+  "meta_comunidad": {
+    "id": "arbol",
+    "meta_horas": 100,
+    "total_ejemplo_min": 3732
+  },
+  "beneficios": [
+    { "id": "jugo", "nivel_minimo": 2, "codigo": "UMB-EJEMPLO-0420" },
+    { "id": "recorrido", "nivel_minimo": 4, "codigo": "UMB-EJEMPLO-0731" }
+  ]
+}

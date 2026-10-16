@@ -1,13 +1,16 @@
 import { useState } from 'react'
-import { useNavigate, useSearchParams } from 'react-router'
+import { Link, useNavigate, useSearchParams } from 'react-router'
 import { Boton, ChipEstimado } from '../../componentes'
 import { HEAT_LEVELS, type HeatLevel } from '../../config/reglas-semaforo'
 import { useT } from '../../i18n/useT'
 import { placeForDestination, recordAnswered } from '../../perfil/almacen'
+import { isNewStamp } from '../../perfil/colecciones'
 import { advancedChallenge } from '../../perfil/logros'
 import { usePerfil } from '../../perfil/usePerfil'
 import { formatTime } from '../../sombra/tiempo'
 import { readSettings } from '../ajustes/preferencias'
+import { passportPlaces } from '../perfil/colecciones/comun'
+import { Sello } from '../perfil/colecciones/Sello'
 import { Barra } from '../perfil/logros/Logros'
 import { challengeText } from '../perfil/logros/textos'
 import { useContextoRutas } from '../rutas/useContextoRutas'
@@ -15,7 +18,7 @@ import s from './Llegada.module.css'
 import { recordAnswer, type Answer } from './preferencias'
 
 // Pantalla 22 con premios (S3, Figma 152:2798; reemplaza a 35:84): llegada, sol evitado frente a la ruta más
-// corta, el reto que avanzó y "¿Te sirvió esta ruta?". La llegada ya quedó registrada en la 13
+// corta, el reto que avanzó, "¡Nuevo sello!" y "¿Te sirvió esta ruta?". La llegada ya quedó registrada en la 13
 // (?llegada=<id>); aquí solo se muestra. Con "Logros y retos" apagado se ven solo el resumen y la pregunta.
 // La respuesta se guarda solo en el teléfono, como antes, para el CSV de la investigación.
 
@@ -47,6 +50,8 @@ export function Llegada() {
   const avoided = example ? EJEMPLO.evitado : Math.round(arrival?.avoided ?? number('evitado', 0))
   const advanced = arrival ? advancedChallenge(profile, arrival.id, now) : undefined
   const simulated = arrival?.simulated ?? params.get('sim') === '1'
+  // "¡Nuevo sello!": la primera llegada a este lugar.
+  const newStamp = arrival && isNewStamp(profile, arrival.id) ? passportPlaces(data, language).find((pl) => pl.id === arrival.destinationId) : undefined
 
   const [answer, setAnswer] = useState<{ value: Answer; index: number } | null>(null)
   const answerWith = (value: Answer) => {
@@ -95,6 +100,20 @@ export function Llegada() {
               </>
             )}
             {simulated && <p className={`${s.secundario} um-etiqueta`}>{t('llegada.simulada')}</p>}
+          </section>
+        )}
+        {showAchievements && newStamp && (
+          <section className={s.sello} aria-labelledby="nuevo-sello">
+            <Sello icon={newStamp.icon} earned size={72} />
+            <div className={s.selloTextos}>
+              <p id="nuevo-sello" className="um-cuerpo-fuerte">
+                {t('llegada.nuevoSello')}
+              </p>
+              <p className="um-cuerpo">{newStamp.name}</p>
+              <Link className={`${s.enlace} um-etiqueta`} to="/perfil/pasaporte">
+                {t('llegada.verPasaporte')}
+              </Link>
+            </div>
           </section>
         )}
 

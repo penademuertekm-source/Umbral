@@ -96,3 +96,32 @@
 .listo {
   margin-top: auto;
 }
+
+/* "¡Nuevo sello!": borde cañaguate (la marca), con el sello y el texto (no solo el color). */
+.sello {
+  display: flex;
+  align-items: center;
+  gap: var(--um-esp-md);
+  padding: var(--um-esp-md);
+  border: 2px solid var(--um-marca-canaguate);
+  border-radius: var(--um-radio-tarjeta);
+  background: var(--um-base-superficie);
+}
+
+.selloTextos {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.selloTextos p {
+  margin: 0;
+}
+
+.enlace {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--um-tactil-minimo);
+  color: var(--um-termico-sombra-plena);
+  font-weight: 600;
+}

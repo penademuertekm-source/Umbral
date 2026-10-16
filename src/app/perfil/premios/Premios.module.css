@@ -1,0 +1,70 @@
+/* Premios de ejemplo (S3, Figma 152:2838). */
+
+.franja {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--um-esp-sm);
+  margin: 0;
+  padding: var(--um-esp-sm) var(--um-esp-md);
+  border-radius: var(--um-radio-control);
+  background: var(--um-semaforo-nublado-fondo);
+  color: var(--um-semaforo-nublado-texto);
+}
+
+.franja svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.meta,
+.beneficio {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-xs);
+  padding: var(--um-esp-md);
+  border: 1px solid var(--um-base-borde);
+  border-radius: var(--um-radio-tarjeta);
+  background: var(--um-base-superficie);
+}
+
+.meta p,
+.meta h2,
+.beneficio p {
+  margin: 0;
+}
+
+.metaTitulo {
+  display: flex;
+  align-items: center;
+  gap: var(--um-esp-md);
+  margin-bottom: var(--um-esp-xs);
+}
+
+.beneficios {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-sm);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.beneficio > :last-child:is(button) {
+  margin-top: var(--um-esp-sm);
+}
+
+/* Por desbloquear: fondo gris y el texto dice desde qué nivel (no solo el color). */
+.bloqueado {
+  background: var(--um-base-fondo);
+}
+
+.disponible {
+  color: var(--um-semaforo-comodo-texto); /* contraste: fondo=um-base-superficie */
+  font-weight: 600;
+}
+
+.codigo {
+  margin: 0;
+  color: var(--um-termico-sombra-plena); /* contraste: fondo=um-base-superficie grande */
+  text-align: center;
+}

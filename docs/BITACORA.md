@@ -4,6 +4,42 @@ Registro de lo hecho en cada fase, lo pendiente y las decisiones tomadas. La ent
 
 ---
 
+## Sugerencias del docente · Paso P3b: colecciones y premios de ejemplo (2026-10-16)
+
+Es el paso P3b de `docs/prompts-sugerencias.md`, la segunda parte de S3. Con él S3 queda en "hecho" y se
+terminan las sugerencias del docente (S0 a S3).
+
+### Hecho
+
+- **Sellos** (`src/perfil/colecciones.ts`): salen de las llegadas. Cada destino da su sello en la primera
+  llegada, con esa fecha.
+- **Láminas**: al llegar, la 13 toma la sombra de la ruta a la hora de salida (`src/app/recorrido/laminas.ts`)
+  y aplica la regla aproximada de la especificación. Las láminas ganadas se guardan en la llegada.
+- **Pasaporte del centro** (`/perfil/pasaporte`), con la hoja del sello. "¿Sabías que…?" va solo en la
+  Plaza, con el texto de Figma.
+- **Álbum de la sombra** (`/perfil/album`).
+- **Premios de ejemplo** (`/perfil/premios`), con `public/datos/simulados/premios.json` (`"simulado": true`):
+  - franja de simulación;
+  - meta de la comunidad: un total de ejemplo fijo más lo que aportó la persona;
+  - beneficios por nivel;
+  - "Ver código" con UMB-EJEMPLO-#### y el aviso de que no sirve en comercios reales.
+- **Logros** muestra las colecciones con su conteo y los premios con enlace. La 22 muestra "¡Nuevo sello!"
+  en la primera llegada a un lugar.
+- **Ilustraciones**: sellos y láminas provisionales hechos con los íconos. `design/ilustraciones/sellos/` y
+  `design/ilustraciones/laminas/` esperan los SVG finales.
+- **Pruebas**: 5 nuevas de sellos y láminas; 143 en total.
+  - axe no encontró problemas en Logros, Pasaporte, Álbum, Premios y la 22.
+  - Un recorrido simulado a la Plaza a las 10 a. m. dio el sello nuevo y las láminas Mango, Cañaguate y Otros
+    árboles.
+
+### Pendiente
+
+- Sellos que hoy no se pueden ganar (fuera del mapa) y la lámina Alero (sin aleros cargados). Ver "Notas de
+  Claude Code".
+- Los "¿Sabías que…?" de los demás lugares y las ilustraciones finales los aporta la autora.
+
+---
+
 ## Sugerencias del docente · Paso P3a: progreso, logros y llegada (2026-10-16)
 
 Es el paso P3a de `docs/prompts-sugerencias.md`, la primera parte de S3. S3 queda en "hecho en parte
