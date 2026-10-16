@@ -497,6 +497,54 @@ La persona dice adónde va y a qué hora quiere llegar; la app le dice a qué ho
 - Entradas: Perfil › Mis salidas, y en "¿Cuándo salir?" (15) un botón secundario "Guardar en mi agenda"
   con la hora elegida.
 
+### S3 · Metas de sol evitado
+
+Tres pilares: **progreso** (sol evitado, nivel y retos de la semana), **colecciones** (Pasaporte del centro y
+Álbum de la sombra) y **premios** (logros reales; beneficios y meta de la comunidad simulados). Nada premia
+distancia, pasos ni salir entre 11 a. m. y 3 p. m.; no hay rachas que se pierdan ni tablas contra otros.
+
+| Pantalla | Nodo | Qué |
+|---|---|---|
+| Logros (se desplaza) | 150:2601 | Tarjeta "Sol evitado esta semana" (Dato 28 verde), total frente a la ruta más corta, "Nivel 2 · Caminante de sombra", barra y "Faltan 12 min para el nivel 3" · "Retos de esta semana": tres filas con ícono, estado y barra; hechos con fondo Cómodo y "Hecho" · "Retos nuevos cada lunes. Si no los cumples, no pierdes nada." · Colecciones: dos tarjetas (Pasaporte, Álbum) con su conteo · "Logros · 3 de 6": insignias de 64 px (conseguidas: fondo Cómodo, aro `marca/cañaguate` de 3 px; por conseguir: aro punteado gris) · Premios: "Beneficios de ejemplo" y "Meta de la comunidad" |
+| Pasaporte del centro | 151:2661 | "Llega a cada lugar para ganar su sello." · cuadrícula de 2 columnas: sello de 96 px (conseguido: aro verde, aro interior punteado cañaguate, ícono del lugar; por conseguir: aro punteado gris) · nombre · fecha ("16 de octubre") o "Por descubrir" |
+| Detalle del sello | 151:2764 | Hoja sobre velo: sello de 140 px, nombre, "Sello conseguido el 16 de octubre", recuadro "¿Sabías que…?" con un dato del lugar y "Ver en el mapa" |
+| Álbum de la sombra | 151:2844 | "¿De dónde viene tu sombra? Cada lámina se gana cuando tu ruta pasa por esa sombra." · láminas de 2 columnas: ilustración (112 px de alto), nombre y una línea. Mango, Cañaguate, Alero, Otros árboles y Muro alto |
+| 22 · Llegada con premios | 152:2798 | Reemplaza a la 22 (35:84). "Llegaste a {nombre}" (Título 24) · lugar, minutos y % en sombra · chip Estimado · tarjeta "+2 min de sol evitado / frente a ir por la ruta más corta" y el reto que avanzó con su barra · tarjeta "¡Nuevo sello!" (borde cañaguate, solo si hay sello nuevo) con "Ver mi pasaporte" · "¿Te sirvió esta ruta?" Sí · Más o menos · No y "Tu respuesta queda en este teléfono y ayuda a la investigación." · "Listo" |
+| Premios de ejemplo | 152:2838 | Encabezado "Premios / Ejemplo · simulación" · franja gris (Nublado) "Esto es una simulación del prototipo. Muestra cómo funcionarían los premios con comercios aliados." · Meta de la comunidad "Un árbol para el centro": barra, "63 de 100 horas · tú aportaste 48 min" · Beneficios: disponible (con "Ver código") y por desbloquear (fondo gris, "Desde el nivel 4 · te faltan 2 niveles") |
+| Ajustes: Logros y retos | 124:1034 | Interruptor nuevo en "Pantalla y avisos": "Logros y retos / Muestra tu progreso y los premios" (encendido) |
+
+**Reglas para el código**
+
+- **Sol evitado** de un recorrido = minutos al sol de la ruta más corta − minutos al sol de la ruta hecha, a la
+  hora de salida; mínimo 0. Solo cuenta si el recorrido termina en la llegada (22). Se guarda
+  `{ fecha, destinoId, evitado, salida }`, nunca el camino.
+- **Semana** de lunes a domingo, hora de Colombia.
+- **Niveles** por sol evitado total, en `src/config/logros.ts` (provisionales): 1 Primeros pasos a la sombra
+  (0) · 2 Caminante de sombra (30 min) · 3 Conocedor de la sombra (60) · 4 Guardián de la sombra (120) ·
+  5 Maestro de la sombra de Valledupar (240).
+- **Retos**: tres por semana, elegidos de una lista fija según el número de la semana (siempre los mismos para
+  esa semana). Tipos: evitar N min de sol (15 por defecto), salir una vez antes de las 8 a. m., salir una vez
+  después de las 4 p. m., planear una salida (S2), llegar a un lugar nuevo del pasaporte. Ninguno de distancia
+  ni de salir entre 11 a. m. y 3 p. m.
+- **Logros** (6): Primera ruta con sombra (primera llegada) · Planificador (3 salidas guardadas) · Ayudaste a
+  la investigación (primera respuesta a "¿Te sirvió esta ruta?") · Madrugador (llegada con salida antes de
+  las 8 a. m.) · Tarde fresca (salida después de las 4 p. m.) · 1 hora de sol evitado (total ≥ 60 min).
+- **Pasaporte**: un sello por destino de `destinos.csv` y por el Parque de la Leyenda de `refugios.csv`; se
+  gana al llegar (22) a ese lugar. Los datos de "¿Sabías que…?" van en i18n. Solo el de la Plaza está
+  escrito; los demás los aporta la autora (hasta entonces, la hoja no muestra el recuadro).
+- **Álbum de la sombra** (aproximado, se dice así en el código): una lámina se gana si en la ruta hecha, a la
+  hora de salida, algún tramo tuvo sombra de ese origen. Mango: canal de árboles perennes con un mango
+  cerca. Cañaguate: canal de caducifolios. Otros árboles: perennes con especie "otro". Alero: tramo con
+  alero registrado en `aleros.csv`. Muro alto: canal de edificios sin alero.
+- **Simulado** (regla 1 de CLAUDE.md): beneficios y meta de la comunidad en `public/datos/simulados/premios.json`
+  con `"simulado": true`. La meta de la comunidad = un total de ejemplo fijo + lo que aportó esta persona. Los
+  códigos son `UMB-EJEMPLO-####` y la hoja del código dice "Código de ejemplo: no sirve en comercios reales."
+- **Interruptor "Logros y retos"** apagado: Perfil oculta la fila Logros y la llegada (22) muestra solo el
+  resumen y la pregunta. No se borra nada.
+- **Ilustraciones provisionales**: sellos y láminas se arman con los íconos. Las ilustraciones finales van en
+  `design/ilustraciones/sellos/` y `design/ilustraciones/laminas/` (SVG), cuando la autora las entregue.
+- "Borrar mis datos" también borra llegadas, sellos, láminas y logros.
+
 ## Navegación
 
 ```

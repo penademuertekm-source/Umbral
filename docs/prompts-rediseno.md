@@ -159,7 +159,8 @@ en "Notas de Claude Code".
 ---
 
 > **En pausa desde el 2026-10-16.** R1a está hecho. Los pasos R2 a R6 esperan: primero van las
-> sugerencias del docente (S0 a S3 en `docs/cambios-interfaz.md`), con sus propios prompts.
+> sugerencias del docente (S0 a S3 en `docs/cambios-interfaz.md`), con sus prompts en
+> `docs/prompts-sugerencias.md`.
 
 ## Paso R2 · Buscar destino y rutas
 
