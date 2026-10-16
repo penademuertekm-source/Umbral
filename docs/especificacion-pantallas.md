@@ -243,6 +243,62 @@ Desde Ajustes › Ayuda y desde el botón ⓘ del mapa. Pantalla que se desplaza
 5. **"Privacidad"**.
 6. **"Licencia"**: código por definir; datos derivados de OSM con ODbL.
 
+### N2 · Cómo leer el mapa — nueva 2026 — nodo 126:1156
+
+Sale la primera vez que se abre el mapa y desde Ajustes › Ayuda. Hoja completa sobre el mapa con velo al 45 %.
+1. "Cómo leer el mapa" (Título 24) y "Cada andén muestra cuánta sombra tiene a la hora de arriba."
+2. Cuatro claves, cada una con su muestra en un cuadro de 56 × 44 con fondo de mapa:
+   - "Línea continua · Andén con sombra casi todo el camino";
+   - "Rayas · Sombra a ratos";
+   - "Puntos · Andén al sol";
+   - "Árboles · Mangos y cañaguates que dan sombra".
+3. Franja Precaución: "Todo es estimado: se calcula con la hora y la posición del sol, sin sensores en la calle."
+4. Botón "Entendido" y "Puedes volver a verlo en Ajustes › Ayuda."
+
+### N3 · Noche — nueva 2026 — nodo 126:1299
+
+Del atardecer al amanecer:
+- El encabezado muestra la hora real y el chip gris "Sin sol"; el mapa queda sin capa de sombra y con los árboles al 50 %.
+- En la hoja va el aviso gris con reloj: "Ya no hay sol" / "La sombra vuelve mañana desde las 6:00 a. m.".
+- Botón secundario "Ver mañana a las 8:00 a. m." (abre el selector de hora en Mañana) y el buscador.
+
+### N4 · Estados de espera y error — nuevos 2026
+
+- **Calculando la sombra** (126:2245): el mapa sin capa de sombra y la hoja con "Calculando la sombra de cada andén…", una barra de carga indeterminada y la leyenda al 40 %.
+- **Sin clima** (126:2418) (04-3): chip gris "Sin clima" en el encabezado (no "—"). En la hoja va el aviso gris con el ícono Sin conexión: "No pudimos cargar el clima" / "La sombra sí se ve. Los avisos de calor usan el último clima: hoy, 6:00 a. m.". Debajo, el botón secundario "Reintentar". Se quita la línea de sensación térmica.
+- **GPS perdido en el recorrido** (126:2579): el panel dice "Sin señal de ubicación" y "Última indicación: …"; el marcador Tú queda al 40 %. En la hoja va el aviso gris "Perdimos tu ubicación" / "Sigue la línea verde. Volverá sola en cuanto haya señal.".
+
+### N5 · Ubicación bloqueada — nueva 2026 — nodo 128:1617
+
+Sale cuando el permiso está en "denegado" (observación 3).
+1. Ícono de ubicación en círculo gris y "La ubicación está bloqueada" (Título 24).
+2. "Umbral la usa solo en este teléfono para mostrarte la sombra cerca de ti. Puedes activarla así:"
+3. Selector **Android (Chrome) · iPhone (Safari)**; se elige solo según el navegador.
+4. Pasos numerados en tarjeta (círculos verdes de 32 px).
+   - **Android (Chrome):**
+     1. Toca el ícono de ajustes que está a la izquierda de la dirección web.
+     2. Toca «Permisos» y luego «Ubicación».
+     3. Elige «Permitir» y vuelve a Umbral.
+   - **iPhone (Safari):**
+     1. Toca «aA» en la barra de direcciones.
+     2. Toca «Configuración del sitio web» › «Ubicación».
+     3. Elige «Permitir». Si no aparece, revisa en Ajustes del iPhone › Privacidad y seguridad › Localización › Sitios web de Safari.
+5. Botón primario "Ya lo activé, volver a intentar", secundario "Elegir mi punto en el mapa" y el enlace "Ver el centro sin ubicación".
+6. "Ubicación apagada o sin señal" es un caso distinto: usa el aviso gris "No encontramos tu ubicación" con las mismas salidas.
+
+### 21 · Fuera del centro — rediseño 2026 — nodo 128:1650
+
+1. Arriba, un mapa de la ciudad (OpenFreeMap en el código, permitido fuera del centro por CLAUDE.md) con:
+   - el círculo del Centro Histórico punteado y su rótulo;
+   - el marcador Tú;
+   - una línea punteada con la distancia ("1,5 km").
+2. Hoja:
+   - "Estás fuera del Centro Histórico" (Subtítulo 20);
+   - "A 1,5 km de la Plaza Alfonso López. Umbral calcula la sombra solo dentro del centro.";
+   - franja Precaución: "Entre 11 a. m. y 3 p. m., mejor llega en taxi hasta la plaza y camina desde ahí por la sombra.";
+   - botón primario "Cómo llegar en Google Maps", secundario **"Ya llegué al centro"** (21-2), que vuelve a revisar la ubicación y lleva al mapa, y el enlace "Ver el centro sin ubicación".
+3. 21-1: la pantalla vuelve a revisar la ubicación al abrirse y al volver de Google Maps. Si la persona ya está dentro del centro, va directo al mapa.
+
 ### 05 · Buscar destino — nodo 4:2
 Campo "¿A dónde vas?" (filtra destinos locales; sin buscador externo en el prototipo). Encabezado "Destinos frecuentes · sombra a las {hora}". Cada destino muestra distancia, minutos por la ruta con sombra y una píldora "Sombra NN%" con el color de su nivel.
 

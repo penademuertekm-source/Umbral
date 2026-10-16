@@ -51,7 +51,7 @@ Fuera de esta lista: la prueba de campo de la sombra (hoja en preparación) y la
 |---|---|---|---|---|---|
 | 04-1 | Mapa | Leyenda: parcial y expuesto se distinguen también por el trazo, no solo por el color | P1 | F C | listo para código |
 | 04-2 | Mapa | El aviso de lluvia encuadra el lugar cubierto que menciona | P1 | C | pendiente |
-| 04-3 | Mapa | "Sin clima" con mensaje propio, no "al sol — · a la sombra —" | P1 | C | pendiente |
+| 04-3 | Mapa | "Sin clima" con mensaje propio, no "al sol — · a la sombra —" | P1 | C | en Figma (por revisar) |
 | 04-4 | Mapa | El botón principal siempre con el mismo texto | P1 | C | pendiente |
 | 04-5 | Mapa | Hoja inferior de tres alturas que recoge leyenda, aviso y ficha | P2 | F C | listo para código |
 | 04-6 | Mapa | Encabezado de una línea; al tocar la hora se abre el deslizador | P2 | F C | listo para código |
@@ -76,8 +76,8 @@ Fuera de esta lista: la prueba de campo de la sombra (hoja en preparación) y la
 | 16-1 | Sin ruta | "A esta hora la ruta va casi toda al sol"; cifra principal: minutos al sol | P1 | C | listo para código |
 | 17-1 | Semáforo | Colores de Precaución y Evitar más distintos (ΔE hoy ≈ 4,5) | P2 | F C | pendiente |
 | 18-19 | Antes de salir | Las pantallas 18 y 19 se unen en una sola hoja | P2 | F C | listo para código |
-| 21-1 | Fuera del centro | Revisar la ubicación de nuevo: hoy dice "Estás fuera" a 290 m de la plaza | P1 | C | pendiente |
-| 21-2 | Fuera del centro | Mapa real de la ciudad (OpenFreeMap) y botón "Ya llegué al centro" (observación 4) | P2 | F C | pendiente |
+| 21-1 | Fuera del centro | Revisar la ubicación de nuevo: hoy dice "Estás fuera" a 290 m de la plaza | P1 | C | en Figma (por revisar) |
+| 21-2 | Fuera del centro | Mapa real de la ciudad (OpenFreeMap) y botón "Ya llegué al centro" (observación 4) | P2 | F C | en Figma (por revisar) |
 | 23-1 | Perfil de calor | Una descripción compartida en lugar de repetirla cuatro veces | P2 | F C | listo para código |
 
 Sin cambios: 01, 02, 14 y 22. En pausa: 08 y 12.
@@ -87,10 +87,10 @@ Sin cambios: 01, 02, 14 y 22. En pausa: 08 y 12.
 | N.º | Qué | Prior. | Estado |
 |---|---|---|---|
 | N1 | Componentes: hoja inferior (3 alturas), avisos (alerta, aviso, dato recogido, contador), barra inferior, chip "Estimado". En Figma, página 03: nodos 104:137, 105:161, 105:315 y 105:328; revisión en 105:329. Se aplican en código junto con la pantalla 04 | P2 | listo para código |
-| N2 | Cómo leer el mapa (primera vez; se puede saltar y volver a abrir) | P2 | pendiente |
-| N3 | Noche: "Ya no hay sol" y ver el día siguiente | P2 | en Figma en parte: "Mañana" en el selector de hora (113:836); falta el estado de noche |
-| N4 | Estados: calculando, sin clima, GPS perdido durante el recorrido | P2 | pendiente |
-| N5 | Permiso bloqueado: pasos para Android y para iPhone, botón "Volver a intentar" (observación 3) | P2 | pendiente |
+| N2 | Cómo leer el mapa (primera vez; se puede saltar y volver a abrir) | P2 | en Figma (por revisar) |
+| N3 | Noche: "Ya no hay sol" y ver el día siguiente | P2 | en Figma (por revisar): selector Mañana (113:836) y noche (126:1299) |
+| N4 | Estados: calculando, sin clima, GPS perdido durante el recorrido | P2 | en Figma (por revisar) |
+| N5 | Permiso bloqueado: pasos para Android y para iPhone, botón "Volver a intentar" (observación 3) | P2 | en Figma (por revisar) |
 | N6 | Acerca de y créditos: autores, docente, Areandina, licencia, privacidad, fuentes y atribuciones | P2 | listo para código |
 | N7 | Comprobaciones: 04, 06 y 13 en celular pequeño, letra grande e inglés; 04 en computador | P3 | pendiente |
 
