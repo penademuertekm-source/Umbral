@@ -4,6 +4,7 @@ import isotipoNegativo from '../../../design/marca/isotipo-negativo.svg'
 import isotipoPositivo from '../../../design/marca/isotipo-positivo.svg'
 import indiceIconos from '../../../design/iconos/indice.json'
 import {
+  Aviso,
   BarraSuperior,
   Boton,
   ChipEstimado,
@@ -17,10 +18,12 @@ import {
   TarjetaOpcion,
   type IconName,
   type MarkerKind,
+  type NoticeItem,
 } from '../../componentes'
 import { SEGMENT_STATES, THERMAL_LEVELS, type ThermalLevel } from '../../config/niveles'
 import niveles from '../../estilos/niveles.module.css'
 import { LANGUAGES } from '../../i18n/idioma'
+import type { I18nValue } from '../../i18n/contexto'
 import type { TranslationKey } from '../../i18n/traducir'
 import { useT } from '../../i18n/useT'
 import { CURRENT_PHASE, SCREENS } from '../pantallas'
@@ -112,6 +115,15 @@ const SAMPLE_UTCI: Record<ThermalLevel, [number, number]> = {
   evitar: [41, 35],
   no_recomendado: [47, 40],
   nublado: [30, 29],
+}
+
+// Avisos de muestra (G6), uno por nivel.
+function sampleNotices(t: I18nValue['t']): NoticeItem[] {
+  return [
+    { id: 'alerta', level: 'alerta', title: t('guia.componentes.avisoAlertaTitulo'), detail: t('guia.componentes.avisoAlertaDetalle') },
+    { id: 'aviso', level: 'aviso', icon: 'expuesto', title: t('guia.componentes.avisoTitulo'), detail: t('guia.componentes.avisoDetalle') },
+    { id: 'nublado', level: 'nublado', title: t('guia.componentes.avisoNubladoTitulo'), detail: t('guia.componentes.avisoNubladoDetalle') },
+  ]
 }
 
 const MARKERS: MarkerKind[] = ['usuario', 'destino', 'refugio', 'agua', 'placa', 'arbol', 'grupo']
@@ -383,6 +395,14 @@ export function Guia() {
               text={t('guia.componentes.tarjetaNeutraTexto')}
               onClick={() => undefined}
             />
+          </div>
+          <div className={s.grupo}>
+            <h3 className="um-cuerpo-fuerte">{t('guia.componentes.aviso')}</h3>
+            {sampleNotices(t).map((notice) => (
+              <Aviso key={notice.id} notices={[notice]} />
+            ))}
+            <p className={`${s.secundario} um-micro`}>{t('guia.componentes.avisoVarios')}</p>
+            <Aviso notices={sampleNotices(t)} />
           </div>
           <div className={s.grupo}>
             <h3 className="um-cuerpo-fuerte">{t('guia.componentes.chip')}</h3>

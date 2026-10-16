@@ -328,7 +328,16 @@
       "modalAceptar": "Iniciar recorrido",
       "modalAlternativa": "Ver la mejor hora para salir",
       "chip": "Chip estimado",
-      "chipDefinitivo": "Con datos definitivos"
+      "chipDefinitivo": "Con datos definitivos",
+      "aviso": "Avisos",
+      "avisoUno": "Un aviso",
+      "avisoVarios": "Tres avisos: se ve uno a la vez",
+      "avisoAlertaTitulo": "Calor extremo a esta hora",
+      "avisoAlertaDetalle": "Mejor sal después de las 4:00 p. m.",
+      "avisoTitulo": "En 150 m cruzas un tramo al sol",
+      "avisoDetalle": "Busca el andén con sombra",
+      "avisoNubladoTitulo": "Está nublado: la sombra cambia poco",
+      "avisoNubladoDetalle": "El mapa la muestra más tenue"
     },
     "espaciado": {
       "titulo": "Espaciado, forma y elevación",
@@ -763,5 +772,11 @@
     "sol": "Posición del sol: SunCalc, comparada con el SPA del NREL",
     "mapa": "Mapa: © colaboradores de OpenStreetMap (ODbL)",
     "clima": "Clima: Open-Meteo (CC BY 4.0)"
+  },
+  "aviso": {
+    "recoger": "Recoger aviso",
+    "verUnoMas": "Ver 1 aviso más",
+    "verMas": "Ver {n} avisos más",
+    "contador": "+{n}"
   }
 }

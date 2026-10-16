@@ -328,7 +328,16 @@
       "modalAceptar": "Start walk",
       "modalAlternativa": "See the best time to leave",
       "chip": "Estimate chip",
-      "chipDefinitivo": "With final data"
+      "chipDefinitivo": "With final data",
+      "aviso": "Notices",
+      "avisoUno": "One notice",
+      "avisoVarios": "Three notices: one shows at a time",
+      "avisoAlertaTitulo": "Extreme heat at this time",
+      "avisoAlertaDetalle": "Better to leave after 4:00 PM",
+      "avisoTitulo": "In 150 m you cross a stretch in the sun",
+      "avisoDetalle": "Look for the shaded sidewalk",
+      "avisoNubladoTitulo": "It is cloudy: the shade changes little",
+      "avisoNubladoDetalle": "The map shows it fainter"
     },
     "espaciado": {
       "titulo": "Spacing, shape and elevation",
@@ -763,5 +772,11 @@
     "sol": "Sun position: SunCalc, checked against the NREL SPA",
     "mapa": "Map: © OpenStreetMap contributors (ODbL)",
     "clima": "Weather: Open-Meteo (CC BY 4.0)"
+  },
+  "aviso": {
+    "recoger": "Collapse notice",
+    "verUnoMas": "Show 1 more notice",
+    "verMas": "Show {n} more notices",
+    "contador": "+{n}"
   }
 }

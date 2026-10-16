@@ -1,0 +1,101 @@
+/* Aviso (G6, Figma 105:161): Alerta, Aviso y Nublado, más el chip Recogido con los colores de su nivel.
+   Los colores llegan de estilos/niveles.module.css (--nivel-fondo, --nivel-texto, --nivel-forma). */
+
+.tarjeta {
+  display: flex;
+  align-items: center;
+  gap: var(--um-esp-sm);
+  width: 100%;
+  padding: var(--um-esp-sm) 0 var(--um-esp-sm) var(--um-esp-md);
+  border-radius: var(--um-radio-tarjeta);
+  background: var(--nivel-fondo);
+  color: var(--nivel-texto);
+}
+
+/* Alerta: borde de 2 px. */
+.borde {
+  border: 2px solid var(--nivel-forma);
+}
+
+.icono {
+  flex-shrink: 0;
+}
+
+.textos {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.recoger {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: var(--um-tactil-minimo);
+  height: var(--um-tactil-minimo);
+  border: 0;
+  border-radius: var(--um-radio-control);
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* Contador "+N": pastilla visible dentro de un área táctil de 56 px. */
+.contador {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  min-width: var(--um-tactil-minimo);
+  min-height: var(--um-tactil-minimo);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.pastilla {
+  padding: 0 var(--um-esp-sm);
+  border: 1px solid currentColor;
+  border-radius: var(--um-radio-chip);
+}
+
+.pila {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-sm);
+}
+
+/* Recogido: chip de radio 20, ícono de 20 px y título en Etiqueta. Se ve de 32 px; los botones de adentro
+   sobresalen sin verse hasta los 56 px del área táctil. */
+.recogido {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  max-width: 100%;
+  min-height: 32px;
+  margin-block: calc((var(--um-tactil-minimo) - 32px) / 2);
+  padding: 0 var(--um-esp-xs) 0 var(--um-esp-sm);
+  border-radius: var(--um-radio-chip);
+  background: var(--nivel-fondo);
+  color: var(--nivel-texto);
+}
+
+.recogido .contador {
+  margin-block: calc((32px - var(--um-tactil-minimo)) / 2);
+}
+
+.abrir {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--um-esp-xs);
+  min-height: var(--um-tactil-minimo);
+  margin-block: calc((32px - var(--um-tactil-minimo)) / 2);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}

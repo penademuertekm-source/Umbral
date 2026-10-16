@@ -1,3 +1,4 @@
+export { Aviso, type NoticeItem, type NoticeLevel } from './Aviso/Aviso'
 export { BarraSuperior } from './BarraSuperior/BarraSuperior'
 export { Boton, type ButtonVariant } from './Boton/Boton'
 export { ChipEstimado } from './ChipEstimado/ChipEstimado'
