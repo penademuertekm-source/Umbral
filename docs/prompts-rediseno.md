@@ -208,7 +208,7 @@ Vamos con el paso R3 de docs/prompts-rediseno.md. Las cifras salen de la fuente 
 paso R2 (G3).
 
 1. 13-1 · Indicaciones del recorrido relativas al camino y a referencias: "gira a la
-   izquierda/derecha", "sigue la línea verde: va por el andén con sombra", nombres de calles.
+   izquierda/derecha", "por la Cra. 7, por el andén con sombra", nombres de calles.
    Nunca puntos cardinales ("acera oriental").
 2. 13-2 · Recorrido sin barra inferior: panel superior verde solo con la próxima indicación
    (flecha del giro, distancia y calle); mapa con lo recorrido en gris punteado, lo pendiente en

@@ -134,7 +134,7 @@ Sin barra inferior: el recorrido ocupa la pantalla completa.
 1. **Panel de indicación** arriba, en fondo `--um-termico-sombra-plena` y texto inverso, solo con la próxima indicación (13-2):
    - flecha del giro de 48 px;
    - "En 40 m, gira a la izquierda" en Título 24;
-   - "por la Cra. 7 · sigue la línea verde: va por el andén con sombra" en Etiqueta.
+   - "por la Cra. 7, por el andén con sombra" en Etiqueta (acortada en N7: la frase anterior tenía 14 palabras y pasaba a tres líneas con letra grande).
    - Las direcciones son relativas al camino (izquierda o derecha) y a referencias; nunca puntos cardinales (13-1).
 2. **Mapa** con la capa de sombra al 35 % como contexto:
    - camino recorrido en puntos grises;
@@ -299,6 +299,39 @@ Sale cuando el permiso está en "denegado" (observación 3).
    - botón primario "Cómo llegar en Google Maps", secundario **"Ya llegué al centro"** (21-2), que vuelve a revisar la ubicación y lleva al mapa, y el enlace "Ver el centro sin ubicación".
 3. 21-1: la pantalla vuelve a revisar la ubicación al abrirse y al volver de Google Maps. Si la persona ya está dentro del centro, va directo al mapa.
 
+
+### N7 · Celular pequeño, letra grande e inglés — comprobación 2026
+
+Copias de 04, 06 y 13 en 360×640 (el celular más pequeño que se considera), una con "Letra más grande"
+(todo texto menor de 20 px pasa a 20 px, interlineado 26) y otra en inglés con letra normal. Están en la
+página "02 · Pantallas", debajo de las demás, con el nombre "N7 · …":
+
+| Pantalla | Letra grande | Inglés |
+|---|---|---|
+| 04 | 133:1645 | 133:1814 |
+| 06 | 133:1983 | 133:2107 |
+| 13 | 133:2231 | 133:2322 |
+
+**Qué se encontró y la regla que lo resuelve** (vale para cualquier pantalla):
+
+1. **Nada tiene alto fijo.** Hojas, tarjetas de ruta y avisos crecen con el texto. En las copias, las
+   tarjetas de 80 px cortaban "Ruta con más sombra" y el botón de 13 quedaba fuera de la pantalla.
+2. **Los textos largos van en varias líneas, nunca cortados.** "Sensación térmica…" se salía de la hoja.
+   El chip "Estimado" pasa a dos líneas cuando no cabe (ancho máximo: pantalla − 32 px).
+3. **El mapa conserva al menos el 40 % del espacio** entre el encabezado y la barra inferior. Si la hoja
+   necesita más, se queda en el 60 % y su contenido se desplaza; el **botón principal queda fijo** al pie de
+   la hoja, con una línea arriba. En 06 con letra grande, sin esta regla, el mapa quedaba en 107 px.
+4. **El mapa se encuadra en lo que se ve:** al centrar (persona y plaza, o la ruta) se usa como margen el
+   alto del encabezado y del chip arriba y el de la hoja abajo. En 06 con letra grande la ruta debe verse
+   entera, aunque haya que alejar el mapa.
+5. **13 en pantallas bajas** (alto < 700 px o letra grande): el aviso del tramo arranca recogido en su chip
+   ("Vas por un tramo al sol"; al tocarlo se abre) y la línea "76 % del camino en sombra" pasa a la hoja
+   abierta. Así el mapa queda en unos 200 px.
+6. **Frases cortas (G8).** La segunda línea de la indicación de 13 se acortó a "por la Cra. 7, por el andén
+   con sombra" también en la pantalla principal.
+7. **Barra inferior con letra grande:** con 20 px, "Descansar" y "Ajustes" se tocan en 360 px. En la copia
+   las etiquetas de la barra quedan en 17 px (pendiente de decisión de la autora).
+8. **Inglés:** los textos son más cortos que en español y todo cabe; no hace falta nada propio.
 ### 05 · Buscar destino — nodo 4:2
 Campo "¿A dónde vas?" (filtra destinos locales; sin buscador externo en el prototipo). Encabezado "Destinos frecuentes · sombra a las {hora}". Cada destino muestra distancia, minutos por la ruta con sombra y una píldora "Sombra NN%" con el color de su nivel.
 

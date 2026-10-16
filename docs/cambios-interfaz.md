@@ -92,7 +92,7 @@ Sin cambios: 01, 02, 14 y 22. En pausa: 08 y 12.
 | N4 | Estados: calculando, sin clima, GPS perdido durante el recorrido | P2 | listo para código |
 | N5 | Permiso bloqueado: pasos para Android y para iPhone, botón "Volver a intentar" (observación 3) | P2 | listo para código |
 | N6 | Acerca de y créditos: autores, docente, Areandina, licencia, privacidad, fuentes y atribuciones | P2 | listo para código |
-| N7 | Comprobaciones: 04, 06 y 13 en celular pequeño, letra grande e inglés; 04 en computador | P3 | pendiente |
+| N7 | Comprobaciones: 04, 06 y 13 en celular pequeño, letra grande e inglés; 04 en computador | P3 | en Figma: celular pequeño, letra grande e inglés hechos (falta decidir la barra inferior con letra grande); falta 04 en computador |
 
 ## 4. Datos que la interfaz necesita
 
