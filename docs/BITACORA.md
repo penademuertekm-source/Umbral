@@ -4,6 +4,70 @@ Registro de lo hecho en cada fase, lo pendiente y las decisiones tomadas. La ent
 
 ---
 
+## Sugerencias del docente · Paso P1: Perfil y Mis lugares (2026-10-16)
+
+Es el paso P1 de `docs/prompts-sugerencias.md` y cubre los puntos S0 y S1, que quedan en "hecho" en
+`docs/cambios-interfaz.md`. Hay un commit por bloque, y cada uno pasó build, pruebas, lint y contraste antes
+de subirse.
+
+### Hecho
+
+- **Guardado local** (`src/perfil/almacen.ts`):
+  - Todo va en una sola clave versionada de `localStorage` (`umbral.perfil`, versión 1) y cada lectura y
+    escritura lleva try/catch. Si el teléfono no deja guardar, los cambios valen mientras la página esté
+    abierta.
+  - Guarda el nombre opcional y los lugares (`{ id, name, destinationId, created }`), con un máximo de 10.
+    Deja listos los espacios para salidas, llegadas, sellos, láminas y logros, que llenan P2 y P3.
+  - Los datos dañados o de otra versión se descartan y la app empieza vacía.
+  - `deleteMyData()` es el `borrarMisDatos()` del prompt. No toca los ajustes ni las respuestas de
+    "¿Te sirvió esta ruta?".
+  - `usePerfil()` vuelve a dibujar la pantalla cuando cambian los datos, también desde otra pestaña.
+- **S0 · Barra con Perfil**:
+  - Se sumaron los íconos Perfil, Guardar y Guardado; ahora son 46.
+  - La cuarta pestaña es Perfil y queda activa también en Ajustes. La barra va pegada abajo al desplazar.
+  - Ajustes tiene el encabezado Volver + "Ajustes" y la sección "Tus datos" con "Borrar mis datos" y su
+    modal (145:2335). Al borrar, confirma con un mensaje.
+  - El botón ⚙ del mapa ahora lleva a Perfil, y el ⓘ a "Acerca de y créditos".
+- **Perfil** (`/perfil`, 143:1977):
+  - Saludo con el nombre opcional, que se pone o se cambia en la hoja "Tu nombre".
+  - Los dos primeros lugares y "Ver todos mis lugares" con el total.
+  - Planear, con Mis salidas y Logros como "Próximamente".
+  - La app, con cuatro enlaces y la nota "Todo se guarda solo en este teléfono".
+- **Mis lugares** (`/perfil/lugares`, 143:2425; vacío 143:2666):
+  - Distancia, minutos y % en sombra se calculan al abrir, con la hora de ese momento. Salen de
+    `filaDestino` (`src/app/rutas/filaDestino.ts`), la misma cuenta que ahora usa la 05 (G3), y no se
+    guardan.
+  - "Editar" abre la hoja Editar lugar (144:2679). Borrar no pregunta: deja "Lugar borrado · Deshacer"
+    durante 6 s.
+- **06** (144:2095): "Guardar" o "Guardado" en el encabezado.
+  - Abre la hoja "Guardar este lugar" (144:2213), con los chips Casa, Trabajo y Estudio. Al guardar queda el
+    aviso recogido "Guardado en Mis lugares".
+  - Si el lugar ya está guardado, abre Editar lugar. Con 10 lugares, pide borrar uno.
+  - Funciona también con los destinos fuera del mapa.
+- **05** (144:2565): la fila "Tus lugares" se desplaza de lado y no aparece si no hay lugares.
+- **Componentes**: `Encabezado` suma subtítulo y una acción a la derecha; `Modal` suma la variante `sheet`
+  (sube desde abajo y tapa la barra).
+- **Pruebas**: 15 nuevas (módulo de guardado y hojas); 113 en total. axe no encontró problemas y ningún
+  control mide menos de 56 px de alto en las 9 pantallas tocadas (390 × 844).
+
+### Decisiones (de la autora, anotadas en "Notas de Claude Code")
+
+- La barra va en Perfil, en sus páginas, en Ajustes, en la 05 y en la 10. El mapa conserva su diseño hasta
+  R1b.
+- "Cómo leer el mapa", "Cómo se calcula la sombra" y "Acerca de y créditos" son páginas provisionales hasta
+  N2 y N6.
+
+### Pendiente
+
+- Duda para Claude (chat) y la autora: ¿"Borrar mis datos" debe borrar también las respuestas de
+  "¿Te sirvió esta ruta?"?
+- Ajustes conserva su orden actual; los grupos de la Figma 124:1034 son el punto 11-1.
+- En Perfil, cada lugar muestra su lugar real sin la distancia: para no calcular rutas en esa pestaña, las
+  cifras quedan en Mis lugares.
+- Siguen P2 (Agenda de salidas), P3a y P3b.
+
+---
+
 ## Rediseño · Paso R1a: piezas de la pantalla del mapa (2026-10-16)
 
 Paso R1a de `docs/prompts-rediseno.md`. Un commit por punto; el estado de cada uno quedó en
