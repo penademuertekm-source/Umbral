@@ -4,13 +4,15 @@ import { BarraInferior, Encabezado, Icono } from '../../componentes'
 import type { TranslationKey } from '../../i18n/traducir'
 import { useT } from '../../i18n/useT'
 import { usePerfil } from '../../perfil/usePerfil'
+import { formatTime } from '../../sombra/tiempo'
 import { useMapData } from '../rutas/useContextoRutas'
 import { HojaNombre } from './HojaNombre'
 import { destinationIcon } from './lugares'
+import { tripNames } from './salidas/comun'
 import s from './Perfil.module.css'
 
 // Perfil (S0 y S1, Figma 143:1977): la cuarta pestaña de la barra inferior. Sin registro ni contraseña: todo
-// lo de aquí vive solo en el teléfono. Mis salidas (S2) y Logros (S3) llegan en los pasos P2 y P3.
+// lo de aquí vive solo en el teléfono. Logros (S3) llega en el paso P3.
 
 /** Lugares que se ven en Perfil; el resto, en "Ver todos mis lugares". */
 const PREVIEW_PLACES = 2
@@ -28,6 +30,7 @@ export function Perfil() {
   const { data } = useMapData()
   const [editingName, setEditingName] = useState(false)
   const destino = (id: string) => data?.destinos.find((d) => d.id === id)
+  const next = profile.trips[0]
 
   return (
     <div className={s.pantalla}>
@@ -86,16 +89,30 @@ export function Perfil() {
 
         <h2 className={`${s.grupo} um-etiqueta`}>{t('miPerfil.planear')}</h2>
         <ul className={s.tarjeta}>
-          {(['miPerfil.misSalidas', 'miPerfil.logros'] as const).map((label) => (
-            <li key={label}>
-              <div className={`${s.fila} ${s.inactiva}`}>
-                <span className={s.textos}>
-                  <span className="um-cuerpo">{t(label)}</span>
-                  <span className={`${s.secundario} um-etiqueta`}>{t('miPerfil.proximamente')}</span>
+          <li>
+            <Link className={s.fila} to="/perfil/salidas">
+              <span className={s.textos}>
+                <span className="um-cuerpo">{t('miPerfil.misSalidas')}</span>
+                <span className={`${s.secundario} um-etiqueta`}>
+                  {next
+                    ? t('miPerfil.salidasProxima', {
+                        hora: formatTime(new Date(next.departure), language),
+                        nombre: tripNames(next, profile, data?.destinos, language).name,
+                      })
+                    : t('miPerfil.salidasNinguna')}
                 </span>
-              </div>
-            </li>
-          ))}
+              </span>
+              <Icono name="avanzar" className={s.flecha} />
+            </Link>
+          </li>
+          <li>
+            <div className={`${s.fila} ${s.inactiva}`}>
+              <span className={s.textos}>
+                <span className="um-cuerpo">{t('miPerfil.logros')}</span>
+                <span className={`${s.secundario} um-etiqueta`}>{t('miPerfil.proximamente')}</span>
+              </span>
+            </div>
+          </li>
         </ul>
 
         <h2 className={`${s.grupo} um-etiqueta`}>{t('miPerfil.laApp')}</h2>

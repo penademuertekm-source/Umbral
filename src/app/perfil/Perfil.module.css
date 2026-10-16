@@ -367,3 +367,68 @@ ul.chipsDesplazables {
   margin-block: 0;
   list-style: none;
 }
+
+/* Chip elegido (Hoy · Mañana · Otro día): fondo, borde grueso y aria-pressed; no solo el color. */
+.chipActivo {
+  border: 2px solid var(--um-termico-sombra-plena);
+  background: var(--um-semaforo-comodo-fondo);
+  color: var(--um-semaforo-comodo-texto);
+  font-weight: 600;
+}
+
+/* Tu salida (146:2724) */
+.salida {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-xs);
+  padding: var(--um-esp-md);
+  border: 1px solid var(--um-base-borde);
+  border-radius: var(--um-radio-tarjeta);
+  background: var(--um-base-superficie);
+}
+
+.salida p {
+  margin: 0;
+}
+
+.horaSalida {
+  color: var(--um-termico-sombra-plena); /* contraste: fondo=um-base-superficie grande */
+}
+
+.cifras {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--um-esp-sm);
+}
+
+.cifra {
+  display: flex;
+  flex-direction: column;
+  padding: var(--um-esp-md);
+  border: 1px solid var(--um-base-borde);
+  border-radius: var(--um-radio-tarjeta);
+  background: var(--um-base-superficie);
+}
+
+.franja {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--um-esp-sm);
+  padding: var(--um-esp-sm) var(--um-esp-md);
+  border-radius: var(--um-radio-control);
+  background: var(--nivel-fondo);
+  color: var(--nivel-texto);
+}
+
+.franja p {
+  margin: 0;
+}
+
+.enlaceCentro {
+  display: inline-flex;
+  align-items: center;
+  align-self: center;
+  gap: var(--um-esp-xs);
+  min-height: var(--um-tactil-minimo);
+  color: var(--um-termico-sombra-plena);
+}

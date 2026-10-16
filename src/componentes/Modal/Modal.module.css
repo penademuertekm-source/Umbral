@@ -57,6 +57,8 @@
 
 .hoja {
   max-width: var(--app-ancho-max);
+  max-height: 85dvh;
+  overflow-y: auto;
   padding: var(--um-esp-sm) var(--um-esp-md) max(var(--um-esp-lg), env(safe-area-inset-bottom));
   border-radius: var(--um-radio-hoja) var(--um-radio-hoja) 0 0;
   animation-name: subir;

@@ -21,6 +21,9 @@ import { SCREENS } from './pantallas'
 import { Acerca, ComoLeer, ComoSeCalcula } from './perfil/PaginasInfo'
 import { MisLugares } from './perfil/MisLugares'
 import { Perfil } from './perfil/Perfil'
+import { MisSalidas } from './perfil/salidas/MisSalidas'
+import { PlanearSalida } from './perfil/salidas/PlanearSalida'
+import { TuSalida } from './perfil/salidas/TuSalida'
 import { ReferenciaSemaforo } from './semaforo/ReferenciaSemaforo'
 
 // La app puede publicarse en una subcarpeta (GitHub Pages, Fase 10): se respeta la base de Vite.
@@ -66,6 +69,9 @@ export const router = createBrowserRouter(
         // Perfil (S0 y S1): no son pantallas numeradas de la especificación original.
         { path: '/perfil', element: <Perfil /> },
         { path: '/perfil/lugares', element: <MisLugares /> },
+        { path: '/perfil/salidas', element: <MisSalidas /> },
+        { path: '/perfil/salidas/nueva', element: <PlanearSalida /> },
+        { path: '/perfil/salidas/tu-salida', element: <TuSalida /> },
         { path: '/perfil/como-leer', element: <ComoLeer /> },
         { path: '/perfil/como-se-calcula', element: <ComoSeCalcula /> },
         { path: '/perfil/acerca', element: <Acerca /> },
