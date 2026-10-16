@@ -6,12 +6,35 @@ import type { MapColors } from './tokens'
 /** Códigos de estado de cada tramo en `feature-state` (mismo orden que STATE_CODES del motor). */
 export const STATE = { sombra: 0, parcial: 1, expuesto: 2, sin_sol: 3 } as const
 
-/** Grosor de los tramos según el zoom (en px). */
+/**
+ * Grosor de los andenes (componente Tramo, nodo 43:55; 04-1): 4 px en el zoom con que abre el mapa, unos 2 px
+ * al alejar y unos 6 px al acercar. Los guiones se miden en grosores de línea, así que escalan con él.
+ */
+const SIDEWALK_WIDTH: ExpressionSpecification = ['interpolate', ['linear'], ['zoom'], 14, 2, 16.5, 4, 19, 6]
+/**
+ * Separación extra entre los dos andenes de una calle al alejar (px hacia afuera de cada lado). En los datos,
+ * el lado "a" queda siempre a la izquierda del sentido de su línea y el "b" a la derecha (a unos 8 m), y
+ * MapLibre desplaza a la derecha con valores positivos. Desde el zoom 18 ya no hace falta.
+ */
+const sideOffset = (px: number): ExpressionSpecification => ['match', ['get', 'lado'], 'a', -px, px]
+const SIDE_OFFSET: ExpressionSpecification = [
+  'interpolate',
+  ['linear'],
+  ['zoom'],
+  14,
+  sideOffset(1.5),
+  16,
+  sideOffset(1),
+  17,
+  sideOffset(0.5),
+  18,
+  0,
+]
+/** Grosor de las isócronas según el zoom (en px). */
 const WIDTH: ExpressionSpecification = ['interpolate', ['exponential', 2], ['zoom'], 14, 1, 16, 2.5, 17, 4, 18, 7, 19, 11]
 // La banda de 5 min de las isócronas va más gruesa: MapLibre exige que el zoom quede en la interpolación de
 // primer nivel, así que se escalan las paradas en vez de multiplicar la expresión.
 const WIDE_WIDTH: ExpressionSpecification = ['interpolate', ['exponential', 2], ['zoom'], 14, 1.6, 16, 4, 17, 6.4, 18, 11.2, 19, 17.6]
-const MARK_WIDTH: ExpressionSpecification = ['interpolate', ['exponential', 2], ['zoom'], 14, 0.3, 16, 0.6, 17, 1, 18, 1.8, 19, 2.8]
 const OUTLINE_GAP: ExpressionSpecification = ['interpolate', ['exponential', 2], ['zoom'], 14, 6, 16, 9, 17, 13, 18, 20, 19, 30]
 /** Sin estado (todavía calculando) se dibuja como "sin sol": gris neutro. */
 const STATE_OF_FEATURE: ExpressionSpecification = ['coalesce', ['feature-state', 'estado'], STATE.sin_sol]
@@ -53,41 +76,42 @@ export function addDataLayers(map: MapLibreMap, data: MapData, colors: MapColors
   map.addSource('isocronas', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } })
 
   // Tramos por lado de acera. Las capas no se recrean: al cambiar la hora solo cambia feature-state.
+  // Cada estado tiene su trazo (04-1), para que se distingan sin color: sombra continua, parcial a rayas y al
+  // sol a puntos. Las medidas en px son las del grosor de 4 px.
   const line = { type: 'line' as const, source: 'aceras', layout: { 'line-join': 'round' as const } }
+  const sidewalk = { 'line-width': SIDEWALK_WIDTH, 'line-offset': SIDE_OFFSET }
   map.addLayer({
     ...line,
     id: 'tramos-sin-sol',
-    paint: { 'line-color': colors.via, 'line-width': WIDTH, 'line-opacity': onlyState(STATE.sin_sol) },
+    paint: { ...sidewalk, 'line-color': colors.via, 'line-opacity': onlyState(STATE.sin_sol) },
   })
   map.addLayer({
     ...line,
     id: 'tramos-sombra',
-    paint: { 'line-color': colors.sombra, 'line-width': WIDTH, 'line-opacity': onlyState(STATE.sombra) },
+    layout: { ...line.layout, 'line-cap': 'round' },
+    paint: { ...sidewalk, 'line-color': colors.sombra, 'line-opacity': onlyState(STATE.sombra) },
   })
   map.addLayer({
     ...line,
     id: 'tramos-parcial',
-    // Discontinua 18/8 px a un grosor de 8 px; MapLibre mide los guiones en grosores de línea.
+    // Rayas de 10 px con huecos de 5 px y punta recta.
+    layout: { ...line.layout, 'line-cap': 'butt' },
     paint: {
+      ...sidewalk,
       'line-color': colors.parcial,
-      'line-width': WIDTH,
-      'line-dasharray': [2.25, 1],
+      'line-dasharray': [2.5, 1.25],
       'line-opacity': onlyState(STATE.parcial),
     },
   })
   map.addLayer({
     ...line,
     id: 'tramos-expuesto',
-    paint: { 'line-color': colors.exposicion, 'line-width': WIDTH, 'line-opacity': onlyState(STATE.expuesto) },
-  })
-  map.addLayer({
-    ...line,
-    id: 'tramos-expuesto-marca',
-    // Marca central punteada 6/6 px sobre una línea de ~2 px.
+    // Puntos redondos cada 7 px: raya de 0,1 px con punta redonda (el punto mide lo que el grosor).
+    layout: { ...line.layout, 'line-cap': 'round' },
     paint: {
-      'line-color': colors.marcaExpuesto,
-      'line-width': MARK_WIDTH,
-      'line-dasharray': [3, 3],
+      ...sidewalk,
+      'line-color': colors.exposicion,
+      'line-dasharray': [0.025, 1.725],
       'line-opacity': onlyState(STATE.expuesto),
     },
   })
@@ -123,16 +147,20 @@ export function addDataLayers(map: MapLibreMap, data: MapData, colors: MapColors
     ...line,
     id: 'tramos-nublado',
     layout: { ...line.layout, visibility: 'none' },
-    paint: { 'line-color': colors.nublado, 'line-width': WIDTH },
+    paint: { ...sidewalk, 'line-color': colors.nublado },
   })
   map.addLayer({
     ...line,
     id: 'tramo-seleccionado',
     filter: ['==', ['get', 'arista'], -1],
-    paint: { 'line-color': colors.texto, 'line-width': 2, 'line-gap-width': OUTLINE_GAP },
+    paint: { 'line-color': colors.texto, 'line-width': 2, 'line-gap-width': OUTLINE_GAP, 'line-offset': SIDE_OFFSET },
   })
   // Zona de toque invisible, más ancha que la línea (área táctil).
-  map.addLayer({ ...line, id: 'tramos-toque', paint: { 'line-color': colors.texto, 'line-width': 28, 'line-opacity': 0 } })
+  map.addLayer({
+    ...line,
+    id: 'tramos-toque',
+    paint: { 'line-color': colors.texto, 'line-width': 28, 'line-offset': SIDE_OFFSET, 'line-opacity': 0 },
+  })
 
   map.addLayer({
     id: 'arboles-grupo',
@@ -165,7 +193,6 @@ const SUNNY_LAYERS = [
   'tramos-sombra',
   'tramos-parcial',
   'tramos-expuesto',
-  'tramos-expuesto-marca',
   'arboles-grupo',
   'arboles',
 ]

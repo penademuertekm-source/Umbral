@@ -9,19 +9,15 @@
 }
 
 .sombra {
-  fill: var(--um-termico-sombra-plena);
+  stroke: var(--um-termico-sombra-plena);
 }
 
 .parcial {
-  fill: var(--um-termico-sombra-parcial);
+  stroke: var(--um-termico-sombra-parcial);
 }
 
 .expuesto {
-  fill: var(--um-termico-exposicion);
-}
-
-.marca {
-  fill: var(--um-mapa-marca-expuesto);
+  stroke: var(--um-termico-exposicion);
 }
 
 .compacta {

@@ -45,7 +45,7 @@
   "tramo": {
     "sombra": "Shade",
     "parcial": "Partial",
-    "expuesto": "Exposed"
+    "expuesto": "In the sun"
   },
   "marcador": {
     "usuario": "Your location",
@@ -283,8 +283,8 @@
       "titulo": "Map",
       "texto": "The base map is warm and muted so the segments stand out. Segments and markers are components.",
       "sombra": "Shade · solid line",
-      "parcial": "Partial · dashed line",
-      "expuesto": "Exposed · amber with dotted mark",
+      "parcial": "Partial · dashes",
+      "expuesto": "In the sun · dots",
       "marcadores": {
         "usuario": "User",
         "destino": "Destination",

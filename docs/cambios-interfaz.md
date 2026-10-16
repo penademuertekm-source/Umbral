@@ -49,7 +49,7 @@ Fuera de esta lista: la prueba de campo de la sombra (hoja en preparación) y la
 
 | N.º | Pantalla | Cambio | Prior. | Dónde | Estado |
 |---|---|---|---|---|---|
-| 04-1 | Mapa | Leyenda: parcial y expuesto se distinguen también por el trazo, no solo por el color | P1 | F C | listo para código |
+| 04-1 | Mapa | Leyenda: parcial y expuesto se distinguen también por el trazo, no solo por el color | P1 | F C | hecho |
 | 04-2 | Mapa | El aviso de lluvia encuadra el lugar cubierto que menciona | P1 | C | pendiente |
 | 04-3 | Mapa | "Sin clima" con mensaje propio, no "al sol — · a la sombra —" | P1 | C | listo para código |
 | 04-4 | Mapa | El botón principal siempre con el mismo texto | P1 | C | pendiente |

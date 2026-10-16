@@ -45,7 +45,7 @@
   "tramo": {
     "sombra": "Sombra",
     "parcial": "Parcial",
-    "expuesto": "Expuesto"
+    "expuesto": "Al sol"
   },
   "marcador": {
     "usuario": "Tu ubicación",
@@ -283,8 +283,8 @@
       "titulo": "Mapa",
       "texto": "El mapa base es cálido y apagado para que los tramos dominen. Tramos y marcadores son componentes.",
       "sombra": "Sombra · línea continua",
-      "parcial": "Parcial · línea discontinua",
-      "expuesto": "Expuesto · ámbar con marca punteada",
+      "parcial": "Parcial · rayas",
+      "expuesto": "Al sol · puntos",
       "marcadores": {
         "usuario": "Usuario",
         "destino": "Destino",
