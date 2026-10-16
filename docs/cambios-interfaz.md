@@ -34,7 +34,7 @@ Fuera de esta lista: la prueba de campo de la sombra (hoja en preparación) y la
 |---|---|---|---|---|
 | G1 | Chip fijo "Estimado · 12:00 ⓘ" en lugar de la línea gris "Valores estimados… · Datos provisionales" repetida en 8 pantallas. La ⓘ abre una hoja con "Datos provisionales" y las fuentes | P1 | F C | listo para código |
 | G2 | Calor y cielo por separado ("▲ Calor fuerte · Nublado"). Quita el "riesgo bajo" junto a 37° | P1 | C | pendiente |
-| G3 | Las mismas cifras en todo el viaje: la ruta se calcula una vez y la leen 05, 06, 13, 15 y 16 | P1 | C | pendiente |
+| G3 | Las mismas cifras en todo el viaje: la ruta se calcula una vez y la leen 05, 06, 13, 15 y 16 | P1 | C | en Figma (por revisar) |
 | G4 | Vocabulario: "andén" (no "acera"), "cuadra" (no "tramo"), "sensación térmica" (no "UTCI") y "Dónde descansar". "Puntos de permanencia" se mantiene en la documentación | P1 | C | pendiente |
 | G5 | Sin jerga a la vista: el Sky View Factor va plegado en "Detalles técnicos"; "px" y "CSV" van a la sección del equipo | P1 | C | pendiente |
 | G6 | Avisos en tres niveles: alerta (interrumpe, solo al iniciar un recorrido), aviso (franja en la hoja inferior) y dato (chip). Uno a la vez, con contador "+1"; después de leído se recoge en un chip, no desaparece | P2 | F C | pendiente |
@@ -59,10 +59,10 @@ Fuera de esta lista: la prueba de campo de la sombra (hoja en preparación) y la
 | 04-8 | Mapa | Solo "Mi ubicación" flotante; lo demás a la barra inferior | P2 | F C | listo para código |
 | 04-9 | Mapa | Los grupos de árboles se identifican como tales (ícono o leyenda) | P2 | F C | listo para código |
 | 04-10 | Mapa (20) | El nublado pasa a ser un estado de la 04, con la sombra atenuada y el aviso Nublado en gris (decisión de la autora, 2026-10-16) | P2 | F C | listo para código |
-| 05-1 | Buscar | Destinos fuera del mapa (Mercado, Casa Beto Murgas) ofrecen "Cómo llegar"; hoy terminan en un mensaje sin salida | P1 | C | pendiente |
-| 06-1 | Rutas | "Ruta con más sombra" en lugar de "Ruta con sombra" | P1 | C | pendiente |
-| 06-2 | Rutas | El conteo de árboles pasa a los detalles | P2 | C | pendiente |
-| 06-3 | Rutas | Cada tarjeta muestra la muestra de su línea del mapa | P2 | F C | pendiente |
+| 05-1 | Buscar | Destinos fuera del mapa (Mercado, Casa Beto Murgas) ofrecen "Cómo llegar"; hoy terminan en un mensaje sin salida | P1 | C | en Figma (por revisar) |
+| 06-1 | Rutas | "Ruta con más sombra" en lugar de "Ruta con sombra" | P1 | C | en Figma (por revisar) |
+| 06-2 | Rutas | El conteo de árboles pasa a los detalles | P2 | C | en Figma (por revisar) |
+| 06-3 | Rutas | Cada tarjeta muestra la muestra de su línea del mapa | P2 | F C | en Figma (por revisar) |
 | 07-1 | Ficha | Cuadras sin nombre nombradas por sus esquinas (observación 1) | P1 | C D | listo para código |
 | 07-2 | Ficha | "Sensación térmica" en lugar de UTCI; Sky View Factor plegado | P1 | C | listo para código |
 | 09-1 | El Niño | Revisar en la primera pasada (no revisada aún) | P2 | — | pendiente |

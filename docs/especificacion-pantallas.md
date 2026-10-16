@@ -100,6 +100,34 @@ Explica para qué se usa la ubicación ("No guardamos tu recorrido"). Botones "P
 - Botón "Buscar una ruta con sombra".
 - Tocar un tramo abre la ficha (07). Si hay datos provisionales, se ve un aviso discreto.
 
+### 05 · Buscar destino — rediseño 2026 — nodo 116:534
+
+Se abre desde la pestaña "Ir a" de la barra inferior o desde "¿A dónde vas?" en el mapa. Valores de muestra a la 1:00 p. m., calculados con el modelo de la app desde el mismo origen que la pantalla 06.
+1. Título "¿A dónde vas?" (Título 24) y buscador de 56 px: "Busca un lugar del centro".
+2. Origen: ícono Mi ubicación + "Desde tu ubicación" + enlace "Cambiar" (abre elegir en el mapa).
+3. Chip estimado con la hora de cálculo.
+4. **"En el centro · ruta con más sombra a la 1:00 p. m."**: lista en tarjeta, filas de 72 px como mínimo.
+   - Cada fila: ícono del lugar en un cuadro de 44 px con fondo Cómodo, nombre en Cuerpo fuerte (envuelve a dos líneas si hace falta) y "453 m · 7 min" en Etiqueta.
+   - A la derecha, una pastilla con la forma y el color del nivel de la ruta más el % de sombra ("● 76 %"). La forma sigue al semáforo (círculo, triángulo, rombo o cuadrado).
+   - Las cifras son las mismas de la ruta con más sombra en la pantalla 06 (G3).
+5. **"Fuera del mapa de sombra"** (05-1): Casa Beto Murgas y Mercado público con ícono gris, "1,5 km · sin datos de sombra" y "Cómo llegar ›" a la derecha. Toda la fila es tocable. "Cómo llegar" lleva a la pantalla 21 (mapa de la ciudad y salida a Google Maps), no a un mensaje sin salida.
+6. Barra inferior con "Ir a" activa.
+
+### 06 · Rutas — rediseño 2026 — nodo 117:613
+
+1. Encabezado de 64 px: Volver (56 × 56), destino en Subtítulo 20 y "desde tu ubicación" en Etiqueta.
+2. Mapa sin la capa de sombra por andén (solo rutas), encuadrado para que se vean el origen y el destino completos encima de la hoja. El chip estimado flota arriba a la izquierda.
+   - Ruta con más sombra: línea continua `--um-termico-sombra-plena` de 7 px con borde blanco.
+   - Ruta más corta: rayas grises (`--um-base-texto-secundario`) de 4 px, 8/7.
+   - Marcadores Tú y Destino; solo el lugar de destino como referencia.
+3. **Hoja media** (≈ 370 px):
+   1. Tarjeta seleccionada "Ruta con más sombra": muestra de su línea, "453 m · 76 % en sombra" y "7 min" en Dato 28, con borde de 2 px verde.
+   2. Tarjeta "Ruta más corta": "438 m · 3 min al sol" y "6 min" (06-1).
+   3. Botón primario "Iniciar recorrido con sombra".
+   4. Enlace "¿Cuándo conviene salir?" de 56 px de alto, con ícono de reloj.
+   - La tarjeta ya no muestra el conteo de árboles (06-2). Cada tarjeta lleva la muestra de su línea del mapa (06-3).
+4. Barra inferior con "Ir a" activa.
+
 ### 05 · Buscar destino — nodo 4:2
 Campo "¿A dónde vas?" (filtra destinos locales; sin buscador externo en el prototipo). Encabezado "Destinos frecuentes · sombra a las {hora}". Cada destino muestra distancia, minutos por la ruta con sombra y una píldora "Sombra NN%" con el color de su nivel.
 
