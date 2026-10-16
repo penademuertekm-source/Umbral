@@ -32,7 +32,7 @@ Fuera de esta lista: la prueba de campo de la sombra (hoja en preparación) y la
 
 | N.º | Cambio | Prior. | Dónde | Estado |
 |---|---|---|---|---|
-| G1 | Chip fijo "Estimado · 12:00 ⓘ" en lugar de la línea gris "Valores estimados… · Datos provisionales" repetida en 8 pantallas. La ⓘ abre una hoja con "Datos provisionales" y las fuentes | P1 | F C | en Figma (por revisar) |
+| G1 | Chip fijo "Estimado · 12:00 ⓘ" en lugar de la línea gris "Valores estimados… · Datos provisionales" repetida en 8 pantallas. La ⓘ abre una hoja con "Datos provisionales" y las fuentes | P1 | F C | listo para código |
 | G2 | Calor y cielo por separado ("▲ Calor fuerte · Nublado"). Quita el "riesgo bajo" junto a 37° | P1 | C | pendiente |
 | G3 | Las mismas cifras en todo el viaje: la ruta se calcula una vez y la leen 05, 06, 13, 15 y 16 | P1 | C | pendiente |
 | G4 | Vocabulario: "andén" (no "acera"), "cuadra" (no "tramo"), "sensación térmica" (no "UTCI") y "Dónde descansar". "Puntos de permanencia" se mantiene en la documentación | P1 | C | pendiente |
@@ -41,7 +41,7 @@ Fuera de esta lista: la prueba de campo de la sombra (hoja en preparación) y la
 | G7 | Un botón principal por pantalla y orden fijo: respuesta → acción → detalles plegados → letra pequeña | P2 | F C | pendiente |
 | G8 | Frases de 12 palabras como máximo, botones que empiezan con verbo, el mismo texto para la misma acción | P2 | C | pendiente |
 | G9 | Ningún ícono sin su palabra | P2 | F C | pendiente |
-| G10 | Atribución fuera del mapa (ver decisiones): inicio + ⓘ en el mapa + Ajustes › Créditos | P2 | F C | en Figma (por revisar) |
+| G10 | Atribución fuera del mapa (ver decisiones): inicio + ⓘ en el mapa + Ajustes › Créditos | P2 | F C | listo para código |
 | G11 | Medidas en rem y hoja inferior en porcentaje del alto de pantalla | P3 | C | pendiente |
 | G12 | Computador: mapa grande con panel lateral | P3 | F C | pendiente |
 
@@ -49,16 +49,16 @@ Fuera de esta lista: la prueba de campo de la sombra (hoja en preparación) y la
 
 | N.º | Pantalla | Cambio | Prior. | Dónde | Estado |
 |---|---|---|---|---|---|
-| 04-1 | Mapa | Leyenda: parcial y expuesto se distinguen también por el trazo, no solo por el color | P1 | F C | en Figma (por revisar) |
+| 04-1 | Mapa | Leyenda: parcial y expuesto se distinguen también por el trazo, no solo por el color | P1 | F C | listo para código |
 | 04-2 | Mapa | El aviso de lluvia encuadra el lugar cubierto que menciona | P1 | C | pendiente |
 | 04-3 | Mapa | "Sin clima" con mensaje propio, no "al sol — · a la sombra —" | P1 | C | pendiente |
 | 04-4 | Mapa | El botón principal siempre con el mismo texto | P1 | C | pendiente |
-| 04-5 | Mapa | Hoja inferior de tres alturas que recoge leyenda, aviso y ficha | P2 | F C | en Figma (por revisar) |
-| 04-6 | Mapa | Encabezado de una línea; al tocar la hora se abre el deslizador | P2 | F C | en Figma (por revisar) |
-| 04-7 | Mapa | Nombres de calles, 5 o 6 lugares de referencia y vista inicial con la persona y la plaza | P2 | F C | en Figma (por revisar) |
-| 04-8 | Mapa | Solo "Mi ubicación" flotante; lo demás a la barra inferior | P2 | F C | en Figma (por revisar) |
-| 04-9 | Mapa | Los grupos de árboles se identifican como tales (ícono o leyenda) | P2 | F C | en Figma (por revisar) |
-| 04-10 | Mapa (20) | El nublado pasa a ser un estado de la 04, con la sombra atenuada y el aviso Nublado en gris (decisión de la autora, 2026-10-16) | P2 | F C | en Figma (por revisar) |
+| 04-5 | Mapa | Hoja inferior de tres alturas que recoge leyenda, aviso y ficha | P2 | F C | listo para código |
+| 04-6 | Mapa | Encabezado de una línea; al tocar la hora se abre el deslizador | P2 | F C | listo para código |
+| 04-7 | Mapa | Nombres de calles, 5 o 6 lugares de referencia y vista inicial con la persona y la plaza | P2 | F C | listo para código |
+| 04-8 | Mapa | Solo "Mi ubicación" flotante; lo demás a la barra inferior | P2 | F C | listo para código |
+| 04-9 | Mapa | Los grupos de árboles se identifican como tales (ícono o leyenda) | P2 | F C | listo para código |
+| 04-10 | Mapa (20) | El nublado pasa a ser un estado de la 04, con la sombra atenuada y el aviso Nublado en gris (decisión de la autora, 2026-10-16) | P2 | F C | listo para código |
 | 05-1 | Buscar | Destinos fuera del mapa (Mercado, Casa Beto Murgas) ofrecen "Cómo llegar"; hoy terminan en un mensaje sin salida | P1 | C | pendiente |
 | 06-1 | Rutas | "Ruta con más sombra" en lugar de "Ruta con sombra" | P1 | C | pendiente |
 | 06-2 | Rutas | El conteo de árboles pasa a los detalles | P2 | C | pendiente |
@@ -86,7 +86,7 @@ Sin cambios: 01, 02, 14 y 22. En pausa: 08 y 12.
 
 | N.º | Qué | Prior. | Estado |
 |---|---|---|---|
-| N1 | Componentes: hoja inferior (3 alturas), avisos (alerta, aviso, dato recogido, contador), barra inferior, chip "Estimado". En Figma, página 03: nodos 104:137, 105:161, 105:315 y 105:328; revisión en 105:329. Se aplican en código junto con la pantalla 04 | P2 | en Figma (componentes listos) |
+| N1 | Componentes: hoja inferior (3 alturas), avisos (alerta, aviso, dato recogido, contador), barra inferior, chip "Estimado". En Figma, página 03: nodos 104:137, 105:161, 105:315 y 105:328; revisión en 105:329. Se aplican en código junto con la pantalla 04 | P2 | listo para código |
 | N2 | Cómo leer el mapa (primera vez; se puede saltar y volver a abrir) | P2 | pendiente |
 | N3 | Noche: "Ya no hay sol" y ver el día siguiente | P2 | pendiente |
 | N4 | Estados: calculando, sin clima, GPS perdido durante el recorrido | P2 | pendiente |
