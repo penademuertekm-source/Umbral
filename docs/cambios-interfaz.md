@@ -69,11 +69,11 @@ Fuera de esta lista: la prueba de campo de la sombra (hoja en preparación) y la
 | 10-1 | Dónde descansar | El Callejón no dice "sombra continua" junto a "Al sol a esta hora"; se describe lo de ahora | P1 | C | pendiente |
 | 10-2 | Dónde descansar | Los mismos íconos en el mapa y en la lista | P2 | F C | pendiente |
 | 11-1 | Ajustes | "Letra más grande" sin "px"; CSV en "Para el equipo de investigación"; entradas a "Acerca de y créditos" y "Cómo leer el mapa" | P2 | F C | pendiente |
-| 13-1 | Recorrido | Indicaciones con referencias, no con puntos cardinales | P1 | C | en Figma (por revisar) |
-| 13-2 | Recorrido | Andén recomendado resaltado en el mapa; solo la próxima indicación; barra de progreso que avanza | P2 | F C | en Figma (por revisar) |
-| 15-1 | Cuándo salir | "Mañana" → "En la mañana" | P1 | C | en Figma (por revisar) |
-| 15-2 | Cuándo salir | Leyenda solo con los niveles presentes; explicar las franjas verdes | P2 | F C | en Figma (por revisar) |
-| 16-1 | Sin ruta | "A esta hora la ruta va casi toda al sol"; cifra principal: minutos al sol | P1 | C | en Figma (por revisar) |
+| 13-1 | Recorrido | Indicaciones con referencias, no con puntos cardinales | P1 | C | listo para código |
+| 13-2 | Recorrido | Andén recomendado resaltado en el mapa; solo la próxima indicación; barra de progreso que avanza | P2 | F C | listo para código |
+| 15-1 | Cuándo salir | "Mañana" → "En la mañana" | P1 | C | listo para código |
+| 15-2 | Cuándo salir | Leyenda solo con los niveles presentes; explicar las franjas verdes | P2 | F C | listo para código |
+| 16-1 | Sin ruta | "A esta hora la ruta va casi toda al sol"; cifra principal: minutos al sol | P1 | C | listo para código |
 | 17-1 | Semáforo | Colores de Precaución y Evitar más distintos (ΔE hoy ≈ 4,5) | P2 | F C | pendiente |
 | 18-19 | Antes de salir | Las pantallas 18 y 19 se unen en una sola hoja | P2 | F C | pendiente |
 | 21-1 | Fuera del centro | Revisar la ubicación de nuevo: hoy dice "Estás fuera" a 290 m de la plaza | P1 | C | pendiente |

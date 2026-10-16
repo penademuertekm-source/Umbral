@@ -193,6 +193,50 @@ en "Notas de Claude Code".
 
 ---
 
+## Paso R3 · Recorrido, ¿cuándo salir? y ruta casi toda al sol
+
+Puntos: **13-1, 13-2, 15-1, 15-2, 16-1**. Necesita los pasos R1a y R2 (componentes y cifras únicas del viaje).
+
+**Prompt**
+```
+Lee CLAUDE.md, docs/cambios-interfaz.md y, en docs/especificacion-pantallas.md, las secciones
+"13 · Recorrido — rediseño 2026" (nodo 119:680), "15 · ¿Cuándo salir? — rediseño 2026"
+(nodo 120:722) y "16 · Ruta casi toda al sol — rediseño 2026" (nodo 121:761). Haz git pull
+antes de empezar.
+
+Vamos con el paso R3 de docs/prompts-rediseno.md. Las cifras salen de la fuente única del
+paso R2 (G3).
+
+1. 13-1 · Indicaciones del recorrido relativas al camino y a referencias: "gira a la
+   izquierda/derecha", "sigue la línea verde: va por el andén con sombra", nombres de calles.
+   Nunca puntos cardinales ("acera oriental").
+2. 13-2 · Recorrido sin barra inferior: panel superior verde solo con la próxima indicación
+   (flecha del giro, distancia y calle); mapa con lo recorrido en gris punteado, lo pendiente en
+   verde con borde blanco y la sombra al 35 %; hoja asomada con el aviso del tramo actual,
+   minutos restantes, metros, barra de avance que sí avanza, "X % del camino en sombra", chip
+   estimado y "Salir del recorrido".
+3. 15-1 y 15-2 · ¿Cuándo salir?: barras por hora con la forma del nivel encima, franjas de
+   "Mejores horas", línea "Ahora", leyenda solo con los niveles presentes más "Mejores horas";
+   tarjetas "Antes de las 8:00 a. m. · En la mañana…" y "Desde las 4:00 p. m. · En la tarde…"
+   (nunca "Mañana" para hablar de la mañana); franja "Si sales ahora…" y botón "Ver la ruta a
+   las …".
+4. 16-1 · Pantalla 16: título "A esta hora la ruta va casi toda al sol"; cifra principal los
+   minutos al sol (borde Evitar) y secundaria el % en sombra; tres opciones (esperar a la tarde
+   con su hora y %, una parte en taxi hasta la plaza, protección si camina de todos modos);
+   botones "Ver la mejor hora" y "Caminar de todos modos".
+
+Mismas reglas de los pasos anteriores: i18n, tokens, 15 px, nada solo por color, un commit por
+punto con su estado en "hecho", build y pruebas antes de cada commit, y anotar contradicciones
+en "Notas de Claude Code".
+```
+
+**Cómo verificar**
+1. Inicia un recorrido en modo simulación: la indicación de arriba cambia en cada giro y la barra avanza.
+2. Abre "¿Cuándo salir?": la gráfica se entiende en escala de grises (formas) y no dice "Mañana" para la mañana.
+3. Elige un destino a mediodía con poca sombra: aparece la 16 con los minutos al sol como cifra principal.
+
+---
+
 ## Retomar (si se cortó el uso)
 
 ```
