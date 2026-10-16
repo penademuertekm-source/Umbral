@@ -1,5 +1,6 @@
 import { useNavigate, useSearchParams } from 'react-router'
 import { Boton, Encabezado, FormaSemaforo, Icono } from '../../componentes'
+import { saveTrip } from '../../perfil/almacen'
 import { HEAT_LEVELS } from '../../config/reglas-semaforo'
 import { DEPARTURES } from '../../config/rutas'
 import niveles from '../../estilos/niveles.module.css'
@@ -189,6 +190,26 @@ export function CuandoSalir() {
             onClick={() => navigate(enlace('/rutas', { destino: destino.id, hora: formatHora(suggested.from), forzar: undefined }))}
           >
             {t('cuando.verRuta', { laHora: laHora(i18n, time(suggested.from)) })}
+          </Boton>
+        )}
+        {/* S2: guardar la salida sugerida en la agenda, desde el punto de partida de ahora. */}
+        {suggested && destino && ctx.origen && (
+          <Boton
+            variant="secundario"
+            onClick={() => {
+              const departure = time(suggested.from)
+              const minutes = departures?.find((d) => d.minute === suggested.from)?.route.minutes ?? 0
+              const saved = saveTrip({
+                destinationId: destino.id,
+                origin: ctx.origen!.point,
+                departure: departure.toISOString(),
+                arrival: new Date(departure.getTime() + minutes * 60_000).toISOString(),
+                inCalendar: false,
+              })
+              navigate(saved.ok ? '/perfil/salidas' : '/perfil/salidas/nueva')
+            }}
+          >
+            {t('tuSalida.guardar')}
           </Boton>
         )}
         {ctx.data && !destination && <p className="um-cuerpo">{t('rutas.destinoDesconocido')}</p>}

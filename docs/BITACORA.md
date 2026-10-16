@@ -4,6 +4,56 @@ Registro de lo hecho en cada fase, lo pendiente y las decisiones tomadas. La ent
 
 ---
 
+## Sugerencias del docente · Paso P2: Agenda de salidas (2026-10-16)
+
+Es el paso P2 de `docs/prompts-sugerencias.md` y cubre el punto S2, que queda en "hecho" en
+`docs/cambios-interfaz.md`. Hay un commit por punto, y cada uno pasó build, pruebas, lint y contraste.
+
+### Hecho
+
+- **Cálculo** (`src/rutas/agenda.ts`, valores en `DEPARTURE_PLANNER` de `src/config/rutas.ts`):
+  - Se apunta a llegar 5 minutos antes de la hora pedida.
+  - Se prueban salidas cada 5 minutos del reloj, en los 60 minutos anteriores a esa llegada.
+  - Gana la que llega a tiempo con menos minutos al sol (redondeados); si dos empatan, la más tarde.
+  - Las rutas salen del mismo motor y del mismo costo que la 15 (`routeAt` en
+    `src/app/perfil/salidas/comun.ts`).
+- **Guardado** (`src/perfil/almacen.ts`):
+  - Cada salida guarda `{ destinationId, placeId?, origin, arrival, departure, inCalendar }`, con un máximo
+    de 20.
+  - Al abrir la app (`main.tsx`) se borran las que pasaron hace más de 10 minutos.
+  - `tripDueNow()` dice si hay que mostrar el aviso.
+- **Calendario** (`src/perfil/calendario.ts`): arma un `.ics` (RFC 5545) con hora UTC, texto escapado y
+  líneas de 75 bytes. Lleva el título "Salir hacia {nombre} · Umbral", una alarma 10 minutos antes y el
+  enlace a la ruta.
+- **Pantallas**:
+  - Planear una salida (`/perfil/salidas/nueva`).
+  - Tu salida (`/perfil/salidas/tu-salida`): lleva la franja Precaución si la llegada cae entre 11 a. m. y
+    3 p. m.; la franja usa la forma y el color del nivel.
+  - Mis salidas (`/perfil/salidas`), con su estado vacío. Las cifras se recalculan al abrir.
+  - En Perfil, la fila Mis salidas muestra la próxima.
+  - "Editar" cambia o borra una salida.
+- **Aviso "Es hora de salir"** en el mapa. `Aviso` ahora acepta una acción ("Ver la ruta").
+- **"Guardar en mi agenda"** en la 15.
+- **Pruebas**: 15 nuevas (cálculo, salidas guardadas, `.ics` y acción del aviso); 130 en total.
+  - axe no encontró problemas en Perfil, Mis salidas, Planear y Tu salida.
+  - Ningún control mide menos de 56 px de alto.
+  - El recorrido completo se probó en el navegador: planear, guardar, descargar el `.ics`, ver Mis salidas,
+    el aviso del mapa y el botón de la 15.
+
+### Decisiones (de la autora, anotadas en "Notas de Claude Code")
+
+- Se guarda el punto de partida de cada salida.
+- Para la hora de llegada se usa el selector del teléfono, en pasos de 5 minutos.
+
+### Pendiente
+
+- "Ver la ruta" abre la 06 con el sol de hoy, redondeado al cuarto de hora.
+- El ícono Calendario de Figma no está en `design/iconos/`; por ahora se usa Reloj.
+- El aviso pasa a la hoja de tres alturas con R1b.
+- Siguen P3a y P3b.
+
+---
+
 ## Sugerencias del docente · Paso P1: Perfil y Mis lugares (2026-10-16)
 
 Es el paso P1 de `docs/prompts-sugerencias.md` y cubre los puntos S0 y S1, que quedan en "hecho" en

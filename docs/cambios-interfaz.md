@@ -106,7 +106,7 @@ hecho se repite con un toque, máximo tres toques para cualquier acción y un so
 |---|---|---|---|---|
 | S0 | Barra inferior: Mapa · Ir a · Descansar · **Perfil** | Barra y pestaña Perfil | Ruta /perfil; Ajustes pasa a /perfil/ajustes (o queda en /ajustes, enlazado desde Perfil) | hecho |
 | S1 | Mis lugares: perfil en el teléfono, lugares guardados con su ruta con sombra, "Ir con sombra" de un toque | Perfil · Mis lugares (y vacío) · Guardar lugar en 06 · "Tus lugares" en 05 · cambiar nombre y borrar | Módulo de guardado local, CRUD de lugares, enlace con 05 y 06, "Borrar mis datos" | hecho |
-| S2 | Agenda de salidas: "quiero llegar a las…", hora de salida con más sombra, calendario del teléfono | Planear salida · resultado · Mis salidas (y vacío) · aviso "Es hora de salir" | Cálculo hacia atrás con la lógica de 15, archivo .ics, aviso dentro de la app | listo para código |
+| S2 | Agenda de salidas: "quiero llegar a las…", hora de salida con más sombra, calendario del teléfono | Planear salida · resultado · Mis salidas (y vacío) · aviso "Es hora de salir" | Cálculo hacia atrás con la lógica de 15, archivo .ics, aviso dentro de la app | hecho |
 | S3 | Metas de sol evitado: progreso (sol evitado, nivel, retos), colecciones (Pasaporte del centro, Álbum de la sombra) y premios (logros; beneficios y meta de la comunidad simulados) | Logros · Pasaporte · detalle del sello · Álbum · 22 con premios · Premios de ejemplo · interruptor en Ajustes | Suma del sol evitado en cada llegada, reglas de logros en `src/config/`, beneficios simulados en archivo aparte | listo para código |
 
 Regla de S3: ninguna meta premia distancia ni salir entre 11 a. m. y 3 p. m.
@@ -163,3 +163,23 @@ Aquí Claude Code anota contradicciones o dudas que encuentre al aplicar un punt
    investigación. ¿Deben borrarse también?
 5. En el código, `borrarMisDatos()` se llama `deleteMyData()` (`src/perfil/almacen.ts`), porque CLAUDE.md
    pide identificadores en inglés.
+
+**Paso P2 (2026-10-16): decisiones de la autora y notas**
+
+1. **Se guarda el punto de partida de cada salida.** Es el punto que había al planear, no el camino, y se
+   borra con "Borrar mis datos". La especificación no lo guardaba: sin él, al abrir la app en otro lugar las
+   cifras cambiarían.
+2. **"Quiero llegar a las" usa el selector de hora del teléfono**, en pasos de 5 minutos. El deslizador de
+   la 04 solo va de 6 a. m. a 6 p. m. en cuartos de hora.
+3. **"Ver la ruta" (y el enlace del calendario) abren la 06 aproximada.** Usan la hora de salida redondeada
+   al cuarto de hora y el día de hoy, porque la 06 solo trabaja con el día de hoy, de 6 a. m. a 6 p. m. Para
+   otro día es una aproximación.
+4. **El ícono Calendario (146:331) no está en `design/iconos/`.** El estado vacío de Mis salidas usa el
+   ícono Reloj. Si se quiere el de Figma, hace falta su SVG.
+5. **El aviso "Es hora de salir" va sobre la leyenda del mapa actual.** La hoja de tres alturas llega con
+   R1b. Mientras tanto convive con los avisos de nublado y El Niño, que todavía no usan el componente Aviso.
+6. **En la 15, "Guardar en mi agenda" guarda directo la salida sugerida.** Toma el inicio de la ventana
+   desde el punto de partida de ese momento, calcula la llegada como la salida más la duración y abre Mis
+   salidas.
+7. **Las salidas siguen guardadas hasta 10 minutos después de su hora**, para que se vea el aviso. Las
+   siguientes veces que se abre la app ya se borran.
