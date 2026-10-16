@@ -107,7 +107,7 @@ hecho se repite con un toque, máximo tres toques para cualquier acción y un so
 | S0 | Barra inferior: Mapa · Ir a · Descansar · **Perfil** | Barra y pestaña Perfil | Ruta /perfil; Ajustes pasa a /perfil/ajustes (o queda en /ajustes, enlazado desde Perfil) | hecho |
 | S1 | Mis lugares: perfil en el teléfono, lugares guardados con su ruta con sombra, "Ir con sombra" de un toque | Perfil · Mis lugares (y vacío) · Guardar lugar en 06 · "Tus lugares" en 05 · cambiar nombre y borrar | Módulo de guardado local, CRUD de lugares, enlace con 05 y 06, "Borrar mis datos" | hecho |
 | S2 | Agenda de salidas: "quiero llegar a las…", hora de salida con más sombra, calendario del teléfono | Planear salida · resultado · Mis salidas (y vacío) · aviso "Es hora de salir" | Cálculo hacia atrás con la lógica de 15, archivo .ics, aviso dentro de la app | hecho |
-| S3 | Metas de sol evitado: progreso (sol evitado, nivel, retos), colecciones (Pasaporte del centro, Álbum de la sombra) y premios (logros; beneficios y meta de la comunidad simulados) | Logros · Pasaporte · detalle del sello · Álbum · 22 con premios · Premios de ejemplo · interruptor en Ajustes | Suma del sol evitado en cada llegada, reglas de logros en `src/config/`, beneficios simulados en archivo aparte | listo para código |
+| S3 | Metas de sol evitado: progreso (sol evitado, nivel, retos), colecciones (Pasaporte del centro, Álbum de la sombra) y premios (logros; beneficios y meta de la comunidad simulados) | Logros · Pasaporte · detalle del sello · Álbum · 22 con premios · Premios de ejemplo · interruptor en Ajustes | Suma del sol evitado en cada llegada, reglas de logros en `src/config/`, beneficios simulados en archivo aparte | hecho en parte (P3a) |
 
 Regla de S3: ninguna meta premia distancia ni salir entre 11 a. m. y 3 p. m.
 
@@ -183,3 +183,21 @@ Aquí Claude Code anota contradicciones o dudas que encuentre al aplicar un punt
    salidas.
 7. **Las salidas siguen guardadas hasta 10 minutos después de su hora**, para que se vea el aviso. Las
    siguientes veces que se abre la app ya se borran.
+
+**Paso P3a (2026-10-16): decisiones de la autora y notas**
+
+1. **Los recorridos en modo simulación cuentan** para el sol evitado, los retos y los logros, pero cada
+   llegada queda marcada `simulated`. Logros dice cuántas fueron simuladas, y "Borrar mis datos" las borra.
+2. **La llegada se registra en la 13, al terminar el recorrido**, y la 22 la recibe con `?llegada=<id>`.
+   Así recargar la 22 no la cuenta dos veces.
+3. **Los logros no se guardan aparte**: se calculan con las llegadas, las fechas de las salidas planeadas y
+   las respuestas. Así "Borrar mis datos" los deja en cero. El campo `achievements` queda sin uso por ahora.
+4. **Íconos**: Figma usa un sol y un calendario que no están en `design/iconos/`. Se usan Al sol
+   (`expuesto`), Reloj, Nublado (Tarde fresca) y Destino (Planear, Planificador). Si se quieren los de
+   Figma, hacen falta sus SVG.
+5. **La nueva 22 (152:2798) ya no trae** las tres cifras en cuadros ni el "Para quedarte" de la 35:84; el
+   resumen va en una línea bajo el título. Si el destino está en Mis lugares, el título usa el nombre que
+   le puso la persona.
+6. **Con "Logros y retos" apagado**, la 22 oculta toda la tarjeta del sol evitado y del reto, y quedan el
+   resumen y la pregunta. Las llegadas se siguen registrando: al volver a encender el interruptor, el
+   progreso está completo.

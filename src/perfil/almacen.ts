@@ -360,9 +360,17 @@ export function tripDueNow(profile: ProfileData, now = new Date(), beforeMin = 1
 // --- Llegadas y respuestas (S3) ---
 
 /** Guarda una llegada al terminar el recorrido (pantalla 13 → 22). */
-export function recordArrival(arrival: Omit<Arrival, 'id'>, storage = defaultStorage()): Arrival {
+export function recordArrival(
+  arrival: Omit<Arrival, 'id' | 'date'> & { date?: string },
+  storage = defaultStorage(),
+): Arrival {
   const profile = readProfile(storage)
-  const saved: Arrival = { ...arrival, id: newId(), avoided: Math.max(0, Math.round(arrival.avoided * 10) / 10) }
+  const saved: Arrival = {
+    ...arrival,
+    id: newId(),
+    date: arrival.date ?? new Date().toISOString(),
+    avoided: Math.max(0, Math.round(arrival.avoided * 10) / 10),
+  }
   writeProfile({ ...profile, arrivals: [...profile.arrivals, saved].slice(-MAX_EVENTS) }, storage)
   return saved
 }

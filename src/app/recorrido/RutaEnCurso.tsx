@@ -10,6 +10,7 @@ import { MapaRutas } from '../../mapa/MapaRutas'
 import { abbreviate, indexEdges } from '../../mapa/tramos'
 import type { LonLat } from '../../rutas/geometria'
 import { buildLegs, guidanceAt, hasArrived, pointAt, type Guidance, type Maneuver } from '../../rutas/recorrido'
+import { recordArrival } from '../../perfil/almacen'
 import { formatTime } from '../../sombra/tiempo'
 import { formatHora } from '../useHoraElegida'
 import { useVolver } from '../useVolver'
@@ -89,7 +90,16 @@ export function RutaEnCurso() {
       : !!gps && hasArrived(track, gps.state, gps.point, destination, ARRIVAL_RADIUS_M))
   useEffect(() => {
     if (!arrived || !ruta || !destino) return
+    // S3: la llegada se registra aquí, una sola vez, al terminar el recorrido. Se guarda el sol evitado frente
+    // a la ruta más corta a la hora de salida; nunca el camino.
+    const saved = recordArrival({
+      destinationId: destino.id,
+      avoided: ruta.shortest.sunMinutes - ruta.route.sunMinutes,
+      departure: ruta.time.toISOString(),
+      simulated: simulating,
+    })
     const summary = {
+      llegada: saved.id,
       destino: destino.id,
       min: String(roundMinutes(ruta.route.minutes)),
       sombra: String(Math.round(ruta.route.shadePercent)),

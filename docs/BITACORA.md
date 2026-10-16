@@ -4,6 +4,45 @@ Registro de lo hecho en cada fase, lo pendiente y las decisiones tomadas. La ent
 
 ---
 
+## Sugerencias del docente · Paso P3a: progreso, logros y llegada (2026-10-16)
+
+Es el paso P3a de `docs/prompts-sugerencias.md`, la primera parte de S3. S3 queda en "hecho en parte
+(P3a)" en `docs/cambios-interfaz.md` y pasa a "hecho" al terminar P3b.
+
+### Hecho
+
+- **`src/config/logros.ts`** (provisional):
+  - Niveles: 0, 30, 60, 120 y 240 min.
+  - Cinco retos, de los que tocan tres por semana. La rotación sale del número de semana contado desde el
+    lunes 5 de enero de 2026, y esta semana tocan evitar 15 min, salir antes de las 8 y planear una salida.
+  - Los seis logros.
+  - Ninguna meta es de distancia ni de salir entre 11 a. m. y 3 p. m.
+- **Registro** (`src/perfil/almacen.ts`):
+  - Cada llegada guarda `{ date, destinationId, avoided, departure, simulated }`; el sol evitado es la ruta
+    más corta menos la hecha, a la hora de salida, con mínimo 0. Se registra en la 13 al llegar.
+  - También se guardan las fechas de las salidas planeadas y de las respuestas. Nunca el camino.
+- **Cálculos** (`src/perfil/logros.ts`): semana de lunes a domingo en hora de Colombia, sol evitado de la
+  semana y total, nivel, avance de cada reto, logros ganados y el reto que avanzó con una llegada.
+- **Pantallas**:
+  - Logros (`/perfil/logros`). Colecciones y Premios dicen "Próximamente" hasta P3b.
+  - Nueva 22 con premios.
+  - En Perfil, la fila Logros muestra "Esta semana: {n} min de sol evitado".
+  - En Ajustes, el interruptor "Logros y retos".
+- **Pruebas**: 8 nuevas de semanas, niveles, retos y logros; 138 en total.
+  - Se probó un recorrido simulado completo: la llegada queda registrada una sola vez aunque se recargue la
+    22, y la respuesta "Sí" cuenta para el logro.
+
+### Decisiones (de la autora)
+
+- Los recorridos simulados cuentan, marcados como simulados.
+
+### Pendiente
+
+- P3b: Pasaporte, Álbum, premios de ejemplo y la tarjeta "¡Nuevo sello!" de la 22.
+- Íconos de sol y calendario de Figma (ver "Notas de Claude Code").
+
+---
+
 ## Sugerencias del docente · Paso P2: Agenda de salidas (2026-10-16)
 
 Es el paso P2 de `docs/prompts-sugerencias.md` y cubre el punto S2, que queda en "hecho" en
