@@ -959,5 +959,11 @@
     "vacioTexto": "Dinos a qué hora quieres llegar. Te decimos cuándo salir con más sombra.",
     "editar": "Editar",
     "editarAria": "Editar la salida de las {hora} hacia {nombre}"
+  },
+  "avisoSalida": {
+    "titulo": "Es hora de salir hacia {nombre}",
+    "detalle": "Sal ahora por la ruta con más sombra · {min} min",
+    "detalleSinRuta": "Sal ahora por la ruta con más sombra",
+    "verRuta": "Ver la ruta"
   }
 }

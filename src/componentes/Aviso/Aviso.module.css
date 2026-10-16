@@ -99,3 +99,15 @@
   text-align: left;
   cursor: pointer;
 }
+
+/* Acción del aviso: texto subrayado en el color del nivel, con área táctil de 56. */
+.accion {
+  align-self: flex-start;
+  min-height: var(--um-tactil-minimo);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}

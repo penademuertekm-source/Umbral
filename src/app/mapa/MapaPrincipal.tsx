@@ -23,6 +23,7 @@ import { useEnlace } from '../rutas/enlaces'
 import { costModel, useGraph } from '../rutas/useContextoRutas'
 import { formatDesde, parseDesde, useOrigen } from '../rutas/useOrigen'
 import { MAX_MINUTE, MIN_MINUTE, STEP_MIN, useHoraElegida } from '../useHoraElegida'
+import { AvisoSalida } from '../perfil/salidas/AvisoSalida'
 import { AvisoNublado } from './AvisoNublado'
 import { FichaTramo } from './FichaTramo'
 import s from './MapaPrincipal.module.css'
@@ -343,6 +344,12 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
           </div>
 
           <div className={s.abajo}>
+            {/* S2: "Es hora de salir", arriba de la hoja del mapa (va al componente de avisos de R1b). */}
+            {!picking && (
+              <div className={s.avisoSalida}>
+                <AvisoSalida data={data} />
+              </div>
+            )}
             {showIsochrones ? (
               <div className={s.leyenda} role="group" aria-label={t('mapa.leyenda')}>
                 <p className={`${s.leyendaHora} um-micro`}>

@@ -328,3 +328,13 @@
   font-weight: 600;
   pointer-events: auto;
 }
+
+/* S2: aviso "Es hora de salir" sobre la leyenda. */
+.avisoSalida {
+  align-self: stretch;
+  pointer-events: auto;
+}
+
+.avisoSalida:empty {
+  display: none;
+}

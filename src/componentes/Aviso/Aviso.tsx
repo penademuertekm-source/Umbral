@@ -15,6 +15,8 @@ export interface NoticeItem {
   detail?: string
   /** Solo para el nivel Aviso. Alerta lleva siempre el triángulo y Nublado la nube. */
   icon?: IconName
+  /** Acción del aviso (p. ej. "Ver la ruta" en "Es hora de salir"). */
+  action?: { label: string; onClick: () => void }
 }
 
 interface AvisoProps {
@@ -109,6 +111,11 @@ function Tarjeta({ notice, counter, onRead }: TarjetaProps) {
       <div className={s.textos}>
         <p className="um-cuerpo-fuerte">{notice.title}</p>
         {notice.detail && <p className="um-etiqueta">{notice.detail}</p>}
+        {notice.action && (
+          <button type="button" className={`${s.accion} um-cuerpo-fuerte`} onClick={notice.action.onClick}>
+            {notice.action.label}
+          </button>
+        )}
       </div>
       {counter}
       <button type="button" className={s.recoger} aria-label={t('aviso.recoger')} onClick={onRead}>

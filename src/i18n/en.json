@@ -959,5 +959,11 @@
     "vacioTexto": "Tell us when you want to arrive. We tell you when to leave for more shade.",
     "editar": "Edit",
     "editarAria": "Edit the {hora} trip to {nombre}"
+  },
+  "avisoSalida": {
+    "titulo": "Time to leave for {nombre}",
+    "detalle": "Leave now by the shadiest route · {min} min",
+    "detalleSinRuta": "Leave now by the shadiest route",
+    "verRuta": "See the route"
   }
 }

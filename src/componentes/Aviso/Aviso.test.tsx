@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react'
-import { beforeEach, describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { ProveedorIdioma } from '../../i18n/ProveedorIdioma'
 import { Aviso, type NoticeItem } from './Aviso'
 
@@ -48,5 +48,12 @@ describe('Aviso', () => {
   it('sin avisos no dibuja nada', () => {
     const { container } = renderAviso([])
     expect(container.textContent).toBe('')
+  })
+
+  it('muestra la acción del aviso y la ejecuta', () => {
+    const onClick = vi.fn()
+    renderAviso([{ id: 'salida', level: 'aviso', title: 'Es hora de salir', action: { label: 'Ver la ruta', onClick } }])
+    fireEvent.click(screen.getByRole('button', { name: 'Ver la ruta' }))
+    expect(onClick).toHaveBeenCalledOnce()
   })
 })
