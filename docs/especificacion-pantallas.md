@@ -428,6 +428,48 @@ Resumen del recorrido (minutos, % en sombra y minutos de sol evitados frente a l
 ### 23 · Ajustes · Perfil de calor — nodo 35:121
 Opciones excluyentes: General, Adulto mayor, Con niños pequeños, Embarazo y Sensibilidad al calor por salud. Los cuatro últimos endurecen un nivel del semáforo y priorizan la sombra (k más alto en el costo de la ruta). Se guarda solo en el teléfono y no se piden datos de salud.
 
+## Sugerencias del docente — 2026-10-16
+
+Principio para S1 a S3 ("menor resistencia"): sin registro ni contraseña, lo ya hecho se repite con un toque,
+máximo tres toques por acción y un solo lugar para borrar todo. Todo se guarda solo en el teléfono
+(`localStorage`); nunca el camino hecho con el GPS.
+
+### S0 · Barra inferior con Perfil
+
+- Barra (105:315): Mapa · Ir a · Descansar · **Perfil**. La variante "Activa=Ajustes" pasa a "Activa=Perfil".
+- Íconos nuevos (página 03, grupo Interfaz):
+  - Perfil 142:608: `<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/>`
+  - Guardar 142:616: `<path d="M6 3h12v18l-6-4-6 4z"/>`
+  - Guardado 142:623: el mismo marcador, relleno (`fill="currentColor"`).
+- Ajustes (11, 124:1034) deja de ser pestaña: se abre desde Perfil, con encabezado Volver + "Ajustes".
+  "Cómo leer el mapa", "Cómo se calcula la sombra" y "Acerca de y créditos" pasan a Perfil. Ajustes gana
+  la sección "Tus datos" con "Borrar mis datos" (texto en color de No recomendado).
+- Pendiente de la autora: palabra corta para "Descansar" con letra grande (N7).
+
+### S1 · Perfil y Mis lugares
+
+| Pantalla | Nodo | Qué |
+|---|---|---|
+| Perfil | 143:1977 | Saludo "Hola" + "Agrega tu nombre (opcional)" · Mis lugares (dos primeros y "Ver todos mis lugares" con el total) · Planear: Mis salidas (S2) y Logros (S3) · La app: Ajustes y accesibilidad, Cómo leer el mapa, Cómo se calcula la sombra, Acerca de y créditos · "Todo se guarda solo en este teléfono." |
+| Mis lugares | 143:2425 | Encabezado con el total · chip Estimado · "Ruta con más sombra a la {hora}" · fila por lugar: ícono, nombre que puso la persona, lugar real, "453 m · 7 min", píldora de % en sombra y "Editar" · botón secundario "Agregar un lugar" (abre 05) · nota "Toca un lugar para ver su ruta con más sombra." |
+| Mis lugares vacío | 143:2666 | Ícono Guardar en círculo de 72 px · "Aún no tienes lugares guardados" · "Guarda los sitios a los que vas seguido. Después llegas con un toque por la sombra." · botón "Buscar un lugar" |
+| 05 con Tus lugares | 144:2565 | Debajo de "Desde tu ubicación": "Tus lugares" y una fila de chips (ícono + nombre, 44 px de alto) que se desplaza de lado. Un toque abre la ruta (06). Si no hay lugares, la sección no aparece |
+| 06 con Guardar | 144:2095 | En el encabezado, a la derecha: "Guardar" con el ícono (área táctil de 56). Si el lugar ya está guardado: ícono Guardado y "Guardado" |
+| Guardar este lugar | 144:2213 | Hoja sobre velo (`base/velo`), tapa la barra inferior: "Guardar este lugar" · campo "Nombre" con el nombre real ya escrito · chips Casa, Trabajo, Estudio (llenan el campo) · "Solo se guarda en este teléfono." · "Guardar" y "Cancelar". Al guardar: aviso recogido "Guardado en Mis lugares" |
+| Editar lugar | 144:2679 | Hoja: campo con el nombre, el lugar real y su distancia, "Guardar cambios" y "Borrar este lugar" (botón Advertencia). Al borrar: aviso recogido "Lugar borrado · Deshacer" durante unos segundos, sin preguntar |
+| Ajustes (dentro de Perfil) | 124:1034 | Ver S0 |
+| Borrar mis datos | 145:2335 | Modal: "¿Borrar tus datos de este teléfono?" · "Se borran tus lugares, tus salidas y tus logros. No se puede deshacer." · "Borrar todo" (Advertencia) y "Cancelar". Los ajustes (idioma, letra) no se borran |
+
+**Para el código**
+
+- Un lugar guardado: `{ id, nombre, destinoId, creado }`. El destino es uno de los de 05 (el centro); los de
+  fuera del mapa también se pueden guardar y abren "Cómo llegar".
+- Las cifras (% en sombra, minutos) no se guardan: se calculan al abrir, con la hora de ese momento, desde la
+  fuente única de rutas (G3).
+- Nombre de la persona: opcional, solo para el saludo.
+- Máximo sugerido: 10 lugares; el undécimo pide borrar uno.
+- "Borrar mis datos" borra lugares, salidas (S2), logros (S3) y nombre; no toca los ajustes.
+
 ## Navegación
 
 ```
