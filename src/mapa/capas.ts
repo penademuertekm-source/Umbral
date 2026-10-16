@@ -36,6 +36,8 @@ const WIDTH: ExpressionSpecification = ['interpolate', ['exponential', 2], ['zoo
 // primer nivel, así que se escalan las paradas en vez de multiplicar la expresión.
 const WIDE_WIDTH: ExpressionSpecification = ['interpolate', ['exponential', 2], ['zoom'], 14, 1.6, 16, 4, 17, 6.4, 18, 11.2, 19, 17.6]
 const OUTLINE_GAP: ExpressionSpecification = ['interpolate', ['exponential', 2], ['zoom'], 14, 6, 16, 9, 17, 13, 18, 20, 19, 30]
+/** Escala del marcador de grupo de árboles: 28 px sobre los 40 px del marcador (src/mapa/imagenes.ts). */
+const TREE_GROUP_SIZE = 28 / 40
 /** Sin estado (todavía calculando) se dibuja como "sin sol": gris neutro. */
 const STATE_OF_FEATURE: ExpressionSpecification = ['coalesce', ['feature-state', 'estado'], STATE.sin_sol]
 
@@ -167,9 +169,10 @@ export function addDataLayers(map: MapLibreMap, data: MapData, colors: MapColors
     type: 'symbol',
     source: 'arboles',
     filter: ['has', 'point_count'],
+    // 04-9: el grupo se ve como árbol (marcador Árbol de 28 px), sin número.
     layout: {
-      'icon-image': ['concat', 'grupo-', ['to-string', ['get', 'point_count']]],
-      'icon-size': ['interpolate', ['linear'], ['zoom'], 14, 0.55, 17, 0.75],
+      'icon-image': 'arbol-mango',
+      'icon-size': TREE_GROUP_SIZE,
       'icon-allow-overlap': true,
     },
   })

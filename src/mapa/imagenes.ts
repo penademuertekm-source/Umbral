@@ -43,25 +43,8 @@ async function treeImage(icon: string, colors: MapColors) {
   return ctx.getImageData(0, 0, c.width, c.height)
 }
 
-/** Marcador "grupo de árboles": verde con borde blanco y el número. */
-function groupImage(count: number, colors: MapColors) {
-  const [c, ctx] = canvas()
-  circle(ctx, colors.sombra, colors.superficie, 3)
-  ctx.fillStyle = colors.superficie
-  ctx.font = `600 ${count > 99 ? 13 : 15}px Inter, system-ui, sans-serif`
-  ctx.textAlign = 'center'
-  ctx.textBaseline = 'middle'
-  ctx.fillText(String(count), SIZE / 2, SIZE / 2 + 1)
-  return ctx.getImageData(0, 0, c.width, c.height)
-}
-
 export async function addMapImages(map: MapLibreMap, colors: MapColors): Promise<void> {
   const [mango, canaguate] = await Promise.all([treeImage('mango', colors), treeImage('canaguate-en-flor', colors)])
   map.addImage('arbol-mango', mango, { pixelRatio: RATIO })
   map.addImage('arbol-canaguate', canaguate, { pixelRatio: RATIO })
-  // Los números de los grupos se dibujan cuando el mapa los pide.
-  map.setMissingStyleImageResolver((id) => {
-    const match = /^grupo-(\d+)$/.exec(id)
-    if (match && !map.hasImage(id)) map.addImage(id, groupImage(Number(match[1]), colors), { pixelRatio: RATIO })
-  })
 }
