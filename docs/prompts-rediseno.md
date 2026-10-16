@@ -153,6 +153,46 @@ en "Notas de Claude Code".
 
 ---
 
+## Paso R2 · Buscar destino y rutas
+
+Puntos: **05-1, 06-1, 06-2, 06-3, G3**. Necesita el paso R1a (componentes y barra inferior).
+
+**Prompt**
+```
+Lee CLAUDE.md, docs/cambios-interfaz.md y, en docs/especificacion-pantallas.md, las secciones
+"05 · Buscar destino — rediseño 2026" (nodo 116:534) y "06 · Rutas — rediseño 2026"
+(nodo 117:613). Haz git pull antes de empezar.
+
+Vamos con el paso R2 de docs/prompts-rediseno.md.
+
+1. G3 · Una sola fuente para las cifras del viaje: calcula la ruta con más sombra y la más corta
+   una vez por destino, origen y hora, y que la lean 05, 06, 13, 15 y 16 (por ejemplo, un
+   contexto o un caché en src/rutas). La distancia, los minutos y el % deben coincidir en todas.
+2. Pantalla 05: título "¿A dónde vas?", buscador, origen "Desde tu ubicación · Cambiar", chip
+   estimado y dos listas en tarjeta. "En el centro": ícono del lugar, nombre (envuelve), "453 m ·
+   7 min" y una pastilla con la forma y el color del nivel de la ruta más el % de sombra. "Fuera
+   del mapa de sombra" (05-1): "1,5 km · sin datos de sombra" y "Cómo llegar ›", que lleva a la
+   pantalla 21 (ya no al mensaje sin salida de /rutas). Barra inferior con "Ir a" activa.
+3. Pantalla 06: encabezado con Volver, destino y "desde tu ubicación"; mapa solo con las rutas
+   (sin la capa de sombra por andén) encuadrado al origen y al destino; ruta con más sombra en
+   línea continua verde de 7 px con borde blanco y ruta más corta en rayas grises de 4 px.
+   Hoja media con las dos tarjetas: "Ruta con más sombra" (06-1) con "453 m · 76 % en sombra" y
+   los minutos en grande, y "Ruta más corta" con "438 m · 3 min al sol". Cada tarjeta lleva la
+   muestra de su línea (06-3) y ya no el conteo de árboles (06-2). Botón primario "Iniciar
+   recorrido con sombra" y enlace "¿Cuándo conviene salir?". Barra inferior con "Ir a" activa.
+
+Mismas reglas de los pasos anteriores: i18n, tokens, 15 px, nada solo por color, un commit por
+punto con su estado en "hecho", build y pruebas antes de cada commit, y anotar contradicciones
+en "Notas de Claude Code".
+```
+
+**Cómo verificar**
+1. Abre `/buscar`: la plaza muestra los mismos metros, minutos y % que luego muestra `/rutas`.
+2. Toca "Mercado público": abre la pantalla 21, no un mensaje sin salida.
+3. En `/rutas`, en un celular de 360 × 640, el origen, el destino y las dos tarjetas se ven sin montarse.
+
+---
+
 ## Retomar (si se cortó el uso)
 
 ```
