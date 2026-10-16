@@ -46,6 +46,45 @@
   gap: var(--um-esp-sm);
 }
 
+/* Variante hoja: pegada abajo, radio solo arriba y asa (decorativa: se cierra con Cancelar, Escape o el velo). */
+.velo.conHoja {
+  padding: 0;
+}
+
+.velo.conHoja[open] {
+  place-items: end center;
+}
+
+.hoja {
+  max-width: var(--app-ancho-max);
+  padding: var(--um-esp-sm) var(--um-esp-md) max(var(--um-esp-lg), env(safe-area-inset-bottom));
+  border-radius: var(--um-radio-hoja) var(--um-radio-hoja) 0 0;
+  animation-name: subir;
+}
+
+.asa {
+  align-self: center;
+  width: 40px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--um-base-borde);
+}
+
+@keyframes subir {
+  from {
+    transform: translateY(24px);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel {
+    animation: none;
+  }
+}
+
 @keyframes aparecer {
   from {
     opacity: 0;

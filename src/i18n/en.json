@@ -15,7 +15,8 @@
       "una": "{hora}",
       "otra": "{hora}"
     },
-    "cancelar": "Cancel"
+    "cancelar": "Cancel",
+    "guardar": "Save"
   },
   "idioma": {
     "titulo": "Language",
@@ -805,7 +806,16 @@
     "comoLeer": "How to read the map",
     "comoSeCalcula": "How shade is calculated",
     "acerca": "About and credits",
-    "guardadoLocal": "Everything is saved only on this phone."
+    "guardadoLocal": "Everything is saved only on this phone.",
+    "holaNombre": "Hello, {nombre}",
+    "cambiarNombre": "Change your name",
+    "misLugares": "My places",
+    "sinLugares": "Save the places you go to often",
+    "verTodos": "See all my places",
+    "planear": "Plan",
+    "misSalidas": "My trips",
+    "logros": "Achievements",
+    "proximamente": "Coming soon"
   },
   "comoLeer": {
     "intro": "Each sidewalk in the center is drawn with a line that shows its shade at the chosen time.",
@@ -830,5 +840,26 @@
     "texto": "Your places, trips and achievements will be deleted. This can't be undone.",
     "confirmar": "Delete everything",
     "hecho": "Done: your data was deleted from this phone."
+  },
+  "nombre": {
+    "titulo": "Your name",
+    "campo": "Name",
+    "nota": "Only to greet you. It is saved only on this phone."
+  },
+  "lugares": {
+    "titulo": "My places",
+    "totalUno": "1 saved place",
+    "total": "{n} saved places",
+    "ninguno": "None yet",
+    "rutaA": "Shadiest route at {laHora}",
+    "detalle": "{distancia} · {min} min",
+    "pildora": "{p} %",
+    "pildoraLarga": "{p} % in shade",
+    "desconocido": "This place is no longer in the destination list",
+    "agregar": "Add a place",
+    "nota": "Tap a place to see its shadiest route.",
+    "vacioTitulo": "You have no saved places yet",
+    "vacioTexto": "Save the places you go to often. Then you get there through the shade with one tap.",
+    "buscar": "Find a place"
   }
 }

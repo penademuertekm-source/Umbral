@@ -21,3 +21,8 @@
   color: var(--um-base-texto-secundario);
   cursor: pointer;
 }
+
+.subtitulo {
+  margin: 0;
+  color: var(--um-base-texto-secundario);
+}

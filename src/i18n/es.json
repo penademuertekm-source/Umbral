@@ -15,7 +15,8 @@
       "una": "la {hora}",
       "otra": "las {hora}"
     },
-    "cancelar": "Cancelar"
+    "cancelar": "Cancelar",
+    "guardar": "Guardar"
   },
   "idioma": {
     "titulo": "Idioma",
@@ -805,7 +806,16 @@
     "comoLeer": "Cómo leer el mapa",
     "comoSeCalcula": "Cómo se calcula la sombra",
     "acerca": "Acerca de y créditos",
-    "guardadoLocal": "Todo se guarda solo en este teléfono."
+    "guardadoLocal": "Todo se guarda solo en este teléfono.",
+    "holaNombre": "Hola, {nombre}",
+    "cambiarNombre": "Cambiar tu nombre",
+    "misLugares": "Mis lugares",
+    "sinLugares": "Guarda los sitios a los que vas seguido",
+    "verTodos": "Ver todos mis lugares",
+    "planear": "Planear",
+    "misSalidas": "Mis salidas",
+    "logros": "Logros",
+    "proximamente": "Próximamente"
   },
   "comoLeer": {
     "intro": "Cada andén del centro se dibuja con un trazo según la sombra que tiene a la hora elegida.",
@@ -830,5 +840,26 @@
     "texto": "Se borran tus lugares, tus salidas y tus logros. No se puede deshacer.",
     "confirmar": "Borrar todo",
     "hecho": "Listo: tus datos se borraron de este teléfono."
+  },
+  "nombre": {
+    "titulo": "Tu nombre",
+    "campo": "Nombre",
+    "nota": "Solo para saludarte. Se guarda solo en este teléfono."
+  },
+  "lugares": {
+    "titulo": "Mis lugares",
+    "totalUno": "1 lugar guardado",
+    "total": "{n} lugares guardados",
+    "ninguno": "Ninguno todavía",
+    "rutaA": "Ruta con más sombra a {laHora}",
+    "detalle": "{distancia} · {min} min",
+    "pildora": "{p} %",
+    "pildoraLarga": "{p} % en sombra",
+    "desconocido": "Este lugar ya no está en la lista de destinos",
+    "agregar": "Agregar un lugar",
+    "nota": "Toca un lugar para ver su ruta con más sombra.",
+    "vacioTitulo": "Aún no tienes lugares guardados",
+    "vacioTexto": "Guarda los sitios a los que vas seguido. Después llegas con un toque por la sombra.",
+    "buscar": "Buscar un lugar"
   }
 }

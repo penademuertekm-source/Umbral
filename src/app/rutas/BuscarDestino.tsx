@@ -1,30 +1,21 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router'
 import { BarraInferior, Boton, Encabezado } from '../../componentes'
-import type { HeatLevel } from '../../config/reglas-semaforo'
 import niveles from '../../estilos/niveles.module.css'
 import { laHora } from '../../i18n/hora'
 import { formatDistance, roundMinutes } from '../../i18n/numeros'
 import { useT } from '../../i18n/useT'
-import { insideArea, metersBetween, type Destination } from '../../mapa/datos'
-import type { Route } from '../../rutas/rutas'
+import type { Destination } from '../../mapa/datos'
 import { useVolver } from '../useVolver'
 import { NotaEstimado } from './NotaEstimado'
 import s from './Rutas.module.css'
 import { useEnlace } from './enlaces'
-import { levelOfRoute, routeBetween, useContextoRutas } from './useContextoRutas'
+import { filaDestino, type FilaDestino } from './filaDestino'
+import { useContextoRutas } from './useContextoRutas'
 
 // Pantalla 05 (nodo 4:2): "¿A dónde vas?". Filtra los destinos locales (sin buscador externo) y muestra
 // para cada uno la distancia, los minutos por la ruta con sombra y la píldora "Sombra NN %" con el color de
 // su nivel a la hora elegida.
-
-type Fila =
-  | { kind: 'sin_ubicacion' }
-  | { kind: 'fuera'; meters: number }
-  | { kind: 'sin_origen' }
-  | { kind: 'calculando' }
-  | { kind: 'sin_ruta' }
-  | { kind: 'ruta'; route: Route; level: HeatLevel | null }
 
 const normalize = (text: string) => text.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase()
 
@@ -40,18 +31,12 @@ export function BuscarDestino() {
 
   const filas = useMemo(() => {
     if (!data) return []
-    return data.destinos.map((destino): { destino: Destination; fila: Fila } => {
-      if (destino.lat === null || destino.lon === null) return { destino, fila: { kind: 'sin_ubicacion' } }
-      const point: [number, number] = [destino.lon, destino.lat]
-      if (!insideArea(data.meta, point)) {
-        return { destino, fila: { kind: 'fuera', meters: metersBetween(data.meta.area.centro, point) } }
-      }
-      if (!origen) return { destino, fila: { kind: 'sin_origen' } }
-      if (!graph || !resultado || !context) return { destino, fila: { kind: 'calculando' } }
-      const route = routeBetween(graph, origen.point, point, resultado.fraction, 'sombra', profile)
-      if (!route) return { destino, fila: { kind: 'sin_ruta' } }
-      return { destino, fila: { kind: 'ruta', route, level: levelOfRoute(route, thermal, context) } }
-    })
+    const fraction = resultado?.fraction ?? null
+    const input = { data, graph, fraction, origin: origen?.point ?? null, profile, context, thermal }
+    return data.destinos.map((destino): { destino: Destination; fila: FilaDestino } => ({
+      destino,
+      fila: filaDestino(destino, input),
+    }))
   }, [data, origen, graph, resultado, profile, context, thermal])
 
   const visibles = filas.filter(({ destino }) =>

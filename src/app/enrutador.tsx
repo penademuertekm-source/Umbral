@@ -18,6 +18,7 @@ import { RutaLlegada, RutaRecorrido, RutaRefugios } from './recorrido/rutas'
 import { RutaBuscar, RutaComparacion, RutaCuandoSalir, RutaSinSombra } from './rutas/rutas'
 import { SCREENS } from './pantallas'
 import { Acerca, ComoLeer, ComoSeCalcula } from './perfil/PaginasInfo'
+import { MisLugares } from './perfil/MisLugares'
 import { Perfil } from './perfil/Perfil'
 import { ReferenciaSemaforo } from './semaforo/ReferenciaSemaforo'
 
@@ -62,6 +63,7 @@ export const router = createBrowserRouter(
         })),
         // Perfil (S0 y S1): no son pantallas numeradas de la especificación original.
         { path: '/perfil', element: <Perfil /> },
+        { path: '/perfil/lugares', element: <MisLugares /> },
         { path: '/perfil/como-leer', element: <ComoLeer /> },
         { path: '/perfil/como-se-calcula', element: <ComoSeCalcula /> },
         { path: '/perfil/acerca', element: <Acerca /> },
