@@ -128,6 +128,60 @@ Se abre desde la pestaña "Ir a" de la barra inferior o desde "¿A dónde vas?" 
    - La tarjeta ya no muestra el conteo de árboles (06-2). Cada tarjeta lleva la muestra de su línea del mapa (06-3).
 4. Barra inferior con "Ir a" activa.
 
+### 13 · Recorrido — rediseño 2026 — nodo 119:680
+
+Sin barra inferior: el recorrido ocupa la pantalla completa.
+1. **Panel de indicación** arriba, en fondo `--um-termico-sombra-plena` y texto inverso, solo con la próxima indicación (13-2):
+   - flecha del giro de 48 px;
+   - "En 40 m, gira a la izquierda" en Título 24;
+   - "por la Cra. 7 · sigue la línea verde: va por el andén con sombra" en Etiqueta.
+   - Las direcciones son relativas al camino (izquierda o derecha) y a referencias; nunca puntos cardinales (13-1).
+2. **Mapa** con la capa de sombra al 35 % como contexto:
+   - camino recorrido en puntos grises;
+   - ruta pendiente en verde de 8 px con borde blanco;
+   - marcadores Tú y Destino; el mapa sigue a la persona.
+3. **Hoja asomada** (≈ 316 px):
+   - aviso del tramo actual ("Vas por un tramo al sol" / "La sombra empieza al girar en la Cra. 7");
+   - "6 min restantes" (Subtítulo) y "360 m";
+   - barra de avance que se llena con el camino recorrido;
+   - "76 % del camino en sombra";
+   - chip estimado;
+   - botón secundario "Salir del recorrido".
+
+### 15 · ¿Cuándo salir? — rediseño 2026 — nodo 120:722
+
+Valores del modelo de la app para la ruta con más sombra hacia la plaza, hora por hora (6 a. m.–5 p. m.).
+1. Encabezado con Volver, "¿Cuándo salir?" y "Hacia Plaza Alfonso López · 453 m".
+2. Chip "Estimado · hoy".
+3. **Gráfica** en tarjeta: una barra por hora con la altura según los minutos al sol, el color del nivel y su forma encima (círculo, triángulo o rombo).
+   - Franjas de fondo Cómodo para las "Mejores horas".
+   - Línea vertical "Ahora 1:00 p. m.".
+   - Eje 6 a. m. · 12 m. · 5 p. m.
+   - La leyenda solo lleva los niveles que aparecen y la franja "Mejores horas" (15-2).
+4. Dos tarjetas de mejor hora con ícono de reloj:
+   - "Antes de las 8:00 a. m." / "En la mañana · menos de 1 min al sol";
+   - "Desde las 4:00 p. m." / "En la tarde · menos de 1 min al sol".
+   - "En la mañana" reemplaza a "Mañana", que se confundía con el día siguiente (15-1).
+5. Franja de Precaución con triángulo: "Si sales ahora (1:00 p. m.): unos 2 min al sol".
+6. Botón primario "Ver la ruta a las 4:00 p. m.".
+7. Barra inferior con "Ir a" activa.
+
+### 16 · Ruta casi toda al sol — rediseño 2026 — nodo 121:761
+
+Aparece cuando la ruta queda en "Evitar a pie" o "No recomendado". Ejemplo con valores del modelo: hacia el Callejón de la Purrututú a las 12:00 m.
+1. **Encabezado** en fondo Evitar:
+   - Volver y chip del semáforo en la misma fila;
+   - título honesto en Título 24: "A esta hora la ruta va casi toda al sol" (16-1), ya no "no hay una ruta con sombra";
+   - "Hacia … · 497 m · 7 min".
+2. Chip estimado.
+3. Dos cifras: **"4 min al sol directo"** como principal (borde Evitar de 2 px) y "50 % en sombra".
+4. "Qué puedes hacer" con tres opciones (ícono en cuadro de 44 px, título y una línea):
+   - "Esperar a la tarde: desde las 4:00 p. m. el 92 % va a la sombra";
+   - "Una parte en taxi: hasta la Plaza Alfonso López y de ahí a pie";
+   - "Si caminas de todos modos: protector solar, agua y gorra".
+5. Botón primario "Ver la mejor hora" y secundario "Caminar de todos modos".
+6. Barra inferior con "Ir a" activa.
+
 ### 05 · Buscar destino — nodo 4:2
 Campo "¿A dónde vas?" (filtra destinos locales; sin buscador externo en el prototipo). Encabezado "Destinos frecuentes · sombra a las {hora}". Cada destino muestra distancia, minutos por la ruta con sombra y una píldora "Sombra NN%" con el color de su nivel.
 
