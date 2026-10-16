@@ -48,3 +48,9 @@ export const WINDOW_TOLERANCE_MIN = 1
 
 /** Distancia máxima de un refugio a la ruta para contarlo como punto de descanso (m). */
 export const REST_POINT_DISTANCE_M = 60
+
+/**
+ * Agenda de salidas (S2): se busca la salida con menos sol entre `windowMin` minutos antes de la hora de
+ * llegada y la llegada menos la duración de la ruta, cada `stepMin` minutos, para llegar `earlyMin` antes.
+ */
+export const DEPARTURE_PLANNER = { stepMin: 5, windowMin: 60, earlyMin: 5 } as const
