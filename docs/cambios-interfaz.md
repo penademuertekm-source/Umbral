@@ -41,7 +41,7 @@ Fuera de esta lista: la prueba de campo de la sombra (hoja en preparación) y la
 | G7 | Un botón principal por pantalla y orden fijo: respuesta → acción → detalles plegados → letra pequeña | P2 | F C | pendiente |
 | G8 | Frases de 12 palabras como máximo, botones que empiezan con verbo, el mismo texto para la misma acción | P2 | C | pendiente |
 | G9 | Ningún ícono sin su palabra | P2 | F C | pendiente |
-| G10 | Atribución fuera del mapa (ver decisiones): inicio + ⓘ en el mapa + Ajustes › Créditos | P2 | F C | listo para código |
+| G10 | Atribución fuera del mapa (ver decisiones): inicio + ⓘ en el mapa + Ajustes › Créditos | P2 | F C | hecho |
 | G11 | Medidas en rem y hoja inferior en porcentaje del alto de pantalla | P3 | C | pendiente |
 | G12 | Computador: mapa grande con panel lateral | P3 | F C | pendiente |
 

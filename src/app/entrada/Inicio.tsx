@@ -46,23 +46,29 @@ export function Inicio() {
       <img className={s.isotipoGrande} src={isotipoNegativo} width={96} height={96} alt="" />
       <h1 className={s.palabra}>{t('app.nombre')}</h1>
       <p className={`${s.claro} um-cuerpo`}>{t('app.lema')}</p>
-      <div className={s.cargando} role="status">
-        {error ? (
-          <>
-            <p className="um-cuerpo">{t('inicio.error')}</p>
-            <Boton
-              variant="secundario"
-              onClick={() => {
-                setError(false)
-                setAttempt((n) => n + 1)
-              }}
-            >
-              {t('inicio.reintentar')}
-            </Boton>
-          </>
-        ) : (
-          <p className={`${s.claro} um-etiqueta`}>{t('inicio.cargando')}</p>
-        )}
+      <div className={s.cargando}>
+        <div className={s.estadoCarga} role="status">
+          {error ? (
+            <>
+              <p className="um-cuerpo">{t('inicio.error')}</p>
+              <Boton
+                variant="secundario"
+                onClick={() => {
+                  setError(false)
+                  setAttempt((n) => n + 1)
+                }}
+              >
+                {t('inicio.reintentar')}
+              </Boton>
+            </>
+          ) : (
+            <p className={`${s.claro} um-etiqueta`}>{t('inicio.cargando')}</p>
+          )}
+        </div>
+        {/* G10: atribución obligatoria al abrir la app (guía de OpenStreetMap). */}
+        <p className={`${s.claro} um-micro`}>
+          {t('mapa.atribucion')} · {t('clima.atribucion')}
+        </p>
       </div>
     </main>
   )

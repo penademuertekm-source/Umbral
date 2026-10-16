@@ -16,6 +16,7 @@ import { snap } from '../../rutas/grafo'
 import { isochrones } from '../../rutas/isocronas'
 import { formatDateTime, formatTime, isoLocalDate } from '../../sombra/tiempo'
 import { useSombra } from '../../sombra/useSombra'
+import { CREDITS_ID } from '../ajustes/Ajustes'
 import { AvisoElNino } from '../elnino/AvisoElNino'
 import { markElNinoSeen, seenElNinoToday } from '../elnino/visto'
 import { useConexion } from '../useConexion'
@@ -384,9 +385,19 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
                 </div>
               )
             )}
-            <p className={`${s.atribucion} um-micro`}>
-              {t('mapa.atribucion')} · {t('clima.atribucion')}
-            </p>
+            {/* G10: las atribuciones van en Ajustes › Créditos; en el mapa queda este botón ⓘ. */}
+            {!picking && (
+              <button
+                type="button"
+                className={s.botonCreditos}
+                aria-label={t('creditos.boton')}
+                onClick={() => navigate(`/ajustes#${CREDITS_ID}`)}
+              >
+                <span className={s.circuloCreditos}>
+                  <Icono name="informacion" />
+                </span>
+              </button>
+            )}
           </div>
         </div>
 

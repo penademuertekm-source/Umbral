@@ -34,6 +34,15 @@
   bottom: max(var(--um-esp-xl), env(safe-area-inset-bottom));
   left: 40px;
   right: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-md);
+}
+
+.estadoCarga {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-md);
 }
 
 .pagina {

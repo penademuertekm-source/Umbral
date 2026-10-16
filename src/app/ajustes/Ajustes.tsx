@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router'
+import { useEffect, useRef, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router'
 import { Encabezado, Icono } from '../../componentes'
 import { readHeatProfileOption } from '../../clima/configClima'
 import { LANGUAGES, type Language } from '../../i18n/idioma'
@@ -15,6 +15,9 @@ import { applyDisplaySettings, readSettings, writeSetting, type SettingKey, type
 
 // Pantalla 11 (nodo 7:2): ajustes y accesibilidad. Todo se guarda solo en el teléfono.
 
+/** Ancla de la sección Créditos (G10). Cuando exista la pantalla N6, el botón ⓘ del mapa irá allá. */
+export const CREDITS_ID = 'creditos'
+
 export function Ajustes() {
   const { t, language, setLanguage } = useT()
   const navigate = useNavigate()
@@ -24,6 +27,14 @@ export function Ajustes() {
   const [answers] = useState(() => readAnswers().length)
   const [profile] = useState(readHeatProfileOption)
   const other: Language = LANGUAGES.find((code) => code !== language) ?? 'es'
+  // G10: el botón ⓘ del mapa llega a /ajustes#creditos.
+  const { hash } = useLocation()
+  const creditsRef = useRef<HTMLElement>(null)
+  useEffect(() => {
+    if (hash !== `#${CREDITS_ID}`) return
+    creditsRef.current?.scrollIntoView({ block: 'start' })
+    creditsRef.current?.focus({ preventScroll: true })
+  }, [hash])
 
   const toggle = (key: SettingKey) => {
     const next = { ...settings, [key]: !settings[key] }
@@ -104,6 +115,16 @@ export function Ajustes() {
             {t('ajustes.comoTitulo')}
           </h2>
           <p className="um-etiqueta">{t('ajustes.comoTexto')}</p>
+        </section>
+        <section id={CREDITS_ID} ref={creditsRef} className={s.creditos} aria-labelledby="creditos-titulo" tabIndex={-1}>
+          <h2 id="creditos-titulo" className="um-cuerpo-fuerte">
+            {t('creditos.titulo')}
+          </h2>
+          <ul className={`${s.listaCreditos} um-etiqueta`}>
+            <li>{t('creditos.mapa')}</li>
+            <li>{t('creditos.clima')}</li>
+            <li>{t('creditos.sol')}</li>
+          </ul>
         </section>
         <p className={`${s.nota} ${s.secundario} um-micro`}>{t('ajustes.guardadoLocal')}</p>
       </main>

@@ -772,7 +772,8 @@
     "fuentes": "Data and sources",
     "sol": "Sun position: SunCalc, checked against the NREL SPA",
     "mapa": "Map: © OpenStreetMap contributors (ODbL)",
-    "clima": "Weather: Open-Meteo (CC BY 4.0)"
+    "clima": "Weather: Open-Meteo (CC BY 4.0)",
+    "boton": "Credits and data"
   },
   "aviso": {
     "recoger": "Collapse notice",

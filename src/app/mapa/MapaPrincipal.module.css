@@ -151,8 +151,7 @@
   box-shadow: var(--um-elevacion-flotante);
 }
 
-.leyendaHora,
-.atribucion {
+.leyendaHora {
   color: var(--um-base-texto-secundario);
 }
 
@@ -162,10 +161,29 @@
   gap: var(--um-esp-xs) var(--um-esp-md);
 }
 
-.atribucion {
-  padding: 0 var(--um-esp-xs);
-  border-radius: var(--um-radio-chip);
+/* G10: botón ⓘ de créditos. Se ve de 40 px; el área táctil es de 56. */
+.botonCreditos {
+  display: grid;
+  place-items: center;
+  width: var(--um-tactil-minimo);
+  height: var(--um-tactil-minimo);
+  margin: calc((40px - var(--um-tactil-minimo)) / 2);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--um-base-texto);
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.circuloCreditos {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
   background: var(--um-base-superficie);
+  box-shadow: var(--um-elevacion-flotante);
 }
 
 /* Simulación de la pantalla 20 (/mapa/nublado): chip neutro con el ícono de nube. */

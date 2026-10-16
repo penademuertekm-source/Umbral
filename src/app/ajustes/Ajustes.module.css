@@ -113,6 +113,27 @@
   color: var(--um-semaforo-comodo-texto);
 }
 
+/* Créditos (G10): atribuciones obligatorias en texto principal. */
+.creditos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-xs);
+  margin: 0 var(--um-esp-lg);
+  scroll-margin-top: var(--um-esp-md);
+}
+
+.creditos:focus {
+  outline: none;
+}
+
+.listaCreditos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-xs);
+  margin: 0;
+  padding-left: var(--um-esp-md);
+}
+
 .nota {
   margin: 0 var(--um-esp-lg);
 }
