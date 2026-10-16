@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { createBrowserRouter } from 'react-router'
 import { PantallaElNino } from './elnino/PantallaElNino'
+import { ErrorPantalla } from './ErrorPantalla'
 import { Guia } from './guia/Guia'
 import { RutaMapa, RutaMapaNublado, TramoEnMapa } from './mapa/rutas'
 import { Marco } from './Marco'
@@ -53,9 +54,10 @@ const BUILT: Record<string, ReactNode> = {
 export const router = createBrowserRouter(
   [
     // La guía de componentes usa todo el ancho, como la página 03 de Figma.
-    { path: '/guia', element: <Guia /> },
+    { path: '/guia', element: <Guia />, errorElement: <ErrorPantalla /> },
     {
       element: <Marco />,
+      errorElement: <ErrorPantalla />,
       children: [
         ...SCREENS.map((screen) => ({
           path: screen.path,

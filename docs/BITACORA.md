@@ -47,7 +47,12 @@ de subirse.
 - **05** (144:2565): la fila "Tus lugares" se desplaza de lado y no aparece si no hay lugares.
 - **Componentes**: `Encabezado` suma subtítulo y una acción a la derecha; `Modal` suma la variante `sheet`
   (sube desde abajo y tapa la barra).
-- **Pruebas**: 15 nuevas (módulo de guardado y hojas); 113 en total. axe no encontró problemas y ningún
+- **Versión vieja abierta**: la autora vio "Failed to fetch dynamically imported module" en el enlace de
+  prueba. Fue después de cuatro publicaciones seguidas: el teléfono tenía abierta una versión anterior que
+  pedía un archivo que ya no existe. Ahora la app se recarga sola una vez (`src/app/recargaVersion.ts`). Si
+  vuelve a fallar, muestra "Hay una versión nueva de Umbral" con "Volver a cargar" (`ErrorPantalla`), en
+  lugar del error en inglés de react-router. Se probó en el navegador quitando el archivo de la 05.
+- **Pruebas**: 17 nuevas (módulo de guardado, hojas y recarga); 115 en total. axe no encontró problemas y ningún
   control mide menos de 56 px de alto en las 9 pantallas tocadas (390 × 844).
 
 ### Decisiones (de la autora, anotadas en "Notas de Claude Code")

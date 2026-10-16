@@ -887,5 +887,12 @@
     "borrado": "Place deleted",
     "deshacer": "Undo",
     "noSePudo": "Could not undo: you already have {n} places."
+  },
+  "errorApp": {
+    "versionTitulo": "There is a new version of Umbral",
+    "versionTexto": "Reload to use it. Your places and settings are still saved.",
+    "titulo": "Something went wrong",
+    "texto": "Reload the page. Your places and settings are still saved.",
+    "recargar": "Reload"
   }
 }

@@ -887,5 +887,12 @@
     "borrado": "Lugar borrado",
     "deshacer": "Deshacer",
     "noSePudo": "No se pudo deshacer: ya tienes {n} lugares."
+  },
+  "errorApp": {
+    "versionTitulo": "Hay una versión nueva de Umbral",
+    "versionTexto": "Vuelve a cargar para usarla. Tus lugares y tus ajustes siguen guardados.",
+    "titulo": "Algo salió mal",
+    "texto": "Vuelve a cargar la página. Tus lugares y tus ajustes siguen guardados.",
+    "recargar": "Volver a cargar"
   }
 }
