@@ -498,7 +498,8 @@
     "sinOrigen": "Choose a starting point",
     "pildora": "Shade {p} %",
     "sinResultados": "No destinations with that name.",
-    "calculando": "Calculating…"
+    "calculando": "Calculating…",
+    "tusLugares": "Your places"
   },
   "rutas": {
     "conSombra": "Shaded route",
@@ -861,5 +862,30 @@
     "vacioTitulo": "You have no saved places yet",
     "vacioTexto": "Save the places you go to often. Then you get there through the shade with one tap.",
     "buscar": "Find a place"
+  },
+  "guardarLugar": {
+    "boton": "Save",
+    "botonGuardado": "Saved",
+    "titulo": "Save this place",
+    "campo": "Name",
+    "sugerencias": "Quick names",
+    "casa": "Home",
+    "trabajo": "Work",
+    "estudio": "School",
+    "nota": "It is saved only on this phone.",
+    "sinNombre": "Type a name for the place.",
+    "limite": "You already have {n} saved places. Delete one in My places to save another.",
+    "irAMisLugares": "Go to My places",
+    "hecho": "Saved in My places"
+  },
+  "editarLugar": {
+    "boton": "Edit",
+    "botonAria": "Edit {nombre}",
+    "titulo": "Edit place",
+    "guardarCambios": "Save changes",
+    "borrar": "Delete this place",
+    "borrado": "Place deleted",
+    "deshacer": "Undo",
+    "noSePudo": "Could not undo: you already have {n} places."
   }
 }

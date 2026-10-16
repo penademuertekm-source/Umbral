@@ -1,11 +1,14 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router'
-import { BarraInferior, Boton, Encabezado } from '../../componentes'
+import { BarraInferior, Boton, Encabezado, Icono } from '../../componentes'
 import niveles from '../../estilos/niveles.module.css'
 import { laHora } from '../../i18n/hora'
 import { formatDistance, roundMinutes } from '../../i18n/numeros'
 import { useT } from '../../i18n/useT'
+import { usePerfil } from '../../perfil/usePerfil'
 import type { Destination } from '../../mapa/datos'
+import { destinationIcon } from '../perfil/lugares'
+import p from '../perfil/Perfil.module.css'
 import { useVolver } from '../useVolver'
 import { NotaEstimado } from './NotaEstimado'
 import s from './Rutas.module.css'
@@ -15,7 +18,8 @@ import { useContextoRutas } from './useContextoRutas'
 
 // Pantalla 05 (nodo 4:2): "¿A dónde vas?". Filtra los destinos locales (sin buscador externo) y muestra
 // para cada uno la distancia, los minutos por la ruta con sombra y la píldora "Sombra NN %" con el color de
-// su nivel a la hora elegida.
+// su nivel a la hora elegida. Debajo del punto de partida, "Tus lugares" (S1, Figma 144:2565): un toque abre
+// la ruta; si no hay lugares guardados, la sección no aparece.
 
 const normalize = (text: string) => text.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase()
 
@@ -26,6 +30,7 @@ export function BuscarDestino() {
   const enlace = useEnlace()
   const [query, setQuery] = useState('')
   const ctx = useContextoRutas()
+  const { places } = usePerfil()
   const { data, graph, resultado, origen, profile, context } = ctx
   const thermal = ctx.thermalAt(ctx.hora.time)
 
@@ -77,6 +82,26 @@ export function BuscarDestino() {
               </Link>
             </div>
           </div>
+        )}
+
+        {places.length > 0 && (
+          <section aria-labelledby="tus-lugares">
+            <h2 id="tus-lugares" className={`${s.subtitulo} um-etiqueta`}>
+              {t('buscar.tusLugares')}
+            </h2>
+            <ul className={p.chipsDesplazables}>
+              {places.map((place) => (
+                <li key={place.id}>
+                  <Link className={p.chipToque} to={enlace('/rutas', { destino: place.destinationId })}>
+                    <span className={`${p.chip} um-etiqueta`}>
+                      <Icono name={destinationIcon(data?.destinos.find((d) => d.id === place.destinationId))} size={20} />
+                      {place.name}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
         )}
 
         <p className={`${s.subtitulo} um-etiqueta`}>

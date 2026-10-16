@@ -1,21 +1,25 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { BarraInferior, Boton, ChipEstimado, Encabezado, Icono } from '../../componentes'
 import niveles from '../../estilos/niveles.module.css'
 import { laHora } from '../../i18n/hora'
 import { formatDistance, roundMinutes } from '../../i18n/numeros'
 import { useT } from '../../i18n/useT'
+import { MAX_PLACES, restorePlace, type RemovedPlace, type SavedPlace } from '../../perfil/almacen'
 import { usePerfil } from '../../perfil/usePerfil'
 import { formatTime } from '../../sombra/tiempo'
 import { useEnlace } from '../rutas/enlaces'
 import { filaDestino, type FilaDestino } from '../rutas/filaDestino'
 import { useContextoRutas } from '../rutas/useContextoRutas'
 import { useVolver } from '../useVolver'
+import { AvisoHecho, HojaEditarLugar } from './HojasLugar'
+import { useAvisoTemporal } from './useAvisoTemporal'
 import { destinationIcon } from './lugares'
 import s from './Perfil.module.css'
 
 // Mis lugares (S1, Figma 143:2425; vacío 143:2666). Las cifras (distancia, minutos y % en sombra) no se
 // guardan: se calculan al abrir, con la hora de ese momento y la misma cuenta de rutas que la 05 (G3).
+// "Editar" abre la hoja Editar lugar (144:2679); al borrar, "Lugar borrado · Deshacer" unos segundos.
 
 export function MisLugares() {
   const i18n = useT()
@@ -28,6 +32,9 @@ export function MisLugares() {
   const { data, graph, resultado, origen, profile: heatProfile, context } = ctx
   const thermal = ctx.thermalAt(ctx.hora.time)
   const count = profile.places.length
+  const [editing, setEditing] = useState<SavedPlace | null>(null)
+  const [removed, setRemoved] = useAvisoTemporal<RemovedPlace>()
+  const [undoFailed, setUndoFailed] = useState(false)
 
   const filas = useMemo(() => {
     const fraction = resultado?.fraction ?? null
@@ -46,7 +53,7 @@ export function MisLugares() {
   return (
     <div className={s.pantalla}>
       <Encabezado title={t('lugares.titulo')} subtitle={subtitle} onBack={volver} />
-      {count === 0 ? (
+      {count === 0 && !removed ? (
         <main className={`${s.contenido} ${s.vacio}`}>
           <span className={s.iconoGrande} aria-hidden="true">
             <Icono name="guardar" size={32} />
@@ -57,6 +64,20 @@ export function MisLugares() {
         </main>
       ) : (
         <main className={s.contenido}>
+          {removed && (
+            <AvisoHecho
+              icon="guardar"
+              text={t('editarLugar.borrado')}
+              action={{
+                label: t('editarLugar.deshacer'),
+                onClick: () => {
+                  setUndoFailed(!restorePlace(removed))
+                  setRemoved(null)
+                },
+              }}
+            />
+          )}
+          {undoFailed && <p className="um-etiqueta">{t('editarLugar.noSePudo', { n: MAX_PLACES })}</p>}
           <div className={s.encabezadoLista}>
             {data && <ChipEstimado time={formatTime(ctx.hora.time, language)} provisional={data.meta.datos_provisionales} />}
           </div>
@@ -65,7 +86,7 @@ export function MisLugares() {
             {filas.map(({ place, destino, fila }) => {
               const real = destino ? (language === 'es' ? destino.nombre.es : destino.nombre.en) : t('lugares.desconocido')
               return (
-                <li key={place.id}>
+                <li key={place.id} className={s.filaConAccion}>
                   <Link className={s.fila} to={enlace('/rutas', { destino: place.destinationId })}>
                     <span className={s.icono} aria-hidden="true">
                       <Icono name={destinationIcon(destino)} />
@@ -76,12 +97,24 @@ export function MisLugares() {
                       {fila && <span className={`${s.secundario} um-etiqueta`}>{detalle(fila)}</span>}
                     </span>
                     {fila?.kind === 'ruta' && (
-                      <span className={`${s.pildora} ${niveles[fila.level ?? 'nublado']} um-etiqueta`}>
-                        <span aria-hidden="true">{t('lugares.pildora', { p: Math.round(fila.route.shadePercent) })}</span>
-                        <span className="sr-only">{t('lugares.pildoraLarga', { p: Math.round(fila.route.shadePercent) })}</span>
+                      <span className={s.lado}>
+                        <span className={`${s.pildora} ${niveles[fila.level ?? 'nublado']} um-etiqueta`}>
+                          <span aria-hidden="true">{t('lugares.pildora', { p: Math.round(fila.route.shadePercent) })}</span>
+                          <span className="sr-only">
+                            {t('lugares.pildoraLarga', { p: Math.round(fila.route.shadePercent) })}
+                          </span>
+                        </span>
                       </span>
                     )}
                   </Link>
+                  <button
+                    type="button"
+                    className={`${s.editar} um-etiqueta`}
+                    aria-label={t('editarLugar.botonAria', { nombre: place.name })}
+                    onClick={() => setEditing(place)}
+                  >
+                    {t('editarLugar.boton')}
+                  </button>
                 </li>
               )
             })}
@@ -93,8 +126,28 @@ export function MisLugares() {
         </main>
       )}
       <BarraInferior active="perfil" />
+      {editing && (
+        <HojaEditarLugar
+          place={editing}
+          detail={detalleEditar(editing)}
+          onClose={() => setEditing(null)}
+          onRemoved={(r) => {
+            setEditing(null)
+            setUndoFailed(false)
+            setRemoved(r)
+          }}
+        />
+      )}
     </div>
   )
+
+  /** "Plaza Alfonso López · 453 m" en la hoja Editar lugar. */
+  function detalleEditar(place: SavedPlace): string {
+    const row = filas.find((f) => f.place.id === place.id)
+    if (!row?.destino) return ''
+    const real = language === 'es' ? row.destino.nombre.es : row.destino.nombre.en
+    return row.fila?.kind === 'ruta' ? `${real} · ${formatDistance(row.fila.route.meters, language)}` : real
+  }
 
   function detalle(fila: FilaDestino): string {
     switch (fila.kind) {

@@ -26,3 +26,15 @@
   margin: 0;
   color: var(--um-base-texto-secundario);
 }
+
+.fila {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  align-self: stretch;
+  gap: var(--um-esp-sm);
+}
+
+.accion {
+  margin-left: auto;
+}

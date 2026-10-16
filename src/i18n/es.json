@@ -498,7 +498,8 @@
     "sinOrigen": "Elige un punto de partida",
     "pildora": "Sombra {p} %",
     "sinResultados": "No hay destinos con ese nombre.",
-    "calculando": "Calculando…"
+    "calculando": "Calculando…",
+    "tusLugares": "Tus lugares"
   },
   "rutas": {
     "conSombra": "Ruta con sombra",
@@ -861,5 +862,30 @@
     "vacioTitulo": "Aún no tienes lugares guardados",
     "vacioTexto": "Guarda los sitios a los que vas seguido. Después llegas con un toque por la sombra.",
     "buscar": "Buscar un lugar"
+  },
+  "guardarLugar": {
+    "boton": "Guardar",
+    "botonGuardado": "Guardado",
+    "titulo": "Guardar este lugar",
+    "campo": "Nombre",
+    "sugerencias": "Nombres rápidos",
+    "casa": "Casa",
+    "trabajo": "Trabajo",
+    "estudio": "Estudio",
+    "nota": "Solo se guarda en este teléfono.",
+    "sinNombre": "Escribe un nombre para el lugar.",
+    "limite": "Ya tienes {n} lugares guardados. Borra uno en Mis lugares para guardar otro.",
+    "irAMisLugares": "Ir a Mis lugares",
+    "hecho": "Guardado en Mis lugares"
+  },
+  "editarLugar": {
+    "boton": "Editar",
+    "botonAria": "Editar {nombre}",
+    "titulo": "Editar lugar",
+    "guardarCambios": "Guardar cambios",
+    "borrar": "Borrar este lugar",
+    "borrado": "Lugar borrado",
+    "deshacer": "Deshacer",
+    "noSePudo": "No se pudo deshacer: ya tienes {n} lugares."
   }
 }

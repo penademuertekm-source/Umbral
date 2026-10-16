@@ -223,3 +223,147 @@
   background: var(--um-semaforo-comodo-fondo);
   color: var(--um-termico-sombra-plena);
 }
+
+.error {
+  color: var(--um-semaforo-no-recomendado-texto); /* contraste: fondo=um-base-superficie */
+}
+
+/* Chips Casa · Trabajo · Estudio y "Tus lugares" (05): se ven de 44 px, el área táctil es de 56. */
+.chips {
+  display: flex;
+  gap: var(--um-esp-sm);
+}
+
+.chipsDesplazables {
+  display: flex;
+  gap: var(--um-esp-sm);
+  margin: 0 calc(-1 * var(--um-esp-md));
+  padding: 0 var(--um-esp-md);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.chipToque {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  min-height: var(--um-tactil-minimo);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--um-base-texto);
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--um-esp-xs);
+  min-height: 44px;
+  padding: 0 var(--um-esp-md);
+  border: 1px solid var(--um-base-borde);
+  border-radius: var(--um-radio-chip);
+  background: var(--um-base-superficie);
+  color: var(--um-base-texto);
+  white-space: nowrap;
+}
+
+.chip svg {
+  color: var(--um-termico-sombra-plena);
+}
+
+/* Aviso recogido que confirma una acción. */
+.avisoHecho {
+  display: flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: var(--um-esp-xs);
+  max-width: 100%;
+  padding-left: var(--um-esp-md);
+  border-radius: var(--um-radio-chip);
+  background: var(--um-semaforo-comodo-fondo);
+  color: var(--um-semaforo-comodo-texto);
+}
+
+.avisoTexto {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--um-esp-xs);
+  min-height: 44px;
+  padding-right: var(--um-esp-md);
+}
+
+.avisoAccion {
+  min-height: var(--um-tactil-minimo);
+  padding: 0 var(--um-esp-md);
+  border: 0;
+  border-left: 1px solid currentColor;
+  background: none;
+  color: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Fila de Mis lugares con "Editar" aparte (no puede ir dentro del enlace de la fila). */
+.filaConAccion {
+  position: relative;
+}
+
+.filaConAccion > .fila {
+  min-height: 92px;
+  align-items: flex-start;
+  padding-right: calc(var(--um-esp-md) + 88px);
+}
+
+.filaConAccion .lado {
+  position: absolute;
+  top: var(--um-esp-sm);
+  right: var(--um-esp-md);
+  pointer-events: none;
+}
+
+.editar {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  min-width: var(--um-tactil-minimo);
+  min-height: var(--um-tactil-minimo);
+  padding: 0 var(--um-esp-md);
+  border: 0;
+  background: none;
+  color: var(--um-termico-sombra-plena);
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.tarjeta:empty {
+  display: none;
+}
+
+/* "Guardar" / "Guardado" en el encabezado de la 06 (área táctil de 56). */
+.guardar {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--um-esp-xs);
+  min-height: var(--um-tactil-minimo);
+  padding: 0 var(--um-esp-sm);
+  margin-right: calc(-1 * var(--um-esp-sm));
+  border: 0;
+  border-radius: var(--um-radio-control);
+  background: none;
+  color: var(--um-termico-sombra-plena);
+  cursor: pointer;
+}
+
+.chipsDesplazables > li {
+  flex-shrink: 0;
+}
+
+ul.chipsDesplazables {
+  margin-block: 0;
+  list-style: none;
+}

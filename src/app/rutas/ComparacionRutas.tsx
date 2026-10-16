@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, type ReactNode } from 'react'
 import { Link, Navigate, useNavigate, useSearchParams } from 'react-router'
 import type { Feature, Point } from 'geojson'
 import { Boton, Encabezado } from '../../componentes'
@@ -12,6 +12,7 @@ import { MapaRutas } from '../../mapa/MapaRutas'
 import { nearRoute } from '../../rutas/cercanos'
 import { preflightSteps } from '../../rutas/avisos'
 import { singleRoute } from '../../rutas/rutas'
+import { useGuardarLugar } from '../perfil/GuardarLugar'
 import { AvisoCalor } from '../recorrido/AvisoCalor'
 import { heatWarningEnabled, heatWarningHiddenToday, hideHeatWarningToday } from '../recorrido/preferencias'
 import { ProteccionSolar } from '../recorrido/ProteccionSolar'
@@ -41,6 +42,8 @@ export function ComparacionRutas() {
   const destino = data?.destinos.find((d) => d.id === destinoId)
   const nombre = destino ? (language === 'es' ? destino.nombre.es : destino.nombre.en) : ''
   const point: [number, number] | null = destino?.lat != null && destino.lon != null ? [destino.lon, destino.lat] : null
+  // S1: "Guardar" en el encabezado (también para destinos fuera del mapa de sombra).
+  const guardar = useGuardarLugar(destino?.id ?? null, nombre)
 
   const routes = useMemo(() => {
     const target = data?.destinos.find((d) => d.id === destinoId)
@@ -58,7 +61,9 @@ export function ComparacionRutas() {
   }, [data, graph, routes])
 
   if (data && !destino) return <Pantalla title="" volver={volver} mensaje={t('rutas.destinoDesconocido')} enlace={enlace('/buscar')} />
-  if (data && destino && !point) return <Pantalla title={nombre} volver={volver} mensaje={t('buscar.sinUbicacion')} enlace={enlace('/buscar')} />
+  if (data && destino && !point) {
+    return <Pantalla title={nombre} volver={volver} mensaje={t('buscar.sinUbicacion')} enlace={enlace('/buscar')} guardar={guardar} />
+  }
   if (data && point && !insideArea(data.meta, point)) {
     return (
       <Pantalla
@@ -66,10 +71,13 @@ export function ComparacionRutas() {
         volver={volver}
         mensaje={t('rutas.fueraDelArea', { destino: nombre, distancia: formatDistance(metersBetween(data.meta.area.centro, point), language) })}
         enlace={enlace('/buscar')}
+        guardar={guardar}
       />
     )
   }
-  if (data && !origen) return <Pantalla title={nombre} volver={volver} mensaje={t('origen.falta')} enlace={enlace('/buscar')} />
+  if (data && !origen) {
+    return <Pantalla title={nombre} volver={volver} mensaje={t('origen.falta')} enlace={enlace('/buscar')} guardar={guardar} />
+  }
 
   const thermal = ctx.thermalAt(ctx.hora.time)
   const level = routes && context ? levelOfRoute(routes.shaded, thermal, context) : null
@@ -102,7 +110,7 @@ export function ComparacionRutas() {
 
   return (
     <main className={c.pantalla}>
-      <Encabezado title={nombre} onBack={volver} />
+      <Encabezado title={nombre} onBack={volver} action={guardar.action} />
       <div className={c.mapa}>
         {data && origen && point && routes && (
           <MapaRutas
@@ -119,6 +127,7 @@ export function ComparacionRutas() {
         {(!routes || !data) && <p className={`${c.estado} um-cuerpo`}>{t('buscar.calculando')}</p>}
       </div>
       <section className={c.panel}>
+        {guardar.notice}
         <NotaEstimado time={ctx.hora.time} provisional={!!ctx.data?.meta.datos_provisionales} />
         {routes && !unica && (
           <>
@@ -180,6 +189,7 @@ export function ComparacionRutas() {
           onStart={nextStep}
         />
       )}
+      {guardar.sheet}
     </main>
   )
 }
@@ -204,17 +214,27 @@ function TarjetaRuta(props: { activa: boolean; onClick?: () => void; titulo: str
   )
 }
 
-function Pantalla({ title, volver, mensaje, enlace }: { title: string; volver: () => void; mensaje: string; enlace: string }) {
+interface PantallaProps {
+  title: string
+  volver: () => void
+  mensaje: string
+  enlace: string
+  guardar?: { action: ReactNode; sheet: ReactNode; notice: ReactNode }
+}
+
+function Pantalla({ title, volver, mensaje, enlace, guardar }: PantallaProps) {
   const { t } = useT()
   return (
     <>
-      <Encabezado title={title || t('pantallas.p06')} onBack={volver} />
+      <Encabezado title={title || t('pantallas.p06')} onBack={volver} action={guardar?.action} />
       <main className={s.contenido}>
+        {guardar?.notice}
         <p className="um-cuerpo">{mensaje}</p>
         <Link className={`${s.botonEnlace} um-cuerpo-fuerte`} to={enlace}>
           {t('rutas.verDestinos')}
         </Link>
       </main>
+      {guardar?.sheet}
     </>
   )
 }
