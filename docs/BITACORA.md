@@ -40,6 +40,18 @@ Es el paso P2 de `docs/prompts-sugerencias.md` y cubre el punto S2, que queda en
   - El recorrido completo se probó en el navegador: planear, guardar, descargar el `.ics`, ver Mis salidas,
     el aviso del mapa y el botón de la 15.
 
+- **Otra vez "Failed to fetch dynamically imported module"**: la autora vio el mismo archivo
+  (`BuscarDestino-C_C_aj2M.js`). Era de la versión anterior a P1 (`ab7a2fe`): en el teléfono seguía abierta
+  una página vieja, sin la protección de P1. Al activarse un service worker nuevo se borran los archivos
+  viejos de la copia sin conexión, y la página vieja falla en el siguiente cambio de pantalla.
+  - Arreglo: `public/sw-recarga.js`, cargado en el service worker con `workbox.importScripts`. Al activarse
+    una versión nueva, recarga las páginas que seguían abiertas, también las de versiones viejas.
+  - La recarga no va en `event.waitUntil`: su pedido espera a que termine la activación y se trababa.
+  - Se probó en el navegador:
+    - sin el arreglo se reproduce el error;
+    - con el arreglo, la página vieja se recarga con la versión nueva y "Buscar" abre bien;
+    - en la primera visita no recarga.
+
 ### Decisiones (de la autora, anotadas en "Notas de Claude Code")
 
 - Se guarda el punto de partida de cada salida.

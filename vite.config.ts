@@ -79,6 +79,8 @@ export default defineConfig({
         globIgnores: ['**/*-{cyrillic,cyrillic-ext,greek,greek-ext,vietnamese}-*.woff2', '404.html'],
         // MapLibre ocupa ~1 MB y muestras.bin.gz ~0,9 MB.
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
+        // Al activarse una versión nueva, recarga las páginas abiertas con la anterior (public/sw-recarga.js).
+        importScripts: ['sw-recarga.js'],
         // Cualquier pantalla abre sin conexión (la app resuelve la ruta).
         navigateFallback: 'index.html',
         // La versión de prueba vive en <base>prueba/ (dos enlaces, octubre de 2026): la copia sin conexión de
