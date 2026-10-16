@@ -470,6 +470,33 @@ máximo tres toques por acción y un solo lugar para borrar todo. Todo se guarda
 - Máximo sugerido: 10 lugares; el undécimo pide borrar uno.
 - "Borrar mis datos" borra lugares, salidas (S2), logros (S3) y nombre; no toca los ajustes.
 
+### S2 · Agenda de salidas
+
+La persona dice adónde va y a qué hora quiere llegar; la app le dice a qué hora salir para ir con más sombra.
+
+| Pantalla | Nodo | Qué |
+|---|---|---|
+| Planear una salida | 146:2554 | Encabezado Volver + "Planear una salida" · "Adónde": fila con el lugar (un lugar guardado o "Buscar un lugar"; abre la lista de Mis lugares y 05) · "Cuándo": "Quiero llegar a las {hora}" (abre el selector de hora de 04, 113:836) y chips Hoy · Mañana · Otro día · nota "Te decimos a qué hora salir para ir con más sombra." · botón "Calcular la hora de salida" |
+| Tu salida | 146:2724 | Chip Estimado · tarjeta: "Sal a las" + hora en Dato 28 verde + "Llegas a {nombre} ({lugar}) a las {hora}" · dos cifras: minutos al sol directo y % en sombra · franja Precaución si la llegada cae entre 11 a. m. y 3 p. m. ("A esa hora hace calor fuerte. Lleva agua y gorra.") · "Guardar en mi agenda" (primario) y "Añadir a mi calendario" (secundario) · nota "Si abres la app cerca de la hora, te avisamos. Para una alarma, añádela a tu calendario." · enlace "Ver la ruta" (06) |
+| Mis salidas | 148:2516 | Encabezado con el total · chip Estimado · salidas agrupadas por día ("Hoy, viernes 16") · fila: ícono del lugar, "{hora de salida} · {nombre}", lugar, "Llegas {hora} · {min} al sol" y "· en tu calendario" si se añadió · "Editar" · botón "Planear una salida" · nota "Las salidas pasadas se borran solas." |
+| Mis salidas vacío | 148:2615 | Ícono Calendario (146:331) · "No tienes salidas planeadas" · "Dinos a qué hora quieres llegar. Te decimos cuándo salir con más sombra." · "Planear una salida" |
+| Aviso al abrir la app | 148:2664 | Si la app se abre entre 15 min antes y 10 min después de una hora de salida: aviso (nivel Aviso, ícono Reloj) arriba en la hoja del mapa: "Es hora de salir hacia {nombre}" / "Sal ahora por la ruta con más sombra · {min} min". Tocarlo abre la ruta (06). Sigue la regla de un aviso a la vez (G6) |
+
+**Para el código**
+
+- Cálculo: entre la hora de llegada menos 60 min y la hora de llegada menos la duración de la ruta, buscar la
+  salida con menos minutos al sol (cada 5 min), y entre dos iguales, la más tarde. Llegar 5 min antes de la
+  hora pedida. Usa la misma lógica y la misma fuente de rutas que "¿Cuándo salir?" (15) y G3.
+- "Añadir a mi calendario": genera un archivo `.ics` (un evento con la hora de salida, título "Salir hacia
+  {nombre} · Umbral", alarma 10 min antes y el enlace estable a la ruta). El teléfono lo abre con su calendario.
+  Sin servidor ni permisos.
+- La app no puede avisar con la pantalla apagada (no hay servidor de notificaciones): por eso el texto dice
+  "si abres la app" y ofrece el calendario. No prometer más.
+- Una salida guardada: `{ id, lugarId o destinoId, llegada (fecha y hora), salida, enCalendario }`. Las
+  pasadas se borran al abrir la app. Las cifras se recalculan al abrir.
+- Entradas: Perfil › Mis salidas, y en "¿Cuándo salir?" (15) un botón secundario "Guardar en mi agenda"
+  con la hora elegida.
+
 ## Navegación
 
 ```
