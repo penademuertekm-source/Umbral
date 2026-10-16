@@ -161,7 +161,14 @@ Code, en el PC de la autora. Se coordinan por este repositorio; no comparten con
   detente y anótalo en la sección "Notas de Claude Code" al final de esa lista.
 - **Sincronizar.** Antes de empezar: `git pull`. Al terminar cada punto: build, pruebas, commit
   `<número>: <resumen>` (por ejemplo `04-1: leyenda con trazos distintos`) y `git push`. Subir a esta rama
-  publica en GitHub Pages; si las pruebas fallan, no se publica.
+  publica en el **enlace de prueba**; si las pruebas fallan, no se publica.
+- **Dos enlaces.** Desde el 2026-10-16 GitHub Pages publica dos versiones juntas:
+  - estable: https://penademuertekm-source.github.io/Umbral/ — sale de la rama `estable`. Es la que la autora
+    muestra; no cambia mientras se trabaja.
+  - de prueba: https://penademuertekm-source.github.io/Umbral/prueba/ — sale de esta rama
+    (`claude/inspiring-cannon-6rmgzq`), donde trabaja Claude Code.
+  Nunca subas cambios a `estable`. Solo Claude (chat) la mueve, y solo cuando la autora pide pasar una etapa
+  verificada a la versión estable.
 - **Respaldo.** La rama `respaldo/antes-del-rediseno` guarda la versión que probó la autora. No la borres
   ni la modifiques.
 - **Figma.** Cada pantalla terminada tiene su nodo en la especificación. Mira solo ese nodo con

@@ -1,5 +1,8 @@
-# Publica la app en GitHub Pages (Fase 10): https://penademuertekm-source.github.io/Umbral/
-# Corre al subir cambios a la rama principal o a mano desde la pestaña Actions ("Run workflow").
+# Publica la app en GitHub Pages con dos enlaces (desde el 2026-10-16):
+#   estable:   https://penademuertekm-source.github.io/Umbral/         ← rama "estable" (la que se muestra)
+#   de prueba: https://penademuertekm-source.github.io/Umbral/prueba/  ← rama de trabajo de Claude Code
+# Corre al subir cambios a la rama de trabajo o a mano desde la pestaña Actions ("Run workflow").
+# Para pasar una etapa a la versión estable: mover la rama "estable" y volver a correr este flujo a mano.
 # Primero prueba y arma la app; solo publica si Pages está activado (Settings → Pages → Source: GitHub Actions).
 name: Publicar en GitHub Pages
 
@@ -8,7 +11,6 @@ on:
   push:
     branches:
       - claude/inspiring-cannon-6rmgzq
-      - main
 
 permissions:
   contents: read
@@ -19,33 +21,85 @@ concurrency:
   group: pages
   cancel-in-progress: false
 
+env:
+  RAMA_ESTABLE: estable
+  RAMA_PRUEBA: claude/inspiring-cannon-6rmgzq
+
 jobs:
   construir:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     outputs:
       pages: ${{ steps.pages.outputs.activo }}
     steps:
-      - uses: actions/checkout@v4
+      - name: Traer la versión de prueba
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.RAMA_PRUEBA }}
+          path: prueba
+
+      - name: Traer la versión estable
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.RAMA_ESTABLE }}
+          path: estable
 
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
+          cache-dependency-path: |
+            prueba/package-lock.json
+            estable/package-lock.json
 
       - name: Instalar dependencias
-        run: npm ci
+        run: |
+          (cd prueba && npm ci)
+          (cd estable && npm ci)
 
-      - name: Pruebas y revisión de código
+      # La versión estable ya pasó sus pruebas cuando fue versión de prueba.
+      - name: Pruebas y revisión de código (versión de prueba)
+        working-directory: prueba
         run: |
           npm test
           npm run lint
 
-      - name: Armar la app para /${{ github.event.repository.name }}/
+      - name: Armar la versión estable para /${{ github.event.repository.name }}/
+        working-directory: estable
         env:
           VITE_BASE: /${{ github.event.repository.name }}/
           VITE_URL_PUBLICA: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
         run: npm run build
+
+      - name: Armar la versión de prueba para /${{ github.event.repository.name }}/prueba/
+        working-directory: prueba
+        env:
+          VITE_BASE: /${{ github.event.repository.name }}/prueba/
+          VITE_URL_PUBLICA: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/prueba/
+        run: npm run build
+
+      # GitHub Pages solo usa el 404.html de la raíz. El de la versión estable abre la app estable, salvo que la
+      # dirección sea de la versión de prueba: entonces pasa a /prueba/?ruta=… y la app de prueba recupera la ruta.
+      - name: Juntar las dos versiones
+        env:
+          BASE: /${{ github.event.repository.name }}/
+        run: |
+          mkdir sitio
+          cp -r estable/dist/. sitio/
+          mkdir sitio/prueba
+          cp -r prueba/dist/. sitio/prueba/
+          rm -f sitio/prueba/404.html
+          desvio="<script>(function(){var b='${BASE}prueba/',p=location.pathname;if(p.indexOf(b)===0){location.replace(b+'?ruta='+encodeURIComponent(p.slice(b.length-1)+location.search+location.hash))}})()</script>"
+          recupera="<script>(function(){var r=new URLSearchParams(location.search).get('ruta');if(r){history.replaceState(null,'','${BASE}prueba'+r)}})()</script>"
+          python3 - "$desvio" "$recupera" <<'PY'
+          import sys
+          desvio, recupera = sys.argv[1], sys.argv[2]
+          for ruta, script in (("sitio/404.html", desvio), ("sitio/prueba/index.html", recupera)):
+              html = open(ruta, encoding="utf-8").read()
+              assert "<head>" in html, ruta
+              open(ruta, "w", encoding="utf-8").write(html.replace("<head>", "<head>" + script, 1))
+          PY
+          ls sitio sitio/prueba | head -40
 
       - name: ¿Está activado GitHub Pages?
         id: pages
@@ -64,7 +118,7 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         if: steps.pages.outputs.activo == 'si'
         with:
-          path: dist
+          path: sitio
 
   publicar:
     needs: construir

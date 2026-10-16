@@ -81,6 +81,9 @@ export default defineConfig({
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
         // Cualquier pantalla abre sin conexión (la app resuelve la ruta).
         navigateFallback: 'index.html',
+        // La versión de prueba vive en <base>prueba/ (dos enlaces, octubre de 2026): la copia sin conexión de
+        // la versión estable no debe responder por ella.
+        navigateFallbackDenylist: [new RegExp(`^${process.env.VITE_BASE ?? '/'}prueba/`)],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/api\.open-meteo\.com\//,
