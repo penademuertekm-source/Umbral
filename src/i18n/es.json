@@ -786,5 +786,9 @@
     "ir": "Ir a",
     "descansar": "Descansar",
     "ajustes": "Ajustes"
+  },
+  "hoja": {
+    "agrandar": "Agrandar la hoja",
+    "achicar": "Achicar la hoja"
   }
 }

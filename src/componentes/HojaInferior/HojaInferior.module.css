@@ -1,29 +1,79 @@
+/* Hoja inferior (Figma 105:328). Alturas en % del alto de pantalla (G11): asomada ≈ 200, media ≈ 420 y
+   completa ≈ 720 px de 844. Asomada y media crecen con el contenido hasta el 60 %, para que el mapa conserve
+   al menos el 40 % (N7); desde ahí el contenido se desplaza. */
+
 .hoja {
+  --hoja-asomada: 24dvh;
+  --hoja-media: 50dvh;
+  --hoja-completa: 85dvh;
+  --hoja-tope: 60dvh;
+
   position: fixed;
   bottom: 0;
   left: 50%;
   z-index: 20;
   display: flex;
   flex-direction: column;
-  gap: var(--um-esp-sm);
   width: 100%;
   max-width: var(--app-ancho-max);
-  max-height: 85dvh;
+  max-height: var(--hoja-tope);
   overflow-y: auto;
-  padding: var(--um-esp-sm) var(--um-esp-md) max(var(--um-esp-lg), env(safe-area-inset-bottom));
+  padding: 0 var(--um-esp-md) max(var(--um-esp-md), env(safe-area-inset-bottom));
   background: var(--um-base-superficie);
   border-radius: var(--um-radio-hoja) var(--um-radio-hoja) 0 0;
   box-shadow: var(--um-elevacion-hoja);
   transform: translateX(-50%);
+  transition:
+    min-height 200ms ease-out,
+    max-height 200ms ease-out;
   animation: subir 220ms ease-out;
+}
+
+.hoja[data-altura='asomada'] {
+  min-height: var(--hoja-asomada);
+}
+
+.hoja[data-altura='media'] {
+  min-height: var(--hoja-media);
+}
+
+.hoja[data-altura='completa'] {
+  min-height: var(--hoja-completa);
+  max-height: var(--hoja-completa);
 }
 
 .hoja:focus {
   outline: none;
 }
 
-.asa {
+/* Zona del asa: 28 px de alto con el asa de 40 × 5 al centro. */
+.zonaAsa {
+  position: relative;
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  height: 28px;
+}
+
+button.zonaAsa {
+  z-index: 1;
   align-self: center;
+  width: 50%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: grab;
+  touch-action: none;
+}
+
+/* Relleno invisible hasta los 56 px del área táctil (solo hacia abajo, sin tapar el botón Cerrar). */
+button.zonaAsa::after {
+  position: absolute;
+  inset: 0 0 calc(28px - var(--um-tactil-minimo));
+  content: '';
+}
+
+.asa {
   width: 40px;
   height: 5px;
   border-radius: 3px;
@@ -58,7 +108,8 @@
 .contenido {
   display: flex;
   flex-direction: column;
-  gap: var(--um-esp-md);
+  gap: var(--um-esp-sm);
+  padding-top: var(--um-esp-sm);
 }
 
 @keyframes subir {

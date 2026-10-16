@@ -20,6 +20,7 @@ import {
   type IconName,
   type MarkerKind,
   type NoticeItem,
+  type SheetHeight,
 } from '../../componentes'
 import { SEGMENT_STATES, THERMAL_LEVELS, type ThermalLevel } from '../../config/niveles'
 import niveles from '../../estilos/niveles.module.css'
@@ -182,6 +183,7 @@ export function Guia() {
   const { t, language, setLanguage } = useT()
   const [sheetOpen, setSheetOpen] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
+  const [sheetHeight, setSheetHeight] = useState<SheetHeight>('asomada')
 
   return (
     <div className={s.guia}>
@@ -432,7 +434,13 @@ export function Guia() {
             </Boton>
           </div>
         </div>
-        <HojaInferior open={sheetOpen} onClose={() => setSheetOpen(false)} title={t('guia.componentes.hojaTitulo')}>
+        <HojaInferior
+          open={sheetOpen}
+          onClose={() => setSheetOpen(false)}
+          title={t('guia.componentes.hojaTitulo')}
+          height={sheetHeight}
+          onHeightChange={setSheetHeight}
+        >
           <MuestraTramo state="sombra" />
           <p className="um-cuerpo">{t('guia.componentes.hojaTexto')}</p>
           <Boton onClick={() => setSheetOpen(false)}>{t('comun.cerrar')}</Boton>

@@ -786,5 +786,9 @@
     "ir": "Go to",
     "descansar": "Rest",
     "ajustes": "Settings"
+  },
+  "hoja": {
+    "agrandar": "Expand the sheet",
+    "achicar": "Shrink the sheet"
   }
 }
