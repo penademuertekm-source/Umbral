@@ -4,15 +4,21 @@ import {
   deleteMyData,
   emptyProfile,
   MAX_PLACES,
+  MAX_TRIPS,
+  markTripInCalendar,
   parse,
+  prunePastTrips,
   placeForDestination,
   readProfile,
   removePlace,
+  removeTrip,
   renamePlace,
   restorePlace,
+  saveTrip,
   setName,
   STORAGE_KEY,
   subscribe,
+  tripDueNow,
   VERSION,
   type ProfileStorage,
 } from './almacen'
@@ -152,3 +158,62 @@ describe('perfil guardado en el teléfono', () => {
     expect(readProfile(storage)).toBe(readProfile(storage))
   })
 })
+
+describe('salidas planeadas', () => {
+  let storage: ReturnType<typeof memoryStorage>
+  beforeEach(() => {
+    storage = memoryStorage()
+  })
+  const trip = (departure: string) => ({
+    destinationId: 'plaza',
+    origin: [-73.24, 10.47] as [number, number],
+    arrival: '2026-10-16T20:00:00.000Z',
+    departure,
+    inCalendar: false,
+  })
+
+  it('las guarda en orden de salida y las edita por id', () => {
+    const late = saveTrip(trip('2026-10-16T19:45:00.000Z'), storage)
+    saveTrip(trip('2026-10-16T14:00:00.000Z'), storage)
+    expect(readProfile(storage).trips.map((t) => t.departure.slice(11, 16))).toEqual(['14:00', '19:45'])
+    if (!late.ok) throw new Error('no se guardó')
+    saveTrip({ ...late.trip, departure: '2026-10-16T12:00:00.000Z' }, storage)
+    expect(readProfile(storage).trips.map((t) => t.departure.slice(11, 16))).toEqual(['12:00', '14:00'])
+    markTripInCalendar(late.trip.id, storage)
+    expect(readProfile(storage).trips[0].inCalendar).toBe(true)
+    removeTrip(late.trip.id, storage)
+    expect(readProfile(storage).trips).toHaveLength(1)
+  })
+
+  it('tiene un máximo', () => {
+    for (let i = 0; i < MAX_TRIPS; i++) saveTrip(trip(`2026-10-${10 + (i % 18)}T12:00:00.000Z`), storage)
+    expect(saveTrip(trip('2026-10-30T12:00:00.000Z'), storage)).toEqual({ ok: false, reason: 'limite' })
+  })
+
+  it('al abrir la app borra las pasadas, pero no hasta 10 minutos después de su hora', () => {
+    saveTrip(trip('2026-10-16T13:00:00.000Z'), storage)
+    saveTrip(trip('2026-10-16T13:55:00.000Z'), storage)
+    saveTrip(trip('2026-10-16T15:00:00.000Z'), storage)
+    expect(prunePastTrips(new Date('2026-10-16T14:00:00.000Z'), storage)).toBe(1)
+    expect(readProfile(storage).trips).toHaveLength(2)
+  })
+
+  it('"Es hora de salir" va de 15 minutos antes a 10 después', () => {
+    saveTrip(trip('2026-10-16T14:00:00.000Z'), storage)
+    const profile = readProfile(storage)
+    expect(tripDueNow(profile, new Date('2026-10-16T13:44:00.000Z'))).toBeUndefined()
+    expect(tripDueNow(profile, new Date('2026-10-16T13:45:00.000Z'))).toBeDefined()
+    expect(tripDueNow(profile, new Date('2026-10-16T14:10:00.000Z'))).toBeDefined()
+    expect(tripDueNow(profile, new Date('2026-10-16T14:11:00.000Z'))).toBeUndefined()
+  })
+
+  it('descarta salidas mal formadas y "Borrar mis datos" las borra', () => {
+    const good = { id: 'x', ...trip('2026-10-16T14:00:00.000Z') }
+    const data = parse(JSON.stringify({ version: VERSION, trips: [good, { id: 'y', origin: [1] }, { ...good, departure: 'mañana' }] }))
+    expect(data.trips).toEqual([good])
+    saveTrip(trip('2026-10-16T14:00:00.000Z'), storage)
+    deleteMyData(storage)
+    expect(readProfile(storage).trips).toEqual([])
+  })
+})
+
