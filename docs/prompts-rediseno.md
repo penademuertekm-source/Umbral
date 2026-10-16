@@ -237,6 +237,48 @@ en "Notas de Claude Code".
 
 ---
 
+## Paso R4 · Descansar, antes de salir, ajustes, perfil de calor y créditos
+
+Puntos: **10-1, 10-2, 18-19, 11-1, 23-1, N6**. Necesita el paso R1a (barra inferior, hoja y avisos).
+
+**Prompt**
+```
+Lee CLAUDE.md, docs/cambios-interfaz.md y, en docs/especificacion-pantallas.md, las secciones
+"10 · Dónde descansar" (122:808), "18 + 19 · Antes de salir" (123:921), "11 · Ajustes"
+(124:1034), "23 · Perfil de calor" (124:1152) y "N6 · Acerca de y créditos" (124:1224), todas
+"rediseño 2026". Haz git pull antes de empezar.
+
+Vamos con el paso R4 de docs/prompts-rediseno.md.
+
+1. 10-1 y 10-2 · Dónde descansar: pines en el mapa con el mismo ícono que la fila de la lista;
+   filas con nombre, tipo y servicios, y una línea de estado con el trazo de sombra y la
+   distancia. Corrige datos/provisional/refugios.csv si hace falta para que la descripción no
+   contradiga el estado (el Callejón: "Callejón estrecho, sin asientos"). Los lugares fuera del
+   mapa de sombra, en gris.
+2. 18-19 · Une las pantallas 18 y 19 en una sola hoja "Antes de salir" sobre la pantalla de rutas:
+   la franja de hora de más calor sale solo si aplica la condición de la 19 y "Lleva contigo"
+   solo si aplica la de la 18. "No mostrar más hoy" vale para toda la hoja. Las rutas
+   /aviso-calor y /proteccion-solar pueden quedar como vista de ejemplo de la hoja.
+3. 11-1 · Ajustes en tres grupos: "Pantalla y avisos", "Ayuda" (Cómo leer el mapa, Cómo se
+   calcula la sombra, Acerca de y créditos) y "Para el equipo de investigación" (CSV). Sin "px".
+4. 23-1 · Perfil de calor: una sola explicación arriba; solo "General" lleva descripción.
+5. N6 · Pantalla nueva "Acerca de y créditos" (ruta /ajustes/creditos), con las secciones de la
+   especificación. Las atribuciones de OpenStreetMap y Open-Meteo van aquí (G10). El equipo y
+   la licencia del código siguen pendientes (D4): déjalos como texto en i18n fácil de cambiar,
+   sin inventar nombres ni licencias.
+
+Mismas reglas de los pasos anteriores: i18n, tokens, 15 px, nada solo por color, un commit por
+punto con su estado en "hecho", build y pruebas antes de cada commit, y anotar contradicciones
+en "Notas de Claude Code".
+```
+
+**Cómo verificar**
+1. En `/refugios`, cada pin del mapa tiene el mismo ícono que su fila.
+2. Inicia un recorrido a mediodía: sale una sola hoja "Antes de salir", no dos pantallas seguidas.
+3. En `/ajustes` › Acerca de y créditos aparecen OpenStreetMap y Open-Meteo.
+
+---
+
 ## Retomar (si se cortó el uso)
 
 ```
