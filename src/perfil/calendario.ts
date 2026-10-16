@@ -21,7 +21,7 @@ export function icsDate(date: Date): string {
 
 /** Escapa un texto para iCalendar: barra invertida, punto y coma, coma y saltos de línea. */
 export function icsText(text: string): string {
-  return text.replace(/\\/g, '\\\\').replace(/;/g, '\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n')
+  return text.replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n')
 }
 
 /** Corta una línea en pedazos de 75 bytes como pide el formato (las siguientes empiezan con un espacio). */

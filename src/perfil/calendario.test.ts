@@ -14,7 +14,7 @@ const EVENT = {
 describe('archivo de calendario (.ics)', () => {
   it('escribe fechas en UTC y escapa el texto', () => {
     expect(icsDate(new Date('2026-10-16T19:45:00.123Z'))).toBe('20261016T194500Z')
-    expect(icsText('a, b; c\\d\ne')).toBe('a\\, b\; c\\\\d\\ne')
+    expect(icsText('a, b; c\\d\ne')).toBe('a\\, b\\; c\\\\d\\ne')
   })
 
   it('tiene un evento con la hora de salida, el título, la alarma de 10 minutos y el enlace', () => {
