@@ -337,7 +337,8 @@
       "avisoTitulo": "En 150 m cruzas un tramo al sol",
       "avisoDetalle": "Busca el andén con sombra",
       "avisoNubladoTitulo": "Está nublado: la sombra cambia poco",
-      "avisoNubladoDetalle": "El mapa la muestra más tenue"
+      "avisoNubladoDetalle": "El mapa la muestra más tenue",
+      "barraInferior": "Barra inferior"
     },
     "espaciado": {
       "titulo": "Espaciado, forma y elevación",
@@ -778,5 +779,12 @@
     "verUnoMas": "Ver 1 aviso más",
     "verMas": "Ver {n} avisos más",
     "contador": "+{n}"
+  },
+  "barraInferior": {
+    "etiqueta": "Secciones de la app",
+    "mapa": "Mapa",
+    "ir": "Ir a",
+    "descansar": "Descansar",
+    "ajustes": "Ajustes"
   }
 }

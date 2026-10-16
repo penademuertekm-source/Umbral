@@ -337,7 +337,8 @@
       "avisoTitulo": "In 150 m you cross a stretch in the sun",
       "avisoDetalle": "Look for the shaded sidewalk",
       "avisoNubladoTitulo": "It is cloudy: the shade changes little",
-      "avisoNubladoDetalle": "The map shows it fainter"
+      "avisoNubladoDetalle": "The map shows it fainter",
+      "barraInferior": "Bottom bar"
     },
     "espaciado": {
       "titulo": "Spacing, shape and elevation",
@@ -778,5 +779,12 @@
     "verUnoMas": "Show 1 more notice",
     "verMas": "Show {n} more notices",
     "contador": "+{n}"
+  },
+  "barraInferior": {
+    "etiqueta": "App sections",
+    "mapa": "Map",
+    "ir": "Go to",
+    "descansar": "Rest",
+    "ajustes": "Settings"
   }
 }

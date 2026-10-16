@@ -5,6 +5,7 @@ import isotipoPositivo from '../../../design/marca/isotipo-positivo.svg'
 import indiceIconos from '../../../design/iconos/indice.json'
 import {
   Aviso,
+  BarraInferior,
   BarraSuperior,
   Boton,
   ChipEstimado,
@@ -360,6 +361,15 @@ export function Guia() {
             <h3 className="um-cuerpo-fuerte">{t('guia.componentes.barra')}</h3>
             <div className={s.telefono}>
               <BarraSuperior time={t('guia.tipografia.muestraDato')} level="evitar" utciSun={41} utciShade={35} />
+            </div>
+          </div>
+          <div className={s.grupo}>
+            <h3 className="um-cuerpo-fuerte">{t('guia.componentes.barraInferior')}</h3>
+            <div className={s.telefono}>
+              <BarraInferior active="mapa" />
+            </div>
+            <div className={s.telefono}>
+              <BarraInferior active="ajustes" />
             </div>
           </div>
           <div className={s.grupo}>
