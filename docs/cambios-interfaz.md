@@ -27,6 +27,9 @@ Fuera de esta lista: la prueba de campo de la sombra (hoja en preparación) y la
 | Mapa nublado | La sombra se muestra atenuada con el aviso de nublado; no se oculta |
 | Atribución | Fuera del mapa, en Ajustes › Créditos. Para cumplir la guía de OpenStreetMap se muestra también al abrir la app (pantalla de inicio) y el mapa conserva un botón ⓘ pequeño que lleva a Créditos |
 | `design/` | Autorizado tocarlo para separar los colores de Precaución y Evitar y para pasar las medidas a unidades relativas |
+| Sugerencias del docente (2026-10-16) | Se construyen S1 (Mis lugares), S2 (Agenda de salidas) y S3 (Metas de sol evitado), en sus versiones sin servidor. Compartir y comunidad, y parquear a la sombra quedan fuera por ahora. Tienen prioridad: los pasos R2 a R6 quedan en pausa |
+| Barra inferior (2026-10-16) | La cuarta pestaña pasa de "Ajustes" a "Perfil"; Ajustes queda dentro de Perfil |
+| Reglas (2026-10-16) | Privacidad: se guardan en el teléfono los lugares, las salidas y los totales de sol evitado, nunca el camino hecho con el GPS. Honestidad: todo lo simulado dice "Ejemplo · simulación" |
 
 ## 1. Cambios en todas las pantallas
 
@@ -93,6 +96,20 @@ Sin cambios: 01, 02, 14 y 22. En pausa: 08 y 12.
 | N5 | Permiso bloqueado: pasos para Android y para iPhone, botón "Volver a intentar" (observación 3) | P2 | listo para código |
 | N6 | Acerca de y créditos: autores, docente, Areandina, licencia, privacidad, fuentes y atribuciones | P2 | listo para código |
 | N7 | Comprobaciones: 04, 06 y 13 en celular pequeño, letra grande e inglés; 04 en computador | P3 | en Figma: celular pequeño, letra grande e inglés hechos (falta decidir la barra inferior con letra grande); falta 04 en computador |
+
+## 3b. Sugerencias del docente (S1 a S3)
+
+Principio para las tres ("menor resistencia": que la persona esté cómoda): sin registro ni contraseña, lo ya
+hecho se repite con un toque, máximo tres toques para cualquier acción y un solo botón "Borrar mis datos".
+
+| N.º | Qué | Figma | Código | Estado |
+|---|---|---|---|---|
+| S0 | Barra inferior: Mapa · Ir a · Descansar · **Perfil** | Barra y pestaña Perfil | Ruta /perfil; Ajustes pasa a /perfil/ajustes (o queda en /ajustes, enlazado desde Perfil) | pendiente |
+| S1 | Mis lugares: perfil en el teléfono, lugares guardados con su ruta con sombra, "Ir con sombra" de un toque | Perfil · Mis lugares (y vacío) · Guardar lugar en 06 · "Tus lugares" en 05 · cambiar nombre y borrar | Módulo de guardado local, CRUD de lugares, enlace con 05 y 06, "Borrar mis datos" | pendiente |
+| S2 | Agenda de salidas: "quiero llegar a las…", hora de salida con más sombra, calendario del teléfono | Planear salida · resultado · Mis salidas (y vacío) · aviso "Es hora de salir" | Cálculo hacia atrás con la lógica de 15, archivo .ics, aviso dentro de la app | pendiente |
+| S3 | Metas de sol evitado: contador semanal, insignias, beneficios de ejemplo (simulados) | Logros · cambios en 22 (llegada) · ajuste para apagar logros | Suma del sol evitado en cada llegada, reglas de logros en `src/config/`, beneficios simulados en archivo aparte | pendiente |
+
+Regla de S3: ninguna meta premia distancia ni salir entre 11 a. m. y 3 p. m.
 
 ## 4. Datos que la interfaz necesita
 

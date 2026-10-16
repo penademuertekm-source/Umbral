@@ -115,9 +115,13 @@ docs/              especificación, prompts por fases, reportes de validación
    - Todo valor calculado dice "estimado" y muestra su hora.
    - Mientras haya datos provisionales en uso, se ve el aviso "Datos provisionales".
    - Nunca presentes datos inventados como medidos.
+   - Lo simulado del prototipo (por ejemplo, los beneficios de los logros) dice "Ejemplo · simulación" y va
+     en un archivo aparte.
    - El GPS no detecta la acera: la app recomienda la acera, pero no la verifica.
-2. **Privacidad.** Sin backend, sin analítica y sin guardar el recorrido. La ubicación se usa solo
-   en el dispositivo. Los ajustes se guardan en `localStorage`.
+2. **Privacidad.** Sin backend, sin analítica y sin guardar el recorrido (el camino hecho con el GPS).
+   La ubicación se usa solo en el dispositivo. En `localStorage` se guardan los ajustes y, desde el
+   2026-10-16, los lugares, las salidas planeadas y los totales de sol evitado. Todo se borra con
+   "Borrar mis datos".
 3. **Accesibilidad (WCAG 2.1 AA).**
    - Contraste AA, nada se distingue solo por color.
    - Texto mínimo de 15 px; botones de 60 px de alto; área táctil ≥ 56 px.
