@@ -11,6 +11,11 @@ Prompts para aplicar en código los puntos de `docs/cambios-interfaz.md` que Cla
 3. Lee el plan que te muestre antes de aprobarlo.
 4. Al terminar, sigue **Cómo verificar** y avísale a Claude (chat) para que revise el enlace publicado.
 
+**Dónde se ven los cambios.** Lo que sube Claude Code aparece en el enlace de prueba,
+https://penademuertekm-source.github.io/Umbral/prueba/ (las rutas de "Cómo verificar" van después de `/prueba`).
+El enlace estable, https://penademuertekm-source.github.io/Umbral/, no cambia hasta que la autora pida pasar
+una etapa verificada a la versión estable.
+
 Cada paso debería caber en una ventana de uso del plan Pro. Si se corta, usa el prompt **Retomar** del final.
 
 ---
