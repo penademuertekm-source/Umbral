@@ -1,0 +1,148 @@
+/* Perfil (S1, Figma 143:1977), Mis lugares (143:2425) y las páginas que se abren desde Perfil. */
+
+.pantalla {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+.contenido {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--um-esp-sm);
+  padding: var(--um-esp-sm) var(--um-esp-md) var(--um-esp-lg);
+}
+
+.secundario {
+  color: var(--um-base-texto-secundario);
+}
+
+/* Título de grupo ("Mis lugares", "Planear", "La app"). */
+.grupo {
+  margin: var(--um-esp-sm) 0 0;
+  color: var(--um-base-texto-secundario);
+}
+
+/* Tarjeta con filas separadas por una línea. */
+.tarjeta {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 1px solid var(--um-base-borde);
+  border-radius: var(--um-radio-tarjeta);
+  background: var(--um-base-superficie);
+  overflow: hidden;
+}
+
+.tarjeta > li + li {
+  border-top: 1px solid var(--um-base-borde);
+}
+
+.fila {
+  display: flex;
+  align-items: center;
+  gap: var(--um-esp-md);
+  width: 100%;
+  min-height: 56px;
+  padding: var(--um-esp-sm) var(--um-esp-md);
+  border: 0;
+  background: none;
+  color: var(--um-base-texto);
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.fila:disabled {
+  cursor: default;
+}
+
+.fila:focus-visible {
+  outline-offset: -3px;
+}
+
+.textos {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+/* Ícono en cuadro redondeado (saludo y lugares). */
+.icono {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--um-radio-control);
+  background: var(--um-semaforo-comodo-fondo);
+  color: var(--um-termico-sombra-plena);
+}
+
+.flecha {
+  flex-shrink: 0;
+  color: var(--um-base-texto-secundario);
+}
+
+.cuenta {
+  flex-shrink: 0;
+  color: var(--um-base-texto-secundario);
+}
+
+.nota {
+  margin: var(--um-esp-sm) 0 0;
+  color: var(--um-base-texto-secundario);
+}
+
+/* Páginas de texto (Cómo leer el mapa, Cómo se calcula la sombra, Acerca de y créditos). */
+.texto {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-md);
+  padding: var(--um-esp-md);
+  border: 1px solid var(--um-base-borde);
+  border-radius: var(--um-radio-tarjeta);
+  background: var(--um-base-superficie);
+}
+
+.texto h2 {
+  margin: 0;
+}
+
+.texto p,
+.texto ul {
+  margin: 0;
+}
+
+.listaTexto {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-xs);
+  padding-left: var(--um-esp-md);
+}
+
+.leyenda {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-md);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.leyenda li {
+  display: flex;
+  align-items: center;
+  gap: var(--um-esp-md);
+}
+
+.enlace {
+  display: flex;
+  align-items: center;
+  min-height: var(--um-tactil-minimo);
+  color: var(--um-termico-sombra-plena);
+}

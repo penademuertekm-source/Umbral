@@ -2,12 +2,13 @@
 
 .pantalla {
   display: flex;
+  flex: 1;
   flex-direction: column;
-  min-height: 100dvh;
 }
 
 .mapa {
   position: relative;
+  isolation: isolate;
   height: 38dvh;
   min-height: 220px;
   overflow: hidden;

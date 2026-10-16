@@ -8,7 +8,7 @@ import { ICON_SVGS } from './svgs'
 describe('Icono', () => {
   it('la lista de nombres coincide con design/iconos/indice.json', () => {
     expect([...ICON_NAMES]).toEqual(Object.values(indice).flat())
-    expect(ICON_NAMES).toHaveLength(43)
+    expect(ICON_NAMES).toHaveLength(46)
   })
 
   it('cada nombre tiene su SVG y usa currentColor (sin colores fijos)', () => {

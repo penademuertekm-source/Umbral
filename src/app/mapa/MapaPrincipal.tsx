@@ -16,7 +16,6 @@ import { snap } from '../../rutas/grafo'
 import { isochrones } from '../../rutas/isocronas'
 import { formatDateTime, formatTime, isoLocalDate } from '../../sombra/tiempo'
 import { useSombra } from '../../sombra/useSombra'
-import { CREDITS_ID } from '../ajustes/Ajustes'
 import { AvisoElNino } from '../elnino/AvisoElNino'
 import { markElNinoSeen, seenElNinoToday } from '../elnino/visto'
 import { useConexion } from '../useConexion'
@@ -324,10 +323,10 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
                     <button
                       type="button"
                       className={s.botonFlotante}
-                      aria-label={t('ajustes.boton')}
-                      onClick={() => navigate('/ajustes')}
+                      aria-label={t('barraInferior.perfil')}
+                      onClick={() => navigate('/perfil')}
                     >
-                      <Icono name="ajustes" />
+                      <Icono name="perfil" />
                     </button>
                     {locationMessage && (
                       <p className={`${s.globo} um-etiqueta`} role="status">
@@ -385,13 +384,13 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
                 </div>
               )
             )}
-            {/* G10: las atribuciones van en Ajustes › Créditos; en el mapa queda este botón ⓘ. */}
+            {/* G10: las atribuciones van en Perfil › Acerca de y créditos; en el mapa queda este botón ⓘ. */}
             {!picking && (
               <button
                 type="button"
                 className={s.botonCreditos}
                 aria-label={t('creditos.boton')}
-                onClick={() => navigate(`/ajustes#${CREDITS_ID}`)}
+                onClick={() => navigate('/perfil/acerca')}
               >
                 <span className={s.circuloCreditos}>
                   <Icono name="informacion" />

@@ -99,7 +99,10 @@
     "agua": "Agua",
     "gorra": "Gorra",
     "sombrilla": "Sombrilla",
-    "ropa-clara": "Ropa clara"
+    "ropa-clara": "Ropa clara",
+    "perfil": "Perfil",
+    "guardar": "Guardar",
+    "guardado": "Guardado"
   },
   "barra": {
     "utci": "UTCI estimado · al sol {sol} · a la sombra {sombra}"
@@ -253,10 +256,10 @@
     },
     "iconografia": {
       "titulo": "Iconografía",
-      "texto": "Familia propia: 43 íconos en rejilla de 24 px.",
+      "texto": "Familia propia: 46 íconos en rejilla de 24 px.",
       "regla1": "Rejilla de 24 × 24 px con 2 px de margen interno.",
       "regla2": "Trazo de 2 px, extremos y uniones redondeados.",
-      "regla3": "Solo \"Sombra plena\" y \"Sombra parcial\" usan relleno: replican la lógica del isotipo.",
+      "regla3": "Solo \"Sombra plena\" y \"Sombra parcial\" usan relleno: replican la lógica del isotipo. \"Guardado\" se rellena para marcar lo que ya guardaste.",
       "regla4": "Tamaños: 20 px en marcadores, 24 px en listas, 28 px en avisos.",
       "regla5": "Sobre fondo de color, el ícono toma el color de texto de ese nivel.",
       "interfaz": "Interfaz",
@@ -725,10 +728,11 @@
     "exportarTexto": "{n} respuestas de \"¿Te sirvió esta ruta?\" en este teléfono",
     "exportarUna": "1 respuesta de \"¿Te sirvió esta ruta?\" en este teléfono",
     "exportarNinguna": "Todavía no hay respuestas guardadas",
-    "comoTitulo": "Cómo se calcula la sombra",
-    "comoTexto": "Sin sensores en la calle: con la hora del teléfono, la posición del sol y un modelo 3D del centro (edificios, aleros y árboles). Los valores son estimados y parte de los datos son provisionales.",
     "guardadoLocal": "Los ajustes se guardan solo en este teléfono.",
-    "boton": "Ajustes"
+    "titulo": "Ajustes",
+    "tusDatos": "Tus datos",
+    "borrar": "Borrar mis datos",
+    "borrarTexto": "Lugares, salidas y logros de este teléfono"
   },
   "perfil": {
     "intro": "Si caminas con alguien más sensible al calor, los avisos aparecen antes y las rutas priorizan más la sombra.",
@@ -786,10 +790,45 @@
     "mapa": "Mapa",
     "ir": "Ir a",
     "descansar": "Descansar",
-    "ajustes": "Ajustes"
+    "perfil": "Perfil"
   },
   "hoja": {
     "agrandar": "Agrandar la hoja",
     "achicar": "Achicar la hoja"
+  },
+  "miPerfil": {
+    "titulo": "Perfil",
+    "hola": "Hola",
+    "agregarNombre": "Agrega tu nombre (opcional)",
+    "laApp": "La app",
+    "ajustes": "Ajustes y accesibilidad",
+    "comoLeer": "Cómo leer el mapa",
+    "comoSeCalcula": "Cómo se calcula la sombra",
+    "acerca": "Acerca de y créditos",
+    "guardadoLocal": "Todo se guarda solo en este teléfono."
+  },
+  "comoLeer": {
+    "intro": "Cada andén del centro se dibuja con un trazo según la sombra que tiene a la hora elegida.",
+    "sombra": "Línea continua: andén en sombra ({p} % o más).",
+    "parcial": "Rayas: sombra parcial (de {desde} a {hasta} %).",
+    "expuesto": "Puntos: andén al sol (menos del {p} %).",
+    "arboles": "El ícono de árbol marca un grupo de árboles cercanos.",
+    "estimado": "Son valores estimados con la hora del teléfono, la posición del sol y un modelo 3D del centro.",
+    "semaforo": "Ver los niveles de calor"
+  },
+  "comoSeCalcula": {
+    "texto": "Sin sensores en la calle: con la hora del teléfono, la posición del sol y un modelo 3D del centro (edificios, aleros y árboles). Los valores son estimados y parte de los datos son provisionales.",
+    "calor": "La sensación térmica se estima con el pronóstico de Open-Meteo, al sol y a la sombra."
+  },
+  "acerca": {
+    "proyecto": "Umbral es el prototipo del proyecto de investigación-creación «Diseño de un Mapa Isocrónico de Sombras para el Bienestar Térmico Peatonal en el Centro Histórico de Valledupar».",
+    "programa": "Diseño Gráfico · Fundación Universitaria del Areandina.",
+    "privacidad": "Sin cuentas ni analítica. Tu ubicación se usa solo en este teléfono y nunca se guarda el camino que haces."
+  },
+  "borrarDatos": {
+    "titulo": "¿Borrar tus datos de este teléfono?",
+    "texto": "Se borran tus lugares, tus salidas y tus logros. No se puede deshacer.",
+    "confirmar": "Borrar todo",
+    "hecho": "Listo: tus datos se borraron de este teléfono."
   }
 }

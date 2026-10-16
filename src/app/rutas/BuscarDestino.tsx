@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router'
-import { Boton, Encabezado } from '../../componentes'
+import { BarraInferior, Boton, Encabezado } from '../../componentes'
 import type { HeatLevel } from '../../config/reglas-semaforo'
 import niveles from '../../estilos/niveles.module.css'
 import { laHora } from '../../i18n/hora'
@@ -144,6 +144,7 @@ export function BuscarDestino() {
         </ul>
         <NotaEstimado time={ctx.hora.time} provisional={!!data?.meta.datos_provisionales} />
       </main>
+      <BarraInferior active="ir" />
     </>
   )
 }

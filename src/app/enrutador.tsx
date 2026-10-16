@@ -17,6 +17,8 @@ import { PantallaAvisoCalor, PantallaProteccionSolar } from './recorrido/Pantall
 import { RutaLlegada, RutaRecorrido, RutaRefugios } from './recorrido/rutas'
 import { RutaBuscar, RutaComparacion, RutaCuandoSalir, RutaSinSombra } from './rutas/rutas'
 import { SCREENS } from './pantallas'
+import { Acerca, ComoLeer, ComoSeCalcula } from './perfil/PaginasInfo'
+import { Perfil } from './perfil/Perfil'
 import { ReferenciaSemaforo } from './semaforo/ReferenciaSemaforo'
 
 // La app puede publicarse en una subcarpeta (GitHub Pages, Fase 10): se respeta la base de Vite.
@@ -58,6 +60,11 @@ export const router = createBrowserRouter(
           path: screen.path,
           element: BUILT[screen.path] ?? <PantallaPendiente screen={screen} />,
         })),
+        // Perfil (S0 y S1): no son pantallas numeradas de la especificación original.
+        { path: '/perfil', element: <Perfil /> },
+        { path: '/perfil/como-leer', element: <ComoLeer /> },
+        { path: '/perfil/como-se-calcula', element: <ComoSeCalcula /> },
+        { path: '/perfil/acerca', element: <Acerca /> },
         { path: '*', element: <NoEncontrada /> },
       ],
     },

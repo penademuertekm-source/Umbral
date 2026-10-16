@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router'
-import { Encabezado, Icono } from '../../componentes'
+import { useState } from 'react'
+import { useNavigate } from 'react-router'
+import { BarraInferior, Boton, Encabezado, Icono, Modal } from '../../componentes'
 import { readHeatProfileOption } from '../../clima/configClima'
 import { LANGUAGES, type Language } from '../../i18n/idioma'
 import { translateIn } from '../../i18n/diccionarios'
 import { useT } from '../../i18n/useT'
+import { deleteMyData } from '../../perfil/almacen'
 import { isoLocalDate } from '../../sombra/tiempo'
 import { useHorasAviso } from '../recorrido/horasAviso'
 import { readAnswers } from '../recorrido/preferencias'
@@ -13,28 +14,21 @@ import s from './Ajustes.module.css'
 import { answersToCsv, downloadCsv } from './csv'
 import { applyDisplaySettings, readSettings, writeSetting, type SettingKey, type Settings } from './preferencias'
 
-// Pantalla 11 (nodo 7:2): ajustes y accesibilidad. Todo se guarda solo en el teléfono.
-
-/** Ancla de la sección Créditos (G10). Cuando exista la pantalla N6, el botón ⓘ del mapa irá allá. */
-export const CREDITS_ID = 'creditos'
+// Pantalla 11 (nodo 7:2; S0, 124:1034): ajustes y accesibilidad. Todo se guarda solo en el teléfono.
+// Desde S0 no es pestaña: se abre desde Perfil, que queda activa en la barra inferior. "Cómo se calcula la
+// sombra" y los créditos pasaron a Perfil; aquí queda "Tus datos" con "Borrar mis datos" (Figma 145:2335).
 
 export function Ajustes() {
   const { t, language, setLanguage } = useT()
   const navigate = useNavigate()
-  const volver = useVolver()
+  const volver = useVolver('/perfil')
   const horas = useHorasAviso()
   const [settings, setSettings] = useState<Settings>(readSettings)
   const [answers] = useState(() => readAnswers().length)
   const [profile] = useState(readHeatProfileOption)
+  const [confirmDelete, setConfirmDelete] = useState(false)
+  const [deleted, setDeleted] = useState(false)
   const other: Language = LANGUAGES.find((code) => code !== language) ?? 'es'
-  // G10: el botón ⓘ del mapa llega a /ajustes#creditos.
-  const { hash } = useLocation()
-  const creditsRef = useRef<HTMLElement>(null)
-  useEffect(() => {
-    if (hash !== `#${CREDITS_ID}`) return
-    creditsRef.current?.scrollIntoView({ block: 'start' })
-    creditsRef.current?.focus({ preventScroll: true })
-  }, [hash])
 
   const toggle = (key: SettingKey) => {
     const next = { ...settings, [key]: !settings[key] }
@@ -51,7 +45,7 @@ export function Ajustes() {
 
   return (
     <div className={s.pantalla}>
-      <Encabezado title={t('pantallas.p11')} onBack={volver} />
+      <Encabezado title={t('ajustes.titulo')} onBack={volver} />
       <main className={s.contenido}>
         <ul className={s.lista}>
           {switches.map((item) => (
@@ -110,24 +104,48 @@ export function Ajustes() {
             </button>
           </li>
         </ul>
-        <section className={s.tarjeta} aria-labelledby="como-se-calcula">
-          <h2 id="como-se-calcula" className="um-cuerpo-fuerte">
-            {t('ajustes.comoTitulo')}
-          </h2>
-          <p className="um-etiqueta">{t('ajustes.comoTexto')}</p>
-        </section>
-        <section id={CREDITS_ID} ref={creditsRef} className={s.creditos} aria-labelledby="creditos-titulo" tabIndex={-1}>
-          <h2 id="creditos-titulo" className="um-cuerpo-fuerte">
-            {t('creditos.titulo')}
-          </h2>
-          <ul className={`${s.listaCreditos} um-etiqueta`}>
-            <li>{t('creditos.mapa')}</li>
-            <li>{t('creditos.clima')}</li>
-            <li>{t('creditos.sol')}</li>
-          </ul>
-        </section>
+        <h2 className={`${s.grupo} um-etiqueta`}>{t('ajustes.tusDatos')}</h2>
+        <ul className={s.lista}>
+          <li>
+            <button type="button" className={s.fila} onClick={() => setConfirmDelete(true)}>
+              <span className={s.textos}>
+                <span className={`${s.peligro} um-cuerpo-fuerte`}>{t('ajustes.borrar')}</span>
+                <span className={`${s.secundario} um-etiqueta`}>{t('ajustes.borrarTexto')}</span>
+              </span>
+              <Icono name="avanzar" className={s.flecha} />
+            </button>
+          </li>
+        </ul>
+        <p className={`${s.nota} um-etiqueta`} role="status">
+          {deleted ? t('borrarDatos.hecho') : ''}
+        </p>
         <p className={`${s.nota} ${s.secundario} um-micro`}>{t('ajustes.guardadoLocal')}</p>
       </main>
+      <BarraInferior active="perfil" />
+      <Modal
+        open={confirmDelete}
+        onClose={() => setConfirmDelete(false)}
+        title={t('borrarDatos.titulo')}
+        actions={
+          <>
+            <Boton
+              variant="advertencia"
+              onClick={() => {
+                deleteMyData()
+                setConfirmDelete(false)
+                setDeleted(true)
+              }}
+            >
+              {t('borrarDatos.confirmar')}
+            </Boton>
+            <Boton variant="secundario" onClick={() => setConfirmDelete(false)}>
+              {t('comun.cancelar')}
+            </Boton>
+          </>
+        }
+      >
+        <p>{t('borrarDatos.texto')}</p>
+      </Modal>
     </div>
   )
 }

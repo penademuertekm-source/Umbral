@@ -1,6 +1,9 @@
 /* Barra inferior (Figma 105:315) con la pestaña 105:174 (97 × 64; indicador de 56 × 32). */
 
 .barra {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
   display: flex;
   flex-shrink: 0;
   padding: var(--um-esp-sm) var(--um-esp-xs) max(var(--um-esp-sm), env(safe-area-inset-bottom));

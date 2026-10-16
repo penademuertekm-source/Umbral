@@ -102,36 +102,15 @@
   }
 }
 
-.tarjeta {
-  display: flex;
-  flex-direction: column;
-  gap: var(--um-esp-xs);
-  margin: 0 var(--um-esp-lg);
-  padding: var(--um-esp-md) var(--um-esp-lg);
-  border-radius: var(--um-radio-tarjeta);
-  background: var(--um-semaforo-comodo-fondo);
-  color: var(--um-semaforo-comodo-texto);
+/* Título de sección ("Tus datos"). */
+.grupo {
+  margin: var(--um-esp-sm) var(--um-esp-lg) 0;
+  color: var(--um-base-texto-secundario);
 }
 
-/* Créditos (G10): atribuciones obligatorias en texto principal. */
-.creditos {
-  display: flex;
-  flex-direction: column;
-  gap: var(--um-esp-xs);
-  margin: 0 var(--um-esp-lg);
-  scroll-margin-top: var(--um-esp-md);
-}
-
-.creditos:focus {
-  outline: none;
-}
-
-.listaCreditos {
-  display: flex;
-  flex-direction: column;
-  gap: var(--um-esp-xs);
-  margin: 0;
-  padding-left: var(--um-esp-md);
+/* "Borrar mis datos": texto en el color de No recomendado (S0); la palabra dice lo que hace. */
+.peligro {
+  color: var(--um-semaforo-no-recomendado-texto); /* contraste: fondo=um-base-superficie */
 }
 
 .nota {

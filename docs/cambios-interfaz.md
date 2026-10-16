@@ -104,7 +104,7 @@ hecho se repite con un toque, máximo tres toques para cualquier acción y un so
 
 | N.º | Qué | Figma | Código | Estado |
 |---|---|---|---|---|
-| S0 | Barra inferior: Mapa · Ir a · Descansar · **Perfil** | Barra y pestaña Perfil | Ruta /perfil; Ajustes pasa a /perfil/ajustes (o queda en /ajustes, enlazado desde Perfil) | listo para código |
+| S0 | Barra inferior: Mapa · Ir a · Descansar · **Perfil** | Barra y pestaña Perfil | Ruta /perfil; Ajustes pasa a /perfil/ajustes (o queda en /ajustes, enlazado desde Perfil) | hecho |
 | S1 | Mis lugares: perfil en el teléfono, lugares guardados con su ruta con sombra, "Ir con sombra" de un toque | Perfil · Mis lugares (y vacío) · Guardar lugar en 06 · "Tus lugares" en 05 · cambiar nombre y borrar | Módulo de guardado local, CRUD de lugares, enlace con 05 y 06, "Borrar mis datos" | listo para código |
 | S2 | Agenda de salidas: "quiero llegar a las…", hora de salida con más sombra, calendario del teléfono | Planear salida · resultado · Mis salidas (y vacío) · aviso "Es hora de salir" | Cálculo hacia atrás con la lógica de 15, archivo .ics, aviso dentro de la app | listo para código |
 | S3 | Metas de sol evitado: progreso (sol evitado, nivel, retos), colecciones (Pasaporte del centro, Álbum de la sombra) y premios (logros; beneficios y meta de la comunidad simulados) | Logros · Pasaporte · detalle del sello · Álbum · 22 con premios · Premios de ejemplo · interruptor en Ajustes | Suma del sol evitado en cada llegada, reglas de logros en `src/config/`, beneficios simulados en archivo aparte | listo para código |
@@ -146,3 +146,20 @@ Aquí Claude Code anota contradicciones o dudas que encuentre al aplicar un punt
    se separan un poco más con `line-offset` para que no queden pegados.
 5. **06, 10 y 13 conservan el trazo viejo** (ámbar con marca punteada) hasta su propio paso (06-3): su mapa
    no comparte capas con la 04.
+
+**Paso P1 (2026-10-16): decisiones de la autora y notas**
+
+1. **Dónde va la barra inferior.** El mapa todavía no la tiene: eso es R1b, que está en pausa. Por ahora va
+   en Perfil, en sus páginas, en Ajustes, en Buscar (05, "Ir a") y en Dónde descansar (10, "Descansar").
+   El mapa conserva su diseño y su botón flotante de ajustes pasa a ser Perfil.
+2. **Páginas provisionales desde Perfil.** "Cómo leer el mapa" (`/perfil/como-leer`), "Cómo se calcula la
+   sombra" (`/perfil/como-se-calcula`) y "Acerca de y créditos" (`/perfil/acerca`) son páginas sencillas
+   hechas con los textos que estaban en Ajustes, hasta que lleguen N2 y N6. El botón ⓘ del mapa ya lleva a
+   `/perfil/acerca`.
+3. **Ajustes conserva su lista actual** y suma "Tus datos" al final. El reordenamiento en grupos de la
+   Figma 124:1034 es 11-1, que va en otro paso.
+4. **Duda: las respuestas de "¿Te sirvió esta ruta?".** "Borrar mis datos" no las borra, porque la
+   especificación nombra lugares, salidas, logros y nombre. Esas respuestas se exportan en CSV para la
+   investigación. ¿Deben borrarse también?
+5. En el código, `borrarMisDatos()` se llama `deleteMyData()` (`src/perfil/almacen.ts`), porque CLAUDE.md
+   pide identificadores en inglés.

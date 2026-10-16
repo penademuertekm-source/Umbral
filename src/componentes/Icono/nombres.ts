@@ -1,4 +1,4 @@
-// Nombres de los 43 íconos de design/iconos/, en el mismo orden que indice.json.
+// Nombres de los 46 íconos de design/iconos/, en el mismo orden que indice.json.
 // Una prueba verifica que esta lista y el índice coincidan.
 export const ICON_NAMES = [
   // interfaz
@@ -13,6 +13,9 @@ export const ICON_NAMES = [
   'compartir',
   'informacion',
   'mapa',
+  'perfil',
+  'guardar',
+  'guardado',
   // estado
   'sombra-plena',
   'sombra-parcial',

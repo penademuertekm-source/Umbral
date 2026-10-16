@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Encabezado, Icono } from '../../componentes'
+import { BarraInferior, Encabezado, Icono } from '../../componentes'
 import { formatDistance } from '../../i18n/numeros'
 import { useT } from '../../i18n/useT'
 import { insideArea, metersBetween } from '../../mapa/datos'
@@ -56,40 +56,43 @@ export function Refugios() {
   )
 
   return (
-    <main className={s.pantalla}>
-      <Encabezado title={t('pantallas.p10')} onBack={volver} />
-      <div className={s.mapa}>
-        {data && <MapaRutas data={data} places={places} origin={origen?.point ?? null} label={t('refugios.mapa')} />}
-      </div>
-      <div className={s.contenido}>
-        <NotaEstimado time={ctx.hora.time} provisional={!!data?.meta.datos_provisionales} />
-        <p className={`${s.secundario} um-etiqueta`}>{t('refugios.distancias', { lugar })}</p>
-        {data && filas.length === 0 && <p className="um-cuerpo">{t('refugios.sinDatos')}</p>}
-        <ul className={s.lista}>
-          {filas.map(({ refuge, inside, meters }) => {
-            const distancia = Number.isFinite(meters) ? formatDistance(meters, language) : ''
-            const detalle = inside
-              ? [textoSombraLugar(i18n, sombras?.get(refuge.id)), distancia && t('refugios.aDistancia', { distancia })]
-              : [distancia ? t('refugios.fuera', { distancia }) : t('buscar.sinUbicacion')]
-            const extras = [refuge.asientos === 'si' && t('refugios.asientos'), refuge.agua_potable === 'si' && t('refugios.agua')]
-            return (
-              <li key={refuge.id} className={s.fila}>
-                <span className={`${s.icono} ${inside ? '' : s.iconoFuera}`} aria-hidden="true">
-                  <Icono name={refugeIcon(refuge)} />
-                </span>
-                <span className={s.textos}>
-                  <span className="um-cuerpo-fuerte">{refuge.nombre}</span>
-                  <span className="um-etiqueta">{language === 'es' ? refuge.descripcion.es : refuge.descripcion.en}</span>
-                  <span className={`${s.secundario} um-etiqueta`}>{detalle.filter(Boolean).join(' · ')}</span>
-                  {extras.some(Boolean) && (
-                    <span className={`${s.secundario} um-micro`}>{extras.filter(Boolean).join(' · ')}</span>
-                  )}
-                </span>
-              </li>
-            )
-          })}
-        </ul>
-      </div>
-    </main>
+    <>
+      <main className={s.pantalla}>
+        <Encabezado title={t('pantallas.p10')} onBack={volver} />
+        <div className={s.mapa}>
+          {data && <MapaRutas data={data} places={places} origin={origen?.point ?? null} label={t('refugios.mapa')} />}
+        </div>
+        <div className={s.contenido}>
+          <NotaEstimado time={ctx.hora.time} provisional={!!data?.meta.datos_provisionales} />
+          <p className={`${s.secundario} um-etiqueta`}>{t('refugios.distancias', { lugar })}</p>
+          {data && filas.length === 0 && <p className="um-cuerpo">{t('refugios.sinDatos')}</p>}
+          <ul className={s.lista}>
+            {filas.map(({ refuge, inside, meters }) => {
+              const distancia = Number.isFinite(meters) ? formatDistance(meters, language) : ''
+              const detalle = inside
+                ? [textoSombraLugar(i18n, sombras?.get(refuge.id)), distancia && t('refugios.aDistancia', { distancia })]
+                : [distancia ? t('refugios.fuera', { distancia }) : t('buscar.sinUbicacion')]
+              const extras = [refuge.asientos === 'si' && t('refugios.asientos'), refuge.agua_potable === 'si' && t('refugios.agua')]
+              return (
+                <li key={refuge.id} className={s.fila}>
+                  <span className={`${s.icono} ${inside ? '' : s.iconoFuera}`} aria-hidden="true">
+                    <Icono name={refugeIcon(refuge)} />
+                  </span>
+                  <span className={s.textos}>
+                    <span className="um-cuerpo-fuerte">{refuge.nombre}</span>
+                    <span className="um-etiqueta">{language === 'es' ? refuge.descripcion.es : refuge.descripcion.en}</span>
+                    <span className={`${s.secundario} um-etiqueta`}>{detalle.filter(Boolean).join(' · ')}</span>
+                    {extras.some(Boolean) && (
+                      <span className={`${s.secundario} um-micro`}>{extras.filter(Boolean).join(' · ')}</span>
+                    )}
+                  </span>
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+      </main>
+      <BarraInferior active="descansar" />
+    </>
   )
 }

@@ -99,7 +99,10 @@
     "agua": "Water",
     "gorra": "Cap",
     "sombrilla": "Umbrella",
-    "ropa-clara": "Light clothing"
+    "ropa-clara": "Light clothing",
+    "perfil": "Profile",
+    "guardar": "Save",
+    "guardado": "Saved"
   },
   "barra": {
     "utci": "Estimated UTCI · in the sun {sol} · in the shade {sombra}"
@@ -253,10 +256,10 @@
     },
     "iconografia": {
       "titulo": "Iconography",
-      "texto": "Custom family: 43 icons on a 24 px grid.",
+      "texto": "Custom family: 46 icons on a 24 px grid.",
       "regla1": "24 × 24 px grid with 2 px inner margin.",
       "regla2": "2 px stroke, rounded caps and joins.",
-      "regla3": "Only \"Full shade\" and \"Partial shade\" use fill: they echo the logic of the symbol.",
+      "regla3": "Only \"Full shade\" and \"Partial shade\" use fill: they echo the logic of the symbol. \"Saved\" is filled to mark what you already saved.",
       "regla4": "Sizes: 20 px on markers, 24 px in lists, 28 px in alerts.",
       "regla5": "On a colored background, the icon takes that level's text color.",
       "interfaz": "Interface",
@@ -725,10 +728,11 @@
     "exportarTexto": "{n} answers to \"Was this route helpful?\" on this phone",
     "exportarUna": "1 answer to \"Was this route helpful?\" on this phone",
     "exportarNinguna": "No answers saved yet",
-    "comoTitulo": "How shade is calculated",
-    "comoTexto": "No street sensors: it uses your phone's time, the sun's position and a 3D model of the center (buildings, eaves and trees). Values are estimates and some data are provisional.",
     "guardadoLocal": "Settings are saved only on this phone.",
-    "boton": "Settings"
+    "titulo": "Settings",
+    "tusDatos": "Your data",
+    "borrar": "Delete my data",
+    "borrarTexto": "Places, trips and achievements on this phone"
   },
   "perfil": {
     "intro": "If you walk with someone more sensitive to heat, warnings appear earlier and routes give more priority to shade.",
@@ -786,10 +790,45 @@
     "mapa": "Map",
     "ir": "Go to",
     "descansar": "Rest",
-    "ajustes": "Settings"
+    "perfil": "Profile"
   },
   "hoja": {
     "agrandar": "Expand the sheet",
     "achicar": "Shrink the sheet"
+  },
+  "miPerfil": {
+    "titulo": "Profile",
+    "hola": "Hello",
+    "agregarNombre": "Add your name (optional)",
+    "laApp": "The app",
+    "ajustes": "Settings and accessibility",
+    "comoLeer": "How to read the map",
+    "comoSeCalcula": "How shade is calculated",
+    "acerca": "About and credits",
+    "guardadoLocal": "Everything is saved only on this phone."
+  },
+  "comoLeer": {
+    "intro": "Each sidewalk in the center is drawn with a line that shows its shade at the chosen time.",
+    "sombra": "Solid line: sidewalk in shade ({p} % or more).",
+    "parcial": "Dashes: partial shade ({desde} to {hasta} %).",
+    "expuesto": "Dots: sidewalk in the sun (less than {p} %).",
+    "arboles": "The tree icon marks a group of nearby trees.",
+    "estimado": "These are estimates based on the phone's time, the sun's position and a 3D model of the center.",
+    "semaforo": "See the heat levels"
+  },
+  "comoSeCalcula": {
+    "texto": "No street sensors: the phone's time, the sun's position and a 3D model of the center (buildings, eaves and trees). Values are estimates and part of the data is provisional.",
+    "calor": "Feels-like temperature is estimated from the Open-Meteo forecast, in the sun and in the shade."
+  },
+  "acerca": {
+    "proyecto": "Umbral is the prototype of the research-creation project “Design of an Isochronic Shade Map for Pedestrian Thermal Well-being in the Historic Center of Valledupar”.",
+    "programa": "Graphic Design · Fundación Universitaria del Areandina.",
+    "privacidad": "No accounts and no analytics. Your location is used only on this phone and the path you walk is never saved."
+  },
+  "borrarDatos": {
+    "titulo": "Delete your data from this phone?",
+    "texto": "Your places, trips and achievements will be deleted. This can't be undone.",
+    "confirmar": "Delete everything",
+    "hecho": "Done: your data was deleted from this phone."
   }
 }

@@ -371,7 +371,7 @@ export function Guia() {
               <BarraInferior active="mapa" />
             </div>
             <div className={s.telefono}>
-              <BarraInferior active="ajustes" />
+              <BarraInferior active="perfil" />
             </div>
           </div>
           <div className={s.grupo}>
