@@ -4,6 +4,55 @@ Registro de lo hecho en cada fase, lo pendiente y las decisiones tomadas. La ent
 
 ---
 
+## Rediseño · Paso R1a: piezas de la pantalla del mapa (2026-10-16)
+
+Paso R1a de `docs/prompts-rediseno.md`. Un commit por punto; el estado de cada uno quedó en
+`docs/cambios-interfaz.md`. La pantalla 04 todavía no se recompone: eso es el paso R1b.
+
+### Hecho
+
+- **Ícono Mapa** (`design/iconos/interfaz/mapa.svg`, nodo 106:339): queda en el índice; ahora son 43 íconos.
+- **04-1 · Trazos de los andenes**: sombra continua, parcial a rayas de 10/5 px y al sol a puntos redondos
+  cada 7 px. El grosor es de 4 px en el zoom inicial (16,5), unos 2 px al alejar y unos 6 px al acercar; los
+  guiones escalan con él. Al alejar, los dos andenes de una calle se separan un poco más con `line-offset`:
+  en los datos, el lado "a" siempre queda a la izquierda del sentido de su línea y el "b" a la derecha, a unos
+  8 m. Sale la marca central punteada. `MuestraTramo` dibuja los mismos trazos y la leyenda dice
+  "Sombra · Parcial · Al sol".
+- **04-9 · Grupos de árboles**: marcador Árbol de 28 px, sin número.
+- **G1 · `ChipEstimado`**: "Estimado · {hora}" y "· provisional" en el texto de Precaución, con el ícono
+  Información. Se ve de 32 px con área táctil de 56 y abre una hoja con los datos provisionales, las fuentes y
+  las atribuciones (la hoja va en `<body>` porque el chip vive en capas del mapa que no reciben toques). En la
+  04 reemplaza al chip "Datos provisionales".
+- **N1 · `Aviso`**: Alerta, Aviso y Nublado, con el chip Recogido en los colores del nivel. Se ve uno a la vez;
+  "+N" los abre todos. Los colores salen de `estilos/niveles.module.css`.
+- **N1 · `BarraInferior`**: Mapa · Ir a · Descansar · Ajustes, con prop `active` y `aria-current`. Mapa, Ir a
+  y Descansar conservan `?hora` y `?desde` (`useEnlace`). Por ahora solo en `/guia`.
+- **N1 · `HojaInferior`** con `height` (asomada, media o completa: 24, 50 y 85 % del alto). Asomada y media
+  crecen con el contenido hasta el 60 % (N7). Con `onHeightChange`, el asa cambia la altura al tocarla,
+  deslizarla o con las flechas; su zona es de 28 px, con relleno invisible hasta 56. Las hojas que ya existían
+  quedan en media, y la separación del contenido baja de 16 a 8 px, como en Figma.
+- **G10 · Atribución**: sale de encima del mapa. Va en la sección Créditos de Ajustes (`/ajustes#creditos`) y
+  en la pantalla de inicio; en el mapa queda el botón ⓘ "Créditos y datos".
+- Pruebas nuevas de `Aviso` y `HojaInferior` (98 en total). Los cambios se revisaron en el navegador con
+  capturas a 390 × 844, en gris para los trazos.
+
+### Decisiones (de la autora, anotadas en "Notas de Claude Code")
+
+- G1 solo en la 04 por ahora: su estado es "hecho en 04; el resto con su paso".
+- Créditos es una sección de Ajustes hasta que exista la pantalla N6.
+- El aviso recogido conserva los colores de su nivel.
+- El grosor de los andenes cambia con el zoom (no es fijo).
+- 06, 10 y 13 conservan el trazo viejo hasta su paso (06-3).
+
+### Pendiente
+
+- Paso R1b: recomponer la 04 con estas piezas (encabezado, hoja asomada, barra inferior, nublado atenuado).
+- La barra inferior con "Letra más grande" sigue pendiente de la decisión de la autora (N7, punto 7). Por
+  ahora las etiquetas pueden pasar a dos líneas.
+- El componente Marcador conserva la variante "grupo" con número en `/guia`; el mapa ya no la usa.
+
+---
+
 ## Ajuste · Observación 4 y registro para trabajar fuera de la sesión (2026-10-07)
 
 - La autora abrió la app publicada en el celular y preguntó por qué "Cómo llegar a la Plaza Alfonso López"

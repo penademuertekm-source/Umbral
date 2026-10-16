@@ -2,7 +2,8 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import { useState } from 'react'
 import { beforeEach, describe, expect, it } from 'vitest'
 import { ProveedorIdioma } from '../../i18n/ProveedorIdioma'
-import { HojaInferior, type SheetHeight } from './HojaInferior'
+import type { SheetHeight } from './alturas'
+import { HojaInferior } from './HojaInferior'
 
 function HojaConAltura({ initial }: { initial: SheetHeight }) {
   const [height, setHeight] = useState(initial)

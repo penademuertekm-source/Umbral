@@ -1,11 +1,9 @@
 import { useEffect, useId, useRef, type PointerEvent, type ReactNode } from 'react'
 import { useT } from '../../i18n/useT'
 import { Icono } from '../Icono/Icono'
+import { SHEET_HEIGHTS, type SheetHeight } from './alturas'
 import s from './HojaInferior.module.css'
 
-/** Alturas de la hoja (04-5, Figma 105:328): asomada ≈ 200, media ≈ 420 y completa ≈ 720 px de 844. */
-export const SHEET_HEIGHTS = ['asomada', 'media', 'completa'] as const
-export type SheetHeight = (typeof SHEET_HEIGHTS)[number]
 
 /** Desplazamiento del asa (px) que cuenta como deslizar hacia arriba o hacia abajo. */
 const SWIPE_PX = 24
