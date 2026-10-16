@@ -836,7 +836,8 @@
   "acerca": {
     "proyecto": "Umbral es el prototipo del proyecto de investigación-creación «Diseño de un Mapa Isocrónico de Sombras para el Bienestar Térmico Peatonal en el Centro Histórico de Valledupar».",
     "programa": "Diseño Gráfico · Fundación Universitaria del Areandina.",
-    "privacidad": "Sin cuentas ni analítica. Tu ubicación se usa solo en este teléfono y nunca se guarda el camino que haces."
+    "privacidad": "Sin cuentas ni analítica. Tu ubicación se usa solo en este teléfono y nunca se guarda el camino que haces.",
+    "version": "Versión {version} · {fecha}"
   },
   "borrarDatos": {
     "titulo": "¿Borrar tus datos de este teléfono?",

@@ -1,3 +1,4 @@
+import { execSync } from 'node:child_process'
 import { copyFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import react from '@vitejs/plugin-react'
@@ -7,6 +8,15 @@ import { token } from './scripts/tokens.mjs'
 
 // Colores del manifiesto y de la barra del navegador: salen de design/tokens.css.
 const themeColor = token('um-termico-sombra-plena')
+
+/** Versión que se ve en Perfil › Acerca de y créditos: el commit con el que se armó la app. */
+function appVersion(): string {
+  try {
+    return execSync('git rev-parse --short HEAD', { stdio: ['ignore', 'pipe', 'ignore'] }).toString().trim()
+  } catch {
+    return 'local'
+  }
+}
 
 /** <meta name="theme-color"> y el ícono de iOS, sin escribir colores a mano en index.html. */
 function cabeceraPwa(): Plugin {
@@ -42,6 +52,10 @@ function respaldo404(): Plugin {
 
 // https://vite.dev/config/
 export default defineConfig({
+  define: {
+    __APP_VERSION__: JSON.stringify(appVersion()),
+    __APP_BUILT__: JSON.stringify(new Date().toISOString()),
+  },
   // Ruta base: "/" en local; "/Umbral/" en GitHub Pages (la pone el flujo de publicación con VITE_BASE).
   base: process.env.VITE_BASE ?? '/',
   plugins: [

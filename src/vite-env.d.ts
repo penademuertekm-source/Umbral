@@ -8,3 +8,8 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv
 }
+
+/** Commit con el que se armó la app (vite.config.ts). */
+declare const __APP_VERSION__: string
+/** Fecha y hora en que se armó la app (ISO 8601). */
+declare const __APP_BUILT__: string

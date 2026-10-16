@@ -2,6 +2,7 @@ import { Link } from 'react-router'
 import { BarraInferior, Encabezado, Icono, MuestraTramo } from '../../componentes'
 import { PARTIAL_THRESHOLD, SHADE_THRESHOLD } from '../../config/umbrales'
 import { useT } from '../../i18n/useT'
+import { formatDateTime } from '../../sombra/tiempo'
 import { useVolver } from '../useVolver'
 import s from './Perfil.module.css'
 
@@ -75,7 +76,7 @@ export function ComoSeCalcula() {
 
 /** Acerca de y créditos (antes, la sección Créditos de Ajustes; G10). El botón ⓘ del mapa llega aquí. */
 export function Acerca() {
-  const { t } = useT()
+  const { t, language } = useT()
   return (
     <Pagina title={t('miPerfil.acerca')}>
       <section className={s.texto}>
@@ -93,6 +94,10 @@ export function Acerca() {
         </ul>
       </section>
       <p className={`${s.nota} um-etiqueta`}>{t('acerca.privacidad')}</p>
+      {/* Para saber qué versión tiene abierta el teléfono (enlace de prueba o estable). */}
+      <p className={`${s.nota} um-etiqueta`}>
+        {t('acerca.version', { version: __APP_VERSION__, fecha: formatDateTime(new Date(__APP_BUILT__), language) })}
+      </p>
     </Pagina>
   )
 }

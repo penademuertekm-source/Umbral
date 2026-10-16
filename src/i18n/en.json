@@ -836,7 +836,8 @@
   "acerca": {
     "proyecto": "Umbral is the prototype of the research-creation project “Design of an Isochronic Shade Map for Pedestrian Thermal Well-being in the Historic Center of Valledupar”.",
     "programa": "Graphic Design · Fundación Universitaria del Areandina.",
-    "privacidad": "No accounts and no analytics. Your location is used only on this phone and the path you walk is never saved."
+    "privacidad": "No accounts and no analytics. Your location is used only on this phone and the path you walk is never saved.",
+    "version": "Version {version} · {fecha}"
   },
   "borrarDatos": {
     "titulo": "Delete your data from this phone?",
