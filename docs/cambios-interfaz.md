@@ -66,19 +66,19 @@ Fuera de esta lista: la prueba de campo de la sombra (hoja en preparación) y la
 | 07-1 | Ficha | Cuadras sin nombre nombradas por sus esquinas (observación 1) | P1 | C D | listo para código |
 | 07-2 | Ficha | "Sensación térmica" en lugar de UTCI; Sky View Factor plegado | P1 | C | listo para código |
 | 09-1 | El Niño | Revisar en la primera pasada (no revisada aún) | P2 | — | pendiente |
-| 10-1 | Dónde descansar | El Callejón no dice "sombra continua" junto a "Al sol a esta hora"; se describe lo de ahora | P1 | C | pendiente |
-| 10-2 | Dónde descansar | Los mismos íconos en el mapa y en la lista | P2 | F C | pendiente |
-| 11-1 | Ajustes | "Letra más grande" sin "px"; CSV en "Para el equipo de investigación"; entradas a "Acerca de y créditos" y "Cómo leer el mapa" | P2 | F C | pendiente |
+| 10-1 | Dónde descansar | El Callejón no dice "sombra continua" junto a "Al sol a esta hora"; se describe lo de ahora | P1 | C | en Figma (por revisar) |
+| 10-2 | Dónde descansar | Los mismos íconos en el mapa y en la lista | P2 | F C | en Figma (por revisar) |
+| 11-1 | Ajustes | "Letra más grande" sin "px"; CSV en "Para el equipo de investigación"; entradas a "Acerca de y créditos" y "Cómo leer el mapa" | P2 | F C | en Figma (por revisar) |
 | 13-1 | Recorrido | Indicaciones con referencias, no con puntos cardinales | P1 | C | listo para código |
 | 13-2 | Recorrido | Andén recomendado resaltado en el mapa; solo la próxima indicación; barra de progreso que avanza | P2 | F C | listo para código |
 | 15-1 | Cuándo salir | "Mañana" → "En la mañana" | P1 | C | listo para código |
 | 15-2 | Cuándo salir | Leyenda solo con los niveles presentes; explicar las franjas verdes | P2 | F C | listo para código |
 | 16-1 | Sin ruta | "A esta hora la ruta va casi toda al sol"; cifra principal: minutos al sol | P1 | C | listo para código |
 | 17-1 | Semáforo | Colores de Precaución y Evitar más distintos (ΔE hoy ≈ 4,5) | P2 | F C | pendiente |
-| 18-19 | Antes de salir | Las pantallas 18 y 19 se unen en una sola hoja | P2 | F C | pendiente |
+| 18-19 | Antes de salir | Las pantallas 18 y 19 se unen en una sola hoja | P2 | F C | en Figma (por revisar) |
 | 21-1 | Fuera del centro | Revisar la ubicación de nuevo: hoy dice "Estás fuera" a 290 m de la plaza | P1 | C | pendiente |
 | 21-2 | Fuera del centro | Mapa real de la ciudad (OpenFreeMap) y botón "Ya llegué al centro" (observación 4) | P2 | F C | pendiente |
-| 23-1 | Perfil de calor | Una descripción compartida en lugar de repetirla cuatro veces | P2 | F C | pendiente |
+| 23-1 | Perfil de calor | Una descripción compartida en lugar de repetirla cuatro veces | P2 | F C | en Figma (por revisar) |
 
 Sin cambios: 01, 02, 14 y 22. En pausa: 08 y 12.
 
@@ -91,7 +91,7 @@ Sin cambios: 01, 02, 14 y 22. En pausa: 08 y 12.
 | N3 | Noche: "Ya no hay sol" y ver el día siguiente | P2 | en Figma en parte: "Mañana" en el selector de hora (113:836); falta el estado de noche |
 | N4 | Estados: calculando, sin clima, GPS perdido durante el recorrido | P2 | pendiente |
 | N5 | Permiso bloqueado: pasos para Android y para iPhone, botón "Volver a intentar" (observación 3) | P2 | pendiente |
-| N6 | Acerca de y créditos: autores, docente, Areandina, licencia, privacidad, fuentes y atribuciones | P2 | pendiente |
+| N6 | Acerca de y créditos: autores, docente, Areandina, licencia, privacidad, fuentes y atribuciones | P2 | en Figma (por revisar) |
 | N7 | Comprobaciones: 04, 06 y 13 en celular pequeño, letra grande e inglés; 04 en computador | P3 | pendiente |
 
 ## 4. Datos que la interfaz necesita

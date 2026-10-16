@@ -182,6 +182,67 @@ Aparece cuando la ruta queda en "Evitar a pie" o "No recomendado". Ejemplo con v
 5. Botón primario "Ver la mejor hora" y secundario "Caminar de todos modos".
 6. Barra inferior con "Ir a" activa.
 
+### 10 · Dónde descansar — rediseño 2026 — nodo 122:808
+
+La etiqueta visible es "Dónde descansar" (pestaña Descansar); "puntos de permanencia" queda en la documentación.
+1. Encabezado "Dónde descansar".
+2. Mapa sin la capa de sombra, con un pin por lugar: círculo blanco de 40 px, borde verde y **el mismo ícono que la fila de la lista** (Banca, Alero, Lugar) (10-2). Lleva el chip estimado.
+3. **Hoja media** con la lista; se desplaza si no cabe. Cada fila tiene:
+   - el ícono en un círculo de 44 px;
+   - el nombre;
+   - el tipo y los servicios ("Bancas bajo mangos · con asientos");
+   - una línea de estado con el trazo de sombra y la distancia ("Sombra parcial ahora · a 450 m").
+   - La descripción no contradice el estado: el Callejón dice "Callejón estrecho, sin asientos" y "Al sol a esta hora" (10-1).
+   - Los lugares fuera del mapa de sombra llevan el ícono en gris y "Fuera del mapa de sombra · 3,1 km".
+4. Barra inferior con "Descansar" activa.
+
+### 18 + 19 · Antes de salir — rediseño 2026 — nodo 123:921
+
+Una sola hoja que reemplaza a las pantallas 18 y 19 (18-19). Sale al tocar "Iniciar recorrido" cuando corresponde: entre 11 a. m. y 3 p. m., o con 5 min o más al sol y UV de 8 o más. Va sobre la pantalla de rutas con velo al 45 %, en una hoja completa que se ajusta a su contenido. De arriba abajo:
+1. "Antes de salir" en Título 24 y Cerrar.
+2. Franja Precaución con el ícono Ola de calor: "Es la hora de más calor" / "De 11:00 a. m. a 3:00 p. m. el sol pega más fuerte. Esta ruta tiene unos 2 min al sol." Va solo si aplica la condición de la 19.
+3. "UV 10 · muy alto ahora" con el ícono de índice UV.
+4. "Lleva contigo": tres fichas con ícono de 28 px y nombre (Protector solar, Agua, Gorra). Va solo si aplica la condición de la 18.
+5. "Recomendación general; no reemplaza el consejo de un profesional de salud."
+6. Casilla "No mostrar más hoy" (vale para toda la hoja).
+7. Botón primario "Iniciar recorrido" y secundario "Ver la mejor hora para salir".
+
+### 11 · Ajustes — rediseño 2026 — nodo 124:1034
+
+Barra inferior con "Ajustes" activa. Grupos en tarjeta, filas de 56 px como mínimo:
+1. **"Pantalla y avisos"**:
+   - "Letra más grande · Agranda toda la letra" (sin "px") (11-1);
+   - "Alto contraste";
+   - "Aviso de calor · De 11:00 a. m. a 3:00 p. m.";
+   - "Ahorro de datos · Usa el último clima guardado";
+   - "Perfil de calor · General ›";
+   - "Idioma / Language · Español ›".
+   - Interruptores de 52 × 32: encendido verde con la perilla a la derecha, apagado gris con la perilla a la izquierda.
+2. **"Ayuda"**: "Cómo leer el mapa ›" (N2), "Cómo se calcula la sombra ›" y "Acerca de y créditos ›" (N6).
+3. **"Para el equipo de investigación"**: "Exportar respuestas (CSV)".
+4. "Los ajustes se guardan solo en este teléfono."
+
+### 23 · Perfil de calor — rediseño 2026 — nodo 124:1152
+
+1. Volver y "Perfil de calor".
+2. Una sola explicación arriba, en franja Cómodo: "Si caminas con alguien más sensible al calor, elige su perfil: los avisos salen antes y las rutas buscan más sombra." (23-1)
+3. Lista de opciones: General ("Avisos con los umbrales estándar"), Adulto mayor, Con niños pequeños, Embarazo y Sensibilidad al calor por salud. Solo General lleva descripción; las demás ya no repiten la misma frase.
+4. "Se guarda solo en este teléfono. No pedimos datos de salud."
+5. Botón "Guardar".
+
+### N6 · Acerca de y créditos — nueva 2026 — nodo 124:1224
+
+Desde Ajustes › Ayuda y desde el botón ⓘ del mapa. Pantalla que se desplaza.
+1. Volver y título.
+2. Isotipo y "umbral · Sombra para caminar el Centro Histórico de Valledupar · prototipo".
+3. **"Proyecto"**: investigación-creación, programa, Areandina y año; **equipo (por confirmar)**; docente.
+4. **"Datos y fuentes"**:
+   - "Mapa: © colaboradores de OpenStreetMap (ODbL)" y "Clima: Open-Meteo (CC BY 4.0)" en texto principal: son las atribuciones obligatorias (G10);
+   - posición del sol: SunCalc comparado con el SPA del NREL;
+   - datos provisionales en revisión.
+5. **"Privacidad"**.
+6. **"Licencia"**: código por definir; datos derivados de OSM con ODbL.
+
 ### 05 · Buscar destino — nodo 4:2
 Campo "¿A dónde vas?" (filtra destinos locales; sin buscador externo en el prototipo). Encabezado "Destinos frecuentes · sombra a las {hora}". Cada destino muestra distancia, minutos por la ruta con sombra y una píldora "Sombra NN%" con el color de su nivel.
 
