@@ -2,6 +2,7 @@
 // docente"). Todo vive en localStorage bajo una sola clave versionada; nunca se guarda el camino hecho con
 // el GPS (CLAUDE.md, regla 2). Los ajustes (idioma, letra, avisos…) tienen sus propias claves y "Borrar mis
 // datos" no los toca.
+import { CARDS, type CardId } from '../config/logros'
 
 /** Clave única de localStorage. Si cambia la forma de los datos, sube VERSION y migra en `parse`. */
 export const STORAGE_KEY = 'umbral.perfil'
@@ -55,6 +56,8 @@ export interface Arrival {
   departure: string
   /** Recorrido en modo simulación (decisión de la autora, P3a: cuenta, pero queda marcado). */
   simulated: boolean
+  /** Láminas del Álbum de la sombra que ganó la ruta (P3b). */
+  cards?: CardId[]
 }
 
 export interface ProfileData {
@@ -130,7 +133,8 @@ function isArrival(value: unknown): value is Arrival {
     typeof value.avoided === 'number' &&
     Number.isFinite(value.avoided) &&
     isIsoDate(value.departure) &&
-    typeof value.simulated === 'boolean'
+    typeof value.simulated === 'boolean' &&
+    (value.cards === undefined || (Array.isArray(value.cards) && value.cards.every((c) => CARDS.includes(c as CardId))))
   )
 }
 

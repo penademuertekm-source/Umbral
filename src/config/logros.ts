@@ -41,3 +41,14 @@ export const ACHIEVEMENTS: readonly { id: AchievementId; target: number }[] = [
 
 /** Lunes desde el que se cuentan las semanas para elegir los retos (hora de Valledupar). */
 export const WEEK_EPOCH = { year: 2026, month: 1, day: 5 } as const
+
+/** Pasaporte del centro: un sello por destino de destinos.csv y por estos lugares de refugios.csv. */
+export const PASSPORT_EXTRA_REFUGES = ['ref-parque-leyenda'] as const
+
+export type CardId = 'mango' | 'canaguate' | 'alero' | 'otros' | 'muro'
+
+/** Láminas del Álbum de la sombra, en el orden de Figma (151:2844). */
+export const CARDS: readonly CardId[] = ['mango', 'canaguate', 'alero', 'otros', 'muro']
+
+/** Un tramo de la ruta cuenta para una lámina si tiene al menos esta fracción en sombra (umbral de "parcial"). */
+export const CARD_MIN_SHADE = 0.3

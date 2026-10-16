@@ -11,6 +11,7 @@ import { abbreviate, indexEdges } from '../../mapa/tramos'
 import type { LonLat } from '../../rutas/geometria'
 import { buildLegs, guidanceAt, hasArrived, pointAt, type Guidance, type Maneuver } from '../../rutas/recorrido'
 import { recordArrival } from '../../perfil/almacen'
+import { routeCards } from './laminas'
 import { formatTime } from '../../sombra/tiempo'
 import { formatHora } from '../useHoraElegida'
 import { useVolver } from '../useVolver'
@@ -90,15 +91,19 @@ export function RutaEnCurso() {
       : !!gps && hasArrived(track, gps.state, gps.point, destination, ARRIVAL_RADIUS_M))
   useEffect(() => {
     if (!arrived || !ruta || !destino) return
+    let vigente = true
     // S3: la llegada se registra aquí, una sola vez, al terminar el recorrido. Se guarda el sol evitado frente
-    // a la ruta más corta a la hora de salida; nunca el camino.
-    const saved = recordArrival({
-      destinationId: destino.id,
-      avoided: ruta.shortest.sunMinutes - ruta.route.sunMinutes,
-      departure: ruta.time.toISOString(),
-      simulated: simulating,
-    })
-    const summary = {
+    // a la ruta más corta a la hora de salida y las láminas del Álbum que ganó la ruta; nunca el camino.
+    routeCards(ruta.route, ruta.time, graph, ctx.trees).then((cards) => {
+      if (!vigente) return
+      const saved = recordArrival({
+        destinationId: destino.id,
+        avoided: ruta.shortest.sunMinutes - ruta.route.sunMinutes,
+        departure: ruta.time.toISOString(),
+        simulated: simulating,
+        cards,
+      })
+      const summary = {
       llegada: saved.id,
       destino: destino.id,
       min: String(roundMinutes(ruta.route.minutes)),
@@ -107,8 +112,12 @@ export function RutaEnCurso() {
       nivel: ruta.level ?? undefined,
       hora: formatHora(Math.round((ruta.time.getTime() - ctx.hora.at(0).getTime()) / 60_000)),
       sim: simulating ? '1' : undefined,
+      }
+      navigate(enlace('/llegada', summary), { replace: true })
+    })
+    return () => {
+      vigente = false
     }
-    navigate(enlace('/llegada', summary), { replace: true })
   }, [arrived]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const startSimulation = () => {
