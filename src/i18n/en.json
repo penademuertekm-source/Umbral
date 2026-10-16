@@ -67,6 +67,7 @@
     "idioma": "Language",
     "compartir": "Share",
     "informacion": "Information",
+    "mapa": "Map",
     "sombra-plena": "Full shade",
     "sombra-parcial": "Partial shade",
     "expuesto": "Exposed",
@@ -253,7 +254,7 @@
     },
     "iconografia": {
       "titulo": "Iconography",
-      "texto": "Custom family: 42 icons on a 24 px grid.",
+      "texto": "Custom family: 43 icons on a 24 px grid.",
       "regla1": "24 × 24 px grid with 2 px inner margin.",
       "regla2": "2 px stroke, rounded caps and joins.",
       "regla3": "Only \"Full shade\" and \"Partial shade\" use fill: they echo the logic of the symbol.",

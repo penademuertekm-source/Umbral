@@ -113,4 +113,19 @@ Sin cambios: 01, 02, 14 y 22. En pausa: 08 y 12.
 
 ## Notas de Claude Code
 
-(Vacío. Aquí Claude Code anota contradicciones o dudas que encuentre al aplicar un punto.)
+Aquí Claude Code anota contradicciones o dudas que encuentre al aplicar un punto.
+
+**Paso R1a (2026-10-16): decisiones de la autora sobre el plan**
+
+1. **G1 solo en el mapa por ahora.** El chip estimado reemplaza en la 04 al chip "Datos provisionales"; las
+   otras pantallas conservan su línea "Valores estimados…" hasta su propio paso. Estado de G1: "hecho en 04;
+   el resto con su paso".
+2. **Créditos como sección de Ajustes** (`/ajustes#creditos`), no como la pantalla N6. Cuando llegue N6, el
+   botón ⓘ del mapa apuntará a esa pantalla.
+3. **Aviso recogido** con los colores del nivel de origen, en forma de chip (así está en Figma).
+4. **Grosor de los andenes no fijo:** 4 px en el zoom con que abre el mapa (16,5), unos 2 px al alejar
+   (zoom 14) y unos 6 px al acercar (zoom 19). Las rayas y los puntos escalan con el grosor (MapLibre mide
+   los guiones en grosores de línea), así que conservan su forma. Al alejar, los dos andenes de una calle
+   se separan un poco más con `line-offset` para que no queden pegados.
+5. **06, 10 y 13 conservan el trazo viejo** (ámbar con marca punteada) hasta su propio paso (06-3): su mapa
+   no comparte capas con la 04.

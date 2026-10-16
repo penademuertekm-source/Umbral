@@ -67,6 +67,7 @@
     "idioma": "Idioma",
     "compartir": "Compartir",
     "informacion": "Información",
+    "mapa": "Mapa",
     "sombra-plena": "Sombra plena",
     "sombra-parcial": "Sombra parcial",
     "expuesto": "Expuesto",
@@ -253,7 +254,7 @@
     },
     "iconografia": {
       "titulo": "Iconografía",
-      "texto": "Familia propia: 42 íconos en rejilla de 24 px.",
+      "texto": "Familia propia: 43 íconos en rejilla de 24 px.",
       "regla1": "Rejilla de 24 × 24 px con 2 px de margen interno.",
       "regla2": "Trazo de 2 px, extremos y uniones redondeados.",
       "regla3": "Solo \"Sombra plena\" y \"Sombra parcial\" usan relleno: replican la lógica del isotipo.",
