@@ -113,7 +113,6 @@
     "buscarRuta": "Find a shaded route",
     "miUbicacion": "Show my location",
     "ubicacionDenegada": "No location permission",
-    "provisional": "Provisional data",
     "provisionalDetalle": "Some trees, heights and places are provisional until the field survey arrives.",
     "leyenda": "Legend",
     "sinSol": "No sun at this time",
@@ -327,7 +326,9 @@
       "modalTitulo": "Warning before you go",
       "modalTexto": "Between 11 a.m. and 3 p.m. the sun is strongest. This route has 62% shade.",
       "modalAceptar": "Start walk",
-      "modalAlternativa": "See the best time to leave"
+      "modalAlternativa": "See the best time to leave",
+      "chip": "Estimate chip",
+      "chipDefinitivo": "With final data"
     },
     "espaciado": {
       "titulo": "Spacing, shape and elevation",
@@ -749,5 +750,18 @@
     "aviso": "Offline",
     "verMas": "What works offline",
     "volverMapa": "Back to the map"
+  },
+  "chipEstimado": {
+    "texto": "Estimated · {hora}",
+    "provisional": "provisional",
+    "titulo": "Estimated values",
+    "como": "They come from the time, the position of the sun and a 3D model of the center. There are no sensors on the street."
+  },
+  "creditos": {
+    "titulo": "Credits",
+    "fuentes": "Data and sources",
+    "sol": "Sun position: SunCalc, checked against the NREL SPA",
+    "mapa": "Map: © OpenStreetMap contributors (ODbL)",
+    "clima": "Weather: Open-Meteo (CC BY 4.0)"
   }
 }

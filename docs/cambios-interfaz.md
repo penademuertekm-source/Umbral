@@ -32,7 +32,7 @@ Fuera de esta lista: la prueba de campo de la sombra (hoja en preparación) y la
 
 | N.º | Cambio | Prior. | Dónde | Estado |
 |---|---|---|---|---|
-| G1 | Chip fijo "Estimado · 12:00 ⓘ" en lugar de la línea gris "Valores estimados… · Datos provisionales" repetida en 8 pantallas. La ⓘ abre una hoja con "Datos provisionales" y las fuentes | P1 | F C | listo para código |
+| G1 | Chip fijo "Estimado · 12:00 ⓘ" en lugar de la línea gris "Valores estimados… · Datos provisionales" repetida en 8 pantallas. La ⓘ abre una hoja con "Datos provisionales" y las fuentes | P1 | F C | hecho en 04; el resto con su paso |
 | G2 | Calor y cielo por separado ("▲ Calor fuerte · Nublado"). Quita el "riesgo bajo" junto a 37° | P1 | C | pendiente |
 | G3 | Las mismas cifras en todo el viaje: la ruta se calcula una vez y la leen 05, 06, 13, 15 y 16 | P1 | C | listo para código |
 | G4 | Vocabulario: "andén" (no "acera"), "cuadra" (no "tramo"), "sensación térmica" (no "UTCI") y "Dónde descansar". "Puntos de permanencia" se mantiene en la documentación | P1 | C | pendiente |

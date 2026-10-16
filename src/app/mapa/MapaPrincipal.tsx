@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useId, useMemo, useState, type CSSProperties } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router'
-import { BarraSuperior, Boton, Icono, MuestraTramo } from '../../componentes'
+import { BarraSuperior, Boton, ChipEstimado, Icono, MuestraTramo } from '../../componentes'
 import { readHeatProfile } from '../../clima/configClima'
 import { simulateOvercast, thermalStateAt, type ThermalContext } from '../../clima/estado'
 import { rainOutlook } from '../../clima/openMeteo'
@@ -288,17 +288,8 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
                         <p className={`${s.globo} um-etiqueta`}>{t('mapa.simulacionDetalle')}</p>
                       </details>
                     )}
-                    {data?.meta.datos_provisionales && (
-                      <details className={s.desplegable}>
-                        <summary>
-                          <span className={`${s.chip} um-etiqueta`}>
-                            <Icono name="informacion" size={20} />
-                            {t('mapa.provisional')}
-                          </span>
-                        </summary>
-                        <p className={`${s.globo} um-etiqueta`}>{t('mapa.provisionalDetalle')}</p>
-                      </details>
-                    )}
+                    {/* G1: la misma hora del encabezado. */}
+                    {data && <ChipEstimado time={formatTime(shownTime, language)} provisional={data.meta.datos_provisionales} />}
                   </div>
                   <div className={s.ubicacion}>
                     <button

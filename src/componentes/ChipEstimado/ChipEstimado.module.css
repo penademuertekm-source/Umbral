@@ -1,0 +1,50 @@
+/* Chip estimado (G1, Figma 104:137): 32 px visibles dentro de un área táctil de 56 px. */
+
+.boton {
+  display: flex;
+  align-items: center;
+  max-width: 100%;
+  min-height: var(--um-tactil-minimo);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--um-esp-xs);
+  min-height: 32px;
+  padding: var(--um-esp-xs) var(--um-esp-sm);
+  border: 1px solid var(--um-base-borde);
+  border-radius: var(--um-radio-chip);
+  background: var(--um-base-superficie);
+  color: var(--um-base-texto);
+  box-shadow: var(--um-elevacion-flotante);
+}
+
+.provisional {
+  color: var(--um-semaforo-precaucion-texto);
+}
+
+.icono {
+  flex-shrink: 0;
+  color: var(--um-base-texto-secundario);
+}
+
+.grupo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-xs);
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-xs);
+  padding-left: var(--um-esp-md);
+}

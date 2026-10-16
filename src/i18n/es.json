@@ -113,7 +113,6 @@
     "buscarRuta": "Buscar una ruta con sombra",
     "miUbicacion": "Mostrar mi ubicación",
     "ubicacionDenegada": "Sin permiso de ubicación",
-    "provisional": "Datos provisionales",
     "provisionalDetalle": "Parte de los árboles, alturas y lugares son provisionales mientras llega el levantamiento de campo.",
     "leyenda": "Leyenda",
     "sinSol": "Sin sol a esta hora",
@@ -327,7 +326,9 @@
       "modalTitulo": "Aviso antes de salir",
       "modalTexto": "Entre las 11 a. m. y las 3 p. m. el sol es más fuerte. Esta ruta tiene 62 % de sombra.",
       "modalAceptar": "Iniciar recorrido",
-      "modalAlternativa": "Ver la mejor hora para salir"
+      "modalAlternativa": "Ver la mejor hora para salir",
+      "chip": "Chip estimado",
+      "chipDefinitivo": "Con datos definitivos"
     },
     "espaciado": {
       "titulo": "Espaciado, forma y elevación",
@@ -749,5 +750,18 @@
     "aviso": "Sin conexión",
     "verMas": "Qué funciona sin conexión",
     "volverMapa": "Volver al mapa"
+  },
+  "chipEstimado": {
+    "texto": "Estimado · {hora}",
+    "provisional": "provisional",
+    "titulo": "Valores estimados",
+    "como": "Se calculan con la hora, la posición del sol y un modelo 3D del centro. No hay sensores en la calle."
+  },
+  "creditos": {
+    "titulo": "Créditos",
+    "fuentes": "Datos y fuentes",
+    "sol": "Posición del sol: SunCalc, comparada con el SPA del NREL",
+    "mapa": "Mapa: © colaboradores de OpenStreetMap (ODbL)",
+    "clima": "Clima: Open-Meteo (CC BY 4.0)"
   }
 }

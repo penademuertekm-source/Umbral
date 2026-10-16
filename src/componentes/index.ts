@@ -1,5 +1,6 @@
 export { BarraSuperior } from './BarraSuperior/BarraSuperior'
 export { Boton, type ButtonVariant } from './Boton/Boton'
+export { ChipEstimado } from './ChipEstimado/ChipEstimado'
 export { Encabezado } from './Encabezado/Encabezado'
 export { HojaInferior } from './HojaInferior/HojaInferior'
 export { Icono } from './Icono/Icono'

@@ -6,6 +6,7 @@ import indiceIconos from '../../../design/iconos/indice.json'
 import {
   BarraSuperior,
   Boton,
+  ChipEstimado,
   Encabezado,
   HojaInferior,
   Icono,
@@ -382,6 +383,12 @@ export function Guia() {
               text={t('guia.componentes.tarjetaNeutraTexto')}
               onClick={() => undefined}
             />
+          </div>
+          <div className={s.grupo}>
+            <h3 className="um-cuerpo-fuerte">{t('guia.componentes.chip')}</h3>
+            <ChipEstimado time={t('guia.tipografia.muestraDato')} provisional />
+            <p className={`${s.secundario} um-micro`}>{t('guia.componentes.chipDefinitivo')}</p>
+            <ChipEstimado time={t('guia.tipografia.muestraDato')} provisional={false} />
           </div>
           <div className={s.grupo}>
             <h3 className="um-cuerpo-fuerte">
