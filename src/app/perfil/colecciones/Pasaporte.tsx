@@ -55,10 +55,10 @@ export function Pasaporte() {
                     type="button"
                     className={s.celda}
                     aria-haspopup="dialog"
-                    aria-label={t('pasaporte.verSello', { nombre: place.name })}
                     onClick={() => setOpen(place)}
                   >
                     {content}
+                    <span className="sr-only">{t('pasaporte.verSello')}</span>
                   </button>
                 ) : (
                   <div className={s.celda}>{content}</div>

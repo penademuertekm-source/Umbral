@@ -4,6 +4,35 @@ Registro de lo hecho en cada fase, lo pendiente y las decisiones tomadas. La ent
 
 ---
 
+## Revisión general antes de seguir (2026-10-16)
+
+La autora pidió una prueba completa antes de seguir con los pasos que faltan.
+
+- **Pasa todo esto:**
+  - `npm run build` y `tsc -b --force`, sin errores;
+  - 143 pruebas de la app y 18 del pipeline de datos (`npm run test:datos`);
+  - lint, sin avisos;
+  - contraste: 22 pares, todos AA.
+- **Recorrido automático por las 37 pantallas**, en cuatro pasadas:
+  - español a 390 px;
+  - inglés a 390 px;
+  - español a 1280 px;
+  - letra grande a 360 px con el perfil vacío.
+
+  En cada pasada se buscaron errores de la página o de la consola, desborde horizontal, claves de i18n sin
+  traducir, textos como "undefined" o "NaN", el `lang` de la página y las reglas WCAG 2.1 AA de axe.
+  - Se encontró un solo problema: en el Pasaporte, el nombre accesible de cada sello no incluía el texto
+    visible (axe: label-content-name-mismatch). Se corrigió: el botón conserva su texto y suma "Ver el sello"
+    solo para lectores de pantalla.
+  - Después del arreglo, las cuatro pasadas quedaron sin observaciones.
+- **Recorridos completos repetidos, sin errores:**
+  - guardar, editar, borrar y deshacer un lugar;
+  - planear una salida y descargar el `.ics`;
+  - recorrido simulado hasta la 22, con sello y láminas;
+  - actualización con una página vieja abierta: se recarga sola y sigue funcionando.
+
+---
+
 ## Sugerencias del docente · Paso P3b: colecciones y premios de ejemplo (2026-10-16)
 
 Es el paso P3b de `docs/prompts-sugerencias.md`, la segunda parte de S3. Con él S3 queda en "hecho" y se
