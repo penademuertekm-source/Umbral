@@ -60,7 +60,27 @@ De arriba abajo:
 
 **Estado nublado** (04-10): la capa de sombra al 35 % y los árboles al 60 %. En la hoja va el aviso Nublado (gris): "Está nublado: la sombra cambia poco" / "El mapa la muestra más tenue". El semáforo sigue mostrando el nivel de calor.
 
-Quedan para los estados siguientes: el deslizador abierto, la ficha de la cuadra en la hoja media (07), el aviso de lluvia que encuadra el lugar cubierto (04-2) y el estado sin clima (04-3).
+Quedan para estados siguientes: el aviso de lluvia que encuadra el lugar cubierto (04-2) y el estado sin clima (04-3).
+
+**Estado · ficha de la cuadra (reemplaza a la pantalla 07)** — nodo 113:329. Se abre al tocar un andén.
+- En el mapa, la cuadra elegida queda resaltada con un halo oscuro al 28 % (22 px) y el mapa se desplaza para que se vea encima de la hoja. Los botones flotantes se ocultan mientras la hoja está en altura media.
+- **Hoja media** (≈ 420 px):
+  1. Nombre de la cuadra en Subtítulo 20 ("Calle 16") con una línea de referencia en Etiqueta ("entre Cra. 6 y Cra. 5 · frente a la plaza"), y Cerrar de 56 × 56.
+  2. Estado general con su trazo: "Sombra parcial a las 9:30".
+  3. Tarjeta con los dos andenes, nombrados por referencia y no por punto cardinal ("Andén del lado de la plaza", "Andén de enfrente"; G4, 13-1). Cada uno lleva su trazo, el estado y el %; el de más sombra lleva la pastilla "Mejor" (fondo Cómodo).
+  4. "Sensación térmica: X° a la sombra · Y° al sol" (07-2).
+  5. Árboles con ícono: "5 mangos y 5 cañaguates en la cuadra".
+  6. Fila plegada "Detalles técnicos" de 56 px con chevron: ahí van el Sky View Factor y los valores técnicos (G5).
+- Para las cuadras sin nombre, el título usa las esquinas (07-1).
+
+**Estado · elegir hora** — nodo 113:836. Se abre al tocar la hora del encabezado (04-6); el chevron del encabezado apunta hacia arriba.
+- **Hoja media** (≈ 340 px):
+  1. "Ver la sombra a otra hora" con Cerrar.
+  2. Selector Hoy · Mañana (segmentos de 52 px dentro de un contenedor de 60). "Mañana" usa el pronóstico de dos días (E3).
+  3. La hora elegida en Dato 28 con la pastilla "ahora" cuando coincide con la hora actual.
+  4. Deslizador de 6 a. m. a 6 p. m. con control de 36 px visibles (área táctil de 56) y las marcas 6 a. m. · 12 m. · 6 p. m.
+  5. "El mapa muestra la sombra estimada para esa hora."
+- Cuando la hora elegida no es la actual aparece el botón secundario "Volver a ahora". El encabezado y el chip estimado muestran siempre la hora elegida.
 
 
 ### 01 · Splash — nodo 2:2

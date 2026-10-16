@@ -63,8 +63,8 @@ Fuera de esta lista: la prueba de campo de la sombra (hoja en preparación) y la
 | 06-1 | Rutas | "Ruta con más sombra" en lugar de "Ruta con sombra" | P1 | C | pendiente |
 | 06-2 | Rutas | El conteo de árboles pasa a los detalles | P2 | C | pendiente |
 | 06-3 | Rutas | Cada tarjeta muestra la muestra de su línea del mapa | P2 | F C | pendiente |
-| 07-1 | Ficha | Cuadras sin nombre nombradas por sus esquinas (observación 1) | P1 | C D | pendiente |
-| 07-2 | Ficha | "Sensación térmica" en lugar de UTCI; Sky View Factor plegado | P1 | C | pendiente |
+| 07-1 | Ficha | Cuadras sin nombre nombradas por sus esquinas (observación 1) | P1 | C D | en Figma (por revisar) |
+| 07-2 | Ficha | "Sensación térmica" en lugar de UTCI; Sky View Factor plegado | P1 | C | en Figma (por revisar) |
 | 09-1 | El Niño | Revisar en la primera pasada (no revisada aún) | P2 | — | pendiente |
 | 10-1 | Dónde descansar | El Callejón no dice "sombra continua" junto a "Al sol a esta hora"; se describe lo de ahora | P1 | C | pendiente |
 | 10-2 | Dónde descansar | Los mismos íconos en el mapa y en la lista | P2 | F C | pendiente |
@@ -88,7 +88,7 @@ Sin cambios: 01, 02, 14 y 22. En pausa: 08 y 12.
 |---|---|---|---|
 | N1 | Componentes: hoja inferior (3 alturas), avisos (alerta, aviso, dato recogido, contador), barra inferior, chip "Estimado". En Figma, página 03: nodos 104:137, 105:161, 105:315 y 105:328; revisión en 105:329. Se aplican en código junto con la pantalla 04 | P2 | listo para código |
 | N2 | Cómo leer el mapa (primera vez; se puede saltar y volver a abrir) | P2 | pendiente |
-| N3 | Noche: "Ya no hay sol" y ver el día siguiente | P2 | pendiente |
+| N3 | Noche: "Ya no hay sol" y ver el día siguiente | P2 | en Figma en parte: "Mañana" en el selector de hora (113:836); falta el estado de noche |
 | N4 | Estados: calculando, sin clima, GPS perdido durante el recorrido | P2 | pendiente |
 | N5 | Permiso bloqueado: pasos para Android y para iPhone, botón "Volver a intentar" (observación 3) | P2 | pendiente |
 | N6 | Acerca de y créditos: autores, docente, Areandina, licencia, privacidad, fuentes y atribuciones | P2 | pendiente |
