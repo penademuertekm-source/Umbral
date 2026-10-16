@@ -74,7 +74,7 @@ Fuera de esta lista: la prueba de campo de la sombra (hoja en preparación) y la
 | 15-1 | Cuándo salir | "Mañana" → "En la mañana" | P1 | C | listo para código |
 | 15-2 | Cuándo salir | Leyenda solo con los niveles presentes; explicar las franjas verdes | P2 | F C | listo para código |
 | 16-1 | Sin ruta | "A esta hora la ruta va casi toda al sol"; cifra principal: minutos al sol | P1 | C | listo para código |
-| 17-1 | Semáforo | Colores de Precaución y Evitar más distintos (ΔE hoy ≈ 4,5) | P2 | F C | pendiente |
+| 17-1 | Semáforo | Colores de Precaución y Evitar más distintos: Precaución #a87c00 y Evitar #d4581a (ΔE2000 de 7,5 a ≈ 23; ambas formas ≥ 3:1). Evitar deja de ser alias de exposición, que sigue en #ef9f27 | P2 | F C | listo para código |
 | 18-19 | Antes de salir | Las pantallas 18 y 19 se unen en una sola hoja | P2 | F C | listo para código |
 | 21-1 | Fuera del centro | Revisar la ubicación de nuevo: hoy dice "Estás fuera" a 290 m de la plaza | P1 | C | listo para código |
 | 21-2 | Fuera del centro | Mapa real de la ciudad (OpenFreeMap) y botón "Ya llegué al centro" (observación 4) | P2 | F C | listo para código |

@@ -322,6 +322,38 @@ en "Notas de Claude Code".
 
 ---
 
+## Paso R6 · Colores de Precaución y Evitar
+
+Punto: **17-1**. Es independiente de los otros pasos; se puede hacer antes o después. La autora autorizó
+tocar `design/` para este punto.
+
+**Prompt**
+```
+Lee CLAUDE.md, docs/cambios-interfaz.md (punto 17-1) y, en docs/especificacion-pantallas.md, la
+sección "17 · Semáforo térmico" con su tabla de colores. Haz git pull antes de empezar.
+
+Vamos con el paso R6 de docs/prompts-rediseno.md. Para este punto puedes editar design/tokens.css.
+
+1. En design/tokens.css cambia solo dos valores:
+   --um-semaforo-precaucion-forma: #a87c00;
+   --um-semaforo-evitar-forma: #d4581a;
+   --um-termico-exposicion se queda en #ef9f27. No toques fondos ni textos de los niveles.
+2. En src/app/elnino/ElNino.module.css, la cabecera y las viñetas usan hoy
+   var(--um-semaforo-evitar-forma) como fondo. Cámbialas a var(--um-termico-exposicion), que es el
+   color de hoy, para que la pantalla 09 se vea igual (se revisa después en el punto 09-1).
+3. Busca en src/ cualquier otro uso de las formas de Precaución o Evitar como fondo de texto y
+   anótalo en "Notas de Claude Code" si el contraste no alcanza; no lo cambies por tu cuenta.
+4. Corre npm run contraste, npm run build y npm test. Commit "17-1: colores de Precaución y
+   Evitar más distintos" con el estado del punto en "hecho", y git push.
+```
+
+**Cómo verificar**
+1. Abre `/cuando-salir` y `/semaforo`: las barras de Precaución se ven ocre y las de Evitar naranja quemado, bien distintas.
+2. En el mapa, las líneas "Al sol" siguen del mismo naranja claro de antes.
+3. `/el-nino` se ve igual que antes.
+
+---
+
 ## Retomar (si se cortó el uso)
 
 ```

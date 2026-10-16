@@ -361,6 +361,22 @@ La ubicación se sigue con `watchPosition`. **No** se avisa "te desviaste de la 
 ### 17 · Semáforo térmico — nodo 32:154
 Es una referencia de los 4 estados de la barra superior, no una pantalla de usuario. Úsala para probar el componente.
 
+**Colores de forma (17-1, 2026-10-16).** Precaución y Evitar se veían casi iguales (ΔE2000 7,5) y ninguna
+forma llegaba a 3:1 sobre blanco. Valores nuevos, ya puestos en las variables de Figma (componente Semáforo
+43:42 y pantallas 15 y 16 del rediseño):
+
+| Token | Antes | Ahora | Sobre blanco | Sobre su fondo |
+|---|---|---|---|---|
+| `--um-semaforo-precaucion-forma` | #d69e00 | **#a87c00** (ocre oscuro) | 3,8:1 | 3,4:1 |
+| `--um-semaforo-evitar-forma` | #ef9f27 | **#d4581a** (naranja quemado) | 4,0:1 | 3,5:1 |
+
+- Entre las dos formas: ΔE2000 ≈ 23 (antes 7,5). Evitar frente a No recomendado (#a32d2d): ΔE2000 ≈ 20.
+- Evitar deja de ser alias de `--um-termico-exposicion`. Exposición sigue en #ef9f27: es el "Al sol" del mapa,
+  de la leyenda y de las muestras de línea, y no cambia.
+- La pantalla 09 (El Niño) usaba la forma de Evitar como fondo de su cabecera y de las viñetas. Pasa a
+  `--um-termico-exposicion`, que es el mismo color de hoy, así esa pantalla se ve igual hasta revisarla (09-1).
+- Fondos y textos de los niveles no cambian.
+
 ### 18 · Antes de salir · protección solar — nodo 34:35
 Hoja inferior que aparece al iniciar un recorrido con ≥ 5 min al sol y UV alto. Muestra el chip "UV {n} · {categoría}" y las recomendaciones (protector, agua, gorra o sombrilla), más la nota "Recomendación general; no reemplaza el consejo de un profesional de salud".
 
