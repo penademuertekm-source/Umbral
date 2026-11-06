@@ -13,8 +13,9 @@ interface HojaInferiorProps {
   /** Obligatorio salvo en la hoja incrustada, que no se cierra. */
   onClose?: () => void
   title: string
-  /** Hoja incrustada (04-5, asomada en el mapa): siempre visible al pie de su contenedor, sin ✕ ni foco
-   * propio. No es un diálogo: el título queda solo para lectores de pantalla. */
+  /** Hoja incrustada (04-5): va al pie de su contenedor, encima de la barra inferior y no sobre ella. Sin
+   * `onClose` es la hoja asomada del mapa: no es un diálogo y su título queda solo para lectores de
+   * pantalla. Con `onClose` (ficha, hora) es un diálogo como las demás hojas. */
   embedded?: boolean
   children: ReactNode
   /** Altura en % del alto de pantalla. Por defecto, media. */
@@ -40,8 +41,11 @@ export function HojaInferior({ open, onClose, title, children, height = 'media',
     onCloseRef.current = onClose
   })
 
+  // Diálogo: toda hoja que se puede cerrar. La asomada del mapa no lo es.
+  const dialog = !embedded || onClose !== undefined
+
   useEffect(() => {
-    if (!open || embedded) return
+    if (!open || !dialog) return
     const previous = document.activeElement instanceof HTMLElement ? document.activeElement : null
     sheetRef.current?.focus()
     const onKeyDown = (event: KeyboardEvent) => {
@@ -52,7 +56,7 @@ export function HojaInferior({ open, onClose, title, children, height = 'media',
       document.removeEventListener('keydown', onKeyDown)
       previous?.focus()
     }
-  }, [open, embedded])
+  }, [open, dialog])
 
   if (!open) return null
 
@@ -73,9 +77,9 @@ export function HojaInferior({ open, onClose, title, children, height = 'media',
       ref={sheetRef}
       className={`${s.hoja} ${embedded ? s.incrustada : ''}`}
       data-altura={height}
-      role={embedded ? undefined : 'dialog'}
+      role={dialog ? 'dialog' : undefined}
       aria-labelledby={titleId}
-      tabIndex={embedded ? undefined : -1}
+      tabIndex={dialog ? -1 : undefined}
     >
       {onHeightChange ? (
         <button
@@ -105,7 +109,7 @@ export function HojaInferior({ open, onClose, title, children, height = 'media',
           <span className={s.asa} />
         </span>
       )}
-      {embedded ? (
+      {!dialog ? (
         <h2 id={titleId} className="sr-only">
           {title}
         </h2>

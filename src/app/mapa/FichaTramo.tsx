@@ -1,18 +1,20 @@
 import { useEffect, useId, useMemo, useState } from 'react'
 import type { UtciEstimate } from '../../clima/utci'
-import { HojaInferior, Icono } from '../../componentes'
+import { HojaInferior, Icono, MuestraTramo } from '../../componentes'
+import niveles from '../../estilos/niveles.module.css'
 import { laHora } from '../../i18n/hora'
 import { useT } from '../../i18n/useT'
+import { sideReferences, type SideReference } from '../../mapa/andenes'
 import type { MapData, Species } from '../../mapa/datos'
 import { blockTitle, protectedSide, segmentName, type EdgeIndex, type TreeCounts } from '../../mapa/tramos'
 import type { ResultadoSombra } from '../../sombra/cliente'
-import type { ShadeUntil, SideLetter, SideState } from '../../sombra/modelo'
 import { motorSombra } from '../../sombra/cliente'
-import niveles from '../../estilos/niveles.module.css'
+import type { ShadeUntil, SideLetter, SideShade, SideState } from '../../sombra/modelo'
 import s from './FichaTramo.module.css'
 
-// Pantalla 07 (nodo 5:2): ficha del tramo tocado en el mapa. Todos los valores son estimados
-// para la hora del deslizador. El UTCI es el general del centro a esa hora (Fase 5).
+// Ficha de la cuadra (07-1 y 07-2, Figma 113:329): sale en la hoja media del mapa al tocar un andén. Todos
+// los valores son estimados para la hora elegida (el chip "Estimado" del mapa lo dice). La sensación
+// térmica es la general del centro a esa hora.
 
 interface FichaTramoProps {
   edge: number
@@ -20,7 +22,7 @@ interface FichaTramoProps {
   index: EdgeIndex
   trees: Map<number, TreeCounts>
   resultado: ResultadoSombra
-  /** UTCI estimado a la sombra y al sol a la misma hora, o null si no hay clima. */
+  /** Sensación térmica (UTCI) estimada a la sombra y al sol a la misma hora, o null si no hay clima. */
   utci: UtciEstimate | null
   onClose: () => void
 }
@@ -29,47 +31,35 @@ interface Extra {
   key: string
   until: ShadeUntil | null
   svf: number
-  /** Estado del lado sin hojas en los cañaguates (temporada seca), si aplica. */
+  /** Estado del andén sin hojas en los cañaguates (temporada seca), si aplica. */
   dry?: SideState
 }
 
-/** Color de la píldora: verde con sombra plena, ámbar expuesto y neutro en los demás casos. */
-const PILL_LEVEL: Record<SideState, 'comodo' | 'precaucion' | 'nublado'> = {
-  sombra: 'comodo',
-  parcial: 'nublado',
-  expuesto: 'precaucion',
-  sin_sol: 'nublado',
-}
-
 const SPECIES: Species[] = ['mango', 'canaguate', 'otro']
+const SIDES: SideLetter[] = ['a', 'b']
 
 export function FichaTramo({ edge, data, index, trees, resultado, utci, onClose }: FichaTramoProps) {
   const i18n = useT()
   const { t, language } = i18n
-  const explanationId = useId()
-  const [explanationOpen, setExplanationOpen] = useState(false)
+  const detailsId = useId()
+  const [detailsOpen, setDetailsOpen] = useState(false)
   const [extra, setExtra] = useState<Extra | null>(null)
   const time = useMemo(() => new Date(resultado.time), [resultado.time])
 
-  const edgeProps = data.red.features.find((f) => f.properties.id === edge)?.properties
-  const shadeA = resultado.lado(edge, 'a')
-  const shadeB = resultado.lado(edge, 'b')
-  const protectedOne = protectedSide(shadeA?.fraction, shadeB?.fraction)
-  // Lado que describe la píldora y el SVF: el protegido o, si no hay uno, el de más sombra.
+  const shades: Partial<Record<SideLetter, SideShade>> = { a: resultado.lado(edge, 'a'), b: resultado.lado(edge, 'b') }
+  const protectedOne = protectedSide(shades.a?.fraction, shades.b?.fraction)
+  // El andén que da el estado general y el SVF: el protegido o, si no hay uno, el de más sombra.
   const side: SideLetter =
     protectedOne === 'a' || protectedOne === 'b'
       ? protectedOne
-      : !shadeA || (shadeB && shadeB.fraction > shadeA.fraction)
+      : !shades.a || (shades.b && shades.b.fraction > shades.a.fraction)
         ? 'b'
         : 'a'
-  const shade = side === 'a' ? shadeA : shadeB
-  const orientation = (letter: SideLetter) => {
-    const value = edgeProps?.lados.find((l) => l.lado === letter)?.orientacion
-    return value ? t(`ficha.orientaciones.${value}`) : ''
-  }
+  const shade = shades[side]
   const counts = trees.get(edge)
   const hasCanaguates = (counts?.canaguate ?? 0) > 0
   const key = `${edge}|${side}|${resultado.time}`
+  const refs = useMemo(() => sideReferences(edge, data), [edge, data])
 
   useEffect(() => {
     if (!shade) return
@@ -92,44 +82,62 @@ export function FichaTramo({ edge, data, index, trees, resultado, utci, onClose 
 
   const current = extra?.key === key ? extra : null
 
-  // 07-1: sin nombre, la cuadra se nombra por las calles de sus esquinas.
+  // 07-1: el título es la calle; sin nombre, las calles de sus esquinas. Debajo, la referencia.
   const named = blockTitle(segmentName(edge, index))
   const title =
     named.kind === 'calle'
-      ? named.a && named.b
-        ? t('ficha.entre', { calle: named.street, a: named.a, b: named.b })
-        : named.a
-          ? t('ficha.esquina', { calle: named.street, a: named.a })
-          : named.street
+      ? named.street
       : named.kind === 'entre'
         ? t('ficha.cuadraEntre', { a: named.a, b: named.b })
         : named.kind === 'junto'
           ? t('ficha.cuadraJunto', { a: named.a })
           : t('ficha.sinNombre')
+  const space = Object.values(refs).find((ref) => ref.kind === 'espacio')
+  const reference = [
+    named.kind === 'calle' && named.a && named.b ? t('ficha.refEntre', { a: named.a, b: named.b }) : '',
+    named.kind === 'calle' && named.a && !named.b ? t('ficha.refCon', { a: named.a }) : '',
+    space?.kind === 'espacio' ? t(space.space === 'plaza' ? 'ficha.frentePlaza' : 'ficha.frenteParque') : '',
+  ]
+    .filter(Boolean)
+    .join(' · ')
 
-  let pill = ''
+  // Estado general: con sombra plena, hasta cuándo dura; si no, el estado a la hora elegida.
+  let general = ''
   if (shade?.state === 'sombra') {
-    pill = !current
-      ? t('tramo.sombra')
+    general = !current
+      ? t('ficha.estadoA', { estado: t('ficha.estado.sombra'), laHora: laHora(i18n, time) })
       : current.until?.untilSunset
         ? t('ficha.hastaAtardecer')
         : t('ficha.hasta', { laHora: laHora(i18n, new Date(current.until?.until ?? time)) })
-  } else if (shade?.state === 'parcial') pill = t('ficha.parcialAhora')
-  else if (shade?.state === 'expuesto') pill = t('ficha.expuestoAhora')
-  else if (shade?.state === 'sin_sol') pill = t('ficha.sinSolAhora')
+  } else if (shade?.state === 'sin_sol') general = t('ficha.sinSolAhora')
+  else if (shade) general = t('ficha.estadoA', { estado: t(`ficha.estado.${shade.state}`), laHora: laHora(i18n, time) })
 
-  const protectedText =
-    protectedOne === 'ambas'
-      ? t('ficha.ambas')
-      : protectedOne === 'ninguna'
-        ? t('ficha.ninguna')
-        : t('ficha.costado', { orientacion: orientation(protectedOne) })
+  const sideName = (ref: SideReference | undefined, letter: SideLetter): string => {
+    if (!ref) return t('ficha.andenCostado', { orientacion: orientationOf(letter) })
+    switch (ref.kind) {
+      case 'espacio':
+        return t(ref.space === 'plaza' ? 'ficha.andenPlaza' : 'ficha.andenParque')
+      case 'enfrente':
+        return t('ficha.andenEnfrente')
+      case 'calle':
+        return t('ficha.andenCalle', { calle: ref.street })
+      case 'costado':
+        return t('ficha.andenCostado', { orientacion: t(`ficha.orientaciones.${ref.orientation}`) })
+    }
+  }
+  function orientationOf(letter: SideLetter): string {
+    const value = data.red.features.find((f) => f.properties.id === edge)?.properties.lados.find((l) => l.lado === letter)?.orientacion
+    return value ? t(`ficha.orientaciones.${value}`) : ''
+  }
+  // Orden: el andén junto a la plaza o el de más sombra primero (Figma 113:329).
+  const ordered = SIDES.filter((letter) => shades[letter]).sort((x, y) => {
+    const first = (letter: SideLetter) => (refs[letter]?.kind === 'espacio' ? 2 : letter === side ? 1 : 0)
+    return first(y) - first(x)
+  })
+  const percent = new Intl.NumberFormat(language === 'es' ? 'es-CO' : 'en-US', { maximumFractionDigits: 0 })
 
   const svfText = current
-    ? new Intl.NumberFormat(language === 'es' ? 'es-CO' : 'en-US', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      }).format(current.svf)
+    ? new Intl.NumberFormat(language === 'es' ? 'es-CO' : 'en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(current.svf)
     : t('comun.sinDato')
 
   const treeParts = SPECIES.filter((sp) => (counts?.[sp] ?? 0) > 0).map((sp) => {
@@ -137,7 +145,7 @@ export function FichaTramo({ edge, data, index, trees, resultado, utci, onClose 
     return t(n === 1 ? `ficha.especies.${sp}.uno` : `ficha.especies.${sp}.varios`, { n })
   })
   const treeText = treeParts.length
-    ? new Intl.ListFormat(language === 'es' ? 'es' : 'en', { type: 'conjunction' }).format(treeParts)
+    ? t('ficha.arbolesEnCuadra', { lista: new Intl.ListFormat(language === 'es' ? 'es' : 'en', { type: 'conjunction' }).format(treeParts) })
     : t('ficha.sinArboles')
 
   let phenology = ''
@@ -148,49 +156,84 @@ export function FichaTramo({ edge, data, index, trees, resultado, utci, onClose 
     } else if (current) phenology = t('ficha.fenologiaIgual')
   }
 
+  const degrees = (value: number) => t('comun.grados', { valor: Math.round(value) })
+  const bestName = sideName(refs[side], side)
+
   return (
-    <HojaInferior open onClose={onClose} title={title}>
-      <p className={`${s.estimado} um-etiqueta`}>{t('ficha.estimadoA', { laHora: laHora(i18n, time) })}</p>
-      {shade && <p className={`${s.pildora} ${niveles[PILL_LEVEL[shade.state]]} um-etiqueta`}>{pill}</p>}
-      <dl className={s.filas}>
-        <div className={s.fila}>
-          <dt className="um-etiqueta">{t('ficha.aceraProtegida')}</dt>
-          <dd className={`${s.valor} um-etiqueta`}>{protectedText}</dd>
+    <HojaInferior open embedded height="media" onClose={onClose} title={title}>
+      <div className={s.ficha}>
+        {reference && <p className={`${s.secundario} ${s.referencia} um-etiqueta`}>{reference}</p>}
+
+        {shade && (
+          <p className={`${s.estado} um-cuerpo-fuerte`}>
+            {shade.state !== 'sin_sol' && <MuestraTramo state={shade.state} label={null} size="compacta" />}
+            {general}
+          </p>
+        )}
+
+        {ordered.length > 0 && (
+          <ul className={s.andenes}>
+            {ordered.map((letter) => {
+              const sideShade = shades[letter]!
+              const best = protectedOne === letter
+              return (
+                <li key={letter} className={s.anden}>
+                  {sideShade.state !== 'sin_sol' && <MuestraTramo state={sideShade.state} label={null} size="compacta" />}
+                  <span className={s.andenTextos}>
+                    <span className="um-cuerpo">{sideName(refs[letter], letter)}</span>
+                    <span className={`${s.secundario} um-etiqueta`}>
+                      {sideShade.state === 'sin_sol'
+                        ? t('ficha.sinSolAhora')
+                        : t('ficha.andenEstado', { estado: t(`ficha.estado.${sideShade.state}`), p: percent.format(sideShade.fraction * 100) })}
+                    </span>
+                  </span>
+                  {best && <span className={`${s.mejor} ${niveles.comodo} um-etiqueta`}>{t('ficha.mejor')}</span>}
+                </li>
+              )
+            })}
+          </ul>
+        )}
+
+        <p className={`${s.secundario} um-etiqueta`}>
+          {utci
+            ? t('ficha.sensacion', { sombra: degrees(utci.shade), sol: degrees(utci.sun) })
+            : t('ficha.sensacion', { sombra: t('comun.sinDato'), sol: t('comun.sinDato') })}
+        </p>
+
+        <p className={`${s.arboles} um-etiqueta`}>
+          <span className={s.iconoArbol} aria-hidden="true">
+            <Icono name="mango" size={16} />
+          </span>
+          {treeText}
+        </p>
+
+        {phenology && <p className={`${s.nota} ${niveles.precaucion} um-etiqueta`}>{phenology}</p>}
+
+        {/* G5: lo técnico va plegado. */}
+        <div className={s.detalles}>
+          <button
+            type="button"
+            className={`${s.desplegar} um-cuerpo`}
+            aria-expanded={detailsOpen}
+            aria-controls={detailsId}
+            onClick={() => setDetailsOpen((open) => !open)}
+          >
+            {t('ficha.detalles')}
+            <span className={s.flecha} data-abierto={detailsOpen} aria-hidden="true">
+              <Icono name="avanzar" size={20} />
+            </span>
+          </button>
+          <div id={detailsId} className={s.detallesTexto} hidden={!detailsOpen}>
+            <p className="um-etiqueta">{t('ficha.svf', { valor: svfText })}</p>
+            <p className={`${s.secundario} um-etiqueta`}>{t('ficha.svfExplicacion', { anden: lowerFirst(bestName) })}</p>
+          </div>
         </div>
-        <div className={s.fila}>
-          <dt className="um-etiqueta">{t('ficha.svf')}</dt>
-          <dd>
-            <button
-              type="button"
-              className={`${s.desplegar} um-etiqueta`}
-              aria-expanded={explanationOpen}
-              aria-controls={explanationId}
-              onClick={() => setExplanationOpen((open) => !open)}
-            >
-              <span className={s.valor}>{svfText}</span>
-              <span className={s.flecha} data-abierto={explanationOpen} aria-hidden="true">
-                <Icono name="avanzar" size={20} />
-              </span>
-            </button>
-          </dd>
-          <dd id={explanationId} className={`${s.explicacion} um-etiqueta`} hidden={!explanationOpen}>
-            {t('ficha.svfExplicacion', { orientacion: orientation(side) })}
-          </dd>
-        </div>
-        <div className={s.fila}>
-          <dt className="um-etiqueta">{t('ficha.utci')}</dt>
-          <dd className={`${s.valor} um-etiqueta`}>
-            {utci
-              ? t('ficha.utciValor', { sombra: Math.round(utci.shade), sol: Math.round(utci.sun) })
-              : t('comun.sinDato')}
-          </dd>
-        </div>
-        <div className={s.fila}>
-          <dt className="um-etiqueta">{t('ficha.arbolado')}</dt>
-          <dd className={`${s.valor} um-etiqueta`}>{treeText}</dd>
-        </div>
-      </dl>
-      {phenology && <p className={`${s.nota} ${niveles.precaucion} um-etiqueta`}>{phenology}</p>}
+      </div>
     </HojaInferior>
   )
+}
+
+/** "Andén hacia la Calle 15" → "andén hacia la Calle 15", para usarlo dentro de una frase. */
+function lowerFirst(text: string): string {
+  return text.charAt(0).toLocaleLowerCase() + text.slice(1)
 }

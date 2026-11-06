@@ -67,7 +67,7 @@ Fuera de esta lista: la prueba de campo de la sombra (hoja en preparación) y la
 | 06-2 | Rutas | El conteo de árboles pasa a los detalles | P2 | C | listo para código |
 | 06-3 | Rutas | Cada tarjeta muestra la muestra de su línea del mapa | P2 | F C | listo para código |
 | 07-1 | Ficha | Cuadras sin nombre nombradas por sus esquinas (observación 1) | P1 | C D | hecho |
-| 07-2 | Ficha | "Sensación térmica" en lugar de UTCI; Sky View Factor plegado | P1 | C | listo para código |
+| 07-2 | Ficha | "Sensación térmica" en lugar de UTCI; Sky View Factor plegado | P1 | C | hecho |
 | 09-1 | El Niño | Revisar en la primera pasada (no revisada aún) | P2 | — | pendiente |
 | 10-1 | Dónde descansar | El Callejón no dice "sombra continua" junto a "Al sol a esta hora"; se describe lo de ahora | P1 | C | listo para código |
 | 10-2 | Dónde descansar | Los mismos íconos en el mapa y en la lista | P2 | F C | listo para código |
@@ -272,3 +272,20 @@ Aquí Claude Code anota contradicciones o dudas que encuentre al aplicar un punt
 1. **07-1.** De las 80 cuadras sin nombre de `red.geojson`, 32 quedan "Cuadra entre Cra. 18 y Cra. 1C", 43
    "Cuadra junto a la Cra. 18" (solo una esquina con nombre) y 5 siguen como "Cuadra sin nombre". Los
    nombres que complete la autora (D3, en pausa) reemplazan a estos.
+2. **07-2: cómo se nombran los andenes** (decisión de la autora). Junto a una plaza o un parque: "Andén del
+   lado de la plaza" (o "del parque") y "Andén de enfrente". Si no, la calle paralela más cercana de ese lado:
+   "Andén hacia la Calle 15". Sin calle paralela a menos de 160 m queda el costado: "Andén del costado sur".
+   En los datos de hoy: unos 900 andenes por calle, 20 por plaza o parque y 86 por costado. Algunos nombres
+   de `red.geojson` se leen raros, como "Andén hacia la Escalera". La regla está en `src/mapa/andenes.ts`,
+   con pruebas.
+3. **Estado general.** Es el del andén con más sombra. Con sombra plena se conserva "Sombra plena hasta las
+   10:35 a. m." (decisión de la autora); con parcial o al sol dice "Sombra parcial a las 9:30 a. m.", como
+   en Figma. La pastilla "Mejor" va solo cuando un andén tiene claramente más sombra (10 puntos o más).
+4. **La ficha ya no tapa la barra inferior.** Va en la misma hoja incrustada del mapa, en altura media, con
+   ✕ y Escape. Si lleva la nota de los cañaguates crece hasta el 60 % de la pantalla y se desplaza. El
+   título usa el estilo de todas las hojas (Título 24), no el Subtítulo 20 de Figma.
+5. **El halo de la cuadra** es oscuro al 28 %, debajo de los dos andenes, y crece con el zoom (22 px a zoom
+   16). Cerca de la plaza, las pastillas de referencia pueden tapar parte de la cuadra elegida.
+6. **Textos que salieron de la ficha**: "Acera protegida", "UTCI estimado", "Arbolado del tramo" y la línea
+   "Valores estimados para…" (el chip "Estimado" del mapa ya lo dice, G1). La nota de los cañaguates dice
+   "cuadra" en lugar de "tramo" (G4).

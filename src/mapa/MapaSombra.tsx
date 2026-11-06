@@ -69,8 +69,8 @@ const FRAME_TOP = 0.15
 const FRAME_BOTTOM = 0.45
 /** Margen a los lados (px): media pastilla de referencia, para que "Plaza Alfonso López" no quede cortada. */
 const FRAME_SIDE_PX = 112
-/** Con la ficha abierta solo se ve la parte de arriba del mapa: el tramo elegido debe quedar ahí. */
-const VISIBLE_SHARE = 0.4
+/** Con la ficha abierta (hoja media, 07-2) solo se ve la parte de arriba del mapa: la cuadra debe quedar ahí. */
+const VISIBLE_SHARE = 0.28
 /** Parte del mapa, desde arriba, que no tapa la leyenda de las isócronas. */
 const ISOCHRONE_VISIBLE_SHARE = 0.62
 

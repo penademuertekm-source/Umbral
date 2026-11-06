@@ -1,81 +1,80 @@
-/* Ficha de tramo (Figma, nodo 5:2) */
+/* Ficha de la cuadra (07-2, Figma 113:329), dentro de la hoja media del mapa. */
 
-.estimado {
-  margin-top: calc(-1 * var(--um-esp-sm));
+.ficha {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-sm);
+}
+
+.secundario {
   color: var(--um-base-texto-secundario);
 }
 
-.pildora {
-  align-self: flex-start;
+/* La referencia va pegada al título de la hoja. */
+.referencia {
+  margin-top: calc(-1 * var(--um-esp-sm));
+}
+
+/* Estado general con su trazo (sombra continua, parcial a rayas, al sol a puntos). */
+.estado {
+  display: flex;
+  align-items: center;
+  gap: var(--um-esp-sm);
+}
+
+/* Tarjeta con los dos andenes. */
+.andenes {
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--um-base-borde);
+  border-radius: var(--um-radio-tarjeta);
+  list-style: none;
+}
+
+.anden {
+  display: flex;
+  align-items: center;
+  gap: var(--um-esp-sm);
+  min-height: var(--um-tactil-minimo);
   padding: var(--um-esp-sm) var(--um-esp-md);
+}
+
+.anden + .anden {
+  border-top: 1px solid var(--um-base-borde);
+}
+
+.andenTextos {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* Pastilla "Mejor": fondo y texto del nivel Cómodo; dice la palabra, no solo el color. */
+.mejor {
+  flex-shrink: 0;
+  padding: var(--um-esp-xs) var(--um-esp-sm);
   border-radius: var(--um-radio-control);
   background: var(--nivel-fondo);
   color: var(--nivel-texto);
-  font-weight: 600;
 }
 
-.filas {
+/* Árboles con el círculo verde claro del marcador Árbol. */
+.arboles {
   display: flex;
-  flex-direction: column;
-  margin: 0;
+  align-items: center;
+  gap: var(--um-esp-sm);
 }
 
-.fila {
+.iconoArbol {
   display: grid;
-  /* La etiqueta usa hasta el 60 % y se parte si no cabe; el valor queda a la derecha. */
-  grid-template-columns: fit-content(60%) 1fr;
-  align-items: center;
-  column-gap: var(--um-esp-md);
-  min-height: var(--um-tactil-minimo);
-  border-bottom: 1px solid var(--um-base-borde);
-}
-
-.fila dt {
-  padding-block: var(--um-esp-sm);
-  color: var(--um-base-texto-secundario);
-}
-
-.fila dd {
-  margin: 0;
-  text-align: right;
-}
-
-.valor {
-  color: var(--um-base-texto);
-  font-weight: 600;
-  text-align: right;
-}
-
-.desplegar {
-  display: inline-flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: var(--um-esp-xs);
-  min-width: var(--um-tactil-minimo);
-  min-height: var(--um-tactil-minimo);
-  margin-right: calc(-1 * var(--um-esp-xs));
-  padding: 0 var(--um-esp-xs);
-  border: 0;
-  border-radius: var(--um-radio-control);
-  background: none;
-  color: var(--um-base-texto);
-  cursor: pointer;
-}
-
-.flecha {
-  display: inline-flex;
-  transition: transform 150ms ease-out;
-}
-
-.flecha[data-abierto='true'] {
-  transform: rotate(90deg);
-}
-
-.fila .explicacion {
-  grid-column: 1 / -1;
-  text-align: left;
-  padding-bottom: var(--um-esp-md);
-  color: var(--um-base-texto-secundario);
+  flex-shrink: 0;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--um-semaforo-comodo-fondo);
+  color: var(--um-termico-sombra-plena);
 }
 
 .nota {
@@ -83,4 +82,41 @@
   border-radius: var(--um-radio-tarjeta);
   background: var(--nivel-fondo);
   color: var(--nivel-texto);
+}
+
+/* "Detalles técnicos": fila plegada de 56 px con chevron (G5). */
+.detalles {
+  border-top: 1px solid var(--um-base-borde);
+}
+
+.desplegar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: var(--um-tactil-minimo);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--um-base-texto);
+  text-align: left;
+  cursor: pointer;
+}
+
+.flecha {
+  display: inline-flex;
+  color: var(--um-base-texto-secundario);
+  transform: rotate(90deg);
+  transition: transform 150ms ease-out;
+}
+
+.flecha[data-abierto='true'] {
+  transform: rotate(-90deg);
+}
+
+.detallesTexto:not([hidden]) {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-xs);
+  padding-bottom: var(--um-esp-md);
 }

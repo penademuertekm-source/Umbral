@@ -130,7 +130,6 @@
     "otraHoraNota": "The map shows the estimated shade for that time."
   },
   "ficha": {
-    "entre": "{calle} between {a} and {b}",
     "esquina": "{calle} at {a}",
     "cuadraEntre": "Block between {a} and {b}",
     "cuadraJunto": "Block next to {a}",
@@ -139,17 +138,10 @@
     "hasta": "Full shade until {laHora}",
     "hastaAtardecer": "Full shade until sunset",
     "parcialAhora": "Partial shade at this time",
-    "expuestoAhora": "No shade at this time",
     "sinSolAhora": "No sun at this time",
-    "aceraProtegida": "Protected sidewalk",
-    "costado": "{orientacion} side",
-    "ambas": "Both alike",
-    "ninguna": "None at this time",
-    "svf": "Technical details · Sky View Factor",
-    "svfExplicacion": "Share of the sky visible from the {orientacion} side: 0 means covered and 1 means open sky. It is the estimated average of the points on that sidewalk, with buildings and trees.",
-    "utci": "Estimated UTCI",
-    "arbolado": "Trees on this segment",
-    "sinArboles": "No trees recorded",
+    "svf": "Sky View Factor: {valor}",
+    "svfExplicacion": "Share of the sky visible from the {anden}: 0 is a covered sky and 1 is an open sky. It is the estimated average of that sidewalk's points, with buildings and trees.",
+    "sinArboles": "No trees recorded on this block",
     "especies": {
       "mango": {
         "uno": "1 mango tree",
@@ -164,9 +156,9 @@
         "varios": "{n} trees of other species"
       }
     },
-    "fenologiaCambia": "The cañaguates on this segment drop their leaves from January to March: in that season this segment goes down to {estado}.",
-    "fenologiaIgual": "The cañaguates on this segment drop their leaves from January to March; at this time the shade barely changes.",
-    "fenologiaSinHojas": "The cañaguates on this segment are leafless this season; they give shade again with the rains.",
+    "fenologiaCambia": "The cañaguates on this block drop their leaves from January to March: in that season the block goes down to {estado}.",
+    "fenologiaIgual": "The cañaguates on this block drop their leaves from January to March; at this time the shade barely changes.",
+    "fenologiaSinHojas": "The cañaguates on this block are leafless this season; they give shade again with the rains.",
     "estadoMinuscula": {
       "sombra": "full shade",
       "parcial": "partial shade",
@@ -179,7 +171,26 @@
       "oriental": "East",
       "occidental": "West"
     },
-    "utciValor": "{sombra}° shade · {sol}° sun"
+    "refEntre": "between {a} and {b}",
+    "refCon": "at {a}",
+    "frentePlaza": "facing the plaza",
+    "frenteParque": "facing the park",
+    "estadoA": "{estado} at {laHora}",
+    "estado": {
+      "sombra": "Full shade",
+      "parcial": "Partial shade",
+      "expuesto": "In the sun"
+    },
+    "andenPlaza": "Sidewalk on the plaza side",
+    "andenParque": "Sidewalk on the park side",
+    "andenEnfrente": "Sidewalk across the street",
+    "andenCalle": "Sidewalk toward {calle}",
+    "andenCostado": "Sidewalk on the {orientacion} side",
+    "andenEstado": "{estado} · {p} %",
+    "mejor": "Best",
+    "sensacion": "Feels like: {sombra} in the shade · {sol} in the sun",
+    "arbolesEnCuadra": "{lista} on this block",
+    "detalles": "Technical details"
   },
   "pantallas": {
     "p01": "Splash",

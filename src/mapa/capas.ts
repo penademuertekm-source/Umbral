@@ -35,7 +35,8 @@ const WIDTH: ExpressionSpecification = ['interpolate', ['exponential', 2], ['zoo
 // La banda de 5 min de las isócronas va más gruesa: MapLibre exige que el zoom quede en la interpolación de
 // primer nivel, así que se escalan las paradas en vez de multiplicar la expresión.
 const WIDE_WIDTH: ExpressionSpecification = ['interpolate', ['exponential', 2], ['zoom'], 14, 1.6, 16, 4, 17, 6.4, 18, 11.2, 19, 17.6]
-const OUTLINE_GAP: ExpressionSpecification = ['interpolate', ['exponential', 2], ['zoom'], 14, 6, 16, 9, 17, 13, 18, 20, 19, 30]
+/** Halo de la cuadra elegida: unos 22 px a zoom 16, y crece con el andén. */
+const HALO_WIDTH: ExpressionSpecification = ['interpolate', ['exponential', 2], ['zoom'], 14, 16, 16, 22, 17, 26, 18, 33, 19, 43]
 /** Escala del marcador de grupo de árboles: 28 px sobre los 40 px del marcador (src/mapa/imagenes.ts). */
 const TREE_GROUP_SIZE = 28 / 40
 /** Sin estado (todavía calculando) se dibuja como "sin sol": gris neutro. */
@@ -86,6 +87,14 @@ export function addDataLayers(map: MapLibreMap, data: MapData, colors: MapColors
   // sol a puntos. Las medidas en px son las del grosor de 4 px.
   const line = { type: 'line' as const, source: 'aceras', layout: { 'line-join': 'round' as const } }
   const sidewalk = { 'line-width': SIDEWALK_WIDTH, 'line-offset': SIDE_OFFSET }
+  // 07-2: la cuadra elegida lleva un halo oscuro al 28 % (unos 22 px) debajo de sus andenes.
+  map.addLayer({
+    ...line,
+    id: 'tramo-seleccionado',
+    filter: ['==', ['get', 'arista'], -1],
+    layout: { ...line.layout, 'line-cap': 'round' },
+    paint: { 'line-color': colors.texto, 'line-width': HALO_WIDTH, 'line-opacity': 0.28, 'line-offset': SIDE_OFFSET },
+  })
   map.addLayer({
     ...line,
     id: 'tramos-sin-sol',
@@ -148,12 +157,6 @@ export function addDataLayers(map: MapLibreMap, data: MapData, colors: MapColors
     paint: { 'line-color': colors.usuario, 'line-width': WIDE_WIDTH, 'line-opacity': 1 },
   })
 
-  map.addLayer({
-    ...line,
-    id: 'tramo-seleccionado',
-    filter: ['==', ['get', 'arista'], -1],
-    paint: { 'line-color': colors.texto, 'line-width': 2, 'line-gap-width': OUTLINE_GAP, 'line-offset': SIDE_OFFSET },
-  })
   // Zona de toque invisible, más ancha que la línea (área táctil).
   map.addLayer({
     ...line,

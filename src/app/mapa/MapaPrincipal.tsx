@@ -234,8 +234,6 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
   // G6: un solo Aviso en la hoja, con "Es hora de salir" primero y el contador "+N" para los demás.
   const salida = useAvisoSalida(data)
   const notices = salida ? [salida, ...cloudNotices] : cloudNotices
-  // 04-5: la hoja asomada se ve salvo al elegir el punto de partida o con la ficha de una cuadra abierta.
-  const showSheet = !picking && selected === null
 
   return (
     <div className={s.pantalla}>
@@ -322,70 +320,83 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
             )}
           </div>
 
-          {showSheet && (
+          {!picking && (
             <div className={s.abajo}>
-              {/* 04-8: sobre la hoja solo quedan ⓘ (créditos, G10) a la izquierda y "Mi ubicación" a la derecha. */}
-              <div className={s.flotantes}>
-                <button
-                  type="button"
-                  className={s.botonCreditos}
-                  aria-label={t('creditos.boton')}
-                  onClick={() => navigate('/perfil/acerca')}
-                >
-                  <span className={s.circuloCreditos}>
-                    <Icono name="informacion" />
-                  </span>
-                </button>
-                <div className={s.ubicacion}>
-                  {locationMessage && (
-                    <p className={`${s.globo} um-etiqueta`} role="status">
-                      {locationMessage}
-                    </p>
-                  )}
+              {/* 07-2: la ficha de la cuadra ocupa la hoja en altura media; los botones flotantes se ocultan. */}
+              {selected !== null && data && edgeIndex && trees && resultado ? (
+                <FichaTramo
+                  edge={selected}
+                  data={data}
+                  index={edgeIndex}
+                  trees={trees}
+                  resultado={resultado}
+                  utci={fichaUtci}
+                  onClose={close}
+                />
+              ) : (
+                <>
+                {/* 04-8: sobre la hoja solo quedan ⓘ (créditos, G10) a la izquierda y "Mi ubicación" a la derecha. */}
+                <div className={s.flotantes}>
                   <button
                     type="button"
-                    className={s.botonFlotante}
-                    aria-label={t('mapa.miUbicacion')}
-                    onClick={() => {
-                      ubicacion.start()
-                      setFocusUser((n) => n + 1)
-                    }}
+                    className={s.botonCreditos}
+                    aria-label={t('creditos.boton')}
+                    onClick={() => navigate('/perfil/acerca')}
                   >
-                    <Icono name="mi-ubicacion" />
+                    <span className={s.circuloCreditos}>
+                      <Icono name="informacion" />
+                    </span>
                   </button>
-                </div>
-              </div>
-
-              {/* 04-5: hoja asomada con el aviso, la sensación térmica, la leyenda y el buscador. */}
-              <HojaInferior open embedded height="asomada" title={t('mapa.hoja')}>
-                <div className={s.hojaContenido}>
-                  <Aviso notices={notices} />
-                  <p className={`${s.secundario} um-etiqueta`}>
-                    {t('mapa.sensacion', { sol: degrees(thermal?.utci?.sun), sombra: degrees(thermal?.utci?.shade) })}
-                    {weatherNote && ` · ${weatherNote}`}
-                  </p>
-                  {showIsochrones ? (
-                    <div className={s.leyenda} role="group" aria-label={t('mapa.leyenda')}>
-                      <p className={`${s.secundario} um-etiqueta`}>
-                        {origen
-                          ? t('isocronas.titulo', { lugar: originLabel, hora: formatTime(shadeTime, language) })
-                          : t('isocronas.tocar')}
+                  <div className={s.ubicacion}>
+                    {locationMessage && (
+                      <p className={`${s.globo} um-etiqueta`} role="status">
+                        {locationMessage}
                       </p>
-                      {origen && (
-                        <>
-                          <div className={s.muestras}>
-                            {ISOCHRONE_BANDS_MIN.map((n, i) => (
-                              <span key={n} className={`${s.banda} um-etiqueta`}>
-                                <svg width="28" height="12" viewBox="0 0 28 12" aria-hidden="true">
-                                  <line className={s[`banda${i + 1}`]} x1="2" y1="6" x2="26" y2="6" />
-                                </svg>
-                                {t('isocronas.banda', { n })}
-                              </span>
-                            ))}
-                          </div>
-                          <p className={`${s.secundario} um-etiqueta`}>
-                            {gpsOutside ? t('origen.fueraDelCentro') : t('isocronas.nota')}
-                          </p>
+                    )}
+                    <button
+                      type="button"
+                      className={s.botonFlotante}
+                      aria-label={t('mapa.miUbicacion')}
+                      onClick={() => {
+                        ubicacion.start()
+                        setFocusUser((n) => n + 1)
+                      }}
+                    >
+                      <Icono name="mi-ubicacion" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* 04-5: hoja asomada con el aviso, la sensación térmica, la leyenda y el buscador. */}
+                <HojaInferior open embedded height="asomada" title={t('mapa.hoja')}>
+                  <div className={s.hojaContenido}>
+                    <Aviso notices={notices} />
+                    <p className={`${s.secundario} um-etiqueta`}>
+                      {t('mapa.sensacion', { sol: degrees(thermal?.utci?.sun), sombra: degrees(thermal?.utci?.shade) })}
+                      {weatherNote && ` · ${weatherNote}`}
+                    </p>
+                    {showIsochrones ? (
+                      <div className={s.leyenda} role="group" aria-label={t('mapa.leyenda')}>
+                        <p className={`${s.secundario} um-etiqueta`}>
+                          {origen
+                            ? t('isocronas.titulo', { lugar: originLabel, hora: formatTime(shadeTime, language) })
+                            : t('isocronas.tocar')}
+                        </p>
+                        {origen && (
+                          <>
+                            <div className={s.muestras}>
+                              {ISOCHRONE_BANDS_MIN.map((n, i) => (
+                                <span key={n} className={`${s.banda} um-etiqueta`}>
+                                  <svg width="28" height="12" viewBox="0 0 28 12" aria-hidden="true">
+                                    <line className={s[`banda${i + 1}`]} x1="2" y1="6" x2="26" y2="6" />
+                                  </svg>
+                                  {t('isocronas.banda', { n })}
+                                </span>
+                              ))}
+                            </div>
+                            <p className={`${s.secundario} um-etiqueta`}>
+                              {gpsOutside ? t('origen.fueraDelCentro') : t('isocronas.nota')}
+                            </p>
                         </>
                       )}
                     </div>
@@ -411,6 +422,8 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
                   </Link>
                 </div>
               </HojaInferior>
+                </>
+              )}
             </div>
           )}
         </div>
@@ -447,18 +460,6 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
           <p className={`${s.secundario} um-etiqueta`}>{t('mapa.otraHoraNota')}</p>
         </div>
       </HojaInferior>
-
-      {selected !== null && data && edgeIndex && trees && resultado && (
-        <FichaTramo
-          edge={selected}
-          data={data}
-          index={edgeIndex}
-          trees={trees}
-          resultado={resultado}
-          utci={fichaUtci}
-          onClose={close}
-        />
-      )}
 
       {climaConfig?.elNino && !elNinoClosed && !picking && (
         <AvisoElNino

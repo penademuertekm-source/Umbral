@@ -130,7 +130,6 @@
     "otraHoraNota": "El mapa muestra la sombra estimada para esa hora."
   },
   "ficha": {
-    "entre": "{calle} entre {a} y {b}",
     "esquina": "{calle} con {a}",
     "cuadraEntre": "Cuadra entre {a} y {b}",
     "cuadraJunto": "Cuadra junto a la {a}",
@@ -139,17 +138,10 @@
     "hasta": "Sombra plena hasta {laHora}",
     "hastaAtardecer": "Sombra plena hasta que se oculta el sol",
     "parcialAhora": "Sombra parcial a esta hora",
-    "expuestoAhora": "Sin sombra a esta hora",
     "sinSolAhora": "Sin sol a esta hora",
-    "aceraProtegida": "Acera protegida",
-    "costado": "Costado {orientacion}",
-    "ambas": "Las dos por igual",
-    "ninguna": "Ninguna a esta hora",
-    "svf": "Detalles técnicos · Sky View Factor",
-    "svfExplicacion": "Parte del cielo que se ve desde el costado {orientacion}: 0 es cielo tapado y 1 es cielo abierto. Es el promedio estimado de los puntos de esa acera, con edificios y árboles.",
-    "utci": "UTCI estimado",
-    "arbolado": "Arbolado del tramo",
-    "sinArboles": "Sin árboles registrados",
+    "svf": "Sky View Factor: {valor}",
+    "svfExplicacion": "Parte del cielo que se ve desde el {anden}: 0 es cielo tapado y 1 es cielo abierto. Es el promedio estimado de los puntos de ese andén, con edificios y árboles.",
+    "sinArboles": "Sin árboles registrados en la cuadra",
     "especies": {
       "mango": {
         "uno": "1 mango",
@@ -164,9 +156,9 @@
         "varios": "{n} árboles de otras especies"
       }
     },
-    "fenologiaCambia": "Los cañaguates de este tramo pierden el follaje entre enero y marzo: en esa temporada este tramo baja a {estado}.",
-    "fenologiaIgual": "Los cañaguates de este tramo pierden el follaje entre enero y marzo; a esta hora la sombra del tramo casi no cambia.",
-    "fenologiaSinHojas": "Los cañaguates de este tramo están sin hojas en esta temporada; vuelven a dar sombra con las lluvias.",
+    "fenologiaCambia": "Los cañaguates de esta cuadra pierden el follaje entre enero y marzo: en esa temporada la cuadra baja a {estado}.",
+    "fenologiaIgual": "Los cañaguates de esta cuadra pierden el follaje entre enero y marzo; a esta hora la sombra de la cuadra casi no cambia.",
+    "fenologiaSinHojas": "Los cañaguates de esta cuadra están sin hojas en esta temporada; vuelven a dar sombra con las lluvias.",
     "estadoMinuscula": {
       "sombra": "sombra plena",
       "parcial": "sombra parcial",
@@ -179,7 +171,26 @@
       "oriental": "oriental",
       "occidental": "occidental"
     },
-    "utciValor": "{sombra}° sombra · {sol}° sol"
+    "refEntre": "entre {a} y {b}",
+    "refCon": "con {a}",
+    "frentePlaza": "frente a la plaza",
+    "frenteParque": "frente al parque",
+    "estadoA": "{estado} a {laHora}",
+    "estado": {
+      "sombra": "Sombra plena",
+      "parcial": "Sombra parcial",
+      "expuesto": "Al sol"
+    },
+    "andenPlaza": "Andén del lado de la plaza",
+    "andenParque": "Andén del lado del parque",
+    "andenEnfrente": "Andén de enfrente",
+    "andenCalle": "Andén hacia la {calle}",
+    "andenCostado": "Andén del costado {orientacion}",
+    "andenEstado": "{estado} · {p} %",
+    "mejor": "Mejor",
+    "sensacion": "Sensación térmica: {sombra} a la sombra · {sol} al sol",
+    "arbolesEnCuadra": "{lista} en la cuadra",
+    "detalles": "Detalles técnicos"
   },
   "pantallas": {
     "p01": "Splash",
