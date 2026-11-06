@@ -4,22 +4,19 @@ import type { I18nValue } from '../../../i18n/contexto'
 import type { Destination } from '../../../mapa/datos'
 import { candidateDepartures, chooseDeparture, type PlannedDeparture } from '../../../rutas/agenda'
 import type { LonLat } from '../../../rutas/geometria'
-import { snap, type Graph } from '../../../rutas/grafo'
-import { findRoute, type Route } from '../../../rutas/rutas'
+import type { Graph } from '../../../rutas/grafo'
+import type { Route } from '../../../rutas/rutas'
 import { motorSombra } from '../../../sombra/cliente'
 import { localParts, TIME_ZONE } from '../../../sombra/tiempo'
 import type { PlannedTrip, ProfileData } from '../../../perfil/almacen'
-import { costModel } from '../../rutas/useContextoRutas'
+import { routeBetween } from '../../rutas/useContextoRutas'
 
 // Lo que comparten las pantallas de la agenda de salidas (S2).
 
 /** Ruta con más sombra saliendo a una hora: el mismo motor y el mismo costo que "¿Cuándo salir?" (15). */
 export async function routeAt(graph: Graph, from: LonLat, to: LonLat, time: Date, profile: HeatProfile): Promise<Route | null> {
-  const a = snap(graph, from)
-  const b = snap(graph, to)
-  if (!a || !b) return null
   const shade = await motorSombra.calcular(time)
-  return findRoute(graph, a, b, costModel(graph, shade.fraction, 'sombra', profile))
+  return routeBetween(graph, from, to, shade, 'sombra', profile)
 }
 
 /** La mejor hora de salida para llegar a `arrival`. undefined mientras calcula; null si no hay ninguna. */

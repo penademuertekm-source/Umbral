@@ -36,8 +36,7 @@ export function BuscarDestino() {
 
   const filas = useMemo(() => {
     if (!data) return []
-    const fraction = resultado?.fraction ?? null
-    const input = { data, graph, fraction, origin: origen?.point ?? null, profile, context, thermal }
+    const input = { data, graph, shade: resultado ?? null, origin: origen?.point ?? null, profile, context, thermal }
     return data.destinos.map((destino): { destino: Destination; fila: FilaDestino } => ({
       destino,
       fila: filaDestino(destino, input),

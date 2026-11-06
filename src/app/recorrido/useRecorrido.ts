@@ -3,11 +3,11 @@ import type { ThermalContext, ThermalState } from '../../clima/estado'
 import type { HeatLevel, HeatProfile } from '../../config/reglas-semaforo'
 import { GPS_MAX_TOLERANCE_M, GPS_TOLERANCE_M, SIMULATION_SPEEDUP, SIMULATION_TICK_MS } from '../../config/recorrido'
 import type { LonLat } from '../../rutas/geometria'
-import { snap, type Graph } from '../../rutas/grafo'
+import type { Graph } from '../../rutas/grafo'
 import { advance, buildTrack, type Track, type TrackState } from '../../rutas/recorrido'
-import { findRoute, type Route, type RouteMode } from '../../rutas/rutas'
+import type { Route, RouteMode } from '../../rutas/rutas'
 import { motorSombra } from '../../sombra/cliente'
-import { costModel, levelOfRoute } from '../rutas/useContextoRutas'
+import { levelOfRoute, routeBetween } from '../rutas/useContextoRutas'
 
 // Pantalla 13: la ruta del recorrido (fija desde que empieza), el seguimiento por GPS y el modo simulación.
 // Nada de esto se guarda: las posiciones viven solo en memoria mientras la pantalla está abierta.
@@ -48,10 +48,9 @@ export function useRutaRecorrido(input: Entrada): RutaRecorrido | null | undefin
     let vigente = true
     motorSombra.calcular(time).then((shade) => {
       if (!vigente) return
-      const from = snap(graph, origin)
-      const to = snap(graph, destination)
-      const chosen = from && to ? findRoute(graph, from, to, costModel(graph, shade.fraction, mode, profile)) : null
-      const shortest = from && to ? findRoute(graph, from, to, costModel(graph, shade.fraction, 'corta', profile)) : null
+      // G3: las mismas rutas que mostró la 06 para esa hora.
+      const chosen = routeBetween(graph, origin, destination, shade, mode, profile)
+      const shortest = routeBetween(graph, origin, destination, shade, 'corta', profile)
       const value =
         chosen && shortest
           ? {

@@ -45,7 +45,7 @@ export function SinRutaConSombra() {
   const route = useMemo(() => {
     const target = data?.destinos.find((d) => d.id === destinoId)
     if (!graph || !resultado || !origen || target?.lat == null || target.lon == null) return null
-    return routeBetween(graph, origen.point, [target.lon, target.lat], resultado.fraction, 'sombra', profile)
+    return routeBetween(graph, origen.point, [target.lon, target.lat], resultado, 'sombra', profile)
   }, [graph, resultado, origen, data, destinoId, profile])
 
   const thermal = ctx.thermalAt(ctx.hora.time)

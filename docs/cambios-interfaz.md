@@ -37,7 +37,7 @@ Fuera de esta lista: la prueba de campo de la sombra (hoja en preparación) y la
 |---|---|---|---|---|
 | G1 | Chip fijo "Estimado · 12:00 ⓘ" en lugar de la línea gris "Valores estimados… · Datos provisionales" repetida en 8 pantallas. La ⓘ abre una hoja con "Datos provisionales" y las fuentes | P1 | F C | hecho en 04; el resto con su paso |
 | G2 | Calor y cielo por separado ("▲ Calor fuerte · Nublado"). Quita el "riesgo bajo" junto a 37° | P1 | C | pendiente |
-| G3 | Las mismas cifras en todo el viaje: la ruta se calcula una vez y la leen 05, 06, 13, 15 y 16 | P1 | C | listo para código |
+| G3 | Las mismas cifras en todo el viaje: la ruta se calcula una vez y la leen 05, 06, 13, 15 y 16 | P1 | C | hecho |
 | G4 | Vocabulario: "andén" (no "acera"), "cuadra" (no "tramo"), "sensación térmica" (no "UTCI") y "Dónde descansar". "Puntos de permanencia" se mantiene en la documentación | P1 | C | pendiente |
 | G5 | Sin jerga a la vista: el Sky View Factor va plegado en "Detalles técnicos"; "px" y "CSV" van a la sección del equipo | P1 | C | pendiente |
 | G6 | Avisos en tres niveles: alerta (interrumpe, solo al iniciar un recorrido), aviso (franja en la hoja inferior) y dato (chip). Uno a la vez, con contador "+1"; después de leído se recoge en un chip, no desaparece | P2 | F C | pendiente |
@@ -321,3 +321,10 @@ Aquí Claude Code anota contradicciones o dudas que encuentre al aplicar un punt
       compartidas cuando haya una tercera.
     - **El orden de la sensación térmica cambia** entre la hoja ("al sol · a la sombra") y la ficha ("a la
       sombra · al sol"). Así está en la especificación (04 y 07-2); conviene unificarlo en Figma.
+
+**Paso R2 (2026-11-06): notas**
+
+1. **G3.** `src/rutas/viaje.ts` (`tripRoute`) guarda cada ruta por hora de sombra, modo, perfil, origen y
+   destino. Todas las pantallas la piden con `routeBetween`: 05, 06, 13, 15, 16, Mis lugares y la agenda de
+   salidas. Por eso la distancia, los minutos y el % salen del mismo objeto. Comprobado: la plaza a la 1:00
+   p. m. da "800 m · 12 min" y 64 % en la 05 y en la 06.

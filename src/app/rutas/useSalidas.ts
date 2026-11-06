@@ -1,11 +1,9 @@
 import { useEffect, useState } from 'react'
 import { DEPARTURES } from '../../config/rutas'
 import type { LonLat } from '../../rutas/geometria'
-import { findRoute } from '../../rutas/rutas'
-import { snap } from '../../rutas/grafo'
 import { bestWindows, suggestedWindow, type Departure } from '../../rutas/salidas'
 import { motorSombra } from '../../sombra/cliente'
-import { costModel, levelOfRoute, type useContextoRutas } from './useContextoRutas'
+import { levelOfRoute, routeBetween, type useContextoRutas } from './useContextoRutas'
 
 // Rutas con sombra para cada hora de salida de 6:00 a 18:00 (cada 15 min): pantallas 15 y 16.
 
@@ -23,16 +21,13 @@ export function useSalidas(ctx: Contexto, destination: LonLat | null) {
   useEffect(() => {
     if (!key || !graph || !origen || !destination || !context) return
     let vigente = true
-    const from = snap(graph, origen.point)
-    const to = snap(graph, destination)
-    if (!from || !to) return
     ;(async () => {
       const departures: Departure[] = []
       for (let m = DEPARTURES.startHour * 60; m <= DEPARTURES.endHour * 60; m += DEPARTURES.stepMin) {
         const time = hora.at(m)
         const shade = await motorSombra.calcular(time)
         if (!vigente) return
-        const route = findRoute(graph, from, to, costModel(graph, shade.fraction, 'sombra', profile))
+        const route = routeBetween(graph, origen.point, destination, shade, 'sombra', profile)
         if (route) departures.push({ minute: m, route, level: levelOfRoute(route, thermalAt(time), context) })
       }
       if (vigente) setResult({ key, departures })

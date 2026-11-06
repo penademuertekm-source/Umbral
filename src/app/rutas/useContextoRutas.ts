@@ -8,8 +8,9 @@ import { ROUTE_PROFILES } from '../../config/rutas'
 import { loadMapData, type MapData } from '../../mapa/datos'
 import { treesByEdge, type TreeCounts } from '../../mapa/tramos'
 import type { LonLat } from '../../rutas/geometria'
-import { buildGraph, snap, type Graph } from '../../rutas/grafo'
-import { findRoute, type CostModel, type Route, type RouteMode } from '../../rutas/rutas'
+import { buildGraph, type Graph } from '../../rutas/grafo'
+import type { CostModel, Route, RouteMode } from '../../rutas/rutas'
+import { tripRoute, type ShadeAt } from '../../rutas/viaje'
 import { motorSombra } from '../../sombra/cliente'
 import { useSombra } from '../../sombra/useSombra'
 import { useHoraElegida } from '../useHoraElegida'
@@ -68,17 +69,16 @@ export function costModel(graph: Graph, fraction: Float32Array, mode: RouteMode,
   }
 }
 
+/** La ruta entre dos puntos con la sombra de `shade`, de la fuente única de src/rutas/viaje.ts (G3). */
 export function routeBetween(
   graph: Graph,
   from: LonLat,
   to: LonLat,
-  fraction: Float32Array,
+  shade: ShadeAt,
   mode: RouteMode,
   profile: HeatProfile,
 ): Route | null {
-  const a = snap(graph, from)
-  const b = snap(graph, to)
-  return a && b ? findRoute(graph, a, b, costModel(graph, fraction, mode, profile)) : null
+  return tripRoute(graph, from, to, shade, mode, profile, costModel(graph, shade.fraction, mode, profile))
 }
 
 /** Nivel del semáforo para una ruta a una hora (null si no hay clima). */

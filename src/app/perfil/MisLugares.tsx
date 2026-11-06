@@ -36,12 +36,11 @@ export function MisLugares() {
   const [undoFailed, setUndoFailed] = useState(false)
 
   const filas = useMemo(() => {
-    const fraction = resultado?.fraction ?? null
     const origin = origen?.point ?? null
     return profile.places.map((place) => {
       const destino = data?.destinos.find((d) => d.id === place.destinationId)
       const fila: FilaDestino | null =
-        data && destino ? filaDestino(destino, { data, graph, fraction, origin, profile: heatProfile, context, thermal }) : null
+        data && destino ? filaDestino(destino, { data, graph, shade: resultado ?? null, origin, profile: heatProfile, context, thermal }) : null
       return { place, destino, fila }
     })
   }, [profile.places, data, graph, resultado, origen, heatProfile, context, thermal])

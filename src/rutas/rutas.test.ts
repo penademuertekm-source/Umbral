@@ -11,6 +11,7 @@ import { bestWindows, shadedTail, suggestedWindow, type Departure } from './sali
 import { preflightSteps } from './avisos'
 import { advance, buildLegs, buildTrack, guidanceAt, hasArrived, pointAt } from './recorrido'
 import { localDate } from '../sombra/tiempo'
+import { tripRoute } from './viaje'
 
 // Una manzana de 100 × 300 m. Carreras en x = 0 y x = 100; calles en y = 0 y y = 300 (metros).
 //
@@ -294,5 +295,27 @@ describe('avisos antes de salir (pantallas 19 y 18)', () => {
     expect(preflightSteps({ ...base, now: at(9), sunMinutes: 4.9 })).toEqual([])
     expect(preflightSteps({ ...base, now: at(9), sunMinutes: 8, uv: 7 })).toEqual([])
     expect(preflightSteps({ ...base, now: at(9), sunMinutes: 8, uv: null })).toEqual([])
+  })
+})
+
+describe('una sola fuente para las cifras del viaje (G3)', () => {
+  const from = ll([96, 20])
+  const to = ll([96, 280])
+  const shade = { time: 1_000, fraction: new Float32Array(0) }
+
+  it('la misma ruta con la misma hora, modo y perfil es el mismo objeto', () => {
+    const first = tripRoute(graph, from, to, shade, 'sombra', 'vulnerable', model('sombra'))
+    const again = tripRoute(graph, from, to, { ...shade }, 'sombra', 'vulnerable', model('sombra'))
+    expect(first).not.toBeNull()
+    expect(again).toBe(first)
+    // Es la misma cuenta que findRoute: metros, minutos y % iguales.
+    const direct = findRoute(graph, origin, destination, model('sombra'))!
+    expect([first!.meters, first!.minutes, first!.shadePercent]).toEqual([direct.meters, direct.minutes, direct.shadePercent])
+  })
+
+  it('otra hora o el otro modo es otra ruta', () => {
+    const shaded = tripRoute(graph, from, to, shade, 'sombra', 'vulnerable', model('sombra'))
+    expect(tripRoute(graph, from, to, { ...shade, time: 2_000 }, 'sombra', 'vulnerable', model('sombra'))).not.toBe(shaded)
+    expect(tripRoute(graph, from, to, shade, 'corta', 'vulnerable', model('corta'))).not.toBe(shaded)
   })
 })

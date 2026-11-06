@@ -49,8 +49,8 @@ export function ComparacionRutas() {
     const target = data?.destinos.find((d) => d.id === destinoId)
     if (!graph || !resultado || !origen || target?.lat == null || target.lon == null) return null
     const to: [number, number] = [target.lon, target.lat]
-    const shaded = routeBetween(graph, origen.point, to, resultado.fraction, 'sombra', profile)
-    const shortest = routeBetween(graph, origen.point, to, resultado.fraction, 'corta', profile)
+    const shaded = routeBetween(graph, origen.point, to, resultado, 'sombra', profile)
+    const shortest = routeBetween(graph, origen.point, to, resultado, 'corta', profile)
     return shaded && shortest ? { shaded, shortest } : null
   }, [graph, resultado, origen, data, destinoId, profile])
 
