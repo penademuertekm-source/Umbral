@@ -235,14 +235,14 @@ export function MapaSombra({
     const markers = located.map(({ place, element }) =>
       new Marker({ element, anchor: 'center' }).setLngLat([place.lon!, place.lat!]).addTo(map),
     )
-    // La tarjeta de nublado tapa la parte de arriba del mapa: los lugares se llevan a la parte de abajo.
+    // La hoja asomada (04-5) tapa la parte de abajo del mapa: los lugares se llevan a la parte de arriba.
     if (located.length > 0) {
       const lon = located.reduce((sum, { place }) => sum + place.lon!, 0) / located.length
       const lat = located.reduce((sum, { place }) => sum + place.lat!, 0) / located.length
       const { x, y } = map.project([lon, lat])
       const { clientWidth: width, clientHeight: height } = map.getContainer()
-      if (y < height * 0.55 || y > height - 80 || x < 120 || x > width - 120) {
-        map.easeTo({ center: [lon, lat], offset: [0, height * 0.2] })
+      if (y < 80 || y > height * 0.5 || x < 120 || x > width - 120) {
+        map.easeTo({ center: [lon, lat], offset: [0, -height * 0.2] })
       }
     }
     return () => markers.forEach((marker) => marker.remove())

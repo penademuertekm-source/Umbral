@@ -452,7 +452,8 @@
     "datoDel": "data from {fecha}"
   },
   "nublado": {
-    "titulo": "It's cloudy: shade matters less right now",
+    "titulo": "It is cloudy: the shade changes little",
+    "tenue": "The map shows it fainter",
     "lluvia": "Forecast: {p} % chance of rain at {laHora}",
     "cubiertos": "We show you covered places nearby.",
     "lugar": "Covered place: {nombre}"

@@ -61,7 +61,7 @@ Fuera de esta lista: la prueba de campo de la sombra (hoja en preparación) y la
 | 04-7 | Mapa | Nombres de calles, 5 o 6 lugares de referencia y vista inicial con la persona y la plaza | P2 | F C | listo para código |
 | 04-8 | Mapa | Solo "Mi ubicación" flotante; lo demás a la barra inferior | P2 | F C | hecho |
 | 04-9 | Mapa | Los grupos de árboles se identifican como tales (ícono o leyenda) | P2 | F C | hecho |
-| 04-10 | Mapa (20) | El nublado pasa a ser un estado de la 04, con la sombra atenuada y el aviso Nublado en gris (decisión de la autora, 2026-10-16) | P2 | F C | listo para código |
+| 04-10 | Mapa (20) | El nublado pasa a ser un estado de la 04, con la sombra atenuada y el aviso Nublado en gris (decisión de la autora, 2026-10-16) | P2 | F C | hecho |
 | 05-1 | Buscar | Destinos fuera del mapa (Mercado, Casa Beto Murgas) ofrecen "Cómo llegar"; hoy terminan en un mensaje sin salida | P1 | C | listo para código |
 | 06-1 | Rutas | "Ruta con más sombra" en lugar de "Ruta con sombra" | P1 | C | listo para código |
 | 06-2 | Rutas | El conteo de árboles pasa a los detalles | P2 | C | listo para código |
@@ -235,3 +235,12 @@ Aquí Claude Code anota contradicciones o dudas que encuentre al aplicar un punt
    (la ficha nueva es del paso R1c).
 5. **El deslizador de hora va en su hoja media**, con la hora grande y la nota de Figma 113:836. El
    selector Hoy · Mañana y "Volver a ahora" quedan para R1c, como dice el prompt.
+6. **04-10: el pronóstico de lluvia sigue a la vista.** Va como segundo aviso (nivel Aviso, ícono Lluvia),
+   detrás del contador "+1" del aviso Nublado, con "Te mostramos lugares cubiertos cerca." Los lugares
+   cubiertos se encuadran encima de la hoja. Encuadrar el lugar que nombra el aviso es 04-2, que sigue
+   pendiente.
+7. **Celular pequeño (N7).** A 360 × 640, con el aviso Nublado abierto la hoja asomada deja unos 140 px de
+   mapa. Sin aviso quedan unos 300. Conviene revisarlo en Figma junto con la letra grande.
+8. **"Es hora de salir" y Nublado salen cada uno en su aviso.** `AvisoSalida` arma su propio componente
+   `Aviso`. Si coinciden, se ven los dos, no uno con "+1" como pide G6. Se ajusta cuando G6 se aplique en
+   todas las pantallas.

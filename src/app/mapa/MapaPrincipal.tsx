@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useId, useMemo, useState, type CSSProperties } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router'
-import { BarraInferior, Boton, ChipEstimado, HojaInferior, Icono, MuestraTramo } from '../../componentes'
+import { Aviso, BarraInferior, Boton, ChipEstimado, HojaInferior, Icono, MuestraTramo, type NoticeItem } from '../../componentes'
 import { readHeatProfile } from '../../clima/configClima'
 import { simulateOvercast, thermalStateAt, type ThermalContext } from '../../clima/estado'
 import { rainOutlook } from '../../clima/openMeteo'
@@ -23,7 +23,6 @@ import { costModel, useGraph } from '../rutas/useContextoRutas'
 import { formatDesde, parseDesde, useOrigen } from '../rutas/useOrigen'
 import { MAX_MINUTE, MIN_MINUTE, STEP_MIN, useHoraElegida } from '../useHoraElegida'
 import { AvisoSalida } from '../perfil/salidas/AvisoSalida'
-import { AvisoNublado } from './AvisoNublado'
 import { EncabezadoMapa } from './EncabezadoMapa'
 import { FichaTramo } from './FichaTramo'
 import s from './MapaPrincipal.module.css'
@@ -110,13 +109,9 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
   const decision = thermal?.decision ?? null
   const cloudy = decision?.cloudy ?? false
   const rain = cloudy && forecast ? rainOutlook(forecast, shownTime) : null
-  const levelLabel = decision
-    ? decision.level === 'nublado'
-      ? t('semaforo.nubladoRiesgoBajo')
-      : undefined
-    : clima.status === 'cargando'
-      ? t('semaforo.cargandoClima')
-      : t('semaforo.sinClima')
+  // 04-10: con el cielo cubierto el semáforo sigue mostrando el nivel de calor; el nublado va en la hoja.
+  const level = decision?.heatLevel ?? 'nublado'
+  const levelLabel = decision ? undefined : clima.status === 'cargando' ? t('semaforo.cargandoClima') : t('semaforo.sinClima')
   // Sin conexión se usa el pronóstico guardado y se dice de cuándo es.
   let weatherNote: string | undefined
   if (clima.status === 'listo' && clima.stale) {
@@ -210,6 +205,20 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
   const [timeOpen, setTimeOpen] = useState(false)
   const degrees = (value: number | null | undefined) =>
     value == null ? t('comun.sinDato') : t('comun.grados', { valor: Math.round(value) })
+  // 04-10: el aviso Nublado (gris) y, si hay pronóstico de lluvia, un aviso con los lugares cubiertos.
+  const cloudNotices: NoticeItem[] = []
+  if (cloudy && !showIsochrones) {
+    cloudNotices.push({ id: 'nublado', level: 'nublado', title: t('nublado.titulo'), detail: t('nublado.tenue') })
+    if (rain) {
+      cloudNotices.push({
+        id: 'lluvia',
+        level: 'aviso',
+        icon: 'lluvia',
+        title: t('nublado.lluvia', { p: Math.round(rain.probability), laHora: laHora(i18n, new Date(rain.time)) }),
+        detail: coveredPlaces.length > 0 ? t('nublado.cubiertos') : undefined,
+      })
+    }
+  }
   // 04-5: la hoja asomada se ve salvo al elegir el punto de partida o con la ficha de una cuadra abierta.
   const showSheet = !picking && selected === null
 
@@ -217,7 +226,7 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
     <div className={s.pantalla}>
       <EncabezadoMapa
         time={formatTime(shownTime, language)}
-        level={decision?.level ?? 'nublado'}
+        level={level}
         levelLabel={levelLabel}
         timeOpen={timeOpen}
         onTimeClick={() => setTimeOpen((open) => !open)}
@@ -335,7 +344,7 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
               <HojaInferior open embedded height="asomada" title={t('mapa.hoja')} onClose={() => undefined}>
                 <div className={s.hojaContenido}>
                   <AvisoSalida data={data} />
-                  {cloudy && !showIsochrones && <AvisoNublado rain={rain} hasCoveredPlaces={coveredPlaces.length > 0} />}
+                  <Aviso notices={cloudNotices} />
                   <p className={`${s.secundario} um-etiqueta`}>
                     {t('mapa.sensacion', { sol: degrees(thermal?.utci?.sun), sombra: degrees(thermal?.utci?.shade) })}
                     {weatherNote && ` · ${weatherNote}`}

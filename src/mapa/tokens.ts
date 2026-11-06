@@ -18,7 +18,6 @@ export interface MapColors {
   superficie: string
   borde: string
   arbolFondo: string
-  nublado: string
   usuario: string
 }
 
@@ -36,7 +35,6 @@ export function mapColors(): MapColors {
     superficie: token('--um-base-superficie'),
     borde: token('--um-base-borde'),
     arbolFondo: token('--um-semaforo-comodo-fondo'),
-    nublado: token('--um-semaforo-nublado-forma'),
     usuario: token('--um-mapa-usuario'),
   }
 }

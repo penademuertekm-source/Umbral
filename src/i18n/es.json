@@ -452,7 +452,8 @@
     "datoDel": "dato del {fecha}"
   },
   "nublado": {
-    "titulo": "Está nublado: la sombra pesa menos ahora",
+    "titulo": "Está nublado: la sombra cambia poco",
+    "tenue": "El mapa la muestra más tenue",
     "lluvia": "Pronóstico: {p} % de lluvia a {laHora}",
     "cubiertos": "Te mostramos lugares cubiertos cerca.",
     "lugar": "Lugar cubierto: {nombre}"

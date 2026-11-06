@@ -41,9 +41,13 @@ const TREE_GROUP_SIZE = 28 / 40
 /** Sin estado (todavía calculando) se dibuja como "sin sol": gris neutro. */
 const STATE_OF_FEATURE: ExpressionSpecification = ['coalesce', ['feature-state', 'estado'], STATE.sin_sol]
 
-function onlyState(code: number): ExpressionSpecification {
-  return ['case', ['==', STATE_OF_FEATURE, code], 1, 0]
+function onlyState(code: number, opacity = 1): ExpressionSpecification {
+  return ['case', ['==', STATE_OF_FEATURE, code], opacity, 0]
 }
+
+/** 04-10: con el cielo cubierto la sombra se ve tenue (35 %) y los árboles al 60 %; no se ocultan. */
+const CLOUDY_SHADE_OPACITY = 0.35
+const CLOUDY_TREE_OPACITY = 0.6
 
 export function baseStyle(colors: MapColors): StyleSpecification {
   return {
@@ -144,13 +148,6 @@ export function addDataLayers(map: MapLibreMap, data: MapData, colors: MapColors
     paint: { 'line-color': colors.usuario, 'line-width': WIDE_WIDTH, 'line-opacity': 1 },
   })
 
-  // Pantalla 20: con el cielo cubierto los tramos van en gris (se muestra en lugar de las capas de estado).
-  map.addLayer({
-    ...line,
-    id: 'tramos-nublado',
-    layout: { ...line.layout, visibility: 'none' },
-    paint: { ...sidewalk, 'line-color': colors.nublado },
-  })
   map.addLayer({
     ...line,
     id: 'tramo-seleccionado',
@@ -190,7 +187,16 @@ export function addDataLayers(map: MapLibreMap, data: MapData, colors: MapColors
   })
 }
 
-/** Capas que solo tienen sentido con sol: el estado de cada tramo y los árboles. */
+/** Capas de estado de los tramos y el estado que pinta cada una. */
+const STATE_LAYERS: [string, number][] = [
+  ['tramos-sin-sol', STATE.sin_sol],
+  ['tramos-sombra', STATE.sombra],
+  ['tramos-parcial', STATE.parcial],
+  ['tramos-expuesto', STATE.expuesto],
+]
+const TREE_LAYERS = ['arboles-grupo', 'arboles']
+
+/** Capas de la sombra: el estado de cada tramo y los árboles (tenues con el cielo cubierto). */
 const SUNNY_LAYERS = [
   'tramos-sin-sol',
   'tramos-sombra',
@@ -205,14 +211,18 @@ export type MapMode = 'sombra' | 'nublado' | 'isocronas'
 const ISOCHRONE_LAYERS = ['isocronas-1', 'isocronas-2', 'isocronas-3']
 
 /**
- * Qué se ve sobre las calles: la sombra de cada tramo, el estado nublado (pantalla 20: tramos en gris y
- * sin árboles) o las isócronas (sin tramos ni árboles, para que las bandas se lean claras).
+ * Qué se ve sobre las calles: la sombra de cada tramo, la misma sombra tenue con el cielo cubierto (04-10) o
+ * las isócronas (sin tramos ni árboles, para que las bandas se lean claras).
  */
 export function setMapMode(map: MapLibreMap, mode: MapMode): void {
   const show = (ids: string[], visible: boolean) =>
     ids.forEach((id) => map.setLayoutProperty(id, 'visibility', visible ? 'visible' : 'none'))
-  show(SUNNY_LAYERS, mode === 'sombra')
-  show(['tramos-nublado'], mode === 'nublado')
+  const cloudy = mode === 'nublado'
+  for (const [id, state] of STATE_LAYERS) {
+    map.setPaintProperty(id, 'line-opacity', onlyState(state, cloudy ? CLOUDY_SHADE_OPACITY : 1))
+  }
+  TREE_LAYERS.forEach((id) => map.setPaintProperty(id, 'icon-opacity', cloudy ? CLOUDY_TREE_OPACITY : 1))
+  show(SUNNY_LAYERS, mode !== 'isocronas')
   show(ISOCHRONE_LAYERS, mode === 'isocronas')
 }
 
