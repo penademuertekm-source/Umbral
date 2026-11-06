@@ -58,7 +58,7 @@ Fuera de esta lista: la prueba de campo de la sombra (hoja en preparación) y la
 | 04-4 | Mapa | El botón principal siempre con el mismo texto | P1 | C | pendiente |
 | 04-5 | Mapa | Hoja inferior de tres alturas que recoge leyenda, aviso y ficha | P2 | F C | hecho |
 | 04-6 | Mapa | Encabezado de una línea; al tocar la hora se abre el deslizador | P2 | F C | hecho |
-| 04-7 | Mapa | Nombres de calles, 5 o 6 lugares de referencia y vista inicial con la persona y la plaza | P2 | F C | listo para código |
+| 04-7 | Mapa | Nombres de calles, 5 o 6 lugares de referencia y vista inicial con la persona y la plaza | P2 | F C | hecho |
 | 04-8 | Mapa | Solo "Mi ubicación" flotante; lo demás a la barra inferior | P2 | F C | hecho |
 | 04-9 | Mapa | Los grupos de árboles se identifican como tales (ícono o leyenda) | P2 | F C | hecho |
 | 04-10 | Mapa (20) | El nublado pasa a ser un estado de la 04, con la sombra atenuada y el aviso Nublado en gris (decisión de la autora, 2026-10-16) | P2 | F C | hecho |
@@ -244,3 +244,13 @@ Aquí Claude Code anota contradicciones o dudas que encuentre al aplicar un punt
 8. **"Es hora de salir" y Nublado salen cada uno en su aviso.** `AvisoSalida` arma su propio componente
    `Aviso`. Si coinciden, se ven los dos, no uno con "+1" como pide G6. Se ajusta cuando G6 se aplique en
    todas las pantallas.
+9. **04-7: los nombres de calles son etiquetas HTML, no texto de MapLibre.** Escribir texto en el lienzo
+   necesita archivos de letra (glyphs) que la app no tiene, porque funciona sin conexión. Con etiquetas HTML
+   se usan Inter y los tokens, y crecen con "Letra más grande". `src/mapa/etiquetas.ts` elige una etiqueta
+   por cuadra con nombre (de la más larga a la más corta), sin repetir el mismo nombre a menos de 250 m. Al
+   mover el mapa se ocultan las que se montan sobre otra.
+10. **Lugares de referencia: solo dos.** El prompt nombra la Plaza Alfonso López y la Iglesia. La lista
+    (`LANDMARKS`) admite más cuando se decidan los 5 o 6 de la especificación. El nombre sale de
+    `destinos.json`: "Iglesia de la Concepción", no "Iglesia La Concepción" como en Figma.
+11. **Vista inicial.** Si el teléfono ya dio la ubicación, el mapa encuadra a la persona y la plaza una sola
+    vez, dejando libre lo que tapa la hoja. Sin ubicación, abre centrado en la plaza, como antes.

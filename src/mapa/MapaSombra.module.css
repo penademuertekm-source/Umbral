@@ -27,3 +27,24 @@
   background: var(--um-semaforo-nublado-fondo);
   color: var(--um-semaforo-nublado-texto);
 }
+
+/* 04-7: nombre de calle en pastilla blanca al 85 %, girada con la calle (Figma 110:78). */
+.calle {
+  display: inline-block;
+  padding: 0 var(--um-esp-xs);
+  border-radius: var(--um-esp-xs);
+  background: color-mix(in srgb, var(--um-base-superficie) 85%, transparent);
+  color: var(--um-base-texto);
+  white-space: nowrap;
+}
+
+/* 04-7: lugar de referencia (Plaza, Iglesia): la pastilla de lugar con el ícono verde, sin círculo. */
+.referencia {
+  padding: var(--um-esp-xs) var(--um-esp-sm);
+}
+
+.referenciaIcono {
+  display: grid;
+  place-items: center;
+  color: var(--um-termico-sombra-plena);
+}

@@ -10,7 +10,8 @@ import { ISOCHRONE_BANDS_MIN } from '../../config/rutas'
 import { laHora } from '../../i18n/hora'
 import { useT } from '../../i18n/useT'
 import { insideArea, loadMapData, type MapData } from '../../mapa/datos'
-import { MapaSombra } from '../../mapa/MapaSombra'
+import { LANDMARKS } from '../../mapa/etiquetas'
+import { MapaSombra, type Landmark } from '../../mapa/MapaSombra'
 import { indexEdges, treesByEdge } from '../../mapa/tramos'
 import { snap } from '../../rutas/grafo'
 import { isochrones } from '../../rutas/isocronas'
@@ -121,6 +122,17 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
         ? t('clima.datoDe', { laHora: laHora(i18n, fetched) })
         : t('clima.datoDel', { fecha: formatDateTime(fetched, language) })
   }
+
+  // 04-7: lugares de referencia del mapa, con el nombre de destinos.json en el idioma elegido.
+  const landmarks = useMemo(
+    (): Landmark[] =>
+      LANDMARKS.flatMap(({ id, icon }) => {
+        const destino = data?.destinos.find((d) => d.id === id)
+        if (!destino || destino.lat == null || destino.lon == null) return []
+        return [{ id, icon, name: language === 'es' ? destino.nombre.es : destino.nombre.en, point: [destino.lon, destino.lat] }]
+      }),
+    [data, language],
+  )
 
   const coveredPlaces = useMemo(
     () => data?.refugios.filter((r) => r.cubierto !== 'no' && r.lat !== null && r.lon !== null) ?? [],
@@ -248,6 +260,7 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
               isochrones={showIsochrones ? isochroneLayer : null}
               onMapClick={picking || showIsochrones ? onMapClick : undefined}
               pin={(picking || showIsochrones) && origen?.kind === 'punto' ? origen.point : null}
+              landmarks={landmarks}
             />
           )}
 

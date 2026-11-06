@@ -4,13 +4,14 @@ import 'maplibre-gl/dist/maplibre-gl.css'
 import './trabajador'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { Icono, Marcador } from '../componentes'
+import { Icono, Marcador, type IconName } from '../componentes'
 import type { IsochroneProps } from '../rutas/isocronas'
 import { motorSombra, type ResultadoSombra } from '../sombra/cliente'
 import type { Side, SideLetter } from '../sombra/modelo'
 import { useT } from '../i18n/useT'
 import { addDataLayers, baseStyle, selectEdge, setMapMode } from './capas'
 import type { MapData, Refuge } from './datos'
+import { streetLabels, type StreetLabel } from './etiquetas'
 import { addMapImages } from './imagenes'
 import s from './MapaSombra.module.css'
 import { mapColors } from './tokens'
@@ -34,11 +35,40 @@ interface MapaSombraProps {
   onMapClick?: (point: [number, number]) => void
   /** Punto de partida elegido en el mapa [lon, lat]. */
   pin?: [number, number] | null
+  /** Lugares de referencia con ícono (04-7): Plaza Alfonso López e Iglesia de la Concepción. Estable. */
+  landmarks?: Landmark[]
+}
+
+export interface Landmark {
+  id: string
+  name: string
+  icon: IconName
+  point: [number, number]
+}
+
+const NO_LANDMARKS: Landmark[] = []
+/** Separación mínima entre dos etiquetas en pantalla (px) para que no se monten. */
+const LABEL_GAP_PX = 4
+
+function overlaps(a: DOMRect, b: DOMRect): boolean {
+  return a.left < b.right + LABEL_GAP_PX && b.left < a.right + LABEL_GAP_PX && a.top < b.bottom + LABEL_GAP_PX && b.top < a.bottom + LABEL_GAP_PX
+}
+
+/** Contenedor de un marcador que no recibe toques: los toques pasan al andén de abajo. */
+function passiveElement(): HTMLDivElement {
+  const element = document.createElement('div')
+  element.style.pointerEvents = 'none'
+  return element
 }
 
 const NO_PLACES: Refuge[] = []
 
 const INITIAL_ZOOM = 16.5
+/** Vista inicial con la persona y la plaza: margen de arriba (chip estimado) y de abajo (hoja asomada). */
+const FRAME_TOP = 0.15
+const FRAME_BOTTOM = 0.45
+/** Margen a los lados (px): media pastilla de referencia, para que "Plaza Alfonso López" no quede cortada. */
+const FRAME_SIDE_PX = 112
 /** Con la ficha abierta solo se ve la parte de arriba del mapa: el tramo elegido debe quedar ahí. */
 const VISIBLE_SHARE = 0.4
 /** Parte del mapa, desde arriba, que no tapa la leyenda de las isócronas. */
@@ -57,6 +87,7 @@ export function MapaSombra({
   isochrones = null,
   onMapClick,
   pin = null,
+  landmarks = NO_LANDMARKS,
 }: MapaSombraProps) {
   const { t } = useT()
   const container = useRef<HTMLDivElement>(null)
@@ -67,6 +98,8 @@ export function MapaSombra({
   const userMarker = useRef<Marker | null>(null)
   const [pinElement] = useState(() => document.createElement('div'))
   const pinMarker = useRef<Marker | null>(null)
+  /** Ya se encuadró a la persona con la plaza (04-7), una vez por mapa. */
+  const framedUser = useRef(false)
   const onSelectRef = useRef(onSelect)
   const onMapClickRef = useRef(onMapClick)
   const userRef = useRef(user)
@@ -149,6 +182,10 @@ export function MapaSombra({
       alive = false
       map.remove()
       mapRef.current = null
+      // Los marcadores y el encuadre inicial eran de este mapa: el siguiente los vuelve a poner.
+      userMarker.current = null
+      pinMarker.current = null
+      framedUser.current = false
     }
   }, [data])
 
@@ -191,6 +228,40 @@ export function MapaSombra({
       map.easeTo({ center: midpoint, offset: [0, -height * (0.5 - VISIBLE_SHARE / 2)] })
     }
   }, [ready, selectedEdge, edgeMidpoints])
+
+  // 04-7: nombres de calles en pastillas giradas con la calle y lugares de referencia. Las referencias van
+  // siempre; de los nombres se ocultan los que se montan sobre otro (en el orden de streetLabels).
+  const labelElements = useMemo(
+    () => streetLabels(data.red).map((label: StreetLabel) => ({ label, element: passiveElement() })),
+    [data],
+  )
+  const landmarkElements = useMemo(() => landmarks.map((landmark) => ({ landmark, element: passiveElement() })), [landmarks])
+  useEffect(() => {
+    const map = mapRef.current
+    if (!map || !ready) return
+    const markers = [
+      ...labelElements.map(({ label, element }) => new Marker({ element }).setLngLat(label.point).addTo(map)),
+      ...landmarkElements.map(({ landmark, element }) => new Marker({ element }).setLngLat(landmark.point).addTo(map)),
+    ]
+    const declutter = () => {
+      const box = map.getContainer().getBoundingClientRect()
+      const kept = landmarkElements.map(({ element }) => element.getBoundingClientRect())
+      for (const { element } of labelElements) {
+        element.style.visibility = 'visible'
+        const pill = (element.firstElementChild ?? element).getBoundingClientRect()
+        const outside = pill.right < box.left || pill.left > box.right || pill.bottom < box.top || pill.top > box.bottom
+        const hidden = !outside && kept.some((other) => overlaps(other, pill))
+        element.style.visibility = hidden ? 'hidden' : 'visible'
+        if (!hidden && !outside) kept.push(pill)
+      }
+    }
+    declutter()
+    map.on('moveend', declutter)
+    return () => {
+      map.off('moveend', declutter)
+      markers.forEach((marker) => marker.remove())
+    }
+  }, [ready, labelElements, landmarkElements])
 
   // Qué se ve sobre las calles: sombra, nublado (pantalla 20) o isócronas (Fase 6).
   const mode = isochrones ? 'isocronas' : cloudy ? 'nublado' : 'sombra'
@@ -251,7 +322,7 @@ export function MapaSombra({
   // Marcador del usuario.
   useEffect(() => {
     const map = mapRef.current
-    if (!map) return
+    if (!map || !ready) return
     if (!user) {
       userMarker.current?.remove()
       userMarker.current = null
@@ -259,7 +330,7 @@ export function MapaSombra({
     }
     userMarker.current ??= new Marker({ element: userElement }).setLngLat(user).addTo(map)
     userMarker.current.setLngLat(user)
-  }, [user, userElement])
+  }, [ready, user, userElement])
 
   // Punto de partida elegido en el mapa.
   useEffect(() => {
@@ -274,18 +345,54 @@ export function MapaSombra({
     pinMarker.current.setLngLat(pin)
   }, [ready, pin, pinElement])
 
-  // Centrar en el usuario solo cuando se pide (focusUser cambia), o cuando llega la primera posición
-  // después de pedirla.
+  // Centrar en el usuario solo cuando se pide (focusUser cambia). Si la posición llega sin pedirla, la vista
+  // inicial encuadra a la persona y la plaza (04-7), una sola vez y dejando libre lo que tapa la hoja.
   const hasUser = user !== null
   useEffect(() => {
     const map = mapRef.current
     const position = userRef.current
-    if (map && position && focusUser > 0) map.easeTo({ center: position, zoom: Math.max(map.getZoom(), 17) })
-  }, [focusUser, hasUser])
+    if (!map || !ready || !position) return
+    if (focusUser > 0) {
+      map.easeTo({ center: position, zoom: Math.max(map.getZoom(), 17) })
+      return
+    }
+    if (framedUser.current || selectedEdge !== null) return
+    framedUser.current = true
+    const { clientHeight: height } = map.getContainer()
+    const bounds = new LngLatBounds(position, position).extend(data.meta.area.centro)
+    map.fitBounds(bounds, {
+      padding: { top: height * FRAME_TOP, bottom: height * FRAME_BOTTOM, left: FRAME_SIDE_PX, right: FRAME_SIDE_PX },
+      maxZoom: INITIAL_ZOOM,
+      duration: 0,
+    })
+    // Solo al llegar la posición o al pedirla; no al abrir o cerrar una ficha.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [focusUser, hasUser, ready])
 
   return (
     <>
       <div ref={container} className={s.mapa} />
+      {labelElements.map(({ label, element }) =>
+        createPortal(
+          <span className={`${s.calle} um-micro`} style={{ transform: `rotate(${label.angle}deg)` }} aria-hidden="true">
+            {label.text}
+          </span>,
+          element,
+          label.id,
+        ),
+      )}
+      {landmarkElements.map(({ landmark, element }) =>
+        createPortal(
+          <span className={`${s.lugar} ${s.referencia} um-etiqueta`}>
+            <span className={s.referenciaIcono} aria-hidden="true">
+              <Icono name={landmark.icon} size={20} />
+            </span>
+            {landmark.name}
+          </span>,
+          element,
+          landmark.id,
+        ),
+      )}
       {createPortal(<Marcador kind="usuario" />, userElement)}
       {createPortal(<Marcador kind="usuario" label={t('origen.punto')} />, pinElement)}
       {placeElements.map(({ place, element }) =>
