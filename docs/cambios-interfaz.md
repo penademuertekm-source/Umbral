@@ -289,3 +289,12 @@ Aquí Claude Code anota contradicciones o dudas que encuentre al aplicar un punt
 6. **Textos que salieron de la ficha**: "Acera protegida", "UTCI estimado", "Arbolado del tramo" y la línea
    "Valores estimados para…" (el chip "Estimado" del mapa ya lo dice, G1). La nota de los cañaguates dice
    "cuadra" en lugar de "tramo" (G4).
+7. **Selector de hora (04-6 y la parte "Mañana" de N3).** Hoy · Mañana, la hora en grande con la pastilla
+   "ahora", el deslizador con 6 a. m. · 12 m. · 6 p. m. y "Volver a ahora". Va en la hoja incrustada del
+   mapa, como la ficha. N3 sigue en "listo para código" porque falta la noche ("Ya no hay sol"), que es del
+   paso R5.
+8. **"Mañana" viaja a todas las pantallas** (decisión de la autora). Va en la dirección (`?dia=manana`),
+   junto a `?hora=`, en los enlaces que arma `useEnlace`. Así rutas, "¿Cuándo salir?" y Descansar calculan
+   el mismo día. El pronóstico de Open-Meteo ya trae los dos días.
+9. **Encabezado con "Mañana".** "Mañana, 4:00 p. m." y el chip del semáforo no caben juntos en 390 px: el chip
+   baja a una segunda línea solo en ese caso, como hacía la barra anterior.

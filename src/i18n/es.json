@@ -127,7 +127,13 @@
     "hoja": "Leyenda y búsqueda",
     "sensacion": "Sensación térmica: {sol} al sol · {sombra} a la sombra",
     "arboles": "Árboles",
-    "otraHoraNota": "El mapa muestra la sombra estimada para esa hora."
+    "otraHoraNota": "El mapa muestra la sombra estimada para esa hora.",
+    "dia": "Día",
+    "hoy": "Hoy",
+    "manana": "Mañana",
+    "ahora": "ahora",
+    "volverAhora": "Volver a ahora",
+    "horaManana": "Mañana, {hora}"
   },
   "ficha": {
     "esquina": "{calle} con {a}",

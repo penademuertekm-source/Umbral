@@ -1,10 +1,10 @@
 import { useCallback } from 'react'
 import { useSearchParams } from 'react-router'
 
-/** Parámetros que viajan de una pantalla a otra: la hora elegida y el punto de partida. */
-const SHARED = ['hora', 'desde'] as const
+/** Parámetros que viajan de una pantalla a otra: la hora y el día elegidos, y el punto de partida. */
+const SHARED = ['hora', 'dia', 'desde'] as const
 
-/** Arma enlaces que conservan ?hora= y ?desde=, más los parámetros que se indiquen (undefined los quita). */
+/** Arma enlaces que conservan ?hora=, ?dia= y ?desde=, más los parámetros que se indiquen (undefined los quita). */
 export function useEnlace() {
   const [params] = useSearchParams()
   return useCallback(

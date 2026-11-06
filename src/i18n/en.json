@@ -127,7 +127,13 @@
     "hoja": "Legend and search",
     "sensacion": "Feels like: {sol} in the sun · {sombra} in the shade",
     "arboles": "Trees",
-    "otraHoraNota": "The map shows the estimated shade for that time."
+    "otraHoraNota": "The map shows the estimated shade for that time.",
+    "dia": "Day",
+    "hoy": "Today",
+    "manana": "Tomorrow",
+    "ahora": "now",
+    "volverAhora": "Back to now",
+    "horaManana": "Tomorrow, {hora}"
   },
   "ficha": {
     "esquina": "{calle} at {a}",

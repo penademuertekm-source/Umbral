@@ -239,8 +239,48 @@
   gap: var(--um-esp-xs);
 }
 
-.horaGrande {
+/* Hoy · Mañana (N3, Figma 113:836): segmentos de 52 px en un contenedor de 60. */
+.dias {
+  display: flex;
+  gap: var(--um-esp-xs);
+  min-height: 60px;
+  padding: var(--um-esp-xs);
+  border: 1px solid var(--um-base-borde);
+  border-radius: var(--um-radio-control);
+  background: var(--um-base-fondo);
+}
+
+.dia {
+  flex: 1;
+  min-height: 52px;
+  border: 1px solid transparent;
+  border-radius: var(--um-radio-control);
+  background: none;
+  color: var(--um-base-texto-secundario);
+  cursor: pointer;
+}
+
+.dia[aria-pressed='true'] {
+  border-color: var(--um-base-borde);
+  background: var(--um-base-superficie);
   color: var(--um-base-texto);
+  font-weight: 600;
+}
+
+/* La hora elegida en grande, con la pastilla "ahora" cuando es la hora actual. */
+.horaElegida {
+  display: flex;
+  align-items: center;
+  gap: var(--um-esp-sm);
+  margin-top: var(--um-esp-sm);
+  color: var(--um-base-texto);
+}
+
+.ahora {
+  padding: 0 var(--um-esp-sm);
+  border-radius: var(--um-radio-control);
+  background: var(--nivel-fondo);
+  color: var(--nivel-texto);
 }
 
 

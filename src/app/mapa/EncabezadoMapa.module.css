@@ -1,11 +1,13 @@
 /* Encabezado del mapa (04-6, Figma 110:78): una línea de 64 px, superficie y borde inferior. */
 
+/* Si la hora ("Mañana, 4:00 p. m.") y el chip no caben en una línea, el chip baja (como en BarraSuperior). */
 .encabezado {
   display: flex;
   flex-shrink: 0;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: var(--um-esp-sm);
+  gap: 0 var(--um-esp-sm);
   min-height: 64px;
   padding: max(var(--um-esp-xs), env(safe-area-inset-top)) var(--um-esp-md) var(--um-esp-xs);
   border-bottom: 1px solid var(--um-base-borde);

@@ -26,6 +26,7 @@ import { MAX_MINUTE, MIN_MINUTE, STEP_MIN, useHoraElegida } from '../useHoraEleg
 import { useAvisoSalida } from '../perfil/salidas/useAvisoSalida'
 import { EncabezadoMapa } from './EncabezadoMapa'
 import { FichaTramo } from './FichaTramo'
+import niveles from '../../estilos/niveles.module.css'
 import s from './MapaPrincipal.module.css'
 
 // Pantalla 04 (nodo 3:2): mapa de sombra del centro a la hora del deslizador, con el semáforo y el UTCI
@@ -35,6 +36,8 @@ import s from './MapaPrincipal.module.css'
 
 /** Espera antes de recalcular mientras se arrastra el deslizador. */
 const DEBOUNCE_MS = 80
+/** Marca del medio del deslizador: las 12 m. */
+const NOON_MINUTE = 12 * 60
 
 function useDebounced<T>(value: T, ms: number): T {
   const [debounced, setDebounced] = useState(value)
@@ -166,7 +169,7 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
     if (picking) {
       const back = params.get('volver') ?? '/buscar'
       const next = new URLSearchParams()
-      for (const key of ['hora', 'destino']) {
+      for (const key of ['hora', 'dia', 'destino']) {
         const value = params.get(key)
         if (value) next.set(key, value)
       }
@@ -212,6 +215,10 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
             : ''
 
   const progress = ((minute - MIN_MINUTE) / (MAX_MINUTE - MIN_MINUTE)) * 100
+  // N3: con "Mañana" elegido, el encabezado y el chip lo dicen ("Mañana, 4:00 p. m.").
+  const timeLabel = hora.tomorrow
+    ? t('mapa.horaManana', { hora: formatTime(shownTime, language) })
+    : formatTime(shownTime, language)
   const originLabel = origen?.kind === 'gps' ? t('origen.tuUbicacion') : t('origen.puntoElegido')
   // 04-6: el deslizador de hora se abre desde el encabezado.
   const [timeOpen, setTimeOpen] = useState(false)
@@ -238,7 +245,7 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
   return (
     <div className={s.pantalla}>
       <EncabezadoMapa
-        time={formatTime(shownTime, language)}
+        time={timeLabel}
         level={level}
         levelLabel={levelLabel}
         timeOpen={timeOpen}
@@ -315,15 +322,63 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
                   </details>
                 )}
                 {/* G1: la misma hora del encabezado. */}
-                {data && <ChipEstimado time={formatTime(shownTime, language)} provisional={data.meta.datos_provisionales} />}
+                {data && <ChipEstimado time={timeLabel} provisional={data.meta.datos_provisionales} />}
               </div>
             )}
           </div>
 
           {!picking && (
             <div className={s.abajo}>
-              {/* 07-2: la ficha de la cuadra ocupa la hoja en altura media; los botones flotantes se ocultan. */}
-              {selected !== null && data && edgeIndex && trees && resultado ? (
+              {/* 04-6 y N3: "Ver la sombra a otra hora" (Figma 113:836), desde la hora del encabezado. */}
+              {timeOpen ? (
+                <HojaInferior open embedded height="media" title={t('mapa.otraHora')} onClose={() => setTimeOpen(false)}>
+                  <div className={s.panel}>
+                    <div className={s.dias} role="group" aria-label={t('mapa.dia')}>
+                      {[false, true].map((tomorrow) => (
+                        <button
+                          key={String(tomorrow)}
+                          type="button"
+                          className={`${s.dia} um-cuerpo`}
+                          aria-pressed={hora.tomorrow === tomorrow}
+                          onClick={() => hora.setTomorrow(tomorrow)}
+                        >
+                          {tomorrow ? t('mapa.manana') : t('mapa.hoy')}
+                        </button>
+                      ))}
+                    </div>
+                    <p className={s.horaElegida} aria-hidden="true">
+                      <span className="um-dato">{formatTime(shownTime, language)}</span>
+                      {hora.isNow && <span className={`${s.ahora} ${niveles.comodo} um-etiqueta`}>{t('mapa.ahora')}</span>}
+                    </p>
+                    <label htmlFor={sliderId} className="sr-only">
+                      {t('mapa.otraHora')}
+                    </label>
+                    <input
+                      id={sliderId}
+                      className={`${s.deslizador} ${cloudy ? s.deslizadorNublado : ''}`}
+                      type="range"
+                      min={MIN_MINUTE}
+                      max={MAX_MINUTE}
+                      step={STEP_MIN}
+                      value={minute}
+                      onChange={(e) => hora.setMinute(Number(e.target.value))}
+                      aria-valuetext={timeLabel}
+                      style={{ '--progreso': `${progress}%` } as CSSProperties}
+                    />
+                    <div className={`${s.eje} um-etiqueta`} aria-hidden="true">
+                      <span>{formatTime(at(MIN_MINUTE), language)}</span>
+                      <span>{formatTime(at(NOON_MINUTE), language)}</span>
+                      <span>{formatTime(at(MAX_MINUTE), language)}</span>
+                    </div>
+                    <p className={`${s.secundario} um-etiqueta`}>{t('mapa.otraHoraNota')}</p>
+                    {!hora.isNow && (
+                      <Boton variant="secundario" onClick={hora.resetToNow}>
+                        {t('mapa.volverAhora')}
+                      </Boton>
+                    )}
+                  </div>
+                </HojaInferior>
+              ) : selected !== null && data && edgeIndex && trees && resultado ? (
                 <FichaTramo
                   edge={selected}
                   data={data}
@@ -432,35 +487,6 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
       {/* 04-8: Mapa · Ir a · Descansar · Perfil, con Mapa activa. */}
       {!picking && <BarraInferior active="mapa" />}
 
-      {/* 04-6: "Ver la sombra a otra hora", desde la hora del encabezado. Hoy · Mañana llega en el paso R1c. */}
-      <HojaInferior open={timeOpen} onClose={() => setTimeOpen(false)} title={t('mapa.otraHora')} height="media">
-        <div className={s.panel}>
-          <p className={`${s.horaGrande} um-dato`} aria-hidden="true">
-            {formatTime(shownTime, language)}
-          </p>
-          <label htmlFor={sliderId} className="sr-only">
-            {t('mapa.otraHora')}
-          </label>
-          <input
-            id={sliderId}
-            className={`${s.deslizador} ${cloudy ? s.deslizadorNublado : ''}`}
-            type="range"
-            min={MIN_MINUTE}
-            max={MAX_MINUTE}
-            step={STEP_MIN}
-            value={minute}
-            onChange={(e) => hora.setMinute(Number(e.target.value))}
-            aria-valuetext={formatTime(shownTime, language)}
-            style={{ '--progreso': `${progress}%` } as CSSProperties}
-          />
-          <div className={`${s.eje} um-etiqueta`} aria-hidden="true">
-            <span>{formatTime(at(MIN_MINUTE), language)}</span>
-            <span>{formatTime(at(MAX_MINUTE), language)}</span>
-          </div>
-          <p className={`${s.secundario} um-etiqueta`}>{t('mapa.otraHoraNota')}</p>
-        </div>
-      </HojaInferior>
-
       {climaConfig?.elNino && !elNinoClosed && !picking && (
         <AvisoElNino
           config={climaConfig}
@@ -474,10 +500,10 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
   )
 }
 
-/** Hora y punto de partida que viajan a la búsqueda. */
+/** Hora, día y punto de partida que viajan a la búsqueda. */
 function pickShared(params: URLSearchParams): Record<string, string> {
   const out: Record<string, string> = {}
-  for (const key of ['hora', 'desde']) {
+  for (const key of ['hora', 'dia', 'desde']) {
     const value = params.get(key)
     if (value) out[key] = value
   }
