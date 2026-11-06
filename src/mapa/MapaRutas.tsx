@@ -4,7 +4,7 @@ import 'maplibre-gl/dist/maplibre-gl.css'
 import './trabajador'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { Marcador, type MarkerKind } from '../componentes'
+import { Icono, Marcador, type IconName, type MarkerKind } from '../componentes'
 import { useT } from '../i18n/useT'
 import type { LonLat } from '../rutas/geometria'
 import type { Route } from '../rutas/rutas'
@@ -14,9 +14,9 @@ import { addMapImages } from './imagenes'
 import s from './MapaSombra.module.css'
 import { mapColors } from './tokens'
 
-// Mapa de las pantallas de rutas (06, 13 y 10): las rutas con los estilos de MuestraTramo (con sombra: verde
-// continua; corta: ámbar con marca punteada), los árboles de la ruta con sombra, los puntos de partida y
-// destino, la persona en movimiento (13) y lugares sueltos como los refugios (10).
+// Mapa de las pantallas de rutas (06, 13 y 10): las rutas (Figma 117:613: con más sombra, verde continua de
+// 7 px con borde blanco; más corta, gris a rayas de 4 px), los puntos de partida y destino con el nombre del
+// lugar, la persona en movimiento (13) y lugares sueltos como los refugios (10).
 
 export interface MapPlace {
   id: string
@@ -42,6 +42,11 @@ interface MapaRutasProps {
   follow?: boolean
   places?: readonly MapPlace[]
   label: string
+  /** Nombre e ícono del destino, en una pastilla junto a la bandera (06: el único lugar de referencia). */
+  destinationName?: string
+  destinationIcon?: IconName
+  /** Alto (px) de lo que tapa el mapa desde abajo, como una hoja: el encuadre deja libre esa franja. */
+  bottomInset?: number
 }
 
 const EMPTY: FeatureCollection = { type: 'FeatureCollection', features: [] }
@@ -50,7 +55,16 @@ const NO_PLACES: readonly MapPlace[] = []
 /** Al seguir a la persona: zoom mínimo y franja del borde (fracción de la vista) que obliga a recentrar. */
 const FOLLOW_ZOOM = 17.5
 const FOLLOW_MARGIN = 0.25
-const ROUTE_WIDTH = ['interpolate', ['exponential', 2], ['zoom'], 14, 3, 16, 5, 18, 10] as const
+/** Ruta con más sombra: 7 px a zoom 16, con un borde blanco de 2 px a cada lado. */
+const SHADED_WIDTH = ['interpolate', ['exponential', 2], ['zoom'], 14, 4, 16, 7, 18, 12] as const
+const SHADED_CASING = ['interpolate', ['exponential', 2], ['zoom'], 14, 8, 16, 11, 18, 16] as const
+/** Ruta más corta: 4 px a zoom 16, a rayas de 8 px con huecos de 7 (en unidades del grosor). */
+const SHORTEST_WIDTH = ['interpolate', ['exponential', 2], ['zoom'], 14, 2.5, 16, 4, 18, 7] as const
+const SHORTEST_DASH = [2, 1.75]
+/** Margen del encuadre (px). */
+const FRAME_PADDING = 48
+/** Margen a los lados con la pastilla del destino (px): la mitad de una pastilla larga. */
+const NAME_SIDE_PADDING = 110
 
 function asLines(route: Route | null | undefined): FeatureCollection<MultiLineString> {
   if (!route) return EMPTY as FeatureCollection<MultiLineString>
@@ -74,6 +88,9 @@ export function MapaRutas({
   follow = false,
   places = NO_PLACES,
   label,
+  destinationName,
+  destinationIcon,
+  bottomInset = 0,
 }: MapaRutasProps) {
   const { t } = useT()
   const container = useRef<HTMLDivElement>(null)
@@ -82,6 +99,11 @@ export function MapaRutas({
   const [originElement] = useState(() => document.createElement('div'))
   const [destinationElement] = useState(() => document.createElement('div'))
   const [userElement] = useState(() => document.createElement('div'))
+  const [nameElement] = useState(() => {
+    const element = document.createElement('div')
+    element.style.pointerEvents = 'none'
+    return element
+  })
   // Centro inicial: el mapa se crea una vez por juego de datos y luego se encuadra con las rutas.
   const initialCenter = useRef<LonLat>(origin ?? destination ?? data.meta.area.centro)
 
@@ -93,7 +115,7 @@ export function MapaRutas({
       style: baseStyle(colors),
       center: initialCenter.current,
       zoom: 16.5,
-      minZoom: 14,
+      minZoom: 13,
       maxZoom: 19.5,
       attributionControl: false,
       dragRotate: false,
@@ -116,25 +138,22 @@ export function MapaRutas({
         id: 'ruta-corta',
         type: 'line',
         source: 'ruta-corta',
-        layout: round,
-        paint: { 'line-color': colors.exposicion, 'line-width': ROUTE_WIDTH as never },
+        layout: { 'line-join': 'round', 'line-cap': 'butt' },
+        paint: { 'line-color': colors.textoSecundario, 'line-width': SHORTEST_WIDTH as never, 'line-dasharray': SHORTEST_DASH },
       })
       map.addLayer({
-        id: 'ruta-corta-marca',
+        id: 'ruta-sombra-borde',
         type: 'line',
-        source: 'ruta-corta',
-        paint: {
-          'line-color': colors.marcaExpuesto,
-          'line-width': ['interpolate', ['exponential', 2], ['zoom'], 14, 0.6, 16, 1, 18, 2],
-          'line-dasharray': [3, 3],
-        },
+        source: 'ruta-sombra',
+        layout: round,
+        paint: { 'line-color': colors.superficie, 'line-width': SHADED_CASING as never },
       })
       map.addLayer({
         id: 'ruta-sombra',
         type: 'line',
         source: 'ruta-sombra',
         layout: round,
-        paint: { 'line-color': colors.sombra, 'line-width': ROUTE_WIDTH as never },
+        paint: { 'line-color': colors.sombra, 'line-width': SHADED_WIDTH as never },
       })
       map.addLayer({
         id: 'ruta-arboles',
@@ -166,19 +185,27 @@ export function MapaRutas({
     ;(map.getSource('ruta-corta') as GeoJSONSource).setData(asLines(shortest))
     ;(map.getSource('ruta-sombra') as GeoJSONSource).setData(asLines(shaded))
     ;(map.getSource('ruta-arboles') as GeoJSONSource).setData(trees)
-    // La ruta elegida va encima.
-    if (selected === 'corta') {
-      map.moveLayer('ruta-sombra', 'ruta-corta')
-    } else {
-      map.moveLayer('ruta-corta', 'ruta-sombra')
-      map.moveLayer('ruta-corta-marca', 'ruta-sombra')
-    }
+    // La ruta elegida va encima (debajo de los árboles).
+    const order = selected === 'corta' ? ['ruta-sombra-borde', 'ruta-sombra', 'ruta-corta'] : ['ruta-corta', 'ruta-sombra-borde', 'ruta-sombra']
+    order.forEach((id) => map.moveLayer(id, 'ruta-arboles'))
     const bounds = new LngLatBounds()
     for (const point of [origin, destination]) if (point) bounds.extend(point)
     for (const route of [shaded, shortest]) route?.pieces.forEach((p) => p.coords.forEach((c) => bounds.extend(c)))
     for (const place of places) bounds.extend(place.point)
-    if (!bounds.isEmpty()) map.fitBounds(bounds, { padding: 48, maxZoom: 18, duration: 0 })
-  }, [ready, shaded, shortest, selected, trees, origin, destination, places])
+    if (bounds.isEmpty()) return
+    // Con la pastilla del destino hace falta más margen abajo y a los lados (media pastilla).
+    const side = destinationName ? NAME_SIDE_PADDING : FRAME_PADDING
+    const bottom = (destinationName ? FRAME_PADDING + 40 : FRAME_PADDING) + bottomInset
+    const { clientHeight: height } = map.getContainer()
+    // En un celular pequeño la franja libre es baja: los márgenes se achican para que el encuadre quepa.
+    const free = height - bottom - FRAME_PADDING - 24
+    const scale = free < 120 ? Math.max(0.3, free / 120) : 1
+    map.fitBounds(bounds, {
+      padding: { top: (FRAME_PADDING + 24) * scale, bottom: bottomInset + (bottom - bottomInset) * scale, left: side * scale, right: side * scale },
+      maxZoom: 18,
+      duration: 0,
+    })
+  }, [ready, shaded, shortest, selected, trees, origin, destination, places, bottomInset, destinationName])
 
   // Marcadores de partida y destino.
   useEffect(() => {
@@ -187,9 +214,11 @@ export function MapaRutas({
     const markers = [
       origin && new Marker({ element: originElement }).setLngLat(origin).addTo(map),
       destination && new Marker({ element: destinationElement }).setLngLat(destination).addTo(map),
+      // La pastilla con el nombre del destino, debajo de la bandera.
+      destination && destinationName ? new Marker({ element: nameElement, anchor: 'top', offset: [0, 26] }).setLngLat(destination).addTo(map) : null,
     ]
     return () => markers.forEach((m) => m?.remove())
-  }, [ready, origin, destination, originElement, destinationElement])
+  }, [ready, origin, destination, originElement, destinationElement, nameElement, destinationName])
 
   // Lugares sueltos (refugios).
   const placeElements = useMemo(() => places.map((place) => ({ place, element: document.createElement('div') })), [places])
@@ -225,6 +254,18 @@ export function MapaRutas({
       <div ref={container} className={s.mapa} />
       {createPortal(<Marcador kind="usuario" label={t('origen.punto')} />, originElement)}
       {createPortal(<Marcador kind="destino" />, destinationElement)}
+      {destinationName &&
+        createPortal(
+          <span className={`${s.lugar} ${s.referencia} um-etiqueta`}>
+            {destinationIcon && (
+              <span className={s.referenciaIcono} aria-hidden="true">
+                <Icono name={destinationIcon} size={20} />
+              </span>
+            )}
+            {destinationName}
+          </span>,
+          nameElement,
+        )}
       {createPortal(<Marcador kind="usuario" />, userElement)}
       {placeElements.map(({ place, element }) => createPortal(<Marcador kind={place.kind} label={place.label} />, element, place.id))}
     </>

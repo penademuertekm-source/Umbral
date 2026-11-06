@@ -1,10 +1,18 @@
-/* Pantalla 06 (Figma, nodo 4:42): mapa con las dos rutas y tarjetas. */
+/* Pantalla 06 (rediseño 2026, Figma 117:613): encabezado, mapa con las rutas, hoja con las tarjetas y barra
+   inferior. */
 
 .pantalla {
   display: flex;
   flex: 1;
   flex-direction: column;
   height: 100dvh;
+}
+
+.principal {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
 }
 
 .mapa {
@@ -23,40 +31,57 @@
   padding: var(--um-esp-md);
 }
 
+/* G1: el chip estimado flota arriba a la izquierda del mapa. */
+.chip {
+  position: absolute;
+  top: var(--um-esp-sm);
+  left: var(--um-esp-md);
+  z-index: 2;
+}
+
+/* La hoja con las tarjetas, al pie del mapa y encima de la barra inferior. */
+.abajo {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 3;
+}
+
 .panel {
   display: flex;
   flex-direction: column;
   gap: var(--um-esp-sm);
-  padding: var(--um-esp-md);
-  padding-bottom: max(var(--um-esp-md), env(safe-area-inset-bottom));
-  border-top: 1px solid var(--um-base-borde);
-  background: var(--um-base-fondo);
 }
 
 .tarjeta {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: var(--um-esp-md);
+  gap: var(--um-esp-sm);
   width: 100%;
   min-height: 72px;
   padding: var(--um-esp-md);
-  border: 1.5px solid var(--um-base-borde);
+  border: 1px solid var(--um-base-borde);
   border-radius: var(--um-radio-tarjeta);
   background: var(--um-base-superficie);
-  color: var(--um-base-texto-secundario);
+  color: var(--um-base-texto);
   font: inherit;
   text-align: left;
   cursor: pointer;
 }
 
+/* Elegida: borde verde de 2 px y los minutos en verde. */
 .activa {
   border: 2px solid var(--um-termico-sombra-plena);
+}
+
+.activa .minutos {
   color: var(--um-termico-sombra-plena);
 }
 
 .tarjetaTexto {
   display: flex;
+  flex: 1;
   flex-direction: column;
   min-width: 0;
 }
@@ -66,9 +91,40 @@
   white-space: nowrap;
 }
 
+/* 06-3: la muestra de la línea de cada ruta en el mapa. */
+.muestra {
+  flex-shrink: 0;
+}
+
+.muestraSombra line {
+  stroke: var(--um-termico-sombra-plena);
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+.muestraCorta line {
+  stroke: var(--um-base-texto-secundario);
+  stroke-width: 3;
+  stroke-dasharray: 6 4;
+}
+
 .enlace {
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--um-esp-xs);
   min-height: var(--um-tactil-minimo);
   color: var(--um-termico-sombra-plena);
+}
+
+/* Celular pequeño (360 × 640): tarjetas más bajas para que el mapa siga viéndose encima de la hoja. */
+@media (max-height: 700px) {
+  .panel {
+    gap: var(--um-esp-xs);
+  }
+
+  .tarjeta {
+    min-height: var(--um-tactil-minimo);
+    padding: var(--um-esp-sm) var(--um-esp-md);
+  }
 }

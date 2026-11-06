@@ -528,12 +528,9 @@
     "sombraAccesible": "Sombra de la ruta:"
   },
   "rutas": {
-    "conSombra": "Ruta con sombra",
+    "conSombra": "Ruta con más sombra",
     "corta": "Ruta más corta",
     "recomendada": "Ruta recomendada",
-    "protegido": "{p} % del trayecto protegido",
-    "protegidoCorto": "{p} % protegido",
-    "alSol": "unos {n} min al sol directo",
     "unaSola": "la más corta ya es la de más sombra",
     "minutos": "{n} min",
     "iniciar": "Iniciar recorrido con sombra",
@@ -543,7 +540,11 @@
     "fueraDelArea": "{destino} queda fuera del mapa de sombra, a {distancia} de la Plaza Alfonso López. Por ahora no hay rutas con sombra hasta allá.",
     "destinoDesconocido": "Ese destino no existe o todavía no tiene ubicación.",
     "mapa": "Mapa con las rutas hacia {destino}",
-    "verDestinos": "Ver los destinos"
+    "verDestinos": "Ver los destinos",
+    "detalleSombra": "{distancia} · {p} % en sombra",
+    "detalleCorta": "{distancia} · {n} min al sol",
+    "desde": "desde {lugar}",
+    "opciones": "Rutas para elegir"
   },
   "cuando": {
     "hacia": "Hacia {destino}",

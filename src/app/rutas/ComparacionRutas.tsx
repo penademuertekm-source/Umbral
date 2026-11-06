@@ -1,15 +1,13 @@
-import { useMemo, useState, type ReactNode } from 'react'
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { Link, Navigate, useNavigate, useSearchParams } from 'react-router'
-import type { Feature, Point } from 'geojson'
-import { Boton, Encabezado } from '../../componentes'
+import { BarraInferior, Boton, ChipEstimado, Encabezado, HojaInferior, Icono } from '../../componentes'
 import { weatherAt } from '../../clima/openMeteo'
 import { SINGLE_ROUTE_MIN_IMPROVEMENT } from '../../config/rutas'
-import { TREE_DISTANCE_M } from '../../mapa/tramos'
+import { horaConDia } from '../../i18n/hora'
 import { formatDistance, roundMinutes } from '../../i18n/numeros'
 import { useT } from '../../i18n/useT'
-import { insideArea, metersBetween, type TreeProps } from '../../mapa/datos'
+import { insideArea, metersBetween } from '../../mapa/datos'
 import { MapaRutas } from '../../mapa/MapaRutas'
-import { nearRoute } from '../../rutas/cercanos'
 import { preflightSteps } from '../../rutas/avisos'
 import { singleRoute } from '../../rutas/rutas'
 import { useGuardarLugar } from '../perfil/GuardarLugar'
@@ -18,13 +16,17 @@ import { heatWarningEnabled, heatWarningHiddenToday, hideHeatWarningToday } from
 import { ProteccionSolar } from '../recorrido/ProteccionSolar'
 import { useVolver } from '../useVolver'
 import { useEnlace } from './enlaces'
-import { NotaEstimado } from './NotaEstimado'
+import { destinationIcon } from '../perfil/lugares'
 import s from './Rutas.module.css'
 import c from './ComparacionRutas.module.css'
-import { levelOfRoute, routeBetween, treesOnRoute, useContextoRutas } from './useContextoRutas'
-import { textoArboles } from './textos'
+import { levelOfRoute, routeBetween, useContextoRutas } from './useContextoRutas'
 
-// Pantalla 06 (nodo 4:42): la ruta con sombra frente a la más corta, a la hora elegida.
+// Pantalla 06 (rediseño 2026, Figma 117:613): la ruta con más sombra frente a la más corta, a la hora
+// elegida. Mapa solo con las dos rutas, hoja con las dos tarjetas (cada una con la muestra de su línea, 06-3,
+// y sin el conteo de árboles, 06-2) y barra inferior con "Ir a" activa. Las cifras salen de la fuente única
+// del viaje (G3).
+
+
 
 export function ComparacionRutas() {
   const i18n = useT()
@@ -54,11 +56,18 @@ export function ComparacionRutas() {
     return shaded && shortest ? { shaded, shortest } : null
   }, [graph, resultado, origen, data, destinoId, profile])
 
-  const treePoints = useMemo(() => {
-    if (!data || !graph || !routes) return { type: 'FeatureCollection' as const, features: [] as Feature<Point, TreeProps>[] }
-    const near = nearRoute(routes.shaded, data.arboles.features, (f) => f.geometry.coordinates as [number, number], TREE_DISTANCE_M, graph.projection)
-    return { type: 'FeatureCollection' as const, features: near }
-  }, [data, graph, routes])
+  // Alto real de la hoja, para que el encuadre del mapa deje libre lo que ella tapa.
+  const sheetRef = useRef<HTMLDivElement>(null)
+  const [sheetHeight, setSheetHeight] = useState(0)
+  // Se vuelve a medir cuando la hoja aparece (con datos válidos) o cambia de alto.
+  const hasSheet = !!data && !!destino
+  useEffect(() => {
+    const element = sheetRef.current
+    if (!element) return
+    const observer = new ResizeObserver(() => setSheetHeight(element.offsetHeight))
+    observer.observe(element)
+    return () => observer.disconnect()
+  }, [hasSheet])
 
   if (data && !destino) return <Pantalla title="" volver={volver} mensaje={t('rutas.destinoDesconocido')} enlace={enlace('/buscar')} />
   if (data && destino && !point) {
@@ -93,7 +102,7 @@ export function ComparacionRutas() {
   const onStart = () => {
     if (!chosen) return
     const steps = preflightSteps({
-      now: new Date(),
+      now: ctx.hora.now,
       heatWarningEnabled: heatWarningEnabled(),
       heatWarningHiddenToday: heatWarningHiddenToday(),
       sunMinutes: chosen.sunMinutes,
@@ -108,65 +117,88 @@ export function ComparacionRutas() {
     if (rest.length === 0) start()
   }
 
+  const desde = t('rutas.desde', { lugar: origen?.kind === 'gps' ? t('origen.tuUbicacion') : t('origen.puntoElegido') })
+
   return (
-    <main className={c.pantalla}>
-      <Encabezado title={nombre} onBack={volver} action={guardar.action} />
-      <div className={c.mapa}>
-        {data && origen && point && routes && (
-          <MapaRutas
-            data={data}
-            shaded={unica ? null : routes.shaded}
-            shortest={routes.shortest}
-            selected={unica ? 'corta' : selected}
-            origin={origen.point}
-            destination={point}
-            trees={treePoints}
-            label={t('rutas.mapa', { destino: nombre })}
-          />
-        )}
-        {(!routes || !data) && <p className={`${c.estado} um-cuerpo`}>{t('buscar.calculando')}</p>}
-      </div>
-      <section className={c.panel}>
-        {guardar.notice}
-        <NotaEstimado time={ctx.hora.time} provisional={!!ctx.data?.meta.datos_provisionales} />
-        {routes && !unica && (
-          <>
-            <TarjetaRuta
-              activa={selected === 'sombra'}
-              onClick={() => setSelected('sombra')}
-              titulo={t('rutas.conSombra')}
-              detalle={[
-                t('rutas.protegido', { p: Math.round(routes.shaded.shadePercent) }),
-                ctx.trees ? textoArboles(i18n, treesOnRoute(routes.shaded, ctx.trees)) : '',
-              ]
-                .filter(Boolean)
-                .join(' · ')}
-              minutos={roundMinutes(routes.shaded.minutes)}
+    <div className={c.pantalla}>
+      <Encabezado compact title={nombre} subtitle={origen ? desde : undefined} onBack={volver} action={guardar.action} />
+      <main className={c.principal}>
+        <div className={c.mapa}>
+          {data && origen && point && routes && (
+            <MapaRutas
+              data={data}
+              shaded={unica ? null : routes.shaded}
+              shortest={routes.shortest}
+              selected={unica ? 'corta' : selected}
+              origin={origen.point}
+              destination={point}
+              destinationName={nombre}
+              destinationIcon={destinationIcon(destino)}
+              bottomInset={sheetHeight}
+              label={t('rutas.mapa', { destino: nombre })}
             />
-            <TarjetaRuta
-              activa={selected === 'corta'}
-              onClick={() => setSelected('corta')}
-              titulo={t('rutas.corta')}
-              detalle={`${t('rutas.protegidoCorto', { p: Math.round(routes.shortest.shadePercent) })} · ${t('rutas.alSol', { n: roundMinutes(routes.shortest.sunMinutes) })}`}
-              minutos={roundMinutes(routes.shortest.minutes)}
-            />
-          </>
-        )}
-        {routes && unica && (
-          <TarjetaRuta
-            activa
-            titulo={t('rutas.recomendada')}
-            detalle={`${t('rutas.protegidoCorto', { p: Math.round(routes.shortest.shadePercent) })} · ${t('rutas.unaSola')}`}
-            minutos={roundMinutes(routes.shortest.minutes)}
-          />
-        )}
-        <Boton disabled={!routes} onClick={onStart}>
-          {unica || selected === 'corta' ? t('rutas.iniciarSimple') : t('rutas.iniciar')}
-        </Boton>
-        <Link className={`${c.enlace} um-cuerpo-fuerte`} to={enlace('/cuando-salir', { destino: destino?.id })}>
-          {t('rutas.cuandoSalir')}
-        </Link>
-      </section>
+          )}
+          {(!routes || !data) && <p className={`${c.estado} um-cuerpo`}>{t('buscar.calculando')}</p>}
+          {data && (
+            <div className={c.chip}>
+              <ChipEstimado time={horaConDia(i18n, ctx.hora.time)} provisional={data.meta.datos_provisionales} />
+            </div>
+          )}
+          <div className={c.abajo} ref={sheetRef}>
+            <HojaInferior open embedded height="asomada" title={t('rutas.opciones')}>
+              <div className={c.panel}>
+                {guardar.notice}
+                {routes && !unica && (
+                  <>
+                    <TarjetaRuta
+                      activa={selected === 'sombra'}
+                      onClick={() => setSelected('sombra')}
+                      linea="sombra"
+                      titulo={t('rutas.conSombra')}
+                      detalle={t('rutas.detalleSombra', {
+                        distancia: formatDistance(routes.shaded.meters, language),
+                        p: Math.round(routes.shaded.shadePercent),
+                      })}
+                      minutos={roundMinutes(routes.shaded.minutes)}
+                    />
+                    <TarjetaRuta
+                      activa={selected === 'corta'}
+                      onClick={() => setSelected('corta')}
+                      linea="corta"
+                      titulo={t('rutas.corta')}
+                      detalle={t('rutas.detalleCorta', {
+                        distancia: formatDistance(routes.shortest.meters, language),
+                        n: roundMinutes(routes.shortest.sunMinutes),
+                      })}
+                      minutos={roundMinutes(routes.shortest.minutes)}
+                    />
+                  </>
+                )}
+                {routes && unica && (
+                  <TarjetaRuta
+                    activa
+                    linea="sombra"
+                    titulo={t('rutas.recomendada')}
+                    detalle={`${t('rutas.detalleSombra', {
+                      distancia: formatDistance(routes.shortest.meters, language),
+                      p: Math.round(routes.shortest.shadePercent),
+                    })} · ${t('rutas.unaSola')}`}
+                    minutos={roundMinutes(routes.shortest.minutes)}
+                  />
+                )}
+                <Boton disabled={!routes} onClick={onStart}>
+                  {unica || selected === 'corta' ? t('rutas.iniciarSimple') : t('rutas.iniciar')}
+                </Boton>
+                <Link className={`${c.enlace} um-cuerpo-fuerte`} to={enlace('/cuando-salir', { destino: destino?.id })}>
+                  <Icono name="reloj" size={20} />
+                  {t('rutas.cuandoSalir')}
+                </Link>
+              </div>
+            </HojaInferior>
+          </div>
+        </div>
+      </main>
+      <BarraInferior active="ir" />
       {chosen && (
         <AvisoCalor
           open={pending[0] === 'aviso'}
@@ -190,23 +222,36 @@ export function ComparacionRutas() {
         />
       )}
       {guardar.sheet}
-    </main>
+    </div>
   )
 }
 
-function TarjetaRuta(props: { activa: boolean; onClick?: () => void; titulo: string; detalle: string; minutos: number }) {
+interface TarjetaRutaProps {
+  activa: boolean
+  onClick?: () => void
+  /** Muestra de la línea del mapa (06-3): con más sombra, verde continua; más corta, gris a rayas. */
+  linea: 'sombra' | 'corta'
+  titulo: string
+  detalle: string
+  minutos: number
+}
+
+function TarjetaRuta({ activa, onClick, linea, titulo, detalle, minutos }: TarjetaRutaProps) {
   const { t } = useT()
   const content = (
     <>
+      <svg className={`${c.muestra} ${linea === 'sombra' ? c.muestraSombra : c.muestraCorta}`} width="28" height="12" viewBox="0 0 28 12" aria-hidden="true">
+        <line x1="3" y1="6" x2="25" y2="6" />
+      </svg>
       <span className={c.tarjetaTexto}>
-        <span className="um-cuerpo-fuerte">{props.titulo}</span>
-        <span className={`${s.secundario} um-etiqueta`}>{props.detalle}</span>
+        <span className="um-cuerpo-fuerte">{titulo}</span>
+        <span className={`${s.secundario} um-etiqueta`}>{detalle}</span>
       </span>
-      <span className={`${c.minutos} um-dato`}>{t('rutas.minutos', { n: props.minutos })}</span>
+      <span className={`${c.minutos} um-dato`}>{t('rutas.minutos', { n: minutos })}</span>
     </>
   )
-  return props.onClick ? (
-    <button type="button" className={`${c.tarjeta} ${props.activa ? c.activa : ''}`} aria-pressed={props.activa} onClick={props.onClick}>
+  return onClick ? (
+    <button type="button" className={`${c.tarjeta} ${activa ? c.activa : ''}`} aria-pressed={activa} onClick={onClick}>
       {content}
     </button>
   ) : (

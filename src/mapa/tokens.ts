@@ -15,6 +15,7 @@ export interface MapColors {
   exposicion: string
   marcaExpuesto: string
   texto: string
+  textoSecundario: string
   superficie: string
   borde: string
   arbolFondo: string
@@ -32,6 +33,7 @@ export function mapColors(): MapColors {
     exposicion: token('--um-termico-exposicion'),
     marcaExpuesto: token('--um-mapa-marca-expuesto'),
     texto: token('--um-base-texto'),
+    textoSecundario: token('--um-base-texto-secundario'),
     superficie: token('--um-base-superficie'),
     borde: token('--um-base-borde'),
     arbolFondo: token('--um-semaforo-comodo-fondo'),

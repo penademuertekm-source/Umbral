@@ -38,3 +38,43 @@
 .accion {
   margin-left: auto;
 }
+
+/* Variante de una línea (06, Figma 117:613): 64 px, superficie y borde inferior. */
+.compacto {
+  flex-direction: row;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--um-esp-xs);
+  min-height: 64px;
+  padding: max(var(--um-esp-xs), env(safe-area-inset-top)) var(--um-esp-md) var(--um-esp-xs) var(--um-esp-xs);
+  border-bottom: 1px solid var(--um-base-borde);
+  background: var(--um-base-superficie);
+}
+
+.volverIcono {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: var(--um-tactil-minimo);
+  height: var(--um-tactil-minimo);
+  padding: 0;
+  border: 0;
+  border-radius: var(--um-radio-control);
+  background: none;
+  color: var(--um-base-texto);
+  cursor: pointer;
+}
+
+.titulos {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* Una línea cada uno, para que el encabezado mida 64 px también en celulares pequeños (N7). */
+.titulos > * {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

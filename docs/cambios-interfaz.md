@@ -63,9 +63,9 @@ Fuera de esta lista: la prueba de campo de la sombra (hoja en preparación) y la
 | 04-9 | Mapa | Los grupos de árboles se identifican como tales (ícono o leyenda) | P2 | F C | hecho |
 | 04-10 | Mapa (20) | El nublado pasa a ser un estado de la 04, con la sombra atenuada y el aviso Nublado en gris (decisión de la autora, 2026-10-16) | P2 | F C | hecho |
 | 05-1 | Buscar | Destinos fuera del mapa (Mercado, Casa Beto Murgas) ofrecen "Cómo llegar"; hoy terminan en un mensaje sin salida | P1 | C | hecho |
-| 06-1 | Rutas | "Ruta con más sombra" en lugar de "Ruta con sombra" | P1 | C | listo para código |
-| 06-2 | Rutas | El conteo de árboles pasa a los detalles | P2 | C | listo para código |
-| 06-3 | Rutas | Cada tarjeta muestra la muestra de su línea del mapa | P2 | F C | listo para código |
+| 06-1 | Rutas | "Ruta con más sombra" en lugar de "Ruta con sombra" | P1 | C | hecho |
+| 06-2 | Rutas | El conteo de árboles pasa a los detalles | P2 | C | hecho |
+| 06-3 | Rutas | Cada tarjeta muestra la muestra de su línea del mapa | P2 | F C | hecho |
 | 07-1 | Ficha | Cuadras sin nombre nombradas por sus esquinas (observación 1) | P1 | C D | hecho |
 | 07-2 | Ficha | "Sensación térmica" en lugar de UTCI; Sky View Factor plegado | P1 | C | hecho |
 | 09-1 | El Niño | Revisar en la primera pasada (no revisada aún) | P2 | — | pendiente |
@@ -340,3 +340,20 @@ Aquí Claude Code anota contradicciones o dudas que encuentre al aplicar un punt
      nivel es Nublado.
    - Se conserva "Tus lugares" (S1) entre el chip y las listas.
    - Sale la línea "Valores estimados…" (el chip lo dice, G1).
+4. **Pantalla 06 como Figma 117:613.**
+   - Encabezado de una línea (variante `compact` de `Encabezado`): flecha de volver, el destino y "desde tu
+     ubicación". Se conserva "Guardar" de S1 a la derecha.
+   - Mapa solo con las rutas y el chip estimado. Hoja con las dos tarjetas: "Ruta con más sombra" con "880 m
+     · 60 % en sombra" y "Ruta más corta" con "800 m · 7 min al sol", cada una con la muestra de su línea.
+   - Debajo, el botón y "¿Cuándo conviene salir?" con el reloj, y la barra inferior con "Ir a" activa.
+5. **06-2: sin árboles.** La tarjeta ya no cuenta los árboles y el mapa ya no los dibuja: la especificación
+   pide un mapa solo con las rutas. Los árboles de la ruta siguen en el recorrido (láminas del Álbum).
+6. **Líneas de las rutas.** La ruta con más sombra va verde, continua, de 7 px y con borde blanco. La más
+   corta va gris (`--um-base-texto-secundario`) a rayas de 4 px, 8/7. El mapa de rutas lo comparte el
+   recorrido (13), así que allí la ruta corta también pasa de ámbar a gris. Si R3 pide otra cosa para la 13,
+   se separa ahí.
+7. **Encuadre con la hoja.** El mapa mide el alto real de la hoja y encuadra el origen y el destino en la
+   franja libre de arriba. La pastilla con el nombre del destino va debajo de la bandera.
+8. **Celular pequeño (N7).** A 360 × 640 se ven el origen, el destino y las dos tarjetas. El encabezado pasa
+   a una línea con puntos suspensivos ("Plaza Alfonso L…") y las tarjetas son más bajas. Aun así, el chip
+   estimado tapa parte del origen y la pastilla del destino no cabe. Conviene revisarlo en Figma.

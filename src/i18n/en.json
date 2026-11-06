@@ -528,12 +528,9 @@
     "sombraAccesible": "Route shade:"
   },
   "rutas": {
-    "conSombra": "Shaded route",
+    "conSombra": "Shadiest route",
     "corta": "Shortest route",
     "recomendada": "Recommended route",
-    "protegido": "{p} % of the way protected",
-    "protegidoCorto": "{p} % protected",
-    "alSol": "about {n} min in direct sun",
     "unaSola": "the shortest is already the shadiest",
     "minutos": "{n} min",
     "iniciar": "Start shaded walk",
@@ -543,7 +540,11 @@
     "fueraDelArea": "{destino} is outside the shade map, {distancia} from Alfonso López Square. There are no shaded routes there yet.",
     "destinoDesconocido": "That destination doesn't exist or has no location yet.",
     "mapa": "Map with the routes to {destino}",
-    "verDestinos": "See destinations"
+    "verDestinos": "See destinations",
+    "detalleSombra": "{distancia} · {p} % in shade",
+    "detalleCorta": "{distancia} · {n} min in the sun",
+    "desde": "from {lugar}",
+    "opciones": "Routes to choose from"
   },
   "cuando": {
     "hacia": "To {destino}",
