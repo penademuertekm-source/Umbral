@@ -114,7 +114,6 @@
     "cargando": "Loading the solar model of the center…",
     "error": "Could not load the map: {error}",
     "otraHora": "See the shade at another time",
-    "buscarRuta": "Find a shaded route",
     "miUbicacion": "Show my location",
     "ubicacionDenegada": "No location permission",
     "provisionalDetalle": "Some trees, heights and places are provisional until the field survey arrives.",
@@ -123,8 +122,6 @@
     "ubicacionBuscando": "Finding your location…",
     "ubicacionNoDisponible": "Could not get your location",
     "ubicacionInsegura": "This address isn't secure (https), so the browser won't share your location",
-    "horaElegida": "Estimated shade for {laHora}",
-    "buscarRutaSimple": "Find a route",
     "simulacion": "Simulation: cloudy sky",
     "simulacionDetalle": "This is how the map looks with an overcast sky. Temperature and humidity come from the forecast; the cloud cover (90 %) and the lack of direct sun are simulated.",
     "hoja": "Legend and search",
@@ -586,7 +583,6 @@
     }
   },
   "isocronas": {
-    "boton": "Isochrones: walking minutes in the shade",
     "titulo": "Walking in the shade from {lugar} · {hora}",
     "banda": "{n} min",
     "tocar": "Tap the map to choose where from.",
@@ -701,7 +697,6 @@
     "asientos": "Seating",
     "agua": "Drinking water",
     "mapa": "Map of places to rest",
-    "boton": "See places to rest",
     "sinDatos": "There are no places to rest registered yet."
   },
   "inicio": {

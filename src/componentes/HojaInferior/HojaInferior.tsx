@@ -10,7 +10,8 @@ const SWIPE_PX = 24
 
 interface HojaInferiorProps {
   open: boolean
-  onClose: () => void
+  /** Obligatorio salvo en la hoja incrustada, que no se cierra. */
+  onClose?: () => void
   title: string
   /** Hoja incrustada (04-5, asomada en el mapa): siempre visible al pie de su contenedor, sin ✕ ni foco
    * propio. No es un diálogo: el título queda solo para lectores de pantalla. */
@@ -44,7 +45,7 @@ export function HojaInferior({ open, onClose, title, children, height = 'media',
     const previous = document.activeElement instanceof HTMLElement ? document.activeElement : null
     sheetRef.current?.focus()
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onCloseRef.current()
+      if (event.key === 'Escape') onCloseRef.current?.()
     }
     document.addEventListener('keydown', onKeyDown)
     return () => {

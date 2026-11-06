@@ -243,9 +243,6 @@
   color: var(--um-base-texto);
 }
 
-.eje {
-  color: var(--um-base-texto-secundario);
-}
 
 .deslizador {
   width: 100%;
@@ -305,6 +302,7 @@
 
 .eje {
   display: flex;
+  color: var(--um-base-texto-secundario);
   justify-content: space-between;
   margin-top: calc(-1 * var(--um-esp-xs));
 }

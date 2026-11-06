@@ -32,7 +32,7 @@
 .calle {
   display: inline-block;
   padding: 0 var(--um-esp-xs);
-  border-radius: var(--um-esp-xs);
+  border-radius: var(--um-radio-control);
   background: color-mix(in srgb, var(--um-base-superficie) 85%, transparent);
   color: var(--um-base-texto);
   white-space: nowrap;

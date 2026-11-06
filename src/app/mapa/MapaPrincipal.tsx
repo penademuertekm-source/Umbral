@@ -23,7 +23,7 @@ import { useConexion } from '../useConexion'
 import { costModel, useGraph } from '../rutas/useContextoRutas'
 import { formatDesde, parseDesde, useOrigen } from '../rutas/useOrigen'
 import { MAX_MINUTE, MIN_MINUTE, STEP_MIN, useHoraElegida } from '../useHoraElegida'
-import { AvisoSalida } from '../perfil/salidas/AvisoSalida'
+import { useAvisoSalida } from '../perfil/salidas/useAvisoSalida'
 import { EncabezadoMapa } from './EncabezadoMapa'
 import { FichaTramo } from './FichaTramo'
 import s from './MapaPrincipal.module.css'
@@ -231,6 +231,9 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
       })
     }
   }
+  // G6: un solo Aviso en la hoja, con "Es hora de salir" primero y el contador "+N" para los demás.
+  const salida = useAvisoSalida(data)
+  const notices = salida ? [salida, ...cloudNotices] : cloudNotices
   // 04-5: la hoja asomada se ve salvo al elegir el punto de partida o con la ficha de una cuadra abierta.
   const showSheet = !picking && selected === null
 
@@ -354,10 +357,9 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
               </div>
 
               {/* 04-5: hoja asomada con el aviso, la sensación térmica, la leyenda y el buscador. */}
-              <HojaInferior open embedded height="asomada" title={t('mapa.hoja')} onClose={() => undefined}>
+              <HojaInferior open embedded height="asomada" title={t('mapa.hoja')}>
                 <div className={s.hojaContenido}>
-                  <AvisoSalida data={data} />
-                  <Aviso notices={cloudNotices} />
+                  <Aviso notices={notices} />
                   <p className={`${s.secundario} um-etiqueta`}>
                     {t('mapa.sensacion', { sol: degrees(thermal?.utci?.sun), sombra: degrees(thermal?.utci?.shade) })}
                     {weatherNote && ` · ${weatherNote}`}

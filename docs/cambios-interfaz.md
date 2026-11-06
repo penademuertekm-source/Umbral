@@ -241,9 +241,8 @@ Aquí Claude Code anota contradicciones o dudas que encuentre al aplicar un punt
    pendiente.
 7. **Celular pequeño (N7).** A 360 × 640, con el aviso Nublado abierto la hoja asomada deja unos 140 px de
    mapa. Sin aviso quedan unos 300. Conviene revisarlo en Figma junto con la letra grande.
-8. **"Es hora de salir" y Nublado salen cada uno en su aviso.** `AvisoSalida` arma su propio componente
-   `Aviso`. Si coinciden, se ven los dos, no uno con "+1" como pide G6. Se ajusta cuando G6 se aplique en
-   todas las pantallas.
+8. **Un solo aviso en la hoja (G6).** "Es hora de salir" (`useAvisoSalida`), Nublado y la lluvia van en el
+   mismo componente `Aviso`, en ese orden: se ve uno y el contador "+N" abre los demás.
 9. **04-7: los nombres de calles son etiquetas HTML, no texto de MapLibre.** Escribir texto en el lienzo
    necesita archivos de letra (glyphs) que la app no tiene, porque funciona sin conexión. Con etiquetas HTML
    se usan Inter y los tokens, y crecen con "Letra más grande". `src/mapa/etiquetas.ts` elige una etiqueta
@@ -254,3 +253,16 @@ Aquí Claude Code anota contradicciones o dudas que encuentre al aplicar un punt
     `destinos.json`: "Iglesia de la Concepción", no "Iglesia La Concepción" como en Figma.
 11. **Vista inicial.** Si el teléfono ya dio la ubicación, el mapa encuadra a la persona y la plaza una sola
     vez, dejando libre lo que tapa la hoja. Sin ubicación, abre centrado en la plaza, como antes.
+12. **Revisión de consistencia (revisor aparte).** Se corrigieron: dos `Aviso` en la misma hoja, el margen
+    doble bajo la hoja incrustada, el radio de la etiqueta de calle (token de radio, no de espaciado), las
+    claves de i18n que quedaron sin uso y una regla de estilo repetida. Quedan anotadas, sin cambio:
+    - **"Sensación térmica" no dice "estimada".** Sigue la especificación de la 04. El chip "Estimado ·
+      hora" sigue sobre el mapa, que es lo que decidió G1. Si Claude (chat) prefiere repetir "estimada" en la
+      hoja, es un cambio de texto.
+    - **La barra inferior se oculta al elegir el punto de partida.** Ese modo viene de la 05 y tiene su
+      propio "Cancelar".
+    - **El buscador "¿A dónde vas?" repite el estilo del campo de la 05**, y el círculo de "Árboles" repite
+      el del marcador Árbol, porque no hay un campo compartido ni un marcador pequeño. Conviene extraerlos
+      cuando R2 rehaga la 05.
+    - **El asa de la hoja asomada es solo dibujo.** Las tres alturas de 04-5 son: asomada (mapa), media
+      (ficha y hora) y completa (sin uso aún en el mapa).

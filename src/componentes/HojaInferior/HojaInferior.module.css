@@ -49,6 +49,8 @@
   left: auto;
   z-index: auto;
   max-width: none;
+  /* La barra inferior, debajo, ya reserva el área segura del celular. */
+  padding-bottom: var(--um-esp-md);
   transform: none;
   animation: none;
   pointer-events: auto;

@@ -114,7 +114,6 @@
     "cargando": "Cargando modelo solar del centro…",
     "error": "No se pudo cargar el mapa: {error}",
     "otraHora": "Ver la sombra a otra hora",
-    "buscarRuta": "Buscar una ruta con sombra",
     "miUbicacion": "Mostrar mi ubicación",
     "ubicacionDenegada": "Sin permiso de ubicación",
     "provisionalDetalle": "Parte de los árboles, alturas y lugares son provisionales mientras llega el levantamiento de campo.",
@@ -123,8 +122,6 @@
     "ubicacionBuscando": "Buscando tu ubicación…",
     "ubicacionNoDisponible": "No se pudo obtener tu ubicación",
     "ubicacionInsegura": "Esta dirección no es segura (https) y el navegador no da la ubicación",
-    "horaElegida": "Sombra estimada para {laHora}",
-    "buscarRutaSimple": "Buscar una ruta",
     "simulacion": "Simulación: cielo nublado",
     "simulacionDetalle": "Así se ve el mapa con el cielo cubierto. La temperatura y la humedad son las del pronóstico; la nubosidad (90 %) y la falta de sol directo son simuladas.",
     "hoja": "Leyenda y búsqueda",
@@ -586,7 +583,6 @@
     }
   },
   "isocronas": {
-    "boton": "Isócronas: minutos a pie por la sombra",
     "titulo": "A pie por la sombra desde {lugar} · {hora}",
     "banda": "{n} min",
     "tocar": "Toca el mapa para elegir desde dónde.",
@@ -701,7 +697,6 @@
     "asientos": "Con asientos",
     "agua": "Agua potable",
     "mapa": "Mapa de los puntos de permanencia",
-    "boton": "Ver los puntos de permanencia",
     "sinDatos": "Todavía no hay puntos de permanencia registrados."
   },
   "inicio": {
