@@ -16,9 +16,16 @@
   color: var(--um-base-texto-secundario);
 }
 
-/* Pantalla 05 */
-.campo {
-  width: 100%;
+/* Pantalla 05 (Figma 116:534) */
+.titulo {
+  margin-top: var(--um-esp-md);
+}
+
+/* Buscador de 56 px con la lupa adentro (el mismo borde del campo de búsqueda). */
+.buscador {
+  display: flex;
+  align-items: center;
+  gap: var(--um-esp-sm);
   min-height: var(--um-tactil-minimo);
   padding: 0 var(--um-esp-md);
   border: 2px solid var(--um-base-texto);
@@ -27,20 +34,48 @@
   color: var(--um-base-texto);
 }
 
-.campo::placeholder {
+.buscador input {
+  flex: 1;
+  min-width: 0;
+  min-height: 52px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--um-base-texto);
+  outline: none;
+}
+
+.buscador:focus-within {
+  outline: 3px solid var(--um-termico-sombra-plena);
+  outline-offset: 2px;
+}
+
+.buscador input::placeholder {
   color: var(--um-base-texto-secundario);
 }
 
+/* "Desde tu ubicación" con "Cambiar" a la derecha. */
 .origen {
-  color: var(--um-base-texto-secundario);
+  display: flex;
+  align-items: center;
+  gap: var(--um-esp-sm);
+  color: var(--um-base-texto);
+}
+
+.origen svg {
+  flex-shrink: 0;
+  color: var(--um-mapa-usuario);
+}
+
+.origenTexto {
+  flex: 1;
 }
 
 .origen a {
-  display: inline-block;
+  display: inline-grid;
+  place-items: center;
   min-height: var(--um-tactil-minimo);
-  line-height: var(--um-tactil-minimo);
   color: var(--um-termico-sombra-plena);
-  font-weight: 600;
 }
 
 .aviso {
@@ -69,24 +104,26 @@
   text-decoration: none;
 }
 
-.lista {
+/* Listas en tarjeta de la 05: filas de 72 px como mínimo, toda la fila es tocable. */
+.tarjeta {
   display: flex;
   flex-direction: column;
-  margin: 0 calc(-1 * var(--um-esp-md));
+  margin: var(--um-esp-sm) 0 0;
   padding: 0;
-  list-style: none;
+  overflow: hidden;
+  border: 1px solid var(--um-base-borde);
+  border-radius: var(--um-radio-tarjeta);
   background: var(--um-base-superficie);
-  border-top: 1px solid var(--um-base-borde);
+  list-style: none;
 }
 
-.lista li {
-  border-bottom: 1px solid var(--um-base-borde);
+.tarjeta li + li {
+  border-top: 1px solid var(--um-base-borde);
 }
 
 .fila {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: var(--um-esp-md);
   min-height: 72px;
   padding: var(--um-esp-sm) var(--um-esp-md);
@@ -100,16 +137,45 @@
 
 .filaTexto {
   display: flex;
+  flex: 1;
   flex-direction: column;
   min-width: 0;
 }
 
-.pildora {
+/* Ícono del lugar en un cuadro de 44 px con fondo Cómodo; fuera del mapa, en gris. */
+.iconoLugar {
+  display: grid;
   flex-shrink: 0;
-  padding: var(--um-esp-xs) var(--um-esp-sm);
+  place-items: center;
+  width: 44px;
+  height: 44px;
   border-radius: var(--um-radio-control);
+  background: var(--um-semaforo-comodo-fondo);
+  color: var(--um-termico-sombra-plena);
+}
+
+.iconoFuera {
+  background: var(--um-semaforo-nublado-fondo);
+  color: var(--um-semaforo-nublado-texto);
+}
+
+/* Pastilla con la forma y el color del nivel de la ruta más el % de sombra. */
+.pildora {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--um-esp-xs);
+  padding: var(--um-esp-xs) var(--um-esp-sm);
+  border-radius: var(--um-radio-chip);
   background: var(--nivel-fondo);
   color: var(--nivel-texto);
-  font-weight: 600;
   white-space: nowrap;
+}
+
+.comoLlegar {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--um-esp-xs);
+  color: var(--um-termico-sombra-plena);
 }

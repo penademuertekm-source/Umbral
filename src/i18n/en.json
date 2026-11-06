@@ -511,16 +511,21 @@
   },
   "buscar": {
     "campo": "Where are you going?",
-    "frecuentes": "Frequent destinations · shade at {laHora}",
-    "frecuentesManana": "Frequent destinations · shade tomorrow at {laHora}",
-    "detalle": "{distancia} · {min} min in the shade",
+    "detalle": "{distancia} · {min} min",
     "fueraDelMapa": "{distancia} · outside the shade map",
     "sinUbicacion": "Location pending",
     "sinOrigen": "Choose a starting point",
-    "pildora": "Shade {p} %",
     "sinResultados": "No destinations with that name.",
     "calculando": "Calculating…",
-    "tusLugares": "Your places"
+    "tusLugares": "Your places",
+    "placeholder": "Search for a place downtown",
+    "enCentro": "Downtown · shadiest route at {laHora}",
+    "enCentroManana": "Downtown · shadiest route tomorrow at {laHora}",
+    "fueraTitulo": "Outside the shade map",
+    "sinDatosSombra": "{distancia} · no shade data",
+    "comoLlegar": "Directions",
+    "porcentaje": "{p} %",
+    "sombraAccesible": "Route shade:"
   },
   "rutas": {
     "conSombra": "Shaded route",
@@ -742,7 +747,14 @@
     "tu": "You · {distancia}",
     "tuSinDistancia": "You",
     "esquema": "Diagram: you are {distancia} from the Historic Center.",
-    "esquemaSinDistancia": "Diagram of the Historic Center."
+    "esquemaSinDistancia": "Diagram of the Historic Center.",
+    "destinoTitulo": "{destino} is outside the shade map",
+    "destinoTexto": "Umbral only estimates shade inside the Historic Center. To get there, open the directions in Google Maps.",
+    "destinoConsejo": "It is a long trip. Between {desde} and {hasta}, better take a taxi or a bus.",
+    "destinoComoLlegar": "Directions to {destino}",
+    "destinoEtiqueta": "{destino} · {distancia}",
+    "destinoEsquema": "Diagram: {destino} is {distancia} from Plaza Alfonso López.",
+    "volverDestinos": "Back to destinations"
   },
   "ajustes": {
     "textoGrande": "Large text",

@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router'
+import { useEffect, useState } from 'react'
+import { useLocation, useNavigate, useSearchParams } from 'react-router'
 import { Boton, Icono, Logotipo } from '../../componentes'
 import b from '../../componentes/Boton/Boton.module.css'
 import { formatDistance } from '../../i18n/numeros'
@@ -9,12 +9,14 @@ import { useUbicacion } from '../../mapa/useUbicacion'
 import type { LonLat } from '../../rutas/geometria'
 import { useHorasAviso } from '../recorrido/horasAviso'
 import s from './Entrada.module.css'
-import { googleMapsDirections, markOnboardingDone, schemeLayout } from './entrada'
+import { googleMapsDirections, googleMapsDirectionsTo, markOnboardingDone, schemeLayout } from './entrada'
 
 // Pantalla 21 (nodo 35:35): la ubicación está fuera del área de estudio. Esquema con la distancia (no a
 // escala), consejo de llegar en taxi en las horas de más calor, indicaciones en Google Maps (enlace
 // universal, sin clave) y explorar el centro sin ubicación. La posición llega en el estado de la navegación
 // (nunca en la dirección) o del GPS, y no se guarda.
+// 05-1: con ?destino=<id> (un destino fuera del mapa de sombra, desde la 05) el esquema va de la plaza al
+// lugar y "Cómo llegar" abre Google Maps buscando el lugar por su nombre.
 
 /** Manzanas del fondo del esquema (viewBox 342 × 250). */
 const BLOCKS = [0, 1, 2, 3].flatMap((row) => [0, 1, 2, 3, 4].map((col) => ({ x: 8 + col * 68, y: 8 + row * 62 })))
@@ -36,11 +38,15 @@ export function FueraDelCentro() {
   const ubicacion = useUbicacion()
   const horas = useHorasAviso()
 
+  const [params] = useSearchParams()
+  const destino = data?.destinos.find((d) => d.id === params.get('destino'))
+  const destinoNombre = destino ? (language === 'es' ? destino.nombre.es : destino.nombre.en) : ''
+  const destinoPoint: LonLat | null = destino?.lat != null && destino.lon != null ? [destino.lon, destino.lat] : null
   const fromState = (location.state as { point?: LonLat } | null)?.point ?? null
-  const point = fromState ?? ubicacion.position
+  const point = destinoPoint ?? fromState ?? ubicacion.position
   const center = data?.meta.area.centro ?? null
   const meters = point && center ? metersBetween(center, point) : null
-  const layout = useMemo(() => (center ? schemeLayout(center, point) : null), [center, point])
+  const layout = center ? schemeLayout(center, point) : null
   const distancia = meters !== null ? formatDistance(meters, language) : ''
 
   const explore = () => {
@@ -54,7 +60,13 @@ export function FueraDelCentro() {
       <div
         className={s.esquema}
         role="img"
-        aria-label={distancia ? t('fuera.esquema', { distancia }) : t('fuera.esquemaSinDistancia')}
+        aria-label={
+          destino
+            ? t('fuera.destinoEsquema', { destino: destinoNombre, distancia })
+            : distancia
+              ? t('fuera.esquema', { distancia })
+              : t('fuera.esquemaSinDistancia')
+        }
       >
         {layout && (
           <>
@@ -79,35 +91,56 @@ export function FueraDelCentro() {
             </span>
             {layout.user && (
               <span className={`${s.etiqueta} um-etiqueta`} style={{ left: `${layout.user.x}%`, top: `calc(${layout.user.y}% + 16px)` }}>
-                {distancia ? t('fuera.tu', { distancia }) : t('fuera.tuSinDistancia')}
+                {destino
+                  ? t('fuera.destinoEtiqueta', { destino: destinoNombre, distancia })
+                  : distancia
+                    ? t('fuera.tu', { distancia })
+                    : t('fuera.tuSinDistancia')}
               </span>
             )}
           </>
         )}
       </div>
-      <h1 className="um-titulo">{t('fuera.titulo')}</h1>
-      <p className={`${s.secundario} um-cuerpo`}>{t('fuera.texto')}</p>
+      <h1 className="um-titulo">{destino ? t('fuera.destinoTitulo', { destino: destinoNombre }) : t('fuera.titulo')}</h1>
+      <p className={`${s.secundario} um-cuerpo`}>{destino ? t('fuera.destinoTexto') : t('fuera.texto')}</p>
       <div className={s.consejo}>
         <span className={s.consejoIcono} aria-hidden="true">
           <Icono name="expuesto" />
         </span>
-        <p className="um-etiqueta">{t('fuera.consejo', horas)}</p>
+        <p className="um-etiqueta">{t(destino ? 'fuera.destinoConsejo' : 'fuera.consejo', horas)}</p>
       </div>
       <div className={s.botones}>
-        {center && (
+        {destino ? (
           <a
             className={`${b.boton} ${b.primario} ${b.ancho} ${s.enlaceBoton} um-cuerpo-fuerte`}
-            href={googleMapsDirections(center)}
+            href={googleMapsDirectionsTo(`${destino.nombre.es}, Valledupar`)}
             target="_blank"
             rel="noopener noreferrer"
           >
-            {t('fuera.comoLlegar')}
+            {t('fuera.destinoComoLlegar', { destino: destinoNombre })}
           </a>
+        ) : (
+          center && (
+            <a
+              className={`${b.boton} ${b.primario} ${b.ancho} ${s.enlaceBoton} um-cuerpo-fuerte`}
+              href={googleMapsDirections(center)}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t('fuera.comoLlegar')}
+            </a>
+          )
         )}
         <p className={`${s.secundario} um-micro`}>{t('fuera.abreMaps')}</p>
-        <Boton variant="secundario" onClick={explore}>
-          {t('fuera.explorar')}
-        </Boton>
+        {destino ? (
+          <Boton variant="secundario" onClick={() => navigate(-1)}>
+            {t('fuera.volverDestinos')}
+          </Boton>
+        ) : (
+          <Boton variant="secundario" onClick={explore}>
+            {t('fuera.explorar')}
+          </Boton>
+        )}
       </div>
     </main>
   )

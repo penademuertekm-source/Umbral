@@ -31,6 +31,12 @@ export function googleMapsDirections([lon, lat]: LonLat): string {
   return `https://www.google.com/maps/dir/?api=1&destination=${lat.toFixed(6)}%2C${lon.toFixed(6)}`
 }
 
+/** Indicaciones de Google Maps hasta un lugar por su nombre (05-1: los destinos fuera del mapa tienen
+ * coordenadas aproximadas mientras llega D1, así que se busca por nombre y ciudad). */
+export function googleMapsDirectionsTo(place: string): string {
+  return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(place)}`
+}
+
 export interface SchemeLayout {
   /** Centro y radio del círculo del Centro Histórico, y la persona (en % del ancho y del alto). */
   center: { x: number; y: number }

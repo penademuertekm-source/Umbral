@@ -62,7 +62,7 @@ Fuera de esta lista: la prueba de campo de la sombra (hoja en preparación) y la
 | 04-8 | Mapa | Solo "Mi ubicación" flotante; lo demás a la barra inferior | P2 | F C | hecho |
 | 04-9 | Mapa | Los grupos de árboles se identifican como tales (ícono o leyenda) | P2 | F C | hecho |
 | 04-10 | Mapa (20) | El nublado pasa a ser un estado de la 04, con la sombra atenuada y el aviso Nublado en gris (decisión de la autora, 2026-10-16) | P2 | F C | hecho |
-| 05-1 | Buscar | Destinos fuera del mapa (Mercado, Casa Beto Murgas) ofrecen "Cómo llegar"; hoy terminan en un mensaje sin salida | P1 | C | listo para código |
+| 05-1 | Buscar | Destinos fuera del mapa (Mercado, Casa Beto Murgas) ofrecen "Cómo llegar"; hoy terminan en un mensaje sin salida | P1 | C | hecho |
 | 06-1 | Rutas | "Ruta con más sombra" en lugar de "Ruta con sombra" | P1 | C | listo para código |
 | 06-2 | Rutas | El conteo de árboles pasa a los detalles | P2 | C | listo para código |
 | 06-3 | Rutas | Cada tarjeta muestra la muestra de su línea del mapa | P2 | F C | listo para código |
@@ -328,3 +328,15 @@ Aquí Claude Code anota contradicciones o dudas que encuentre al aplicar un punt
    destino. Todas las pantallas la piden con `routeBetween`: 05, 06, 13, 15, 16, Mis lugares y la agenda de
    salidas. Por eso la distancia, los minutos y el % salen del mismo objeto. Comprobado: la plaza a la 1:00
    p. m. da "800 m · 12 min" y 64 % en la 05 y en la 06.
+2. **05-1: "Cómo llegar ›" abre la 21 en modo destino** (`/fuera-del-centro?destino=<id>`, decisión de la
+   autora). El esquema va de la plaza al lugar, con su distancia y un consejo de taxi o bus en las horas de
+   calor. "Cómo llegar a {lugar}" abre Google Maps buscando el lugar por su nombre ("Mercado público,
+   Valledupar"), no por las coordenadas, que son aproximadas mientras D1 está en pausa. En el esquema, el
+   lugar usa el mismo punto que "Tú" en el otro modo; si se quiere otro marcador, es un ajuste de Figma.
+3. **Pantalla 05 como Figma 116:534.**
+   - Va sin "Volver" porque es una pestaña. Lleva el título "¿A dónde vas?", el buscador con lupa, el
+     origen con "Cambiar", el chip estimado y las dos listas en tarjeta.
+   - La pastilla de cada destino lleva la forma y el color del nivel de la ruta más el %. Sin clima, el
+     nivel es Nublado.
+   - Se conserva "Tus lugares" (S1) entre el chip y las listas.
+   - Sale la línea "Valores estimados…" (el chip lo dice, G1).

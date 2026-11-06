@@ -511,16 +511,21 @@
   },
   "buscar": {
     "campo": "¿A dónde vas?",
-    "frecuentes": "Destinos frecuentes · sombra a {laHora}",
-    "frecuentesManana": "Destinos frecuentes · sombra mañana a {laHora}",
-    "detalle": "{distancia} · {min} min por sombra",
+    "detalle": "{distancia} · {min} min",
     "fueraDelMapa": "{distancia} · fuera del mapa de sombra",
     "sinUbicacion": "Ubicación pendiente",
     "sinOrigen": "Elige un punto de partida",
-    "pildora": "Sombra {p} %",
     "sinResultados": "No hay destinos con ese nombre.",
     "calculando": "Calculando…",
-    "tusLugares": "Tus lugares"
+    "tusLugares": "Tus lugares",
+    "placeholder": "Busca un lugar del centro",
+    "enCentro": "En el centro · ruta con más sombra a {laHora}",
+    "enCentroManana": "En el centro · ruta con más sombra mañana a {laHora}",
+    "fueraTitulo": "Fuera del mapa de sombra",
+    "sinDatosSombra": "{distancia} · sin datos de sombra",
+    "comoLlegar": "Cómo llegar",
+    "porcentaje": "{p} %",
+    "sombraAccesible": "Sombra de la ruta:"
   },
   "rutas": {
     "conSombra": "Ruta con sombra",
@@ -742,7 +747,14 @@
     "tu": "Tú · {distancia}",
     "tuSinDistancia": "Tú",
     "esquema": "Esquema: estás a {distancia} del Centro Histórico.",
-    "esquemaSinDistancia": "Esquema del Centro Histórico."
+    "esquemaSinDistancia": "Esquema del Centro Histórico.",
+    "destinoTitulo": "{destino} queda fuera del mapa de sombra",
+    "destinoTexto": "Umbral calcula la sombra solo dentro del Centro Histórico. Para llegar, abre las indicaciones en Google Maps.",
+    "destinoConsejo": "Es un trayecto largo. Si vas entre {desde} y {hasta}, mejor en taxi o en bus.",
+    "destinoComoLlegar": "Cómo llegar a {destino}",
+    "destinoEtiqueta": "{destino} · {distancia}",
+    "destinoEsquema": "Esquema: {destino} está a {distancia} de la Plaza Alfonso López.",
+    "volverDestinos": "Volver a los destinos"
   },
   "ajustes": {
     "textoGrande": "Texto grande",
