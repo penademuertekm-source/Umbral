@@ -42,6 +42,22 @@
   max-height: var(--hoja-completa);
 }
 
+/* 04-5: incrustada al pie de su contenedor (el mapa), sobre la barra inferior y no encima de ella. */
+.hoja.incrustada {
+  position: relative;
+  bottom: auto;
+  left: auto;
+  z-index: auto;
+  max-width: none;
+  transform: none;
+  animation: none;
+  pointer-events: auto;
+}
+
+.hoja.incrustada[data-altura='asomada'] {
+  min-height: 0;
+}
+
 .hoja:focus {
   outline: none;
 }

@@ -12,6 +12,9 @@ interface HojaInferiorProps {
   open: boolean
   onClose: () => void
   title: string
+  /** Hoja incrustada (04-5, asomada en el mapa): siempre visible al pie de su contenedor, sin ✕ ni foco
+   * propio. No es un diálogo: el título queda solo para lectores de pantalla. */
+  embedded?: boolean
   children: ReactNode
   /** Altura en % del alto de pantalla. Por defecto, media. */
   height?: SheetHeight
@@ -25,7 +28,7 @@ interface HojaInferiorProps {
  * No bloquea el resto de la pantalla (el mapa sigue visible). Se cierra con Escape o con la ✕.
  * Crece con su contenido hasta su tope y, si no le alcanza, el contenido se desplaza (N7).
  */
-export function HojaInferior({ open, onClose, title, children, height = 'media', onHeightChange }: HojaInferiorProps) {
+export function HojaInferior({ open, onClose, title, children, height = 'media', onHeightChange, embedded = false }: HojaInferiorProps) {
   const { t } = useT()
   const titleId = useId()
   const sheetRef = useRef<HTMLElement>(null)
@@ -37,7 +40,7 @@ export function HojaInferior({ open, onClose, title, children, height = 'media',
   })
 
   useEffect(() => {
-    if (!open) return
+    if (!open || embedded) return
     const previous = document.activeElement instanceof HTMLElement ? document.activeElement : null
     sheetRef.current?.focus()
     const onKeyDown = (event: KeyboardEvent) => {
@@ -48,7 +51,7 @@ export function HojaInferior({ open, onClose, title, children, height = 'media',
       document.removeEventListener('keydown', onKeyDown)
       previous?.focus()
     }
-  }, [open])
+  }, [open, embedded])
 
   if (!open) return null
 
@@ -67,11 +70,11 @@ export function HojaInferior({ open, onClose, title, children, height = 'media',
   return (
     <section
       ref={sheetRef}
-      className={s.hoja}
+      className={`${s.hoja} ${embedded ? s.incrustada : ''}`}
       data-altura={height}
-      role="dialog"
+      role={embedded ? undefined : 'dialog'}
       aria-labelledby={titleId}
-      tabIndex={-1}
+      tabIndex={embedded ? undefined : -1}
     >
       {onHeightChange ? (
         <button
@@ -101,14 +104,20 @@ export function HojaInferior({ open, onClose, title, children, height = 'media',
           <span className={s.asa} />
         </span>
       )}
-      <div className={s.cabecera}>
-        <h2 id={titleId} className="um-titulo">
+      {embedded ? (
+        <h2 id={titleId} className="sr-only">
           {title}
         </h2>
-        <button type="button" className={s.cerrar} onClick={onClose} aria-label={t('comun.cerrar')}>
-          <Icono name="cerrar" />
-        </button>
-      </div>
+      ) : (
+        <div className={s.cabecera}>
+          <h2 id={titleId} className="um-titulo">
+            {title}
+          </h2>
+          <button type="button" className={s.cerrar} onClick={onClose} aria-label={t('comun.cerrar')}>
+            <Icono name="cerrar" />
+          </button>
+        </div>
+      )}
       <div className={s.contenido}>{children}</div>
     </section>
   )

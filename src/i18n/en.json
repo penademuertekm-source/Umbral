@@ -126,7 +126,11 @@
     "horaElegida": "Estimated shade for {laHora}",
     "buscarRutaSimple": "Find a route",
     "simulacion": "Simulation: cloudy sky",
-    "simulacionDetalle": "This is how the map looks with an overcast sky. Temperature and humidity come from the forecast; the cloud cover (90 %) and the lack of direct sun are simulated."
+    "simulacionDetalle": "This is how the map looks with an overcast sky. Temperature and humidity come from the forecast; the cloud cover (90 %) and the lack of direct sun are simulated.",
+    "hoja": "Legend and search",
+    "sensacion": "Feels like: {sol} in the sun · {sombra} in the shade",
+    "arboles": "Trees",
+    "otraHoraNota": "The map shows the estimated shade for that time."
   },
   "ficha": {
     "entre": "{calle} between {a} and {b}",

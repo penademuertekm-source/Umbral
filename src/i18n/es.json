@@ -126,7 +126,11 @@
     "horaElegida": "Sombra estimada para {laHora}",
     "buscarRutaSimple": "Buscar una ruta",
     "simulacion": "Simulación: cielo nublado",
-    "simulacionDetalle": "Así se ve el mapa con el cielo cubierto. La temperatura y la humedad son las del pronóstico; la nubosidad (90 %) y la falta de sol directo son simuladas."
+    "simulacionDetalle": "Así se ve el mapa con el cielo cubierto. La temperatura y la humedad son las del pronóstico; la nubosidad (90 %) y la falta de sol directo son simuladas.",
+    "hoja": "Leyenda y búsqueda",
+    "sensacion": "Sensación térmica: {sol} al sol · {sombra} a la sombra",
+    "arboles": "Árboles",
+    "otraHoraNota": "El mapa muestra la sombra estimada para esa hora."
   },
   "ficha": {
     "entre": "{calle} entre {a} y {b}",

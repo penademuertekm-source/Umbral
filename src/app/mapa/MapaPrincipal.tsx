@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useId, useMemo, useState, type CSSProperties } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router'
-import { BarraInferior, BarraSuperior, Boton, ChipEstimado, Icono, MuestraTramo } from '../../componentes'
+import { BarraInferior, Boton, ChipEstimado, HojaInferior, Icono, MuestraTramo } from '../../componentes'
 import { readHeatProfile } from '../../clima/configClima'
 import { simulateOvercast, thermalStateAt, type ThermalContext } from '../../clima/estado'
 import { rainOutlook } from '../../clima/openMeteo'
@@ -24,6 +24,7 @@ import { formatDesde, parseDesde, useOrigen } from '../rutas/useOrigen'
 import { MAX_MINUTE, MIN_MINUTE, STEP_MIN, useHoraElegida } from '../useHoraElegida'
 import { AvisoSalida } from '../perfil/salidas/AvisoSalida'
 import { AvisoNublado } from './AvisoNublado'
+import { EncabezadoMapa } from './EncabezadoMapa'
 import { FichaTramo } from './FichaTramo'
 import s from './MapaPrincipal.module.css'
 
@@ -205,16 +206,21 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
 
   const progress = ((minute - MIN_MINUTE) / (MAX_MINUTE - MIN_MINUTE)) * 100
   const originLabel = origen?.kind === 'gps' ? t('origen.tuUbicacion') : t('origen.puntoElegido')
+  // 04-6: el deslizador de hora se abre desde el encabezado.
+  const [timeOpen, setTimeOpen] = useState(false)
+  const degrees = (value: number | null | undefined) =>
+    value == null ? t('comun.sinDato') : t('comun.grados', { valor: Math.round(value) })
+  // 04-5: la hoja asomada se ve salvo al elegir el punto de partida o con la ficha de una cuadra abierta.
+  const showSheet = !picking && selected === null
 
   return (
     <div className={s.pantalla}>
-      <BarraSuperior
+      <EncabezadoMapa
         time={formatTime(shownTime, language)}
         level={decision?.level ?? 'nublado'}
         levelLabel={levelLabel}
-        utciSun={thermal?.utci?.sun ?? null}
-        utciShade={thermal?.utci?.shade ?? null}
-        note={weatherNote}
+        timeOpen={timeOpen}
+        onTimeClick={() => setTimeOpen((open) => !open)}
       />
 
       <main className={s.principal}>
@@ -267,123 +273,135 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
                 </Boton>
               </div>
             ) : (
-              <>
-                <div className={s.filaArriba}>
-                  <div className={s.chips}>
-                    {!online && (
-                      <Link className={`${s.chip} ${s.chipSinConexion} um-etiqueta`} to="/sin-conexion">
-                        <Icono name="sin-conexion" size={20} />
-                        {t('sinConexion.aviso')}
-                      </Link>
-                    )}
-                    {simulateCloudy && (
-                      <details className={s.desplegable}>
-                        <summary>
-                          <span className={`${s.chip} ${s.chipSimulacion} um-etiqueta`}>
-                            <Icono name="nublado" size={20} />
-                            {t('mapa.simulacion')}
-                          </span>
-                        </summary>
-                        <p className={`${s.globo} um-etiqueta`}>{t('mapa.simulacionDetalle')}</p>
-                      </details>
-                    )}
-                    {/* G1: la misma hora del encabezado. */}
-                    {data && <ChipEstimado time={formatTime(shownTime, language)} provisional={data.meta.datos_provisionales} />}
-                  </div>
-                  <div className={s.ubicacion}>
-                    <button
-                      type="button"
-                      className={s.botonFlotante}
-                      aria-label={t('mapa.miUbicacion')}
-                      onClick={() => {
-                        ubicacion.start()
-                        setFocusUser((n) => n + 1)
-                      }}
-                    >
-                      <Icono name="mi-ubicacion" />
-                    </button>
-                    {/* 04-8: los demás botones redondos pasaron a la barra inferior (Descansar, Perfil). Las
-                        isócronas quedan sin entrada por ahora (?capa=isocronas sigue funcionando). */}
-                    {locationMessage && (
-                      <p className={`${s.globo} um-etiqueta`} role="status">
-                        {locationMessage}
-                      </p>
-                    )}
-                  </div>
-                </div>
-                {cloudy && !showIsochrones && (
-                  <AvisoNublado rain={rain} hasCoveredPlaces={coveredPlaces.length > 0} />
+              <div className={s.chips}>
+                {!online && (
+                  <Link className={`${s.chip} ${s.chipSinConexion} um-etiqueta`} to="/sin-conexion">
+                    <Icono name="sin-conexion" size={20} />
+                    {t('sinConexion.aviso')}
+                  </Link>
                 )}
-              </>
+                {simulateCloudy && (
+                  <details className={s.desplegable}>
+                    <summary>
+                      <span className={`${s.chip} ${s.chipSimulacion} um-etiqueta`}>
+                        <Icono name="nublado" size={20} />
+                        {t('mapa.simulacion')}
+                      </span>
+                    </summary>
+                    <p className={`${s.globo} um-etiqueta`}>{t('mapa.simulacionDetalle')}</p>
+                  </details>
+                )}
+                {/* G1: la misma hora del encabezado. */}
+                {data && <ChipEstimado time={formatTime(shownTime, language)} provisional={data.meta.datos_provisionales} />}
+              </div>
             )}
           </div>
 
-          <div className={s.abajo}>
-            {/* S2: "Es hora de salir", arriba de la hoja del mapa (va al componente de avisos de R1b). */}
-            {!picking && (
-              <div className={s.avisoSalida}>
-                <AvisoSalida data={data} />
-              </div>
-            )}
-            {showIsochrones ? (
-              <div className={s.leyenda} role="group" aria-label={t('mapa.leyenda')}>
-                <p className={`${s.leyendaHora} um-micro`}>
-                  {origen
-                    ? t('isocronas.titulo', { lugar: originLabel, hora: formatTime(shadeTime, language) })
-                    : t('isocronas.tocar')}
-                </p>
-                {origen && (
-                  <>
-                    <div className={s.muestras}>
-                      {ISOCHRONE_BANDS_MIN.map((n, i) => (
-                        <span key={n} className={`${s.banda} um-etiqueta`}>
-                          <svg width="28" height="12" viewBox="0 0 28 12" aria-hidden="true">
-                            <line className={s[`banda${i + 1}`]} x1="2" y1="6" x2="26" y2="6" />
-                          </svg>
-                          {t('isocronas.banda', { n })}
-                        </span>
-                      ))}
-                    </div>
-                    <p className={`${s.leyendaHora} um-micro`}>
-                      {gpsOutside ? t('origen.fueraDelCentro') : t('isocronas.nota')}
+          {showSheet && (
+            <div className={s.abajo}>
+              {/* 04-8: sobre la hoja solo quedan ⓘ (créditos, G10) a la izquierda y "Mi ubicación" a la derecha. */}
+              <div className={s.flotantes}>
+                <button
+                  type="button"
+                  className={s.botonCreditos}
+                  aria-label={t('creditos.boton')}
+                  onClick={() => navigate('/perfil/acerca')}
+                >
+                  <span className={s.circuloCreditos}>
+                    <Icono name="informacion" />
+                  </span>
+                </button>
+                <div className={s.ubicacion}>
+                  {locationMessage && (
+                    <p className={`${s.globo} um-etiqueta`} role="status">
+                      {locationMessage}
                     </p>
-                  </>
-                )}
-              </div>
-            ) : (
-              !cloudy &&
-              !picking && (
-                <div className={s.leyenda} role="group" aria-label={t('mapa.leyenda')}>
-                  <p className={`${s.leyendaHora} um-micro`}>
-                    {t('mapa.horaElegida', { laHora: laHora(i18n, shadeTime) })}
-                    {resultado?.noSun && ` · ${t('mapa.sinSol')}`}
-                  </p>
-                  <div className={s.muestras}>
-                    {SEGMENT_STATES.map((state) => (
-                      <MuestraTramo key={state} state={state} size="compacta" />
-                    ))}
-                  </div>
+                  )}
+                  <button
+                    type="button"
+                    className={s.botonFlotante}
+                    aria-label={t('mapa.miUbicacion')}
+                    onClick={() => {
+                      ubicacion.start()
+                      setFocusUser((n) => n + 1)
+                    }}
+                  >
+                    <Icono name="mi-ubicacion" />
+                  </button>
                 </div>
-              )
-            )}
-            {/* G10: las atribuciones van en Perfil › Acerca de y créditos; en el mapa queda este botón ⓘ. */}
-            {!picking && (
-              <button
-                type="button"
-                className={s.botonCreditos}
-                aria-label={t('creditos.boton')}
-                onClick={() => navigate('/perfil/acerca')}
-              >
-                <span className={s.circuloCreditos}>
-                  <Icono name="informacion" />
-                </span>
-              </button>
-            )}
-          </div>
-        </div>
+              </div>
 
-        <section className={s.panel}>
-          <label htmlFor={sliderId} className={`${s.panelTitulo} um-etiqueta`}>
+              {/* 04-5: hoja asomada con el aviso, la sensación térmica, la leyenda y el buscador. */}
+              <HojaInferior open embedded height="asomada" title={t('mapa.hoja')} onClose={() => undefined}>
+                <div className={s.hojaContenido}>
+                  <AvisoSalida data={data} />
+                  {cloudy && !showIsochrones && <AvisoNublado rain={rain} hasCoveredPlaces={coveredPlaces.length > 0} />}
+                  <p className={`${s.secundario} um-etiqueta`}>
+                    {t('mapa.sensacion', { sol: degrees(thermal?.utci?.sun), sombra: degrees(thermal?.utci?.shade) })}
+                    {weatherNote && ` · ${weatherNote}`}
+                  </p>
+                  {showIsochrones ? (
+                    <div className={s.leyenda} role="group" aria-label={t('mapa.leyenda')}>
+                      <p className={`${s.secundario} um-etiqueta`}>
+                        {origen
+                          ? t('isocronas.titulo', { lugar: originLabel, hora: formatTime(shadeTime, language) })
+                          : t('isocronas.tocar')}
+                      </p>
+                      {origen && (
+                        <>
+                          <div className={s.muestras}>
+                            {ISOCHRONE_BANDS_MIN.map((n, i) => (
+                              <span key={n} className={`${s.banda} um-etiqueta`}>
+                                <svg width="28" height="12" viewBox="0 0 28 12" aria-hidden="true">
+                                  <line className={s[`banda${i + 1}`]} x1="2" y1="6" x2="26" y2="6" />
+                                </svg>
+                                {t('isocronas.banda', { n })}
+                              </span>
+                            ))}
+                          </div>
+                          <p className={`${s.secundario} um-etiqueta`}>
+                            {gpsOutside ? t('origen.fueraDelCentro') : t('isocronas.nota')}
+                          </p>
+                        </>
+                      )}
+                    </div>
+                  ) : (
+                    <div className={s.leyenda} role="group" aria-label={t('mapa.leyenda')}>
+                      <div className={s.muestras}>
+                        {SEGMENT_STATES.map((state) => (
+                          <MuestraTramo key={state} state={state} size="compacta" />
+                        ))}
+                        <span className={`${s.arboles} um-etiqueta`}>
+                          <span className={s.iconoArbol} aria-hidden="true">
+                            <Icono name="mango" size={16} />
+                          </span>
+                          {t('mapa.arboles')}
+                        </span>
+                      </div>
+                      {resultado?.noSun && <p className={`${s.secundario} um-etiqueta`}>{t('mapa.sinSol')}</p>}
+                    </div>
+                  )}
+                  <Link className={`${s.buscador} um-cuerpo`} to={`/buscar?${new URLSearchParams(pickShared(params))}`}>
+                    <Icono name="buscar" />
+                    {t('buscar.campo')}
+                  </Link>
+                </div>
+              </HojaInferior>
+            </div>
+          )}
+        </div>
+      </main>
+
+      {/* 04-8: Mapa · Ir a · Descansar · Perfil, con Mapa activa. */}
+      {!picking && <BarraInferior active="mapa" />}
+
+      {/* 04-6: "Ver la sombra a otra hora", desde la hora del encabezado. Hoy · Mañana llega en el paso R1c. */}
+      <HojaInferior open={timeOpen} onClose={() => setTimeOpen(false)} title={t('mapa.otraHora')} height="media">
+        <div className={s.panel}>
+          <p className={`${s.horaGrande} um-dato`} aria-hidden="true">
+            {formatTime(shownTime, language)}
+          </p>
+          <label htmlFor={sliderId} className="sr-only">
             {t('mapa.otraHora')}
           </label>
           <input
@@ -398,21 +416,13 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
             aria-valuetext={formatTime(shownTime, language)}
             style={{ '--progreso': `${progress}%` } as CSSProperties}
           />
-          <div className={`${s.eje} um-micro`} aria-hidden="true">
+          <div className={`${s.eje} um-etiqueta`} aria-hidden="true">
             <span>{formatTime(at(MIN_MINUTE), language)}</span>
             <span>{formatTime(at(MAX_MINUTE), language)}</span>
           </div>
-        </section>
-
-        <div className={s.acciones}>
-          <Boton onClick={() => navigate(`/buscar?${new URLSearchParams(pickShared(params))}`)}>
-            {cloudy ? t('mapa.buscarRutaSimple') : t('mapa.buscarRuta')}
-          </Boton>
+          <p className={`${s.secundario} um-etiqueta`}>{t('mapa.otraHoraNota')}</p>
         </div>
-      </main>
-
-      {/* 04-8: Mapa · Ir a · Descansar · Perfil, con Mapa activa. */}
-      {!picking && <BarraInferior active="mapa" />}
+      </HojaInferior>
 
       {selected !== null && data && edgeIndex && trees && resultado && (
         <FichaTramo

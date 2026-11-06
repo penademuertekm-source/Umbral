@@ -56,8 +56,8 @@ Fuera de esta lista: la prueba de campo de la sombra (hoja en preparación) y la
 | 04-2 | Mapa | El aviso de lluvia encuadra el lugar cubierto que menciona | P1 | C | pendiente |
 | 04-3 | Mapa | "Sin clima" con mensaje propio, no "al sol — · a la sombra —" | P1 | C | listo para código |
 | 04-4 | Mapa | El botón principal siempre con el mismo texto | P1 | C | pendiente |
-| 04-5 | Mapa | Hoja inferior de tres alturas que recoge leyenda, aviso y ficha | P2 | F C | listo para código |
-| 04-6 | Mapa | Encabezado de una línea; al tocar la hora se abre el deslizador | P2 | F C | listo para código |
+| 04-5 | Mapa | Hoja inferior de tres alturas que recoge leyenda, aviso y ficha | P2 | F C | hecho |
+| 04-6 | Mapa | Encabezado de una línea; al tocar la hora se abre el deslizador | P2 | F C | hecho |
 | 04-7 | Mapa | Nombres de calles, 5 o 6 lugares de referencia y vista inicial con la persona y la plaza | P2 | F C | listo para código |
 | 04-8 | Mapa | Solo "Mi ubicación" flotante; lo demás a la barra inferior | P2 | F C | hecho |
 | 04-9 | Mapa | Los grupos de árboles se identifican como tales (ícono o leyenda) | P2 | F C | hecho |
@@ -227,3 +227,11 @@ Aquí Claude Code anota contradicciones o dudas que encuentre al aplicar un punt
 2. **Las isócronas quedan sin entrada (04-8).** Su botón redondo salió del mapa y no tienen pestaña en la
    barra inferior. Por decisión de la autora no se ponen en otro lugar por ahora. La capa sigue funcionando
    con `/mapa?capa=isocronas`, para cuando se decida su sitio en Figma.
+3. **04-5 y 04-6 van en un solo commit.** Comparten el mismo bloque de la pantalla: la sensación térmica sale
+   del encabezado (04-6) y entra en la hoja (04-5). Separados, el enlace de prueba habría quedado un rato
+   sin ese dato.
+4. **La hoja asomada es una variante de `HojaInferior`** (`embedded`): va al pie del mapa, encima de la
+   barra inferior, sin ✕ y sin comportarse como diálogo. Al abrir una cuadra, la ficha ocupa su lugar
+   (la ficha nueva es del paso R1c).
+5. **El deslizador de hora va en su hoja media**, con la hora grande y la nota de Figma 113:836. El
+   selector Hoy · Mañana y "Volver a ahora" quedan para R1c, como dice el prompt.

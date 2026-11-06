@@ -1,0 +1,46 @@
+/* Encabezado del mapa (04-6, Figma 110:78): una línea de 64 px, superficie y borde inferior. */
+
+.encabezado {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--um-esp-sm);
+  min-height: 64px;
+  padding: max(var(--um-esp-xs), env(safe-area-inset-top)) var(--um-esp-md) var(--um-esp-xs);
+  border-bottom: 1px solid var(--um-base-borde);
+  background: var(--um-base-superficie);
+}
+
+/* La hora es el botón: toda la fila de la hora es el área táctil (≥ 56 px). */
+.hora {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--um-esp-xs);
+  min-height: var(--um-tactil-minimo);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--um-base-texto);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+/* El ícono Avanzar (›) girado: hacia abajo cerrado, hacia arriba abierto. */
+.chevron {
+  display: grid;
+  place-items: center;
+  color: var(--um-base-texto-secundario);
+  transform: rotate(90deg);
+  transition: transform 150ms ease-out;
+}
+
+.abierto {
+  transform: rotate(-90deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chevron {
+    transition: none;
+  }
+}

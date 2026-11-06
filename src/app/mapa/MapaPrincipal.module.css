@@ -1,4 +1,4 @@
-/* Pantalla 04 (Figma, nodo 3:2): barra superior, mapa, deslizador y botón principal. */
+/* Pantalla 04 (rediseño 2026, Figma 110:78 y 110:282): encabezado, mapa con la hoja asomada y barra inferior. */
 
 .pantalla {
   display: flex;
@@ -60,12 +60,6 @@
   gap: var(--um-esp-sm);
 }
 
-.filaArriba {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--um-esp-sm);
-}
 
 .chips {
   display: flex;
@@ -115,7 +109,6 @@
   flex-direction: column;
   align-items: flex-end;
   gap: var(--um-esp-xs);
-  margin-top: var(--um-esp-xs);
 }
 
 .botonFlotante {
@@ -131,29 +124,76 @@
   cursor: pointer;
 }
 
+/* 04-5: la hoja asomada al pie del mapa, con los botones flotantes justo encima. */
 .abajo {
-  right: var(--um-esp-md);
-  bottom: var(--um-esp-sm);
-  left: var(--um-esp-md);
+  right: 0;
+  bottom: 0;
+  left: 0;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: var(--um-esp-xs);
+  gap: var(--um-esp-sm);
+}
+
+.flotantes {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 0 var(--um-esp-md);
+}
+
+.flotantes > * {
+  pointer-events: auto;
+}
+
+.hojaContenido {
+  display: flex;
+  flex-direction: column;
+  gap: var(--um-esp-sm);
+}
+
+/* Buscador "¿A dónde vas?" (56 px): un enlace a la pantalla 05 con el aspecto del campo de búsqueda. */
+.buscador {
+  display: flex;
+  align-items: center;
+  gap: var(--um-esp-sm);
+  min-height: var(--um-tactil-minimo);
+  margin-top: var(--um-esp-xs);
+  padding: 0 var(--um-esp-md);
+  border: 2px solid var(--um-base-texto);
+  border-radius: var(--um-radio-control);
+  background: var(--um-base-superficie);
+  color: var(--um-base-texto-secundario);
+  text-decoration: none;
+}
+
+.buscador svg {
+  flex-shrink: 0;
+  color: var(--um-base-texto);
 }
 
 .leyenda {
   display: flex;
   flex-direction: column;
   gap: var(--um-esp-xs);
-  padding: var(--um-esp-sm) var(--um-esp-md);
-  border-radius: var(--um-radio-tarjeta);
-  background: var(--um-base-superficie);
-  box-shadow: var(--um-elevacion-flotante);
 }
 
-.leyendaHora {
-  color: var(--um-base-texto-secundario);
+/* "Árboles" en la leyenda: el mismo círculo verde claro del marcador Árbol, en pequeño. */
+.arboles {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--um-esp-xs);
 }
+
+.iconoArbol {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--um-semaforo-comodo-fondo);
+  color: var(--um-termico-sombra-plena);
+}
+
 
 .muestras {
   display: flex;
@@ -192,16 +232,17 @@
   color: var(--um-semaforo-nublado-texto);
 }
 
-/* Deslizador "Ver la sombra a otra hora" */
+/* Deslizador "Ver la sombra a otra hora", en su hoja (04-6). */
 .panel {
   display: flex;
   flex-direction: column;
-  padding: var(--um-esp-md) var(--um-esp-md) var(--um-esp-sm);
-  border-top: 1px solid var(--um-base-borde);
-  background: var(--um-base-superficie);
+  gap: var(--um-esp-xs);
 }
 
-.panelTitulo,
+.horaGrande {
+  color: var(--um-base-texto);
+}
+
 .eje {
   color: var(--um-base-texto-secundario);
 }
@@ -268,9 +309,6 @@
   margin-top: calc(-1 * var(--um-esp-xs));
 }
 
-.acciones {
-  padding: var(--um-esp-md);
-}
 
 /* Fase 6: tarjeta de "elegir el punto de partida" y leyenda de isócronas. */
 .tarjetaModo {
@@ -323,12 +361,3 @@
   pointer-events: auto;
 }
 
-/* S2: aviso "Es hora de salir" sobre la leyenda. */
-.avisoSalida {
-  align-self: stretch;
-  pointer-events: auto;
-}
-
-.avisoSalida:empty {
-  display: none;
-}
