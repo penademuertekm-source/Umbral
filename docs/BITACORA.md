@@ -4,6 +4,39 @@ Registro de lo hecho en cada fase, lo pendiente y las decisiones tomadas. La ent
 
 ---
 
+## Rediseño · Paso R1b: composición de la pantalla 04 (2026-11-06)
+
+Es el paso R1b de `docs/prompts-rediseno.md`, con los puntos 04-8, 04-6, 04-5, 04-10 y 04-7. Por decisión de
+la autora, lo que depende de ella (D1 a D4) queda en pausa y se siguen los pasos R1b a R6.
+
+- **Hecho:**
+  - 04-8: sobre el mapa solo quedan "Mi ubicación" (56 px) y ⓘ. Se suma la barra inferior con Mapa activa.
+    Las isócronas quedan sin entrada por decisión de la autora; la capa sigue en `/mapa?capa=isocronas`.
+  - 04-6: encabezado nuevo de una línea (`EncabezadoMapa`, 64 px) con la hora como botón y el semáforo. La
+    hora abre el deslizador en una hoja media.
+  - 04-5: hoja asomada, una variante incrustada de `HojaInferior`. Lleva el aviso, "Sensación térmica: X° al
+    sol · Y° a la sombra", la leyenda (Sombra · Parcial · Al sol · Árboles) y el buscador "¿A dónde vas?".
+  - 04-10: con el cielo cubierto, la sombra al 35 % y los árboles al 60 %. Aviso Nublado gris en la hoja,
+    con el componente compartido `Aviso`; la lluvia va como segundo aviso. El semáforo sigue mostrando el
+    calor. Sale `AvisoNublado`.
+  - 04-7: nombres de calles en pastillas giradas (etiquetas HTML, `src/mapa/etiquetas.ts`, con pruebas),
+    Plaza Alfonso López e Iglesia de la Concepción con ícono, y vista inicial que encuadra a la persona y
+    la plaza.
+- **Revisado:**
+  - build, lint y 145 pruebas;
+  - capturas a 390 × 844 y 360 × 640, con sol, nublado (con un pronóstico de ejemplo, porque Open-Meteo no
+    respondía), ubicación simulada, la hoja de la hora y la ficha abierta;
+  - comparación con Figma 110:78 y 110:282;
+  - revisión de consistencia hecha por un revisor aparte.
+- **Decisiones:** están en "Notas de Claude Code", paso R1b, de `docs/cambios-interfaz.md`. Entre ellas: las
+  etiquetas HTML en lugar de archivos de letra, solo dos lugares de referencia y 04-5 y 04-6 en un solo commit.
+- **Pendiente:**
+  - R1c: ficha de la cuadra y selector de hora con Hoy · Mañana;
+  - después, R2 a R6;
+  - revisar la hoja con aviso en celular pequeño (N7).
+
+---
+
 ## Revisión general antes de seguir (2026-10-16)
 
 La autora pidió una prueba completa antes de seguir con los pasos que faltan.
