@@ -2,12 +2,12 @@ import { useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router'
 import { Boton, ChipEstimado } from '../../componentes'
 import { HEAT_LEVELS, type HeatLevel } from '../../config/reglas-semaforo'
+import { horaConDia } from '../../i18n/hora'
 import { useT } from '../../i18n/useT'
 import { placeForDestination, recordAnswered } from '../../perfil/almacen'
 import { isNewStamp } from '../../perfil/colecciones'
 import { advancedChallenge } from '../../perfil/logros'
 import { usePerfil } from '../../perfil/usePerfil'
-import { formatTime } from '../../sombra/tiempo'
 import { readSettings } from '../ajustes/preferencias'
 import { passportPlaces } from '../perfil/colecciones/comun'
 import { Sello } from '../perfil/colecciones/Sello'
@@ -76,7 +76,7 @@ export function Llegada() {
             {real && real !== nombre ? t('llegada.resumen', { lugar: real, ...resumen }) : t('llegada.resumenCorto', resumen)}
           </p>
         </header>
-        {data && <ChipEstimado time={formatTime(ctx.hora.time, language)} provisional={data.meta.datos_provisionales} />}
+        {data && <ChipEstimado time={horaConDia(i18n, ctx.hora.time)} provisional={data.meta.datos_provisionales} />}
         {example && <p className={`${s.ejemplo} um-etiqueta`}>{t('llegada.ejemplo')}</p>}
 
         {showAchievements && (

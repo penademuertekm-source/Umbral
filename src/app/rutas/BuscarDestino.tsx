@@ -105,7 +105,7 @@ export function BuscarDestino() {
         )}
 
         <p className={`${s.subtitulo} um-etiqueta`}>
-          {t('buscar.frecuentes', { laHora: laHora(i18n, ctx.hora.time) })}
+          {t(ctx.hora.tomorrow ? 'buscar.frecuentesManana' : 'buscar.frecuentes', { laHora: laHora(i18n, ctx.hora.time) })}
         </p>
         {visibles.length === 0 && data && <p className="um-cuerpo">{t('buscar.sinResultados')}</p>}
         <ul className={s.lista}>

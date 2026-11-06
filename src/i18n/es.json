@@ -16,7 +16,9 @@
       "otra": "las {hora}"
     },
     "cancelar": "Cancelar",
-    "guardar": "Guardar"
+    "guardar": "Guardar",
+    "mananaA": "mañana a {laHora}",
+    "mediodia": "12 m."
   },
   "idioma": {
     "titulo": "Idioma",
@@ -128,9 +130,6 @@
     "sensacion": "Sensación térmica: {sol} al sol · {sombra} a la sombra",
     "arboles": "Árboles",
     "otraHoraNota": "El mapa muestra la sombra estimada para esa hora.",
-    "dia": "Día",
-    "hoy": "Hoy",
-    "manana": "Mañana",
     "ahora": "ahora",
     "volverAhora": "Volver a ahora",
     "horaManana": "Mañana, {hora}"
@@ -513,6 +512,7 @@
   "buscar": {
     "campo": "¿A dónde vas?",
     "frecuentes": "Destinos frecuentes · sombra a {laHora}",
+    "frecuentesManana": "Destinos frecuentes · sombra mañana a {laHora}",
     "detalle": "{distancia} · {min} min por sombra",
     "fueraDelMapa": "{distancia} · fuera del mapa de sombra",
     "sinUbicacion": "Ubicación pendiente",
@@ -565,7 +565,8 @@
       "precaucion": "precaución",
       "evitar": "evitar a pie",
       "no_recomendado": "no recomendado"
-    }
+    },
+    "estimadosManana": "Valores estimados para mañana"
   },
   "sinRuta": {
     "titulo": "A esta hora no hay una ruta con sombra",

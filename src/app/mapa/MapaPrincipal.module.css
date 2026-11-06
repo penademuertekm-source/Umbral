@@ -264,7 +264,6 @@
   border-color: var(--um-base-borde);
   background: var(--um-base-superficie);
   color: var(--um-base-texto);
-  font-weight: 600;
 }
 
 /* La hora elegida en grande, con la pastilla "ahora" cuando es la hora actual. */
@@ -278,7 +277,7 @@
 
 .ahora {
   padding: 0 var(--um-esp-sm);
-  border-radius: var(--um-radio-control);
+  border-radius: var(--um-radio-chip);
   background: var(--nivel-fondo);
   color: var(--nivel-texto);
 }
@@ -304,9 +303,9 @@
 }
 
 .deslizador::-webkit-slider-thumb {
-  width: 32px;
-  height: 32px;
-  margin-top: -13px;
+  width: 36px;
+  height: 36px;
+  margin-top: -15px;
   border: 3px solid var(--color-deslizador, var(--um-termico-sombra-plena));
   border-radius: 50%;
   background: var(--um-base-superficie);
@@ -332,8 +331,8 @@
 
 .deslizador::-moz-range-thumb {
   box-sizing: border-box;
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   border: 3px solid var(--color-deslizador, var(--um-termico-sombra-plena));
   border-radius: 50%;
   background: var(--um-base-superficie);

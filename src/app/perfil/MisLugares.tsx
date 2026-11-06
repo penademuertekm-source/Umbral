@@ -2,12 +2,11 @@ import { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { BarraInferior, Boton, ChipEstimado, Encabezado, Icono } from '../../componentes'
 import niveles from '../../estilos/niveles.module.css'
-import { laHora } from '../../i18n/hora'
+import { horaConDia, laHora } from '../../i18n/hora'
 import { formatDistance, roundMinutes } from '../../i18n/numeros'
 import { useT } from '../../i18n/useT'
 import { MAX_PLACES, restorePlace, type RemovedPlace, type SavedPlace } from '../../perfil/almacen'
 import { usePerfil } from '../../perfil/usePerfil'
-import { formatTime } from '../../sombra/tiempo'
 import { useEnlace } from '../rutas/enlaces'
 import { filaDestino, type FilaDestino } from '../rutas/filaDestino'
 import { useContextoRutas } from '../rutas/useContextoRutas'
@@ -79,7 +78,7 @@ export function MisLugares() {
           )}
           {undoFailed && <p className="um-etiqueta">{t('editarLugar.noSePudo', { n: MAX_PLACES })}</p>}
           <div className={s.encabezadoLista}>
-            {data && <ChipEstimado time={formatTime(ctx.hora.time, language)} provisional={data.meta.datos_provisionales} />}
+            {data && <ChipEstimado time={horaConDia(i18n, ctx.hora.time)} provisional={data.meta.datos_provisionales} />}
           </div>
           <p className={`${s.secundario} um-etiqueta`}>{t('lugares.rutaA', { laHora: laHora(i18n, ctx.hora.time) })}</p>
           <ul className={s.tarjeta}>

@@ -7,7 +7,7 @@ import { rainOutlook } from '../../clima/openMeteo'
 import { useClima, useClimaConfig } from '../../clima/useClima'
 import { SEGMENT_STATES } from '../../config/niveles'
 import { ISOCHRONE_BANDS_MIN } from '../../config/rutas'
-import { laHora } from '../../i18n/hora'
+import { horaConDia, laHora, marcaHora } from '../../i18n/hora'
 import { useT } from '../../i18n/useT'
 import { insideArea, loadMapData, type MapData } from '../../mapa/datos'
 import { LANDMARKS } from '../../mapa/etiquetas'
@@ -216,9 +216,7 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
 
   const progress = ((minute - MIN_MINUTE) / (MAX_MINUTE - MIN_MINUTE)) * 100
   // N3: con "Mañana" elegido, el encabezado y el chip lo dicen ("Mañana, 4:00 p. m.").
-  const timeLabel = hora.tomorrow
-    ? t('mapa.horaManana', { hora: formatTime(shownTime, language) })
-    : formatTime(shownTime, language)
+  const timeLabel = horaConDia(i18n, shownTime)
   const originLabel = origen?.kind === 'gps' ? t('origen.tuUbicacion') : t('origen.puntoElegido')
   // 04-6: el deslizador de hora se abre desde el encabezado.
   const [timeOpen, setTimeOpen] = useState(false)
@@ -333,16 +331,16 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
               {timeOpen ? (
                 <HojaInferior open embedded height="media" title={t('mapa.otraHora')} onClose={() => setTimeOpen(false)}>
                   <div className={s.panel}>
-                    <div className={s.dias} role="group" aria-label={t('mapa.dia')}>
+                    <div className={s.dias} role="group" aria-label={t('planear.dia')}>
                       {[false, true].map((tomorrow) => (
                         <button
                           key={String(tomorrow)}
                           type="button"
-                          className={`${s.dia} um-cuerpo`}
+                          className={`${s.dia} ${hora.tomorrow === tomorrow ? 'um-cuerpo-fuerte' : 'um-cuerpo'}`}
                           aria-pressed={hora.tomorrow === tomorrow}
                           onClick={() => hora.setTomorrow(tomorrow)}
                         >
-                          {tomorrow ? t('mapa.manana') : t('mapa.hoy')}
+                          {tomorrow ? t('planear.manana') : t('planear.hoy')}
                         </button>
                       ))}
                     </div>
@@ -362,13 +360,13 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
                       step={STEP_MIN}
                       value={minute}
                       onChange={(e) => hora.setMinute(Number(e.target.value))}
-                      aria-valuetext={timeLabel}
+                      aria-valuetext={hora.isNow ? `${timeLabel} · ${t('mapa.ahora')}` : timeLabel}
                       style={{ '--progreso': `${progress}%` } as CSSProperties}
                     />
                     <div className={`${s.eje} um-etiqueta`} aria-hidden="true">
-                      <span>{formatTime(at(MIN_MINUTE), language)}</span>
-                      <span>{formatTime(at(NOON_MINUTE), language)}</span>
-                      <span>{formatTime(at(MAX_MINUTE), language)}</span>
+                      <span>{marcaHora(i18n, MIN_MINUTE)}</span>
+                      <span>{marcaHora(i18n, NOON_MINUTE)}</span>
+                      <span>{marcaHora(i18n, MAX_MINUTE)}</span>
                     </div>
                     <p className={`${s.secundario} um-etiqueta`}>{t('mapa.otraHoraNota')}</p>
                     {!hora.isNow && (

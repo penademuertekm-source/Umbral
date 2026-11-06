@@ -54,7 +54,7 @@
 .mejor {
   flex-shrink: 0;
   padding: var(--um-esp-xs) var(--um-esp-sm);
-  border-radius: var(--um-radio-control);
+  border-radius: var(--um-radio-chip);
   background: var(--nivel-fondo);
   color: var(--nivel-texto);
 }

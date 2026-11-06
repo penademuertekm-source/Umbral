@@ -16,7 +16,9 @@
       "otra": "{hora}"
     },
     "cancelar": "Cancel",
-    "guardar": "Save"
+    "guardar": "Save",
+    "mananaA": "tomorrow at {laHora}",
+    "mediodia": "12 PM"
   },
   "idioma": {
     "titulo": "Language",
@@ -128,9 +130,6 @@
     "sensacion": "Feels like: {sol} in the sun · {sombra} in the shade",
     "arboles": "Trees",
     "otraHoraNota": "The map shows the estimated shade for that time.",
-    "dia": "Day",
-    "hoy": "Today",
-    "manana": "Tomorrow",
     "ahora": "now",
     "volverAhora": "Back to now",
     "horaManana": "Tomorrow, {hora}"
@@ -513,6 +512,7 @@
   "buscar": {
     "campo": "Where are you going?",
     "frecuentes": "Frequent destinations · shade at {laHora}",
+    "frecuentesManana": "Frequent destinations · shade tomorrow at {laHora}",
     "detalle": "{distancia} · {min} min in the shade",
     "fueraDelMapa": "{distancia} · outside the shade map",
     "sinUbicacion": "Location pending",
@@ -565,7 +565,8 @@
       "precaucion": "caution",
       "evitar": "avoid walking",
       "no_recomendado": "not recommended"
-    }
+    },
+    "estimadosManana": "Estimated values for tomorrow"
   },
   "sinRuta": {
     "titulo": "There's no shaded route at this time",

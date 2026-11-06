@@ -298,3 +298,26 @@ Aquí Claude Code anota contradicciones o dudas que encuentre al aplicar un punt
    el mismo día. El pronóstico de Open-Meteo ya trae los dos días.
 9. **Encabezado con "Mañana".** "Mañana, 4:00 p. m." y el chip del semáforo no caben juntos en 390 px: el chip
    baja a una segunda línea solo en ese caso, como hacía la barra anterior.
+10. **Revisión de consistencia de R1c (revisor aparte).** Se corrigieron:
+    - **El resumen de llegada con "Mañana" elegido.** En un recorrido con GPS, la hora salía negativa,
+      porque se restaba la medianoche de mañana. Ahora usa la hora local del recorrido, y el día solo
+      viaja al simular.
+    - **Pantallas que decían "hoy" con "Mañana" elegido.** La nota "Valores estimados…" de rutas, búsqueda,
+      descansar y "¿Cuándo salir?", el chip de la llegada y el de Mis lugares ahora lo dicen
+      (`horaConDia` y `laHoraConDia` en `src/i18n/hora.ts`, con pruebas).
+    - **Salidas guardadas para mañana.** `routeLink` ahora abre la ruta de mañana. Más allá de mañana no
+      se puede: la 06 solo ve hoy y mañana.
+    - **El selector, contra 113:836.** El control del deslizador mide 36 px; las marcas cortas dicen
+      "6 a. m. · 12 m. · 6 p. m."; "ahora" se oye en el lector de pantalla; las pastillas "ahora" y
+      "Mejor" usan el radio de chip; el segmento elegido usa la clase tipográfica, no un peso escrito a
+      mano. Hoy · Mañana reutilizan los textos de Planear salida.
+    Quedan anotadas, sin cambio:
+    - **El título de la ficha usa Título 24**, el estilo de todas las hojas, en lugar del Subtítulo 20 de
+      113:329.
+    - **La nota de los cañaguates sigue siendo su tarjeta propia**, porque es un dato de la cuadra y no un
+      aviso de la pantalla.
+    - **El círculo verde de "Árboles" ya está copiado dos veces** (leyenda y ficha), y Hoy · Mañana tiene una
+      forma distinta al selector de día de Planear salida (lo pide Figma). Conviene extraer piezas
+      compartidas cuando haya una tercera.
+    - **El orden de la sensación térmica cambia** entre la hoja ("al sol · a la sombra") y la ficha ("a la
+      sombra · al sol"). Así está en la especificación (04 y 07-2); conviene unificarlo en Figma.

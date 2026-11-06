@@ -176,7 +176,7 @@ export function CuandoSalir() {
           </section>
         )}
 
-        <NotaEstimado provisional={!!ctx.data?.meta.datos_provisionales} />
+        <NotaEstimado provisional={!!ctx.data?.meta.datos_provisionales} tomorrow={ctx.hora.tomorrow} />
 
         {showNow && nowDeparture && (
           <p className={`${c.siAhora} ${niveles[nowDeparture.level ?? 'nublado']} um-etiqueta`}>

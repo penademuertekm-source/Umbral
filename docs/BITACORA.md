@@ -4,6 +4,36 @@ Registro de lo hecho en cada fase, lo pendiente y las decisiones tomadas. La ent
 
 ---
 
+## Rediseño · Paso R1c: ficha de la cuadra y selector de hora (2026-11-06)
+
+Es el paso R1c de `docs/prompts-rediseno.md`, con los puntos 07-1 y 07-2, el selector de hora de 04-6 y la
+parte "Mañana" de N3.
+
+- **Hecho:**
+  - 07-1: una cuadra sin nombre se nombra por sus esquinas (`blockTitle`). De 80, quedan 5 "Cuadra sin
+    nombre".
+  - 07-2: la ficha va en la hoja media del mapa, sobre la barra inferior, con un halo al 28 % en la cuadra.
+    Lleva la calle y su referencia, el estado general con su trazo, los dos andenes nombrados por referencia
+    con "Mejor" (`src/mapa/andenes.ts`), la sensación térmica, los árboles y "Detalles técnicos" plegado.
+  - Selector de hora con Hoy · Mañana, la pastilla "ahora" y "Volver a ahora". "Mañana" va en la dirección
+    (`?dia=manana`), viaja a todas las pantallas y estas lo dicen.
+- **Decisiones de la autora:**
+  - andenes "hacia la calle vecina";
+  - se conserva "Sombra plena hasta…";
+  - "Mañana" viaja a todas las pantallas.
+
+  Las demás decisiones están en "Notas de Claude Code", paso R1c.
+- **Revisado:**
+  - build, lint y 152 pruebas;
+  - capturas de la ficha (cuadra común, junto a la plaza y sin nombre, a 390 y a 360) y del selector;
+  - recorrido del selector con Playwright y las pantallas de rutas con `?dia=manana`;
+  - revisión de consistencia hecha por un revisor aparte, con sus arreglos.
+- **Pendiente:**
+  - R2 a R6;
+  - la noche de N3 ("Ya no hay sol"), que es del paso R5.
+
+---
+
 ## Rediseño · Paso R1b: composición de la pantalla 04 (2026-11-06)
 
 Es el paso R1b de `docs/prompts-rediseno.md`, con los puntos 04-8, 04-6, 04-5, 04-10 y 04-7. Por decisión de

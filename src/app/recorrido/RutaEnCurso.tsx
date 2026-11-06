@@ -12,8 +12,8 @@ import type { LonLat } from '../../rutas/geometria'
 import { buildLegs, guidanceAt, hasArrived, pointAt, type Guidance, type Maneuver } from '../../rutas/recorrido'
 import { recordArrival } from '../../perfil/almacen'
 import { routeCards } from './laminas'
-import { formatTime } from '../../sombra/tiempo'
-import { formatHora } from '../useHoraElegida'
+import { formatTime, minutesOfDay } from '../../sombra/tiempo'
+import { formatHora, TOMORROW } from '../useHoraElegida'
 import { useVolver } from '../useVolver'
 import { useEnlace } from '../rutas/enlaces'
 import { NotaEstimado } from '../rutas/NotaEstimado'
@@ -110,7 +110,9 @@ export function RutaEnCurso() {
       sombra: String(Math.round(ruta.route.shadePercent)),
       evitado: String(Math.max(0, Math.round(ruta.shortest.sunMinutes - ruta.route.sunMinutes))),
       nivel: ruta.level ?? undefined,
-      hora: formatHora(Math.round((ruta.time.getTime() - ctx.hora.at(0).getTime()) / 60_000)),
+      // La hora local del recorrido (hoy con GPS; la elegida al simular). Con GPS el día elegido no aplica.
+      hora: formatHora(minutesOfDay(ruta.time)),
+      dia: simulating && ctx.hora.tomorrow ? TOMORROW : undefined,
       sim: simulating ? '1' : undefined,
       }
       navigate(enlace('/llegada', summary), { replace: true })
