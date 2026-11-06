@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useId, useMemo, useState, type CSSProperties } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router'
-import { BarraSuperior, Boton, ChipEstimado, Icono, MuestraTramo } from '../../componentes'
+import { BarraInferior, BarraSuperior, Boton, ChipEstimado, Icono, MuestraTramo } from '../../componentes'
 import { readHeatProfile } from '../../clima/configClima'
 import { simulateOvercast, thermalStateAt, type ThermalContext } from '../../clima/estado'
 import { rainOutlook } from '../../clima/openMeteo'
@@ -19,7 +19,6 @@ import { useSombra } from '../../sombra/useSombra'
 import { AvisoElNino } from '../elnino/AvisoElNino'
 import { markElNinoSeen, seenElNinoToday } from '../elnino/visto'
 import { useConexion } from '../useConexion'
-import { useEnlace } from '../rutas/enlaces'
 import { costModel, useGraph } from '../rutas/useContextoRutas'
 import { formatDesde, parseDesde, useOrigen } from '../rutas/useOrigen'
 import { MAX_MINUTE, MIN_MINUTE, STEP_MIN, useHoraElegida } from '../useHoraElegida'
@@ -54,7 +53,6 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
   const i18n = useT()
   const { t, language } = i18n
   const navigate = useNavigate()
-  const enlace = useEnlace()
   const online = useConexion()
   const [params, setParams] = useSearchParams()
   const sliderId = useId()
@@ -304,31 +302,8 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
                     >
                       <Icono name="mi-ubicacion" />
                     </button>
-                    <button
-                      type="button"
-                      className={`${s.botonFlotante} ${showIsochrones ? s.botonActivo : ''}`}
-                      aria-label={t('isocronas.boton')}
-                      aria-pressed={showIsochrones}
-                      onClick={() => updateParams({ capa: showIsochrones ? null : 'isocronas', tramo: null })}
-                    >
-                      <Icono name="capas" />
-                    </button>
-                    <button
-                      type="button"
-                      className={s.botonFlotante}
-                      aria-label={t('refugios.boton')}
-                      onClick={() => navigate(enlace('/refugios'))}
-                    >
-                      <Icono name="refugio-cubierto" />
-                    </button>
-                    <button
-                      type="button"
-                      className={s.botonFlotante}
-                      aria-label={t('barraInferior.perfil')}
-                      onClick={() => navigate('/perfil')}
-                    >
-                      <Icono name="perfil" />
-                    </button>
+                    {/* 04-8: los demás botones redondos pasaron a la barra inferior (Descansar, Perfil). Las
+                        isócronas quedan sin entrada por ahora (?capa=isocronas sigue funcionando). */}
                     {locationMessage && (
                       <p className={`${s.globo} um-etiqueta`} role="status">
                         {locationMessage}
@@ -435,6 +410,9 @@ export function MapaPrincipal({ simulateCloudy = false }: MapaPrincipalProps) {
           </Boton>
         </div>
       </main>
+
+      {/* 04-8: Mapa · Ir a · Descansar · Perfil, con Mapa activa. */}
+      {!picking && <BarraInferior active="mapa" />}
 
       {selected !== null && data && edgeIndex && trees && resultado && (
         <FichaTramo

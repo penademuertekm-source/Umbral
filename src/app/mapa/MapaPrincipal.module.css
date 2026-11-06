@@ -270,15 +270,9 @@
 
 .acciones {
   padding: var(--um-esp-md);
-  padding-bottom: max(var(--um-esp-md), env(safe-area-inset-bottom));
 }
 
-/* Fase 6: botón de capas activo, tarjeta de "elegir el punto de partida" y leyenda de isócronas. */
-.botonActivo {
-  background: var(--um-termico-sombra-plena);
-  color: var(--um-base-texto-inverso);
-}
-
+/* Fase 6: tarjeta de "elegir el punto de partida" y leyenda de isócronas. */
 .tarjetaModo {
   display: flex;
   flex-direction: column;
