@@ -56,6 +56,23 @@ export function segmentName(edgeId: number, index: EdgeIndex): SegmentName {
   return { street, crossings }
 }
 
+/**
+ * Cómo se titula una cuadra (07-1): por su calle o, si no tiene nombre, por las calles de sus esquinas
+ * ("Cuadra entre Cra. 6 y Calle 15"). Solo sin ninguna calle con nombre alrededor queda "Cuadra sin nombre".
+ */
+export type BlockTitle =
+  | { kind: 'calle'; street: string; a?: string; b?: string }
+  | { kind: 'entre'; a: string; b: string }
+  | { kind: 'junto'; a: string }
+  | { kind: 'sinNombre' }
+
+export function blockTitle({ street, crossings: [a, b] }: SegmentName): BlockTitle {
+  if (street) return { kind: 'calle', street, a, b }
+  if (a && b) return { kind: 'entre', a, b }
+  if (a) return { kind: 'junto', a }
+  return { kind: 'sinNombre' }
+}
+
 export type TreeCounts = Record<Species, number>
 
 /** Metros por grado en la latitud de Valledupar (aproximación plana, suficiente a escala de calle). */

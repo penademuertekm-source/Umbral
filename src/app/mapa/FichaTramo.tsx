@@ -4,7 +4,7 @@ import { HojaInferior, Icono } from '../../componentes'
 import { laHora } from '../../i18n/hora'
 import { useT } from '../../i18n/useT'
 import type { MapData, Species } from '../../mapa/datos'
-import { protectedSide, segmentName, type EdgeIndex, type TreeCounts } from '../../mapa/tramos'
+import { blockTitle, protectedSide, segmentName, type EdgeIndex, type TreeCounts } from '../../mapa/tramos'
 import type { ResultadoSombra } from '../../sombra/cliente'
 import type { ShadeUntil, SideLetter, SideState } from '../../sombra/modelo'
 import { motorSombra } from '../../sombra/cliente'
@@ -92,15 +92,20 @@ export function FichaTramo({ edge, data, index, trees, resultado, utci, onClose 
 
   const current = extra?.key === key ? extra : null
 
-  const name = segmentName(edge, index)
-  const [a, b] = name.crossings
-  const title = !name.street
-    ? t('ficha.sinNombre')
-    : b
-      ? t('ficha.entre', { calle: name.street, a, b })
-      : a
-        ? t('ficha.esquina', { calle: name.street, a })
-        : name.street
+  // 07-1: sin nombre, la cuadra se nombra por las calles de sus esquinas.
+  const named = blockTitle(segmentName(edge, index))
+  const title =
+    named.kind === 'calle'
+      ? named.a && named.b
+        ? t('ficha.entre', { calle: named.street, a: named.a, b: named.b })
+        : named.a
+          ? t('ficha.esquina', { calle: named.street, a: named.a })
+          : named.street
+      : named.kind === 'entre'
+        ? t('ficha.cuadraEntre', { a: named.a, b: named.b })
+        : named.kind === 'junto'
+          ? t('ficha.cuadraJunto', { a: named.a })
+          : t('ficha.sinNombre')
 
   let pill = ''
   if (shade?.state === 'sombra') {

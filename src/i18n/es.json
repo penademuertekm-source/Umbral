@@ -132,7 +132,9 @@
   "ficha": {
     "entre": "{calle} entre {a} y {b}",
     "esquina": "{calle} con {a}",
-    "sinNombre": "Tramo sin nombre",
+    "cuadraEntre": "Cuadra entre {a} y {b}",
+    "cuadraJunto": "Cuadra junto a la {a}",
+    "sinNombre": "Cuadra sin nombre",
     "estimadoA": "Valores estimados para {laHora}",
     "hasta": "Sombra plena hasta {laHora}",
     "hastaAtardecer": "Sombra plena hasta que se oculta el sol",

@@ -132,7 +132,9 @@
   "ficha": {
     "entre": "{calle} between {a} and {b}",
     "esquina": "{calle} at {a}",
-    "sinNombre": "Unnamed segment",
+    "cuadraEntre": "Block between {a} and {b}",
+    "cuadraJunto": "Block next to {a}",
+    "sinNombre": "Unnamed block",
     "estimadoA": "Estimated values for {laHora}",
     "hasta": "Full shade until {laHora}",
     "hastaAtardecer": "Full shade until sunset",

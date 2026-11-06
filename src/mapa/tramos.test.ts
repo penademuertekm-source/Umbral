@@ -1,7 +1,7 @@
 import type { FeatureCollection, LineString, Point } from 'geojson'
 import { describe, expect, it } from 'vitest'
 import type { EdgeProps, Species, TreeProps } from './datos'
-import { abbreviate, indexEdges, protectedSide, segmentName, treesByEdge } from './tramos'
+import { abbreviate, blockTitle, indexEdges, protectedSide, segmentName, treesByEdge } from './tramos'
 
 // Cuadrícula pequeña: la Calle 16 entre la Carrera 5 (nodo 1) y la Carrera 6 (nodo 2).
 //   Cra. 5      Cra. 6
@@ -51,6 +51,13 @@ describe('ficha de tramo', () => {
     // La Carrera 5 sigue derecho en el nodo 1: la esquina es la Calle 16.
     expect(segmentName(1, index)).toEqual({ street: 'Carrera 5', crossings: ['Calle 16'] })
     expect(segmentName(99, index)).toEqual({ street: '', crossings: [] })
+  })
+
+  it('una cuadra sin nombre se nombra por sus esquinas (07-1)', () => {
+    expect(blockTitle({ street: 'Calle 16', crossings: ['Cra. 5', 'Cra. 6'] })).toEqual({ kind: 'calle', street: 'Calle 16', a: 'Cra. 5', b: 'Cra. 6' })
+    expect(blockTitle({ street: '', crossings: ['Cra. 6', 'Calle 15'] })).toEqual({ kind: 'entre', a: 'Cra. 6', b: 'Calle 15' })
+    expect(blockTitle({ street: '', crossings: ['Cra. 6'] })).toEqual({ kind: 'junto', a: 'Cra. 6' })
+    expect(blockTitle({ street: '', crossings: [] })).toEqual({ kind: 'sinNombre' })
   })
 
   it('cuenta los árboles a menos de 12 m del eje, cada uno en la calle más cercana', () => {

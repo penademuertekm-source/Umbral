@@ -66,7 +66,7 @@ Fuera de esta lista: la prueba de campo de la sombra (hoja en preparación) y la
 | 06-1 | Rutas | "Ruta con más sombra" en lugar de "Ruta con sombra" | P1 | C | listo para código |
 | 06-2 | Rutas | El conteo de árboles pasa a los detalles | P2 | C | listo para código |
 | 06-3 | Rutas | Cada tarjeta muestra la muestra de su línea del mapa | P2 | F C | listo para código |
-| 07-1 | Ficha | Cuadras sin nombre nombradas por sus esquinas (observación 1) | P1 | C D | listo para código |
+| 07-1 | Ficha | Cuadras sin nombre nombradas por sus esquinas (observación 1) | P1 | C D | hecho |
 | 07-2 | Ficha | "Sensación térmica" en lugar de UTCI; Sky View Factor plegado | P1 | C | listo para código |
 | 09-1 | El Niño | Revisar en la primera pasada (no revisada aún) | P2 | — | pendiente |
 | 10-1 | Dónde descansar | El Callejón no dice "sombra continua" junto a "Al sol a esta hora"; se describe lo de ahora | P1 | C | listo para código |
@@ -266,3 +266,9 @@ Aquí Claude Code anota contradicciones o dudas que encuentre al aplicar un punt
       cuando R2 rehaga la 05.
     - **El asa de la hoja asomada es solo dibujo.** Las tres alturas de 04-5 son: asomada (mapa), media
       (ficha y hora) y completa (sin uso aún en el mapa).
+
+**Paso R1c (2026-11-06): notas**
+
+1. **07-1.** De las 80 cuadras sin nombre de `red.geojson`, 32 quedan "Cuadra entre Cra. 18 y Cra. 1C", 43
+   "Cuadra junto a la Cra. 18" (solo una esquina con nombre) y 5 siguen como "Cuadra sin nombre". Los
+   nombres que complete la autora (D3, en pausa) reemplazan a estos.
