@@ -1,4 +1,4 @@
-import type { Feature, FeatureCollection, MultiLineString, Point } from 'geojson'
+import type { Feature, FeatureCollection, MultiLineString } from 'geojson'
 import { LngLatBounds, Map as MapLibreMap, Marker, type GeoJSONSource } from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import './trabajador'
@@ -9,7 +9,7 @@ import { useT } from '../i18n/useT'
 import type { LonLat } from '../rutas/geometria'
 import type { Route } from '../rutas/rutas'
 import { addBaseLayers, baseStyle } from './capas'
-import type { MapData, TreeProps } from './datos'
+import type { MapData } from './datos'
 import { addMapImages } from './imagenes'
 import s from './MapaSombra.module.css'
 import { mapColors } from './tokens'
@@ -34,8 +34,6 @@ interface MapaRutasProps {
   /** Punto de partida (marcador "Punto de partida"). */
   origin?: LonLat | null
   destination?: LonLat | null
-  /** Árboles a lo largo de la ruta con sombra. */
-  trees?: FeatureCollection<Point, TreeProps>
   /** Posición de la persona durante el recorrido (13): punto azul. */
   user?: LonLat | null
   /** Si es true, el mapa sigue a `user`. */
@@ -50,7 +48,6 @@ interface MapaRutasProps {
 }
 
 const EMPTY: FeatureCollection = { type: 'FeatureCollection', features: [] }
-const NO_TREES = EMPTY as FeatureCollection<Point, TreeProps>
 const NO_PLACES: readonly MapPlace[] = []
 /** Al seguir a la persona: zoom mínimo y franja del borde (fracción de la vista) que obliga a recentrar. */
 const FOLLOW_ZOOM = 17.5
@@ -83,7 +80,6 @@ export function MapaRutas({
   selected = 'sombra',
   origin = null,
   destination = null,
-  trees = NO_TREES,
   user = null,
   follow = false,
   places = NO_PLACES,
@@ -132,7 +128,6 @@ export function MapaRutas({
       addBaseLayers(map, data, colors)
       map.addSource('ruta-corta', { type: 'geojson', data: EMPTY })
       map.addSource('ruta-sombra', { type: 'geojson', data: EMPTY })
-      map.addSource('ruta-arboles', { type: 'geojson', data: EMPTY })
       const round = { 'line-join': 'round', 'line-cap': 'round' } as const
       map.addLayer({
         id: 'ruta-corta',
@@ -155,16 +150,6 @@ export function MapaRutas({
         layout: round,
         paint: { 'line-color': colors.sombra, 'line-width': SHADED_WIDTH as never },
       })
-      map.addLayer({
-        id: 'ruta-arboles',
-        type: 'symbol',
-        source: 'ruta-arboles',
-        layout: {
-          'icon-image': ['match', ['get', 'especie'], 'canaguate', 'arbol-canaguate', 'arbol-mango'],
-          'icon-size': ['interpolate', ['linear'], ['zoom'], 15, 0.45, 18, 0.8],
-          'icon-allow-overlap': false,
-        },
-      })
       setReady(true)
     })
     return () => {
@@ -178,16 +163,15 @@ export function MapaRutas({
     mapRef.current?.getCanvas().setAttribute('aria-label', label)
   }, [label, ready])
 
-  // Rutas, árboles y encuadre.
+  // Rutas y encuadre.
   useEffect(() => {
     const map = mapRef.current
     if (!map || !ready) return
     ;(map.getSource('ruta-corta') as GeoJSONSource).setData(asLines(shortest))
     ;(map.getSource('ruta-sombra') as GeoJSONSource).setData(asLines(shaded))
-    ;(map.getSource('ruta-arboles') as GeoJSONSource).setData(trees)
-    // La ruta elegida va encima (debajo de los árboles).
+    // La ruta elegida va encima.
     const order = selected === 'corta' ? ['ruta-sombra-borde', 'ruta-sombra', 'ruta-corta'] : ['ruta-corta', 'ruta-sombra-borde', 'ruta-sombra']
-    order.forEach((id) => map.moveLayer(id, 'ruta-arboles'))
+    order.forEach((id) => map.moveLayer(id))
     const bounds = new LngLatBounds()
     for (const point of [origin, destination]) if (point) bounds.extend(point)
     for (const route of [shaded, shortest]) route?.pieces.forEach((p) => p.coords.forEach((c) => bounds.extend(c)))
@@ -205,7 +189,7 @@ export function MapaRutas({
       maxZoom: 18,
       duration: 0,
     })
-  }, [ready, shaded, shortest, selected, trees, origin, destination, places, bottomInset, destinationName])
+  }, [ready, shaded, shortest, selected, origin, destination, places, bottomInset, destinationName])
 
   // Marcadores de partida y destino.
   useEffect(() => {

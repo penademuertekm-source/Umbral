@@ -4,6 +4,31 @@ Registro de lo hecho en cada fase, lo pendiente y las decisiones tomadas. La ent
 
 ---
 
+## Rediseño · Paso R2: buscar destino y rutas (2026-11-07)
+
+Es el paso R2 de `docs/prompts-rediseno.md`, con los puntos G3, 05-1, 06-1, 06-2 y 06-3.
+
+- **Hecho:**
+  - G3: una sola fuente para las rutas (`src/rutas/viaje.ts`, con pruebas). 05, 06, 13, 15, 16, Mis lugares
+    y la agenda de salidas muestran las mismas cifras.
+  - 05: la pantalla como Figma 116:534, con "En el centro" y "Fuera del mapa de sombra".
+  - 05-1: "Cómo llegar ›" abre la 21 en modo destino. Muestra el esquema desde la plaza y abre Google Maps
+    con el nombre del lugar (decisión de la autora).
+  - 06: la pantalla como Figma 117:613, con encabezado de una línea, mapa solo con las rutas, la hoja con
+    las dos tarjetas y su muestra de línea, y la barra inferior.
+- **Revisado:**
+  - build, lint y 154 pruebas;
+  - capturas de la 05, la 06 y la 21 a 390 × 844 y a 360 × 640;
+  - las mismas cifras de la plaza en la 05 y la 06;
+  - revisión de consistencia hecha por un revisor aparte (calibrado con una diferencia plantada), con sus
+    arreglos.
+- **Decisiones:** están en "Notas de Claude Code", paso R2.
+- **Pendiente:**
+  - R3 a R6;
+  - el celular pequeño en la 06 (N7): el chip tapa parte del origen.
+
+---
+
 ## Rediseño · Paso R1c: ficha de la cuadra y selector de hora (2026-11-06)
 
 Es el paso R1c de `docs/prompts-rediseno.md`, con los puntos 07-1 y 07-2, el selector de hora de 04-6 y la

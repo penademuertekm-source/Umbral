@@ -357,3 +357,22 @@ Aquí Claude Code anota contradicciones o dudas que encuentre al aplicar un punt
 8. **Celular pequeño (N7).** A 360 × 640 se ven el origen, el destino y las dos tarjetas. El encabezado pasa
    a una línea con puntos suspensivos ("Plaza Alfonso L…") y las tarjetas son más bajas. Aun así, el chip
    estimado tapa parte del origen y la pastilla del destino no cabe. Conviene revisarlo en Figma.
+9. **Revisión de consistencia de R2 (revisor aparte).** Se corrigieron:
+   - **05-1 completo.** La 06 lleva a la 21 cuando el destino está fuera del mapa, también desde "Tus
+     lugares" y Mis lugares. Ya no queda el mensaje sin salida, y la clave `rutas.fueraDelArea` se quitó.
+   - **El nivel se oye.** La pastilla de nivel pasa a ser una pieza compartida (`PildoraRuta`) con la
+     forma, el % y el nivel para el lector de pantalla. La usan la 05 y Mis lugares, que antes distinguía
+     el nivel solo por color.
+   - **Piezas de Mis lugares reutilizadas.** La 05 usa `Encabezado` (sin Volver, como Perfil) y la tarjeta
+     y las filas de Mis lugares, con filas de 72 px. Mis lugares también dice "sin datos de sombra".
+   - **Enlaces y foco.** El enlace a la 21 conserva la hora, el día y el origen. "Volver a los destinos"
+     usa `useVolver`. El foco del buscador usa el color del foco global.
+   - **Ruta única.** Cuando la más corta ya es la de más sombra, el mapa la dibuja verde, como su muestra.
+   - **Muestras y estados.** Las muestras de línea usan las medidas del mapa (7 px; 4 px a rayas de 8/7).
+     Los estados alternos de la 06 tienen barra inferior.
+   - **Código sin uso.** Se quitó todo lo de árboles del mapa de rutas y las claves de i18n repetidas.
+   Quedan anotadas, sin cambio:
+   - **La hoja de la 06** usa la altura "asomada" incrustada, que crece con su contenido (unos 370 px a
+     844), en vez de "media", que la estiraría a la mitad de la pantalla.
+   - **La caché de rutas (G3) no distingue la temporada de los cañaguates.** Hoy no importa, porque todas
+     las pantallas de rutas usan la automática.

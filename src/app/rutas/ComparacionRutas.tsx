@@ -6,7 +6,7 @@ import { SINGLE_ROUTE_MIN_IMPROVEMENT } from '../../config/rutas'
 import { horaConDia } from '../../i18n/hora'
 import { formatDistance, roundMinutes } from '../../i18n/numeros'
 import { useT } from '../../i18n/useT'
-import { insideArea, metersBetween } from '../../mapa/datos'
+import { insideArea } from '../../mapa/datos'
 import { MapaRutas } from '../../mapa/MapaRutas'
 import { preflightSteps } from '../../rutas/avisos'
 import { singleRoute } from '../../rutas/rutas'
@@ -73,16 +73,9 @@ export function ComparacionRutas() {
   if (data && destino && !point) {
     return <Pantalla title={nombre} volver={volver} mensaje={t('buscar.sinUbicacion')} enlace={enlace('/buscar')} guardar={guardar} />
   }
+  // 05-1: un destino fuera del mapa de sombra (también desde "Tus lugares" o Mis lugares) va a la pantalla 21.
   if (data && point && !insideArea(data.meta, point)) {
-    return (
-      <Pantalla
-        title={nombre}
-        volver={volver}
-        mensaje={t('rutas.fueraDelArea', { destino: nombre, distancia: formatDistance(metersBetween(data.meta.area.centro, point), language) })}
-        enlace={enlace('/buscar')}
-        guardar={guardar}
-      />
-    )
+    return <Navigate to={enlace('/fuera-del-centro', { destino: destino?.id })} replace />
   }
   if (data && !origen) {
     return <Pantalla title={nombre} volver={volver} mensaje={t('origen.falta')} enlace={enlace('/buscar')} guardar={guardar} />
@@ -127,9 +120,9 @@ export function ComparacionRutas() {
           {data && origen && point && routes && (
             <MapaRutas
               data={data}
-              shaded={unica ? null : routes.shaded}
-              shortest={routes.shortest}
-              selected={unica ? 'corta' : selected}
+              shaded={unica ? routes.shortest : routes.shaded}
+              shortest={unica ? null : routes.shortest}
+              selected={unica ? 'sombra' : selected}
               origin={origen.point}
               destination={point}
               destinationName={nombre}
@@ -279,6 +272,7 @@ function Pantalla({ title, volver, mensaje, enlace, guardar }: PantallaProps) {
           {t('rutas.verDestinos')}
         </Link>
       </main>
+      <BarraInferior active="ir" />
       {guardar?.sheet}
     </>
   )

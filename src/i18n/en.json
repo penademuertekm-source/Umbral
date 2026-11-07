@@ -511,8 +511,6 @@
   },
   "buscar": {
     "campo": "Where are you going?",
-    "detalle": "{distancia} · {min} min",
-    "fueraDelMapa": "{distancia} · outside the shade map",
     "sinUbicacion": "Location pending",
     "sinOrigen": "Choose a starting point",
     "sinResultados": "No destinations with that name.",
@@ -523,9 +521,7 @@
     "enCentroManana": "Downtown · shadiest route tomorrow at {laHora}",
     "fueraTitulo": "Outside the shade map",
     "sinDatosSombra": "{distancia} · no shade data",
-    "comoLlegar": "Directions",
-    "porcentaje": "{p} %",
-    "sombraAccesible": "Route shade:"
+    "comoLlegar": "Directions"
   },
   "rutas": {
     "conSombra": "Shadiest route",
@@ -537,7 +533,6 @@
     "iniciarSimple": "Start walk",
     "cuandoSalir": "When is it best to leave?",
     "sinRuta": "We couldn't find a route between these points.",
-    "fueraDelArea": "{destino} is outside the shade map, {distancia} from Alfonso López Square. There are no shaded routes there yet.",
     "destinoDesconocido": "That destination doesn't exist or has no location yet.",
     "mapa": "Map with the routes to {destino}",
     "verDestinos": "See destinations",

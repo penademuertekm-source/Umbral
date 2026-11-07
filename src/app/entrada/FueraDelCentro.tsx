@@ -9,7 +9,8 @@ import { useUbicacion } from '../../mapa/useUbicacion'
 import type { LonLat } from '../../rutas/geometria'
 import { useHorasAviso } from '../recorrido/horasAviso'
 import s from './Entrada.module.css'
-import { googleMapsDirections, googleMapsDirectionsTo, markOnboardingDone, schemeLayout } from './entrada'
+import { CITY, googleMapsDirections, googleMapsDirectionsTo, markOnboardingDone, schemeLayout } from './entrada'
+import { useVolver } from '../useVolver'
 
 // Pantalla 21 (nodo 35:35): la ubicación está fuera del área de estudio. Esquema con la distancia (no a
 // escala), consejo de llegar en taxi en las horas de más calor, indicaciones en Google Maps (enlace
@@ -36,6 +37,8 @@ export function FueraDelCentro() {
     }
   }, [])
   const ubicacion = useUbicacion()
+  // 05-1: "Volver a los destinos" (si la 21 se abrió directo, va a la 05).
+  const volver = useVolver('/buscar')
   const horas = useHorasAviso()
 
   const [params] = useSearchParams()
@@ -113,7 +116,7 @@ export function FueraDelCentro() {
         {destino ? (
           <a
             className={`${b.boton} ${b.primario} ${b.ancho} ${s.enlaceBoton} um-cuerpo-fuerte`}
-            href={googleMapsDirectionsTo(`${destino.nombre.es}, Valledupar`)}
+            href={googleMapsDirectionsTo(`${destino.nombre.es}, ${CITY}`)}
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -133,7 +136,7 @@ export function FueraDelCentro() {
         )}
         <p className={`${s.secundario} um-micro`}>{t('fuera.abreMaps')}</p>
         {destino ? (
-          <Boton variant="secundario" onClick={() => navigate(-1)}>
+          <Boton variant="secundario" onClick={volver}>
             {t('fuera.volverDestinos')}
           </Boton>
         ) : (

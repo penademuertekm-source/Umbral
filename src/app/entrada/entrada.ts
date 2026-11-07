@@ -31,6 +31,9 @@ export function googleMapsDirections([lon, lat]: LonLat): string {
   return `https://www.google.com/maps/dir/?api=1&destination=${lat.toFixed(6)}%2C${lon.toFixed(6)}`
 }
 
+/** Ciudad de los destinos, para buscarlos por nombre en Google Maps (no se muestra en pantalla). */
+export const CITY = 'Valledupar'
+
 /** Indicaciones de Google Maps hasta un lugar por su nombre (05-1: los destinos fuera del mapa tienen
  * coordenadas aproximadas mientras llega D1, así que se busca por nombre y ciudad). */
 export function googleMapsDirectionsTo(place: string): string {

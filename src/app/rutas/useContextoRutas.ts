@@ -6,7 +6,7 @@ import { useClima, useClimaConfig } from '../../clima/useClima'
 import { routeLevel, type HeatLevel, type HeatProfile } from '../../config/reglas-semaforo'
 import { ROUTE_PROFILES } from '../../config/rutas'
 import { loadMapData, type MapData } from '../../mapa/datos'
-import { treesByEdge, type TreeCounts } from '../../mapa/tramos'
+import { treesByEdge } from '../../mapa/tramos'
 import type { LonLat } from '../../rutas/geometria'
 import { buildGraph, type Graph } from '../../rutas/grafo'
 import type { CostModel, Route, RouteMode } from '../../rutas/rutas'
@@ -94,18 +94,6 @@ export function levelOfRoute(route: Route, thermal: ThermalState | null, context
   }).heatLevel
 }
 
-/** Suma los árboles de las calles que recorre la ruta. */
-export function treesOnRoute(route: Route, trees: Map<number, TreeCounts>): TreeCounts {
-  const total: TreeCounts = { mango: 0, canaguate: 0, otro: 0 }
-  for (const edge of route.edges) {
-    const counts = trees.get(edge)
-    if (!counts) continue
-    total.mango += counts.mango
-    total.canaguate += counts.canaguate
-    total.otro += counts.otro
-  }
-  return total
-}
 
 export function useContextoRutas() {
   const hora = useHoraElegida()

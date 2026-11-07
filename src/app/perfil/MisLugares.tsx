@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { BarraInferior, Boton, ChipEstimado, Encabezado, Icono } from '../../componentes'
-import niveles from '../../estilos/niveles.module.css'
 import { horaConDia, laHora } from '../../i18n/hora'
 import { formatDistance, roundMinutes } from '../../i18n/numeros'
 import { useT } from '../../i18n/useT'
@@ -9,6 +8,7 @@ import { MAX_PLACES, restorePlace, type RemovedPlace, type SavedPlace } from '..
 import { usePerfil } from '../../perfil/usePerfil'
 import { useEnlace } from '../rutas/enlaces'
 import { filaDestino, type FilaDestino } from '../rutas/filaDestino'
+import { PildoraRuta } from '../rutas/PildoraRuta'
 import { useContextoRutas } from '../rutas/useContextoRutas'
 import { useVolver } from '../useVolver'
 import { AvisoHecho, HojaEditarLugar } from './HojasLugar'
@@ -96,12 +96,7 @@ export function MisLugares() {
                     </span>
                     {fila?.kind === 'ruta' && (
                       <span className={s.lado}>
-                        <span className={`${s.pildora} ${niveles[fila.level ?? 'nublado']} um-etiqueta`}>
-                          <span aria-hidden="true">{t('lugares.pildora', { p: Math.round(fila.route.shadePercent) })}</span>
-                          <span className="sr-only">
-                            {t('lugares.pildoraLarga', { p: Math.round(fila.route.shadePercent) })}
-                          </span>
-                        </span>
+                        <PildoraRuta level={fila.level} percent={fila.route.shadePercent} />
                       </span>
                     )}
                   </Link>
@@ -155,7 +150,7 @@ export function MisLugares() {
           min: roundMinutes(fila.route.minutes),
         })
       case 'fuera':
-        return t('buscar.fueraDelMapa', { distancia: formatDistance(fila.meters, language) })
+        return t('buscar.sinDatosSombra', { distancia: formatDistance(fila.meters, language) })
       case 'sin_ubicacion':
         return t('buscar.sinUbicacion')
       case 'sin_origen':

@@ -96,16 +96,17 @@
   flex-shrink: 0;
 }
 
+/* Las medidas del mapa a zoom 16: con más sombra 7 px; más corta 4 px a rayas de 8/7. */
 .muestraSombra line {
   stroke: var(--um-termico-sombra-plena);
-  stroke-width: 5;
+  stroke-width: 7;
   stroke-linecap: round;
 }
 
 .muestraCorta line {
   stroke: var(--um-base-texto-secundario);
-  stroke-width: 3;
-  stroke-dasharray: 6 4;
+  stroke-width: 4;
+  stroke-dasharray: 8 7;
 }
 
 .enlace {

@@ -1,0 +1,12 @@
+/* Pastilla de nivel y % de sombra de una ruta (05, Mis lugares). */
+.pildora {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--um-esp-xs);
+  padding: var(--um-esp-xs) var(--um-esp-sm);
+  border-radius: var(--um-radio-control);
+  background: var(--nivel-fondo);
+  color: var(--nivel-texto);
+  white-space: nowrap;
+}

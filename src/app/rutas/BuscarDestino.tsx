@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router'
-import { BarraInferior, Boton, ChipEstimado, FormaSemaforo, Icono } from '../../componentes'
-import niveles from '../../estilos/niveles.module.css'
+import { BarraInferior, Boton, ChipEstimado, Encabezado, Icono } from '../../componentes'
 import { horaConDia, laHora } from '../../i18n/hora'
 import { formatDistance, roundMinutes } from '../../i18n/numeros'
 import { useT } from '../../i18n/useT'
@@ -12,6 +11,7 @@ import p from '../perfil/Perfil.module.css'
 import s from './Rutas.module.css'
 import { useEnlace } from './enlaces'
 import { filaDestino, type FilaDestino } from './filaDestino'
+import { PildoraRuta } from './PildoraRuta'
 import { useContextoRutas } from './useContextoRutas'
 
 // Pantalla 05 (rediseño 2026, Figma 116:534): "¿A dónde vas?". Se abre desde la pestaña "Ir a" o desde el
@@ -51,8 +51,9 @@ export function BuscarDestino() {
 
   return (
     <>
+      {/* Es una pestaña ("Ir a"): título sin "Volver", como Perfil. */}
+      <Encabezado title={t('buscar.campo')} />
       <main className={s.contenido}>
-        <h1 className={`${s.titulo} um-titulo`}>{t('buscar.campo')}</h1>
         <label className={s.buscador}>
           <Icono name="buscar" />
           <input
@@ -120,11 +121,11 @@ export function BuscarDestino() {
             <h2 id="en-el-centro" className={`${s.subtitulo} um-etiqueta`}>
               {t(ctx.hora.tomorrow ? 'buscar.enCentroManana' : 'buscar.enCentro', { laHora: laHora(i18n, ctx.hora.time) })}
             </h2>
-            <ul className={s.tarjeta}>
+            <ul className={`${p.tarjeta} ${s.lista}`}>
               {enCentro.map(({ destino, fila }) => {
                 const detalle =
                   fila.kind === 'ruta'
-                    ? t('buscar.detalle', { distancia: formatDistance(fila.route.meters, language), min: roundMinutes(fila.route.minutes) })
+                    ? t('lugares.detalle', { distancia: formatDistance(fila.route.meters, language), min: roundMinutes(fila.route.minutes) })
                     : fila.kind === 'sin_ubicacion'
                       ? t('buscar.sinUbicacion')
                       : fila.kind === 'sin_origen'
@@ -132,33 +133,26 @@ export function BuscarDestino() {
                         : fila.kind === 'sin_ruta'
                           ? t('rutas.sinRuta')
                           : t('buscar.calculando')
-                const level = fila.kind === 'ruta' ? (fila.level ?? 'nublado') : null
                 const contenido = (
                   <>
-                    <span className={s.iconoLugar} aria-hidden="true">
+                    <span className={p.icono} aria-hidden="true">
                       <Icono name={destinationIcon(destino)} />
                     </span>
-                    <span className={s.filaTexto}>
+                    <span className={p.textos}>
                       <span className="um-cuerpo-fuerte">{nombreDe(destino)}</span>
                       <span className={`${s.secundario} um-etiqueta`}>{detalle}</span>
                     </span>
-                    {fila.kind === 'ruta' && level && (
-                      <span className={`${s.pildora} ${niveles[level]} um-etiqueta`}>
-                        <FormaSemaforo level={level} />
-                        <span className="sr-only">{t('buscar.sombraAccesible')} </span>
-                        {t('buscar.porcentaje', { p: Math.round(fila.route.shadePercent) })}
-                      </span>
-                    )}
+                    {fila.kind === 'ruta' && <PildoraRuta level={fila.level} percent={fila.route.shadePercent} />}
                   </>
                 )
                 return (
                   <li key={destino.id}>
                     {fila.kind === 'ruta' ? (
-                      <Link className={s.fila} to={enlace('/rutas', { destino: destino.id })}>
+                      <Link className={`${p.fila} ${s.filaAlta}`} to={enlace('/rutas', { destino: destino.id })}>
                         {contenido}
                       </Link>
                     ) : (
-                      <div className={`${s.fila} ${s.filaInactiva}`}>{contenido}</div>
+                      <div className={`${p.fila} ${s.filaAlta} ${s.filaInactiva}`}>{contenido}</div>
                     )}
                   </li>
                 )
@@ -172,15 +166,15 @@ export function BuscarDestino() {
             <h2 id="fuera-del-mapa" className={`${s.subtitulo} um-etiqueta`}>
               {t('buscar.fueraTitulo')}
             </h2>
-            <ul className={s.tarjeta}>
+            <ul className={`${p.tarjeta} ${s.lista}`}>
               {fuera.map(({ destino, fila }) => (
                 <li key={destino.id}>
                   {/* 05-1: toda la fila lleva a la pantalla 21 con este destino. */}
-                  <Link className={s.fila} to={`/fuera-del-centro?destino=${encodeURIComponent(destino.id)}`}>
-                    <span className={`${s.iconoLugar} ${s.iconoFuera}`} aria-hidden="true">
+                  <Link className={`${p.fila} ${s.filaAlta}`} to={enlace('/fuera-del-centro', { destino: destino.id })}>
+                    <span className={`${p.icono} ${s.iconoFuera}`} aria-hidden="true">
                       <Icono name={destinationIcon(destino)} />
                     </span>
-                    <span className={s.filaTexto}>
+                    <span className={p.textos}>
                       <span className="um-cuerpo-fuerte">{nombreDe(destino)}</span>
                       <span className={`${s.secundario} um-etiqueta`}>
                         {fila.kind === 'fuera' && t('buscar.sinDatosSombra', { distancia: formatDistance(fila.meters, language) })}

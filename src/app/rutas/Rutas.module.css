@@ -17,10 +17,6 @@
 }
 
 /* Pantalla 05 (Figma 116:534) */
-.titulo {
-  margin-top: var(--um-esp-md);
-}
-
 /* Buscador de 56 px con la lupa adentro (el mismo borde del campo de búsqueda). */
 .buscador {
   display: flex;
@@ -46,7 +42,7 @@
 }
 
 .buscador:focus-within {
-  outline: 3px solid var(--um-termico-sombra-plena);
+  outline: 3px solid var(--um-mapa-usuario);
   outline-offset: 2px;
 }
 
@@ -104,72 +100,24 @@
   text-decoration: none;
 }
 
-/* Listas en tarjeta de la 05: filas de 72 px como mínimo, toda la fila es tocable. */
-.tarjeta {
-  display: flex;
-  flex-direction: column;
-  margin: var(--um-esp-sm) 0 0;
-  padding: 0;
-  overflow: hidden;
-  border: 1px solid var(--um-base-borde);
-  border-radius: var(--um-radio-tarjeta);
-  background: var(--um-base-superficie);
-  list-style: none;
+/* Listas de la 05: la tarjeta de Mis lugares (Perfil.module.css) con filas de 72 px como mínimo. */
+.lista {
+  margin-top: var(--um-esp-sm);
 }
 
-.tarjeta li + li {
-  border-top: 1px solid var(--um-base-borde);
-}
-
-.fila {
-  display: flex;
-  align-items: center;
-  gap: var(--um-esp-md);
+.filaAlta {
   min-height: 72px;
-  padding: var(--um-esp-sm) var(--um-esp-md);
-  color: var(--um-base-texto);
-  text-decoration: none;
 }
 
 .filaInactiva {
   color: var(--um-base-texto-secundario);
+  cursor: default;
 }
 
-.filaTexto {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  min-width: 0;
-}
-
-/* Ícono del lugar en un cuadro de 44 px con fondo Cómodo; fuera del mapa, en gris. */
-.iconoLugar {
-  display: grid;
-  flex-shrink: 0;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  border-radius: var(--um-radio-control);
-  background: var(--um-semaforo-comodo-fondo);
-  color: var(--um-termico-sombra-plena);
-}
-
+/* Fuera del mapa de sombra: el ícono en gris. */
 .iconoFuera {
   background: var(--um-semaforo-nublado-fondo);
   color: var(--um-semaforo-nublado-texto);
-}
-
-/* Pastilla con la forma y el color del nivel de la ruta más el % de sombra. */
-.pildora {
-  display: inline-flex;
-  flex-shrink: 0;
-  align-items: center;
-  gap: var(--um-esp-xs);
-  padding: var(--um-esp-xs) var(--um-esp-sm);
-  border-radius: var(--um-radio-chip);
-  background: var(--nivel-fondo);
-  color: var(--nivel-texto);
-  white-space: nowrap;
 }
 
 .comoLlegar {
