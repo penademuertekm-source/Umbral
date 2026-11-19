@@ -31,6 +31,23 @@ async function hideProvisional(page) {
     for (let n = walker.nextNode(); n; n = walker.nextNode()) {
       if (/provisional/i.test(n.nodeValue)) n.nodeValue = n.nodeValue.replace(/\s*·\s*Datos provisionales/gi, '')
     }
+    // Clima faltante (Open-Meteo sin respuesta): se ocultan el aviso "Sin datos de clima" y la línea
+    // "Sensación térmica: — al sol · — a la sombra". No se pone ningún valor en su lugar.
+    for (const el of document.querySelectorAll('body *')) {
+      if (el.children.length) continue
+      const text = (el.textContent || '').trim()
+      if (/^(Sin datos de clima|Cargando clima…?)$/.test(text)) {
+        let box = el
+        while (box.parentElement) {
+          const r = box.parentElement.getBoundingClientRect()
+          if (r.width > 240 || r.height > 64) break
+          box = box.parentElement
+        }
+        box.style.visibility = 'hidden'
+      } else if (/^Sensación térmica:/.test(text) && text.includes('—')) {
+        el.style.display = 'none'
+      }
+    }
   })
 }
 
