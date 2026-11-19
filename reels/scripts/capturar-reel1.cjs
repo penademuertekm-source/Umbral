@@ -87,6 +87,16 @@ const hhmm = (m) => `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m %
   const solo = process.env.SOLO // p. ej. SOLO=recorrido para repetir una sola pantalla
   const run = (name) => !solo || solo === name
 
+  // Clima real: Open-Meteo a veces rechaza por límite diario. Se reintenta hasta que una consulta sale bien;
+  // la app guarda el pronóstico en localStorage y, con el reloj quieto, lo sigue usando en todas las capturas.
+  for (let i = 1; i <= 40; i++) {
+    await page.goto(`${BASE}/mapa?hora=11:30`)
+    await page.waitForTimeout(4000)
+    const ok = await page.evaluate(() => (localStorage.getItem('umbral.clima') || '').length > 500)
+    if (ok) { console.log('clima listo en el intento', i); break }
+    if (i === 40) console.log('sin clima: se capturará sin él')
+  }
+
   if (run('barrido')) {
   // Barrido del mapa de 07:00 a 15:30 cada 15 min (incluye 07:00, 11:30 y 15:30).
   for (let m = 7 * 60; m <= 15 * 60 + 30; m += 15) {
