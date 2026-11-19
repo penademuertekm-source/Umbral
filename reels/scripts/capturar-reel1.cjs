@@ -33,6 +33,9 @@ async function hideProvisional(page) {
     }
     // Clima faltante (Open-Meteo sin respuesta): se ocultan el aviso "Sin datos de clima" y la línea
     // "Sensación térmica: — al sol · — a la sombra". No se pone ningún valor en su lugar.
+    for (const chip of document.querySelectorAll('[data-nivel]')) {
+      if (/Sin datos de clima|Cargando clima/.test(chip.textContent || '')) chip.style.visibility = 'hidden'
+    }
     const textWalker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT)
     const owners = new Set()
     for (let n = textWalker.nextNode(); n; n = textWalker.nextNode()) if (n.parentElement) owners.add(n.parentElement)
